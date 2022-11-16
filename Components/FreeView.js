@@ -17,8 +17,8 @@ const FreeView = () => {
 
 
     return(
-        <View style={{alignItems:"center",width:"45%",height:"70%",backgroundColor:"tomato",margin:10}}>
-            <View style={{alignItems:"center", justifyContent: "center",width:"100%",borderWidth:2,borderBottomWidth:0,height:"70%",borderColor:"black"}}>
+        <View style={{alignItems:"center",width:"50%",height:"60%",margin:0, marginBottom:40,padding:5}}>
+            <View style={{alignItems:"center", justifyContent: "center",width:"100%",borderWidth:3,borderBottomWidth:0,height:"70%",borderColor:"black"}}>
             <Image
             source={{uri: 'https://picsum.photos/id/237/200/300'}}
             style={{width:"100%",height:"100%"}}
