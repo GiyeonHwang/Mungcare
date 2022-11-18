@@ -18,7 +18,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/register") //회원가입
-    public String register(MemberDTO memberDTO) {
+    public String memberRegister(MemberDTO memberDTO) {
         log.info("login...");
         String id = memberService.memberInput(memberDTO);
         System.out.println("id-----------"+id);
@@ -36,7 +36,7 @@ public class MemberController {
         return check;
     }
 
-    @PostMapping("/mypage") //회원정보
+    @GetMapping("/info") //회원정보
     public Member memberInfo(@RequestParam("id")String id) {
         log.info("memberInfo...");
         //log.info(memberDTO.toString());

@@ -15,5 +15,5 @@ public interface ReplyRepository extends JpaRepository<Reply, Integer>, Querydsl
 //    @Query("delete from Reply r where r.board.bNo =:bno")
 //    void deleteByBno(Integer bNo);
     //게시물로 댓글 목록 가져오기
-    List<Reply> getReplyBoard(Board board);
+//    List<Reply> getRepliesByBoardOrderByRno(Board bNo);
 }

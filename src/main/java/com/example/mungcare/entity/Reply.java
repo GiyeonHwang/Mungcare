@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor //필드 값을 다 넣은 생성자x
 @NoArgsConstructor //기본 생성자
 @EntityListeners(AuditingEntityListener.class) //LocalData 쓰기 위한 어노테이션
-@ToString(exclude={"id", "board"}) //연관관계가 있는 엔티티 클래스의 경우 exclude 속성 사용하기. 해당 속성값은 제외
+@ToString(exclude={"id", "bNo"}) //연관관계가 있는 엔티티 클래스의 경우 exclude 속성 사용하기. 해당 속성값은 제외
 @Table(name = "reply")
 public class Reply {
 
@@ -35,4 +35,8 @@ public class Reply {
     @Column(updatable = false, nullable = false)
     @CreatedDate //Entity가 생성되어 저장될 때 시간이 자동 저장된다.
     private LocalDateTime rCreateTime; //만든 시간
+
+    public void changeContent(String content) { //댓글 내용 수정
+        this.rContent = content;
+    }
 }

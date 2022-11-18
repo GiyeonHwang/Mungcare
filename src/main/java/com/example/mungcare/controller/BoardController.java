@@ -8,6 +8,7 @@ import com.example.mungcare.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,15 +23,15 @@ public class BoardController {
     private final BoardService boardService;
 
     @PostMapping("/write") //글 작성
-    public Integer register(BoardDTO boardDTO) {
+    public Integer boardRegister(BoardDTO boardDTO) {
         log.info("write...");
         Integer bNo = boardService.boardInput(boardDTO);
         System.out.println("id-----------"+bNo);
         return bNo;
     }
 
-    @PostMapping("/list") //글 목록
-    public PageResultDTO<BoardDTO, Board> bList(PageRequestDTO pageRequestDTO) {
+    @GetMapping("/list") //글 목록
+    public PageResultDTO<BoardDTO, Board> boardList(PageRequestDTO pageRequestDTO) {
         log.info("list..."+pageRequestDTO);
 //        List<BoardDTO> boardList = boardService.boardList();
 //        for (BoardDTO board1 : boardList) {
@@ -42,22 +43,22 @@ public class BoardController {
         return result;
     }
 
-//    @PostMapping("/detailView") //글 상세보기
-//    public BoardDTO detail(Integer bNo) {
-//        log.info("detailView...");
-//        BoardDTO detail = boardService.read(bNo);
-//        return detail;
-//    }
+    @GetMapping("/detailView") //글 상세보기
+    public Board boardDetail(Integer bNo) {
+        log.info("detailView...");
+        Board detail = boardService.read(bNo);
+        return detail;
+    }
 
     @PostMapping("/remove") //글 삭제하기
-    public String remove(Integer bNo) {
+    public String boardRemove(Integer bNo) {
         log.info("remove...");
         String result = boardService.remove(bNo);
         return result;
     }
 
     @PostMapping("/modify") //글 수정하기
-    public Integer modify(BoardDTO dto) {
+    public Integer boardModify(BoardDTO dto) {
         log.info("modify...");
         log.info("dto: "+dto);
 
