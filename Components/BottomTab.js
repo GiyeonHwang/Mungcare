@@ -73,9 +73,15 @@ function MyPageStackScreen() {
 export default function BottomTab() {
   return (
       <Tab.Navigator>
-        <Tab.Screen name="메인" component={MainStackScreen} />
-        <Tab.Screen name="자유게시판" component={FreeStackScreen} />
-        <Tab.Screen name="마이페이지" component={MyPageStackScreen} />
+        <Tab.Screen name="메인" component={MainStackScreen} 
+        options={{headerShown: false,}}
+        />
+        <Tab.Screen name="자유게시판" component={FreeStackScreen}
+        options={{headerShown: false,}} 
+        />
+        <Tab.Screen name="마이페이지" component={MyPageStackScreen} 
+        options={{headerShown: false,}}
+        />
       </Tab.Navigator>
   );
 }
