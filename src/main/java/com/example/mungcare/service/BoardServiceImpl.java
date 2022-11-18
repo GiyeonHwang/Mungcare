@@ -5,6 +5,7 @@ import com.example.mungcare.dto.PageRequestDTO;
 import com.example.mungcare.dto.PageResultDTO;
 import com.example.mungcare.entity.Board;
 import com.example.mungcare.repository.BoardRepository;
+import com.example.mungcare.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import java.util.function.Function;
 @Log4j2
 public class BoardServiceImpl implements BoardService{
     private final BoardRepository boardRepository;
+    private final ReplyRepository replyRepository;
 
     @Override
     public Integer boardInput(BoardDTO dto) { //글 작성
@@ -92,9 +94,11 @@ public class BoardServiceImpl implements BoardService{
         boardRepository.save(board);
     }
 
+    @Transactional
     @Override
     public String remove(Integer bNo) { //글 삭제
         try {
+//            replyRepository.deleteByBno(bNo);
             boardRepository.deleteById(bNo);
             return "Success";
         } catch(Exception e) {

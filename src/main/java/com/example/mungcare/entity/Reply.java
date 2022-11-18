@@ -1,6 +1,8 @@
 package com.example.mungcare.entity;
 
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -29,6 +31,7 @@ public class Reply {
     private Member id; //글 작성자
 
     @ManyToOne(fetch = FetchType.LAZY) //명시적으로 Lazy 로딩 지정
+    @OnDelete(action = OnDeleteAction.CASCADE) //게시글 삭제되면 해당 댓글들도 삭제
     @JoinColumn(name ="bNo")
     private Board bNo; //게시글 번호
 

@@ -18,19 +18,28 @@ import java.util.stream.IntStream;
 public class ReplyRepositoryTests {
     @Autowired
     private ReplyRepository replyRepository;
+    @Autowired
+    private BoardRepository boardRepository;
 
     @Test
     public void insertReply1() {
-        Board board = Board.builder().bNo(3).build();
-        Member member = Member.builder().id("user3").build();
+        Board board = Board.builder().bNo(2).build();
+        Member member = Member.builder().id("user").build();
 
         Reply reply = Reply.builder()
                 .rContent("Reply...")
                 .bNo(board)
                 .id(member)
                 .build();
-
+        updateReply(2);
         replyRepository.save(reply);
+    }
+
+    @Test
+    public void updateReply(Integer bNo) { //조회수
+        Board board = boardRepository.findById(bNo).get();
+        board.updateReplyCount(board.getBReply());
+        boardRepository.save(board);
     }
 
     @Test
@@ -67,7 +76,7 @@ public class ReplyRepositoryTests {
     @Test
     public void insertReply() {
         Board board = Board.builder().bNo(3).build();
-        Member member = Member.builder().id("user3").build();
+        Member member = Member.builder().id("Jj").build();
 
         Reply reply = Reply.builder()
                 .rContent("Reply...")

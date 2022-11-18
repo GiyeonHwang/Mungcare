@@ -59,6 +59,10 @@ public class Board{
         return this;
     }
 
+    public void updateReplyCount(Integer bReply) {
+        this.bReply = bReply + 1;
+    }
+
     public Board updateLikeCount(Integer bNo) {
         this.bLike = bLike + 1;
         return this;

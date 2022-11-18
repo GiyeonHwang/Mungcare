@@ -22,9 +22,9 @@ public class BoardServiceTests {
     @Test
     public void testRegister() {
         BoardDTO dto = BoardDTO.builder()
-                .bContent("bContent"+4)
-                .bTitle("bTItle"+4)
-                .bType("bTItle"+4)
+                .bContent("bContent"+3)
+                .bTitle("bTItle"+3)
+                .bType("bTItle"+3)
                 .bViewCount(0)
                 .bLike(0)
                 .bReply(0)
@@ -66,6 +66,12 @@ public class BoardServiceTests {
 
         boardService.modify(dto);
         System.out.println("=============================="+dto);
+    }
+
+    @Test
+    public void testRemove() {
+        Integer bNo = 1;
+        boardService.remove(bNo);
     }
 
 }

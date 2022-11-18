@@ -1,7 +1,9 @@
 package com.example.mungcare.service;
 
 import com.example.mungcare.dto.ReplyDTO;
+import com.example.mungcare.entity.Board;
 import com.example.mungcare.entity.Reply;
+import com.example.mungcare.repository.BoardRepository;
 import com.example.mungcare.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 @Log4j2
 public class ReplyServiceImpl implements ReplyService{
     private final ReplyRepository replyRepository; //자동 주입 final
+    private final BoardRepository boardRepository; //자동 주입 final
 
     @Override
     public Integer register(ReplyDTO replyDTO) { //댓글 작성
@@ -27,11 +30,18 @@ public class ReplyServiceImpl implements ReplyService{
             log.info(replyDTO);
             Reply reply = dtoToEntity(replyDTO);
             replyRepository.save(reply);
+            updateReply(replyDTO.getBNo());
             return reply.getRNo();
         } catch(Exception e) {
             log.info(e.getMessage());
             return null;
         }
+    }
+
+    public void updateReply(Integer bNo) { //조회수
+        Board board = boardRepository.findById(bNo).get();
+        board.updateReplyCount(board.getBReply());
+        boardRepository.save(board);
     }
 
 //    @Override
