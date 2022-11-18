@@ -13,7 +13,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
 
 
-const FreeView = () => {
+const NewsCard = () => {
 
 
     return(
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default FreeView;
+export default NewsCard;
