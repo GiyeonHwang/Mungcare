@@ -1,9 +1,6 @@
 package com.example.mungcare.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -15,7 +12,8 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor //필드 값을 다 넣은 생성자x
 @NoArgsConstructor //기본 생성자
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners(AuditingEntityListener.class) //LocalData 쓰기 위한 어노테이션
+@ToString(exclude={"id"}) //연관관계가 있는 엔티티 클래스의 경우 exclude 속성 사용하기. 해당 속성값은 제외
 @Table(name = "board")
 public class Board{
     @Id
