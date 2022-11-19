@@ -29,7 +29,7 @@ import SkinMain from './Pages/Skin/SkinMain';
 import SkinResult from './Pages/Skin/SkinResult';
 import BottomTab from './Components/BottomTab';
 
-
+import DrawerNavigater from './Components/DrawerNavigater';
 
 import { Text, View, Button, ScrollView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -150,7 +150,8 @@ export default function App(){
       <Stack.Screen name="Ranking" component={Ranking} />
       <Stack.Screen name="SkinMain" component={SkinMain} />
       </Stack.Navigator> */}
-      <BottomTab></BottomTab>     
+     
+      <DrawerNavigater/>
     </NavigationContainer>
 
     

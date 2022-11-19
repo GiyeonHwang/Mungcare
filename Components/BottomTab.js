@@ -23,7 +23,7 @@ import NewsDetail from '../Pages/News/NewsDetail';
 import Ranking from '../Pages/Ranking/Ranking';
 import SkinMain from '../Pages/Skin/SkinMain';
 import SkinResult from '../Pages/Skin/SkinResult';
-
+import { MenuButton } from "./DrawerNavigater";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,57 +31,59 @@ const MainStack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const MyPageStack = createStackNavigator();
 
-function MainStackScreen() {
-    return (
-    <MainStack.Navigator>
-        <MainStack.Screen name="Main" component={Main} />
-        <MainStack.Screen name="MainBoard" component={MainBoard} />
-        <MainStack.Screen name="AffectMain" component={AffectMain} />
-        <MainStack.Screen name="DonateMain" component={DonateMain} />
-        <MainStack.Screen name="FindMeMain" component={FindMeMain} />
-        <MainStack.Screen name="FreeBoardMain" component={FreeBoardMain} />
-        <MainStack.Screen name="CalenderMain" component={CalenderMain} />
-        {/*-->  디테일 페이지들도 임포트하고 넣어줘야함 <--*/}
-        {/*--> 함께하는 공간 자리<--*/}
-        <MainStack.Screen name="Walk" component={Walk} />
-        <MainStack.Screen name="Ranking" component={Ranking} />
-        <MainStack.Screen name="SkinMain" component={SkinMain} />
-        <MainStack.Screen name="MyPage" component={MyPage} />
-    </MainStack.Navigator>
-     );
-   }
 
 
-function FreeStackScreen() {
- return (
-   <HomeStack.Navigator>
-    <HomeStack.Screen name="FreeBoardMain" component={FreeBoardMain} />
-    <HomeStack.Screen name="FreeBoardDetail" component={FreeBoardDetail} />
-   </HomeStack.Navigator>
-  );
-}
+// 스크린 컴포넌트에  options={{headerLeft: () => <MenuButton navigation={navigation} />,}} 
+// 위와같이 코드를 넣으면 해당 페이지 상단에 메뉴버튼 생성됨
 
-function MyPageStackScreen() {
-    return (
-      <MyPageStack.Navigator>
-       <MyPageStack.Screen name="MyPage" component={MyPage} />
-      </MyPageStack.Navigator>
-     );
-   }
-
-
-export default function BottomTab() {
+const MainStackScreen = ({ navigation }) => {
   return (
-      <Tab.Navigator>
-        <Tab.Screen name="메인" component={MainStackScreen} 
-        options={{headerShown: false,}}
-        />
-        <Tab.Screen name="자유게시판" component={FreeStackScreen}
-        options={{headerShown: false,}} 
-        />
-        <Tab.Screen name="마이페이지" component={MyPageStackScreen} 
-        options={{headerShown: false,}}
-        />
-      </Tab.Navigator>
+    <MainStack.Navigator>
+      <MainStack.Screen name="Main" component={Main} options={{
+        headerLeft: () => <MenuButton navigation={navigation} />,
+      }} />
+      <MainStack.Screen name="MainBoard" component={MainBoard}/>
+      <MainStack.Screen name="AffectMain" component={AffectMain}/>
+      <MainStack.Screen name="DonateMain" component={DonateMain}/>
+      <MainStack.Screen name="FindMeMain" component={FindMeMain}/>
+      <MainStack.Screen name="FreeBoardMain" component={FreeBoardMain}/>
+      <MainStack.Screen name="CalenderMain" component={CalenderMain}/>
+      {/*-->  디테일 페이지들도 임포트하고 넣어줘야함 <--*/}
+      {/*--> 함께하는 공간 자리<--*/}
+      <MainStack.Screen name="Walk" component={Walk}/>
+      <MainStack.Screen name="Ranking" component={Ranking}/>
+      <MainStack.Screen name="SkinMain" component={SkinMain}/>
+      <MainStack.Screen name="MyPage" component={MyPage}/>
+    </MainStack.Navigator>
   );
 }
+
+
+const FreeStackScreen = ({ navigation }) => {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="FreeBoardMain" component={FreeBoardMain}/>
+      <HomeStack.Screen name="FreeBoardDetail" component={FreeBoardDetail}/>
+    </HomeStack.Navigator>
+  );
+}
+
+const MyPageStackScreen = ({ navigation }) => {
+  return (
+    <MyPageStack.Navigator>
+      <MyPageStack.Screen name="MyPage" component={MyPage}/>
+    </MyPageStack.Navigator>
+  );
+}
+
+
+const BottomTab = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="메인" component={MainStackScreen}  options={{headerShown: false}}/>
+      <Tab.Screen name="자유게시판" component={FreeStackScreen}  options={{headerShown: false}}/>
+      <Tab.Screen name="마이페이지" component={MyPageStackScreen}  options={{headerShown: false}}/>
+    </Tab.Navigator>
+  );
+};
+export default BottomTab;
