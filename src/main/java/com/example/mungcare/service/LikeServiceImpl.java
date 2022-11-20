@@ -27,16 +27,18 @@ public class LikeServiceImpl implements LikeService {
     @Transactional
     public Integer addLike(String id, Integer bNo) { //좋아요 체크
         try {
-            Member member = memberRepository.findById(id).get();
             Board board = boardRepository.findById(bNo).get();
 
-            LikeId ld = new LikeId(member, board); //복합키
+            LikeId ld = new LikeId(id, bNo); //복합키
             Optional<Like> result = likeRepository.findById(ld);
             if(result.isPresent()) { //null이 아니면
                 Like like = result.get();
                 Integer addOrDel = like.getCLike(); //좋아요 했는지, 안했는지
                 Integer re = like.likeAddDel(addOrDel); //좋아요 여부에 따라 삭제 또는 좋아요
-
+                if(re == 1)
+                    board.updateLikeCount(bNo); //해당 게시물의 좋아요 수 증가
+                else
+                    board.deleteLikeCount(bNo); //해당 게시물의 좋아요 수 증가
                 likeRepository.save(like);
                 return re;
             }
@@ -46,7 +48,7 @@ public class LikeServiceImpl implements LikeService {
                 System.out.println("=============================" + like);
                 likeRepository.save(like);
 
-                board.updateLikeCount(3); //해당 게시물의 좋아요 수 증가
+                board.updateLikeCount(bNo); //해당 게시물의 좋아요 수 증가
                 boardRepository.save(board);
                 return 1;
             }

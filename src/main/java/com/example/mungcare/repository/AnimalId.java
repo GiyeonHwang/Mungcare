@@ -1,6 +1,5 @@
 package com.example.mungcare.repository;
 
-import com.example.mungcare.entity.Board;
 import com.example.mungcare.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +10,8 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LikeId implements Serializable {
+public class AnimalId implements Serializable {
     private String id;
-    private Integer bNo;
+    private String aName;
+
 }

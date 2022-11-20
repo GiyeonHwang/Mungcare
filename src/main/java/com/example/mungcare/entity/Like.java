@@ -26,7 +26,7 @@ public class Like {
     @JoinColumn(name ="bNo")
     private Board bNo;
 
-    private int cLike; //좋아요 체크 확인
+    private Integer cLike; //좋아요 체크 확인
 
     public void addLike() {
         cLike = 1;

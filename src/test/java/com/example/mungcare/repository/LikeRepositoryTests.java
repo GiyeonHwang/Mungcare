@@ -20,22 +20,21 @@ public class LikeRepositoryTests {
     private MemberRepository memberRepository;
 
     @Test
-    @Transactional
     public void testLikeCheck() {
         Member member = memberRepository.findById("user3").get();
         Board board = boardRepository.findById(3).get();
-        LikeId ld = new LikeId(member, board);
+        LikeId ld = new LikeId("user3", 3);
         Optional<Like> result = likeRepository.findById(ld);
         if(result.isPresent()) { //null이 아니면
             Like like = result.get();
             Integer addOrDel = like.getCLike(); //좋아요 했는지, 안했는지
+            System.out.println("--------------------------check: "+result.get());
             Integer re = like.likeAddDel(addOrDel); //좋아요 여부에 따라 삭제 또는 좋아요
 
-            likeRepository.save(like);
+            //likeRepository.save(like);
         }
         else { //null일때
             Like like = new Like(member, board, 1);
-            System.out.println("============================="+like);
             likeRepository.save(like);
             board.updateLikeCount(3);
             boardRepository.save(board);

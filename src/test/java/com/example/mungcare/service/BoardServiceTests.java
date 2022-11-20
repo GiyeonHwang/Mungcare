@@ -1,7 +1,6 @@
 package com.example.mungcare.service;
 
 import com.example.mungcare.dto.BoardDTO;
-import com.example.mungcare.dto.MemberDTO;
 import com.example.mungcare.dto.PageRequestDTO;
 import com.example.mungcare.dto.PageResultDTO;
 import com.example.mungcare.entity.Board;
@@ -60,8 +59,8 @@ public class BoardServiceTests {
     public void testModify() {
         BoardDTO dto = BoardDTO.builder()
                 .bNo(3)
-                .bTitle("제목 변경")
-                .bContent("내용 변경")
+                .bTitle("제목 변경12")
+                .bContent("내용 변경12")
                 .build();
 
         boardService.modify(dto);

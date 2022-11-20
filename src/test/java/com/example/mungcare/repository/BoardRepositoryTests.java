@@ -20,22 +20,18 @@ public class BoardRepositoryTests {
 
     @Test
     public void insertBoard() {
-        try{
-            Member member = Member.builder().id("user").build();
+        Member member = Member.builder().id("user4").build();
 
-            Board board = Board.builder()
-                    .bContent("bContent"+3)
-                    .bTitle("bTItle"+3)
-                    .bType("bTItle"+3)
-                    .bViewCount(0)
-                    .bLike(0)
-                    .bReply(0)
-                    .id(member)
-                    .build();
-            boardRepository.save(board);
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
+        Board board = Board.builder()
+                .bContent("bContent"+5)
+                .bTitle("bTItle"+5)
+                .bType("bTItle"+5)
+                .bViewCount(0)
+                .bLike(0)
+                .bReply(0)
+                .id(member)
+                .build();
+        boardRepository.save(board);
 
     }
 
