@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View,BackHandler,ScrollView} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -23,7 +23,8 @@ import NewsDetail from '../Pages/News/NewsDetail';
 import Ranking from '../Pages/Ranking/Ranking';
 import SkinMain from '../Pages/Skin/SkinMain';
 import SkinResult from '../Pages/Skin/SkinResult';
-import { MenuButton } from "./DrawerNavigater";
+import MenuButton from "./MenuButton";
+
 
 const Tab = createBottomTabNavigator();
 
@@ -40,7 +41,7 @@ const MainStackScreen = ({ navigation }) => {
   return (
     <MainStack.Navigator>
       <MainStack.Screen name="Main" component={Main} options={{
-        headerLeft: () => <MenuButton navigation={navigation} />,
+        headerLeft: () => <MenuButton/>,
       }} />
       <MainStack.Screen name="MainBoard" component={MainBoard}/>
       <MainStack.Screen name="AffectMain" component={AffectMain}/>
@@ -62,7 +63,10 @@ const MainStackScreen = ({ navigation }) => {
 const FreeStackScreen = ({ navigation }) => {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen name="FreeBoardMain" component={FreeBoardMain}/>
+      <HomeStack.Screen name="FreeBoardMain" component={FreeBoardMain} 
+      options={{
+        headerLeft: () => <MenuButton/>,
+      }} />
       <HomeStack.Screen name="FreeBoardDetail" component={FreeBoardDetail}/>
     </HomeStack.Navigator>
   );
@@ -71,7 +75,10 @@ const FreeStackScreen = ({ navigation }) => {
 const MyPageStackScreen = ({ navigation }) => {
   return (
     <MyPageStack.Navigator>
-      <MyPageStack.Screen name="MyPage" component={MyPage}/>
+      <MyPageStack.Screen name="MyPage" component={MyPage}
+      options={{
+        headerLeft: () => <MenuButton/>,
+      }} />
     </MyPageStack.Navigator>
   );
 }
@@ -80,9 +87,11 @@ const MyPageStackScreen = ({ navigation }) => {
 const BottomTab = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="메인" component={MainStackScreen}  options={{headerShown: false}}/>
+      <Tab.Screen name="메인" component={MainStackScreen}  
+      options={{headerShown: false, headerBackVisible: true,
+      }}/>
       <Tab.Screen name="자유게시판" component={FreeStackScreen}  options={{headerShown: false}}/>
-      <Tab.Screen name="마이페이지" component={MyPageStackScreen}  options={{headerShown: false}}/>
+      <Tab.Screen name="마이페이지" component={MyPageStackScreen}  options={{headerShown: false,}}/>
     </Tab.Navigator>
   );
 };

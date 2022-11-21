@@ -1,57 +1,82 @@
 import React from "react";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItem, } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native";
 
 import BottomTab from "./BottomTab";
 import MyPage from "../Pages/MyPage/MyPage";
+import FreeBoardMain from "../Pages/Boards/FreeBoard/FreeBoardMain";
 import Icon from "react-native-vector-icons/Ionicons";
+import MenuButton from "./MenuButton";
 
 
 const Drawer = createDrawerNavigator();
 
-export const MenuButton = ({ navigation }) => {
-  const openMenu = () => {
-    navigation.openDrawer();
+
+// const MyPageStack = createStackNavigator();
+// const MyPageStackScreen = ({ navigation }) => {
+//   return (
+//     <MyPageStack.Navigator>
+//       <MyPageStack.Screen
+//         name="MyPageScreen"
+//         component={MyPage}
+//         options={{
+//           headerLeft: () => <MenuButton/>,
+//         }}
+//       />
+//     </MyPageStack.Navigator>
+//   );
+// };
+
+// const FreeBoardStack = createStackNavigator();
+// const FreeBoardStackScreen = ({ navigation }) => {
+//   return (
+//     <FreeBoardStack.Navigator>
+//       <FreeBoardStack.Screen
+//         name="FreeBoardMain"
+//         component={FreeBoardMain}
+//         options={{
+//           headerLeft: () => <MenuButton/>,
+//         }}
+//       />
+//     </FreeBoardStack.Navigator>
+//   );
+// };
+
+const CustomDrawer = ({ navigation }) => {
+  const goToStack = (stackName) => {
+    navigation.navigate(stackName);
   };
-
   return (
-    <TouchableOpacity>
-      <Icon
-        name="ios-menu"
-        onPress={openMenu}
+    <DrawerContentScrollView>
+      <DrawerItem
+        icon={() => <Icon name="ios-home" size={24} />}
+        label="Main"
+        onPress={() => goToStack("메인")}
         style={{
-          fontSize: 30,
-          marginLeft: 10,
-          marginTop: 5,
-          paddingLeft: 5,
-          paddingRight: 5,
+          borderBottomWidth: 1,
+          borderRadius: 0,
+          borderColor: "#ccc",
         }}
       />
-    </TouchableOpacity>
+      <DrawerItem label="자유게시판" onPress={() => goToStack("자유게시판")} />
+      <DrawerItem label="Mypage"onPress={() => goToStack("마이페이지")}/>
+    </DrawerContentScrollView>
   );
 };
 
-const MyPageStack = createStackNavigator();
-const MyPageStackScreen = ({ navigation }) => {
-  return (
-    <MyPageStack.Navigator>
-      <MyPageStack.Screen
-        name="MyPage"
-        component={MyPage}
-        options={{
-          headerLeft: () => <MenuButton navigation={navigation} />,
-        }}
-      />
-    </MyPageStack.Navigator>
-  );
-};
 
 const DrawerNavigater = () => {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator 
+      drawerContent={({ navigation }) => (
+      <CustomDrawer navigation={navigation} />
+    )}>
       <Drawer.Screen name="BottomTab" component={BottomTab} options={{headerShown: false}}/>
-      <Drawer.Screen name="MyPage" component={MyPageStackScreen} options={{headerShown: false}} />
+      {/* <Drawer.Screen name="FreeBoardStackScreen" component={FreeBoardStackScreen} options={{headerShown: false}} />
+      <Drawer.Screen name="MyPage" component={MyPageStackScreen} options={{headerShown: false}} /> */}
     </Drawer.Navigator>
   );
 };
