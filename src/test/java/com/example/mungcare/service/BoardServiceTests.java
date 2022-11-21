@@ -87,8 +87,8 @@ public class BoardServiceTests {
     public void testModify() {
         BoardDTO dto = BoardDTO.builder()
                 .bNo(3)
-                .bTitle("제목 변경12")
-                .bContent("내용 변경12")
+                .bTitle("제목 변경1")
+                .bContent("내용 변경1")
                 .build();
 
         boardService.modify(dto);

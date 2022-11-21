@@ -63,6 +63,7 @@ public class MemberServiceImpl implements MemberService{
         Optional<Member> result = memberRepository.findById(dto.getId());
         if(result.isPresent()) {
             Member member = result.get();
+//            member.changePw(dto.getPw());
             member.setPw(dto.getPw());
             member.setName(dto.getName());
             member.setNickname(dto.getNickname());
