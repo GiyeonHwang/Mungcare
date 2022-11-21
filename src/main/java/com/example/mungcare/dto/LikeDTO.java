@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class LikeDTO {
     private String id;
     private Integer bNo;
-    private int cLike;
+    private boolean cLike;
 }

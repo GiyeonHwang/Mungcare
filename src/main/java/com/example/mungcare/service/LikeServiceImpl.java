@@ -21,11 +21,10 @@ import java.util.Optional;
 public class LikeServiceImpl implements LikeService {
     private LikeRepository likeRepository;
     private final BoardRepository boardRepository;
-    private final MemberRepository memberRepository;
 
     @Override
     @Transactional
-    public Integer addLike(String id, Integer bNo) { //좋아요 체크
+    public boolean addLike(String id, Integer bNo) { //좋아요 체크
         try {
             Board board = boardRepository.findById(bNo).get();
 
@@ -33,9 +32,9 @@ public class LikeServiceImpl implements LikeService {
             Optional<Like> result = likeRepository.findById(ld);
             if(result.isPresent()) { //null이 아니면
                 Like like = result.get();
-                Integer addOrDel = like.getCLike(); //좋아요 했는지, 안했는지
-                Integer re = like.likeAddDel(addOrDel); //좋아요 여부에 따라 삭제 또는 좋아요
-                if(re == 1)
+                boolean addOrDel = like.isCLike(); //좋아요 했는지, 안했는지
+                boolean re = like.likeAddDel(addOrDel); //좋아요 여부에 따라 삭제 또는 좋아요
+                if(re)
                     board.updateLikeCount(bNo); //해당 게시물의 좋아요 수 증가
                 else
                     board.deleteLikeCount(bNo); //해당 게시물의 좋아요 수 증가
@@ -43,18 +42,18 @@ public class LikeServiceImpl implements LikeService {
                 return re;
             }
             else { //null일때
-                LikeDTO likeDTO = new LikeDTO(id, bNo, 1);
+                LikeDTO likeDTO = new LikeDTO(id, bNo, true);
                 Like like = dtoToEntity(likeDTO);
                 System.out.println("=============================" + like);
                 likeRepository.save(like);
 
                 board.updateLikeCount(bNo); //해당 게시물의 좋아요 수 증가
                 boardRepository.save(board);
-                return 1;
+                return true;
             }
         } catch(Exception e) {
             System.out.println(e.getMessage());
-            return null;
+            return false;
         }
 
     }

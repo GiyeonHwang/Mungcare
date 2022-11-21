@@ -78,13 +78,13 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public String memberRemove(String id) { //회원 삭제
+    public boolean memberRemove(String id) { //회원 삭제
         try{
             memberRepository.deleteById(id);
-            return "Success";
+            return true;
         } catch(Exception e) {
             log.info(e.getMessage());
-            return "Failed";
+            return false;
         }
     }
 

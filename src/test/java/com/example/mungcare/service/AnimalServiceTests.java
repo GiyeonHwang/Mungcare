@@ -13,11 +13,11 @@ public class AnimalServiceTests {
     @Test
     public void testRegister() {
         AnimalDTO dto = AnimalDTO.builder()
-                .id("user")
-                .aName("코코")
-                .aSex("남자")
-                .aBirth(java.sql.Date.valueOf("2020-09-03"))
-                .aBreed("요크셔테리어")
+                .id("C")
+                .aName("안나")
+                .aSex("여자")
+                .aBirth("2019-01-25")
+                .aBreed("비숑")
                 .aNeut(true)
                 .build();
         String a = animalService.animalInput(dto);

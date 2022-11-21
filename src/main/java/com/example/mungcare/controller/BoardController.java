@@ -30,7 +30,7 @@ public class BoardController {
         return bNo;
     }
 
-    @GetMapping("/list") //글 목록
+    @PostMapping("/list") //글 목록
     public PageResultDTO<BoardDTO, Board> boardList(PageRequestDTO pageRequestDTO) {
         log.info("list..."+pageRequestDTO);
 //        List<BoardDTO> boardList = boardService.boardList();
@@ -43,7 +43,16 @@ public class BoardController {
         return result;
     }
 
-    @GetMapping("/detailView") //글 상세보기
+    @PostMapping("/search") //카테고리 or 검색 별 목록
+    public PageResultDTO<BoardDTO, Board> boardCatgory(PageRequestDTO pageRequestDTO) {
+        log.info("boardCatgory..."+pageRequestDTO);
+
+        PageResultDTO<BoardDTO, Board> result = boardService.boardCategoryList(pageRequestDTO);
+        System.out.println("-----------"+result);
+        return result;
+    }
+
+    @PostMapping("/detailView") //글 상세보기
     public Board boardDetail(Integer bNo) {
         log.info("detailView...");
         Board detail = boardService.read(bNo);
@@ -51,9 +60,9 @@ public class BoardController {
     }
 
     @PostMapping("/remove") //글 삭제하기
-    public String boardRemove(Integer bNo) {
+    public boolean boardRemove(Integer bNo) {
         log.info("remove...");
-        String result = boardService.remove(bNo);
+        boolean result = boardService.remove(bNo);
         return result;
     }
 

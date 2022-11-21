@@ -1,11 +1,16 @@
 package com.example.mungcare.repository;
 
 import com.example.mungcare.dto.BoardDTO;
+import com.example.mungcare.dto.PageRequestDTO;
 import com.example.mungcare.entity.Board;
 import com.example.mungcare.entity.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;

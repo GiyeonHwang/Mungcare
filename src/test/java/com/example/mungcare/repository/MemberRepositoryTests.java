@@ -69,7 +69,7 @@ public class MemberRepositoryTests {
     @Test
     public void memberRemove() {
         try{
-            memberRepository.deleteById("user4");
+            memberRepository.deleteById("C");
             System.out.println("Success");
         } catch(Exception e) {
             System.out.println("Failed");

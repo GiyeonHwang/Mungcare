@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class MemberDTO {
-
     private String id; //아이디
     private String pw; //패스워드
     private String name; //이름

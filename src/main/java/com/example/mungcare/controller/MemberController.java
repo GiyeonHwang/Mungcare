@@ -36,7 +36,7 @@ public class MemberController {
         return check;
     }
 
-    @GetMapping("/info") //회원정보
+    @PostMapping("/info") //회원정보
     public Member memberInfo(@RequestParam("id")String id) {
         log.info("memberInfo...");
         //log.info(memberDTO.toString());
@@ -58,10 +58,10 @@ public class MemberController {
     }
 
     @PostMapping("/remove") //회원정보 삭제
-    public String memberRemove(@RequestParam("id")String id) {
+    public boolean memberRemove(@RequestParam("id")String id) {
         log.info("memberRemove...");
         log.info("id..."+id);
-        String result = memberService.memberRemove(id);
+        boolean result = memberService.memberRemove(id);
         System.out.println("result: " + result);
 
         return result;

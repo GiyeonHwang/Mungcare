@@ -8,7 +8,7 @@ public interface MemberService {
     String memberCheck(String id, String pw); //로그인
     Member memberInfo(String id); //회원 정보
     Member memberModify(MemberDTO dto); //회원 수정
-    String memberRemove(String id); //회원 삭제
+    boolean memberRemove(String id); //회원 삭제
 
     //MemberDTO를 Member 엔티티 타입으로 변환할 필요가 있는데,
     // 이에 대한 처리는 MemberService 인터페이스에 dtoToEntity()를 작성해서 처리한다.

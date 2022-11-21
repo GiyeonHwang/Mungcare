@@ -24,7 +24,7 @@ public class ReplyController {
         return bNo;
     }
 
-    @GetMapping("/list") //특정 게시물의 댓글 목록
+    @PostMapping("/list") //특정 게시물의 댓글 목록
     public List<ReplyDTO> replyList(@RequestParam("bNo")Integer bNo) {
         log.info("rList..."+bNo);
         List<ReplyDTO> result = replyService.getList(bNo);
@@ -33,9 +33,9 @@ public class ReplyController {
     }
 
     @PostMapping("/remove") //특정 게시물의 댓글 삭제
-    public String replyRemove(@RequestParam("rNo") Integer rNo) {
+    public boolean replyRemove(@RequestParam("rNo") Integer rNo) {
         log.info("rRemove..."+rNo);
-        String result = replyService.remove(rNo);
+        boolean result = replyService.remove(rNo);
         return result;
     }
 

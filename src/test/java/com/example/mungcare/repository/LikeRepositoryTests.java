@@ -27,14 +27,14 @@ public class LikeRepositoryTests {
         Optional<Like> result = likeRepository.findById(ld);
         if(result.isPresent()) { //null이 아니면
             Like like = result.get();
-            Integer addOrDel = like.getCLike(); //좋아요 했는지, 안했는지
-            System.out.println("--------------------------check: "+result.get());
-            Integer re = like.likeAddDel(addOrDel); //좋아요 여부에 따라 삭제 또는 좋아요
+            boolean addOrDel = like.isCLike(); //좋아요 했는지, 안했는지
+            System.out.println("--------------------------check: "+addOrDel);
+            boolean re = like.likeAddDel(addOrDel); //좋아요 여부에 따라 삭제 또는 좋아요
 
             //likeRepository.save(like);
         }
         else { //null일때
-            Like like = new Like(member, board, 1);
+            Like like = new Like(member, board, true);
             likeRepository.save(like);
             board.updateLikeCount(3);
             boardRepository.save(board);

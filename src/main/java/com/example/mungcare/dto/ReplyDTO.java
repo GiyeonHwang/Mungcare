@@ -13,12 +13,8 @@ import java.time.LocalDateTime;
 @Data
 public class ReplyDTO {
     private Integer rNo; //게시판 번호
-
     private String rContent; //게시판 글
-
     private String id; //글 작성자
-
     private Integer bNo; //게시글 번호
-
     private LocalDateTime rCreateTime; //만든 시간
 }

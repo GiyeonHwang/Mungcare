@@ -4,8 +4,12 @@ import com.example.mungcare.dto.BoardDTO;
 import com.example.mungcare.dto.PageRequestDTO;
 import com.example.mungcare.dto.PageResultDTO;
 import com.example.mungcare.entity.Board;
+import com.example.mungcare.entity.QBoard;
 import com.example.mungcare.repository.BoardRepository;
 import com.example.mungcare.repository.ReplyRepository;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -14,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -77,6 +82,26 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
+    public PageResultDTO<BoardDTO, Board> boardCategoryList(PageRequestDTO pageRequestDTO) { //글 카테고리 목록
+        try{
+            log.info("boardCategoryList...");
+
+            Pageable pageable = pageRequestDTO.getPageable(Sort.by("bNo").descending());
+
+            BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
+
+
+            Page<Board> result = boardRepository.findAll(booleanBuilder, pageable);
+
+            Function<Board, BoardDTO> fn = (entity -> entityToDTO(entity));
+            return new PageResultDTO<>(result, fn);
+        } catch(Exception e) {
+            log.info(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
     @Transactional //Lazy loading(지연 로딩)을 했기 때문
     public Board read(Integer bNo) { //글 상세보기
         updateView(bNo);
@@ -96,14 +121,14 @@ public class BoardServiceImpl implements BoardService{
 
     @Transactional
     @Override
-    public String remove(Integer bNo) { //글 삭제
+    public boolean remove(Integer bNo) { //글 삭제
         try {
 //            replyRepository.deleteByBno(bNo);
             boardRepository.deleteById(bNo);
-            return "Success";
+            return true;
         } catch(Exception e) {
             log.info(e.getMessage());
-            return "Failed";
+            return false;
         }
     }
 
@@ -157,5 +182,41 @@ public class BoardServiceImpl implements BoardService{
             throw new RuntimeException("Entity cannot be null.");
         }
     }
+
+    private BooleanBuilder getSearch(PageRequestDTO requestDTO) { //Querydsl 처리
+        String type = requestDTO.getType();
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        QBoard qBoard = QBoard.board;
+
+        String keyword = requestDTO.getKeyword();
+
+        BooleanExpression expression = qBoard.bNo.gt(0); //bNo >0 조건 생성
+
+        booleanBuilder.and(expression);
+
+        if(type == null || type.trim().length() == 0) { //검색 조건이 없는 경우
+            return booleanBuilder;
+        }
+
+        //검색 조건 작성하기
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+
+        if(type.contains("type")) { //카테고리
+            conditionBuilder.or(qBoard.bType.contains(keyword));
+        }
+        if(type.contains("title")) { //제목
+            conditionBuilder.or(qBoard.bTitle.contains(keyword));
+        }
+        if(type.contains("content")) { //내용
+            conditionBuilder.or(qBoard.bContent.contains(keyword));
+        }
+
+        //모든 조건 통합
+        booleanBuilder.and(conditionBuilder);
+
+        return booleanBuilder;
+
+    }
+
 
 }

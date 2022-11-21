@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -23,27 +25,27 @@ public class Like {
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY) //명시적으로 Lazy 로딩 지정
+    @OnDelete(action = OnDeleteAction.CASCADE) //게시글 삭제되면 해당 댓글들도 삭제
     @JoinColumn(name ="bNo")
     private Board bNo;
 
-    private Integer cLike; //좋아요 체크 확인
+    private boolean cLike; //좋아요 체크 확인
 
     public void addLike() {
-        cLike = 1;
+        cLike = true;
     }
 
     public void delLike() {
-        cLike = 0;
+        cLike = false;
     }
 
-    public Integer likeAddDel(Integer ch) {
-        if(ch==0) { //좋아요 안했을 경우
-            this.cLike = 1;
-            return 1; //좋아요 눌르기
-        }
-        else { //좋아요 했을 경우
-            this.cLike = 0; 
-            return 0; //좋아요 삭제하기
+    public boolean likeAddDel(boolean ch) {
+        if(!ch) { //좋아요 안했을 경우
+            this.cLike = true;
+            return true; //좋아요 눌르기
+        } else { //좋아요 했을 경우
+            this.cLike = false;
+            return false; //좋아요 삭제하기
         }
 
     }

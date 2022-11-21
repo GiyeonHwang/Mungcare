@@ -18,11 +18,11 @@ public class LikeController {
     private LikeService likeService;
 
     @PostMapping("/check") //좋아요 기능
-    public Integer like(MemberDTO memberDTO, BoardDTO boardDTO) {
+    public boolean like(MemberDTO memberDTO, BoardDTO boardDTO) {
         log.info("like...");
         log.info("boardDTO: "+boardDTO);
         log.info("memberDTO: "+memberDTO);
-        Integer result = likeService.addLike(memberDTO.getId(), boardDTO.getBNo());
+        boolean result = likeService.addLike(memberDTO.getId(), boardDTO.getBNo());
         return result; //1이면 좋아요 추가, 0이면 좋아요 삭제
     }
 }

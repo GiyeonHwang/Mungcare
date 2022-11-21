@@ -5,6 +5,8 @@ import com.example.mungcare.dto.PageRequestDTO;
 import com.example.mungcare.dto.PageResultDTO;
 import com.example.mungcare.entity.Board;
 import com.example.mungcare.entity.Member;
+import com.querydsl.core.BooleanBuilder;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -13,9 +15,10 @@ public interface BoardService {
 
     //PageResultDTO<BoardDTO, Object[]> boardList(PageRequestDTO pageRequestDTO); //글 목록(페이징 처리O)
     PageResultDTO<BoardDTO, Board> boardList(PageRequestDTO pageRequestDTO); //글 목록(페이징 처리O)
+    PageResultDTO<BoardDTO, Board> boardCategoryList(PageRequestDTO pageRequestDTO); //글 카테고리 목록(페이징 처리O)
     //List<BoardDTO> boardList();
     Board read(Integer bNo); //글 상세 보기
-    String remove(Integer bNo); //글 삭제하기
+    boolean remove(Integer bNo); //글 삭제하기
     Integer modify(BoardDTO dto); //글 수정하기
     void updateView(Integer bNo); //조회수
 

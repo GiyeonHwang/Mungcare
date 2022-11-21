@@ -6,7 +6,7 @@ import com.example.mungcare.entity.Like;
 import com.example.mungcare.entity.Member;
 
 public interface LikeService {
-    Integer addLike(String id, Integer bNo);
+    boolean addLike(String id, Integer bNo);
 
     default Like dtoToEntity(LikeDTO dto) {
         Member member = Member.builder().id(dto.getId()).build();
@@ -15,7 +15,7 @@ public interface LikeService {
         Like like = Like.builder()
                 .id(member)
                 .bNo(board)
-                .cLike(dto.getCLike())
+                .cLike(dto.isCLike())
                 .build();
 
         return like;

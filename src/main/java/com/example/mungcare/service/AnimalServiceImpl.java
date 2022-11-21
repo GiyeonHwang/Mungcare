@@ -38,7 +38,7 @@ public class AnimalServiceImpl implements AnimalService{
     }
 
     @Override
-    public List<AnimalDTO> animalList() { //반려동물 목록
+    public List<AnimalDTO> animalList(String id) { //반려동물 목록
         try{
             log.info("animalList-------------------");
             List<Animal> entity = animalRepository.findAll();
@@ -46,8 +46,10 @@ public class AnimalServiceImpl implements AnimalService{
             List<AnimalDTO> aList = new ArrayList<>();
 
             for (Animal animal : entity) {
-                AnimalDTO dto = entityToDTO(animal);
-                aList.add(dto);
+                if(id.equals(animal.getId().getId())) {
+                    AnimalDTO dto = entityToDTO(animal);
+                    aList.add(dto);
+                }
             }
             //만약 빈 리스트일 경우 []로 return
             return aList;
@@ -69,15 +71,15 @@ public class AnimalServiceImpl implements AnimalService{
 
     @Transactional
     @Override
-    public String animalRemove(String id, String aName) { //반려동물 삭제
+    public boolean animalRemove(String id, String aName) { //반려동물 삭제
         try {
             Member member = memberRepository.findById(id).get();
             AnimalId ld = new AnimalId(id, aName); //복합키
             animalRepository.deleteById(ld);
-            return "Success";
+            return true;
         } catch(Exception e) {
             log.info(e.getMessage());
-            return "Failed";
+            return false;
         }
     }
 
@@ -90,7 +92,7 @@ public class AnimalServiceImpl implements AnimalService{
         //수정 하는 항목: '제목', '내용'
         if(result.isPresent()) {
             Animal animal = result.get();
-            animal.setABirth(dto.getABirth());
+            animal.setABirth(java.sql.Date.valueOf(dto.getABirth()));
             animal.setABreed(dto.getABreed());
             animal.setANeut(dto.isANeut());
 //            animal.changeContent(dto.getBContent());

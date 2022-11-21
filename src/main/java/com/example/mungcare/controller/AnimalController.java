@@ -5,10 +5,7 @@ import com.example.mungcare.entity.Animal;
 import com.example.mungcare.service.AnimalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,27 +24,27 @@ public class AnimalController {
         return aName;
     }
 
-    @GetMapping("/list") //반려동물 목록
-    public List<AnimalDTO> animalList() {
+    @PostMapping("/list") //반려동물 목록
+    public List<AnimalDTO> animalList1(@RequestParam("id")String id) {
         log.info("animalList");
-        List<AnimalDTO> anList = animalService.animalList();
+        List<AnimalDTO> anList = animalService.animalList(id);
         for (AnimalDTO animal : anList) {
             System.out.println("======================================"+animal.getAName());
         }
         return anList;
     }
 
-    @GetMapping("/detailView") //반려동물 상세보기
-    public Animal animalDetail(String id, String aName) {
+    @PostMapping("/detailView") //반려동물 상세보기
+    public Animal animalDetail(@RequestParam("id")String id, @RequestParam("aName")String aName) {
         log.info("detailView...");
         Animal detail = animalService.animalInfo(id, aName);
         return detail;
     }
 
     @PostMapping("/remove") //글 삭제하기
-    public String animalRemove(String id, String aName) {
+    public boolean animalRemove(@RequestParam("id")String id, @RequestParam("aName")String aName) {
         log.info("remove...");
-        String result = animalService.animalRemove(id, aName);
+        boolean result = animalService.animalRemove(id, aName);
         return result;
     }
 

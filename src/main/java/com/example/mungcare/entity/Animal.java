@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -19,6 +21,7 @@ import java.sql.Date;
 public class Animal {
     @Id
     @ManyToOne(fetch = FetchType.LAZY) //명시적으로 Lazy 로딩 지정
+    @OnDelete(action = OnDeleteAction.CASCADE) //회원 삭제되면 해당 반려동물들도 삭제
     @JoinColumn(name ="id")
     private Member id;
 

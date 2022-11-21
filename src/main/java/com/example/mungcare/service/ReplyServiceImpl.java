@@ -88,13 +88,13 @@ public class ReplyServiceImpl implements ReplyService{
     }
 
     @Override
-    public String remove(Integer rNo) { //댓글 삭제
+    public boolean remove(Integer rNo) { //댓글 삭제
         try{
             replyRepository.deleteById(rNo);
-            return "Success";
+            return true;
         } catch(Exception e) {
             log.info(e.getMessage());
-            return "False";
+            return false;
         }
     }
 

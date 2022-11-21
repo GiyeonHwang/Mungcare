@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,10 +25,10 @@ public class AnimalRepositoryTests {
         System.out.println(member);
         Animal animal = Animal.builder()
                 .id(member)
-                .aName("코코")
-                .aSex("남자")
-                .aBirth(java.sql.Date.valueOf("2020-09-03"))
-                .aBreed("요크셔테리어")
+                .aName("만수르")
+                .aSex("여자")
+                .aBirth(java.sql.Date.valueOf("2022-10-15"))
+                .aBreed("푸들")
                 .aNeut(true)
                 .build();
         animalRepository.save(animal);
@@ -40,11 +41,13 @@ public class AnimalRepositoryTests {
 
         for(Animal animalEntity : animal) {
             Member member = animalEntity.getId();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String to = sdf.format(animalEntity.getABirth());
             AnimalDTO animalDTO = AnimalDTO.builder()
                     .id(member.getId())
                     .aName(animalEntity.getAName())
                     .aSex(animalEntity.getASex())
-                    .aBirth(animalEntity.getABirth())
+                    .aBirth(to)
                     .aBreed(animalEntity.getABreed())
                     .aNeut(animalEntity.isANeut())
                     .build();
