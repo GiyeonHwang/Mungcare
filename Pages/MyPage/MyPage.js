@@ -4,14 +4,11 @@ import React from "react";
 import { Text, View, StyleSheet, Button, Alert } from 'react-native';
 import Constants from 'expo-constants';
 
-
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
-
-
 
 export default function MyPage(navigation) {
     const [id, setId] = React.useState(""); // 아이디

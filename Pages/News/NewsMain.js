@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from "react";
 import { Text, View , SafeAreaView, StyleSheet, TextInput , Button, Alert } from 'react-native';
 import Constants from 'expo-constants';
+
 import NewsCard from '../../Components/NewsCard';
 
 
@@ -37,3 +38,4 @@ const styles = StyleSheet.create({
   },
 
 });
+

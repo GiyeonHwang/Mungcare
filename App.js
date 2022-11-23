@@ -14,6 +14,7 @@ import FreeBoardMain from './Pages/Boards/FreeBoard/FreeBoardMain';
 import CalenderDetail from './Pages/Calender/CalenderDetail';
 import CalenderMain from './Pages/Calender/CalenderMain';
 import Main from './Pages/Main/Main';
+import MainMenu from './Pages/Main/MainMenu';
 import EndWalk from './Pages/Map/EndWalk';
 import StartWalk from './Pages/Map/StartWalk';
 import Walk from './Pages/Map/Walk';
@@ -31,6 +32,7 @@ import BottomTab from './Components/BottomTab';
 
 import DrawerNavigater from './Components/DrawerNavigater';
 
+
 import { Text, View, Button, ScrollView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -38,10 +40,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
 
-
 export default function App(){
   return(
-    <NavigationContainer>     
+    <NavigationContainer>
       <DrawerNavigater/>
     </NavigationContainer>    
   )

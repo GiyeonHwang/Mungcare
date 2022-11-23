@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
+
 import { Text, View , SafeAreaView, StyleSheet, TextInput , Button, Alert,ScrollView,TouchableOpacity  } from 'react-native';
 import Constants from 'expo-constants';
 import FreeView from '../../Components/FreeView';
-import BottomTab from '../../Components/BottomTab';
+
 
 export default function Main({navigation}){
     return(
@@ -60,14 +61,28 @@ export default function Main({navigation}){
         >
         <Text style={{fontWeight:"bold",fontSize:20}}>내정보</Text>
         <Text style={{fontWeight:"bold",fontSize:20}}>MyPage</Text>
-        </TouchableOpacity> 
+        </TouchableOpacity>
+        <TouchableOpacity style={{width:"30%",height:"100%",borderWidth:2.5,alignItems:"center",justifyContent:"center",margin:7}}
+        onPress={() => navigation.navigate('Play')}
+        >
+        <Text style={{fontWeight:"bold",fontSize:20}}>놀아주세요</Text>
+        <Text style={{fontWeight:"bold",fontSize:20}}>Play</Text>
+        </TouchableOpacity>          
+      </View>
+      <View style={{width:"100%",height:"18%",flexDirection:"row",justifyContent:"flex-start",marginBottom:5,marginLeft:5}}>
+        <TouchableOpacity style={{width:"30%",height:"100%",borderWidth:2.5,alignItems:"center",justifyContent:"center",margin:7}}
+        onPress={() => navigation.navigate('Food')}
+        >
+        <Text style={{fontWeight:"bold",fontSize:20}}>밥챙겨주기</Text>
+        <Text style={{fontWeight:"bold",fontSize:20}}>Food</Text>
+        </TouchableOpacity>
       </View>
       <View style={{width:"100%",height:"100%",marginTop:10,flexDirection:"row"}}>
       <FreeView/>
       <FreeView/>
       </View>
-      
     </View>
     )
-}
 
+    
+}

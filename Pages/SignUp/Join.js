@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from "react";
+
 import { Text, View, SafeAreaView, StyleSheet, TextInput, Button, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import Postcode from '@actbase/react-daum-postcode';
 import Modal from "react-native-modal";
@@ -50,6 +51,7 @@ export default function Join(navigation) {
 
   const regiButton = () => {
     if (okId & okPw & okPwEq & okName & okNickname & okPhone & okDetail & detailEditable == true) {
+
       return false;
     }
     return true;
@@ -69,6 +71,7 @@ export default function Join(navigation) {
 
   //패드워드 같은지
   const validateEq = eq => {
+
     if (eq === pw) { return true; }
     else { return false; }
   }
@@ -106,6 +109,7 @@ export default function Join(navigation) {
   const autoHyphen = (target) => {
     return target.replace(/[^0-9]/g, '').replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
   }
+
 
   //아이디 핸들러
   const handleIdChange = (id) => {
@@ -173,7 +177,6 @@ export default function Join(navigation) {
     );
     setOkDetail(validateDetail(detail_Address));
   }
-
 
   function register() {
 
@@ -268,6 +271,7 @@ export default function Join(navigation) {
               style={{ width: "100%", height: "80%" }}
               jsOptions={{ animation: true, hideMapBtn: true }}
               onSelected={data => { // 주소를 선택하면
+
                 //  alert(JSON.stringify(data)); // 데이터가 제이손 형태
                 console.log(JSON.stringify(data)); // 도로명 주소 콘솔로 출력
                 onChangeLocationNum(data.zonecode); // 우편번호 기입
