@@ -91,7 +91,6 @@ export default function Ranking(navigation){
     </View>
     )
 }
-
 const styles = StyleSheet.create({
   Box:{
     flex: 1,
@@ -168,5 +167,3 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   }
 })
-
-

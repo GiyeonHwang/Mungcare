@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 // import { StatusBar } from 'expo-status-bar';
 // import React from "react";
 // import { Text, View , SafeAreaView, StyleSheet, TextInput , Button, Alert } from 'react-native';
@@ -6,10 +7,12 @@ import axios from 'axios';
 
 // // import { Text, View, Button } from "react-native";
 
+
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+
 import { TouchableOpacity } from "react-native-gesture-handler";
 const Stack = createStackNavigator();
 
@@ -112,6 +115,5 @@ const styles = StyleSheet.create({
 });
 
 export default CalenderMain;
-
 
 
