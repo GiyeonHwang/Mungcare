@@ -27,7 +27,6 @@ import java.util.function.Function;
 @Log4j2
 public class BoardServiceImpl implements BoardService{
     private final BoardRepository boardRepository;
-    private final ReplyRepository replyRepository;
 
     @Override
     public Integer boardInput(BoardDTO dto) { //글 작성
