@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import {View, 
@@ -18,6 +17,7 @@ import {actions, RichEditor, RichToolbar} from "react-native-pell-rich-editor";
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FormData from 'form-data';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // 세션
 
 //사진 업로드
 import * as ImagePicker from 'expo-image-picker';
@@ -28,6 +28,20 @@ export default function Write() {
   const [bType,setbType] = useState('');
   const [bTitle,setBTitle] = useState('');
   const [bContent,setBContent] = useState('');
+
+  // 세션 아이디 값 받아오기
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('id')
+      if(value !== null) {
+          return value;
+      }
+    } catch(e) {
+        console.log("not session");
+    }
+  }
+
+
   // select 관련임
   const countries = ["자유게시판", "찾아줘게시판", "자랑게시판", "기부게시판"];
 
@@ -38,12 +52,14 @@ export default function Write() {
 
   const write = async () => {
 
+    const id = await getData();
+
     axios.post('http://192.168.2.94:5000/board/write',null,{
       params:{
         bContent : bContent,
         bTitle : bTitle,
         bType : bType,
-        id:"user"
+        id: id
       }
     })
     .then((res) => {
@@ -140,7 +156,7 @@ export default function Write() {
             <ScrollView usecontainer = {true} 
             >
                 <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}   style={{ flex: 1 }}>
-                      <RichEditor
+                      {/* <RichEditor
                         ref={richText} // from useRef()
                         onChange={richTextHandle}
                         placeholder="Write your cool content here :)"
@@ -148,16 +164,15 @@ export default function Write() {
                         style={styles.richTextEditorStyle}
                         onHeightChange={handleHeightChange}
                         initialHeight={600}
-                      />
+                      /> */}
 
-                    {/* <RichEditor  
+                    <RichEditor  
                         containerStyle={{ minHeight: height }}
                         useContainer
                         editorStyle={{backgroundColor: "Skyblue"}}
                         ref={richText}
                         onChange={ text => setBContent(text)}
-                        // onChange = {text}
-                    /> */}
+                    />
 
                     {/* 하단에 버튼 누르면 바뀌는 것들 */}
                     <RichToolbar 

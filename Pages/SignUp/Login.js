@@ -1,9 +1,6 @@
 import 'react-native-gesture-handler';
-//페이지 import
-import Join from './Join';
-import { NavigationContainer } from "@react-navigation/native";
-// import { createStackNavigator } from "react-navigation-stack";
 import { createStackNavigator } from "@react-navigation/stack";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 
@@ -22,9 +19,28 @@ const Login = ({navigation}) => {       // 화면 이동을 위해 매개변수 
     const [id, setId] = useState("");
     const [pw, setPw] = useState("");
 
-    function login(navigation) {
-      console.log(id);
-      console.log(pw);
+    const storeData = async (value) => {
+        try {
+          await AsyncStorage.setItem('id', value);
+        } catch (e) {
+          console.log(e);
+        }
+    }
+
+    const getData = async () => {
+        try {
+          const value = await AsyncStorage.getItem('id');
+          if(value !== null) {
+            console.log(value);
+          }
+        } catch(e) {
+          console.log("getData 실패");
+        }
+      }
+      
+  
+
+    function login() {
         if (id.trim() === "") {
             Alert.alert("아이디 입력 확인", "아이디가 입력되지 않았습니다.");
         } else if (pw.trim() === "") {
@@ -37,10 +53,10 @@ const Login = ({navigation}) => {       // 화면 이동을 위해 매개변수 
                   pw: pw
                 } }
             ).then((res) => {
-                console.log(res)
-                console.log(res.data);
-                if (res.data = "Success") {
-                    console.log("로그인 성공");
+                if (res.data === id) {
+                    storeData(res.data)
+                    console.log(getData());
+                    navigation.navigate("Main");
                 } else {
                     Alert.alert("로그인 실패", "아이디나 비밀번호를 확인하세요.");
                     setId("");
@@ -48,7 +64,7 @@ const Login = ({navigation}) => {       // 화면 이동을 위해 매개변수 
                 }
             }).catch(function(err) {
                 console.log(`Error Message: ${err}`);
-                console.log(err.res.data)
+                console.log(err.data)
             })
         }
     }
@@ -78,7 +94,7 @@ const Login = ({navigation}) => {       // 화면 이동을 위해 매개변수 
 
             {/* TouchableOpacity == Anchor */}
             <TouchableOpacity 
-                onPress={() => navigation.navigate("account")}
+                onPress={() => navigation.navigate("Join")}
             >
                 <Text style={styles.forgotButton}>회원가입</Text>
             </TouchableOpacity>
