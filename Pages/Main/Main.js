@@ -1,15 +1,42 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-
 import { Text, View , SafeAreaView, StyleSheet, TextInput , Button, Alert,ScrollView,TouchableOpacity  } from 'react-native';
+import { useEffect } from 'react';
+import { BackHandler } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import FreeView from '../../Components/FreeView';
+import { useRoute } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 
 
-export default function Main({navigation}){
+export default function Main({ navigation}){
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const backAction = () => {
+        Alert.alert("Hold on!", "앱을 종료하시겠습니까?", [
+          {
+            text: "취소",
+            onPress: () => null,
+          },
+          { text: "확인", onPress: () => BackHandler.exitApp() }
+        ]);
+        return true;
+      };
+  
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+      );
+  
+      return () => backHandler.remove();
+
+    }, []))
+
+        
     return(
-    
     <View style={{width:"100%",height:"100%",borderWidth:1}}>
       <View style={{width:"100%",height:"18%",flexDirection:"row",justifyContent:"center",marginBottom:5}}>
         <TouchableOpacity style={{width:"30%",height:"100%",borderWidth:2.5,alignItems:"center",justifyContent:"center",margin:7}}

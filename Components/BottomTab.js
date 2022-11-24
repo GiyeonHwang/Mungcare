@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { Text, View, BackHandler, ScrollView } from 'react-native';
+import { Text, View, BackHandler, ScrollView, Alert } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
+import { useRoute } from '@react-navigation/native';
 import Main from '../Pages/Main/Main';
 import MainBoard from '../Pages/Boards/MainBoard';
 import AffectMain from '../Pages/Boards/Affect/AffectMain';
@@ -30,6 +33,7 @@ import Write from '../Pages/Boards/Write';
 import Login from '../Pages/SignUp/Login';
 import Join from '../Pages/SignUp/Join';
 
+
 const Tab = createBottomTabNavigator();
 
 const MainStack = createStackNavigator();
@@ -41,14 +45,22 @@ const LoginStack = createStackNavigator();
 // 스크린 컴포넌트에  options={{headerLeft: () => <MenuButton navigation={navigation} />,}} 
 // 위와같이 코드를 넣으면 해당 페이지 상단에 메뉴버튼 생성됨
 
-const MainStackScreen = ({ navigation }) => {
+
+
+const MainStackScreen = ({ navigation}) => {
+
+
+
 
   return (
     <MainStack.Navigator>
-      <MainStack.Screen name="Login" component={Login}options={{
+      <MainStack.Screen name="Login" component={Login} options={{
         headerLeft: () => <MenuButton />,
-      }}/>
-      <MainStack.Screen name="Join" component={Join}/>
+      }} />
+      <MainStack.Screen name="Join" component={Join} options={{
+      }}
+
+      />
       <MainStack.Screen name="Main" component={Main} options={{
         headerLeft: () => <MenuButton />,
       }} />
@@ -106,45 +118,39 @@ const WriteStackScreen = ({ navigation }) => {
   );
 }
 
-const LoginStackScreen = ({ navigation }) => {
-  return (
-    <LoginStack.Navigator>
-      <LoginStack.Screen name="Login" component={Login}
-        options={{
-          tabBarStyle: { display: "none" },
-        }} />
-      <LoginStack.Screen name="Join" component={Join}
-        options={{
-          tabBarStyle: { display: "none" },
-        }} />
-    </LoginStack.Navigator>
-  );
-}
 
 
 
-// headerShown: false, headerBackVisible: true
+// const isLogin = {AsyncStorage.getItem()}  //어싱크 스토리지에 값이 있으면 메인, 아니면 로그인
 
-const BottomTab = () => {
+
+
+const BottomTab = (route) => {
   return (
     <Tab.Navigator>
+
       <Tab.Screen name="메인" component={MainStackScreen}
-        options={({route})=>({tabBarStyle: {display: getRoute(route)},headerShown: false, headerBackVisible: true})
-        }/>
-      <Tab.Screen name="글쓰기" component={WriteStackScreen} options={{ headerShown: false, }} />
-      <Tab.Screen name="자유게시판" component={FreeStackScreen} options={{ headerShown: false }} />
-      <Tab.Screen name="마이페이지" component={MyPageStackScreen} options={{ headerShown: false, }} />
+        options={({ route }) => ({tabBarStyle: { display: getRoute(route) }, headerShown: false, headerBackVisible: true, })
+        } />
+      <Tab.Screen name="글쓰기" component={WriteStackScreen} 
+      options={({route}) => ({headerShown: false})} />
+      <Tab.Screen name="자유게시판" component={FreeStackScreen} 
+      options={({route}) => ({headerShown: false})} />
+      <Tab.Screen name="마이페이지" component={MyPageStackScreen} 
+      options={({route}) => ({headerShown: false})}/>
     </Tab.Navigator>
   );
 };
 export default BottomTab;
 
-
-const getRoute = (route) =>{ //라우트로 페이지들을 받아와서 해당 페이지의 name이리면 실행 uselayouteffect로 렌더링 되기 이전에 한번만 실행시킴
+//하단 탭바 숨기기를 위한 함수
+const getRoute = (route) => { //라우트로 페이지들을 받아와서 해당 페이지의 name이리면 실행
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Login';
-  console.log(routeName)
-  if (routeName === 'Login' || routeName === 'Join') { //MyPage이외의 화면에 대해 tabBar none을 설정한다.
+  console.log("현재 라우트1:",routeName)
+  if (routeName === 'Login' || routeName === 'Join') { //로그인과 조인 화면에 대해 tabBar none을 설정한다.
     return "none";
   }
+  else{
   return "flex";
+  }
 };
