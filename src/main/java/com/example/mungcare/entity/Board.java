@@ -47,6 +47,13 @@ public class Board{
     @JoinColumn(name ="id")
     private Member id; //게시글 작성자
 
+    @PrePersist
+    public void prePersist() { //default 0
+        this.bViewCount = this.bViewCount == null ? 0 : this.bViewCount;
+        this.bLike = this.bLike == null ? 0 : this.bLike;
+        this.bReply = this.bReply == null ? 0 : this.bReply;
+    }
+
     public void changeTitle(String title) { //게시글 제목 수정
         this.bTitle = title;
     }

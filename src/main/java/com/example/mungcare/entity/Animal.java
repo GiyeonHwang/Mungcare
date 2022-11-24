@@ -41,15 +41,15 @@ public class Animal {
     @Column(nullable = false)
     private boolean aNeut; //중성화 여부
 
-//    public void changeBirth(Date aBirth) { //생일 수정
-//        this.aBirth = aBirth;
-//    } //생일 수정
-//
-//    public void changeBreed(String aBreed) { //종류 수정
-//        this.aBreed = aBreed;
-//    } //종류 수정
-//
-//    public void changeNeut(boolean aNeut) { //중성화 여부 수정
-//        this.aNeut = aNeut;
-//    } //중성화 여부 수정
+    public void changeBirth(Date aBirth) { //생일 수정
+        this.aBirth = aBirth;
+    } //생일 수정
+
+    public void changeBreed(String aBreed) { //종류 수정
+        this.aBreed = aBreed;
+    } //종류 수정
+
+    public void changeNeut(boolean aNeut) { //중성화 여부 수정
+        this.aNeut = aNeut;
+    } //중성화 여부 수정
 }

@@ -35,17 +35,17 @@ public class MemberServiceImpl implements MemberService{
     public String memberCheck(String id, String pw) { //로그인
         log.info("memberCheck-------------------");
         if(id == null)
-            return "Failed";
+            return null;
         Optional<Member> result = memberRepository.findById(id);
         if(!result.isPresent()) //null일 경우
-            return "Failed";
+            return null;
         log.info("result:" +result);
         log.info("db password = {}, input password = {}", result.get().getPw(), pw);
         log.info("pw Check: "+result.get().getPw().equals(pw));
         if(result.get().getPw().equals(pw)) {
-            return "Success";
+            return id;
         }
-        return "Failed";
+        return null;
     }
 
     @Override
@@ -63,14 +63,20 @@ public class MemberServiceImpl implements MemberService{
         Optional<Member> result = memberRepository.findById(dto.getId());
         if(result.isPresent()) {
             Member member = result.get();
-//            member.changePw(dto.getPw());
-            member.setPw(dto.getPw());
-            member.setName(dto.getName());
-            member.setNickname(dto.getNickname());
-            member.setPhone(dto.getPhone());
-            member.setAddress(dto.getAddress());
-            member.setDetail_Address(dto.getDetail_Address());
-            member.setLocation_Num(dto.getLocation_Num());
+            member.changePw(dto.getPw());
+            member.changeName(dto.getName());
+            member.changeNickname(dto.getNickname());
+            member.changePhone(dto.getPhone());
+            member.changeAddress(dto.getAddress());
+            member.changeDetail_Address(dto.getDetail_Address());
+            member.changeLocation_Num(dto.getLocation_Num());
+//            member.setPw(dto.getPw());
+//            member.setName(dto.getName());
+//            member.setNickname(dto.getNickname());
+//            member.setPhone(dto.getPhone());
+//            member.setAddress(dto.getAddress());
+//            member.setDetail_Address(dto.getDetail_Address());
+//            member.setLocation_Num(dto.getLocation_Num());
 
             memberRepository.save(member);
             return member;

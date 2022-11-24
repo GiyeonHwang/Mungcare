@@ -96,6 +96,13 @@ public class BoardServiceTests {
     }
 
     @Test
+    public void testDetail() {
+        Integer bNo = 13;
+        Board board = boardService.read(13);
+        System.out.println("---------------------------------------------"+board);
+    }
+
+    @Test
     public void testRemove() {
         Integer bNo = 1;
         boardService.remove(bNo);

@@ -36,9 +36,6 @@ public class BoardServiceImpl implements BoardService{
             log.info("boardInput-------------------");
             log.info(dto);
             Board board = dtoToEntity(dto);
-            board.setBViewCount(0);
-            board.setBLike(0);
-            board.setBReply(0);
             boardRepository.save(board);
             return board.getBNo();
         } catch(Exception e) {

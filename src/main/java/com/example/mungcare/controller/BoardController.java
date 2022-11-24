@@ -8,10 +8,7 @@ import com.example.mungcare.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -53,14 +50,16 @@ public class BoardController {
     }
 
     @PostMapping("/detailView") //글 상세보기
-    public Board boardDetail(Integer bNo) {
+    public Board boardDetail(@RequestParam("bNo")Integer bNo) {
         log.info("detailView...");
+        log.info("--------------"+bNo);
+
         Board detail = boardService.read(bNo);
         return detail;
     }
 
     @PostMapping("/remove") //글 삭제하기
-    public boolean boardRemove(Integer bNo) {
+    public boolean boardRemove(@RequestParam("bNo")Integer bNo) {
         log.info("remove...");
         boolean result = boardService.remove(bNo);
         return result;

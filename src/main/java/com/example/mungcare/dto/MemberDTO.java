@@ -18,4 +18,5 @@ public class MemberDTO {
     private String address; //주소
     private String detail_Address; //상세 주소
     private String location_Num; //우편번호
+    private Integer accurePoint; //총 누적 포인트
 }

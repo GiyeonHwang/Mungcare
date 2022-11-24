@@ -92,10 +92,12 @@ public class AnimalServiceImpl implements AnimalService{
         //수정 하는 항목: '제목', '내용'
         if(result.isPresent()) {
             Animal animal = result.get();
-            animal.setABirth(java.sql.Date.valueOf(dto.getABirth()));
-            animal.setABreed(dto.getABreed());
-            animal.setANeut(dto.isANeut());
-//            animal.changeContent(dto.getBContent());
+//            animal.setABirth(java.sql.Date.valueOf(dto.getABirth()));
+//            animal.setABreed(dto.getABreed());
+//            animal.setANeut(dto.isANeut());
+            animal.changeBirth(java.sql.Date.valueOf(dto.getABirth()));
+            animal.changeBreed(dto.getABreed());
+            animal.changeNeut(dto.isANeut());
 
             animalRepository.save(animal);
             return animal.getAName();
