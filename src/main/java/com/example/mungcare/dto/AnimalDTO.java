@@ -18,4 +18,5 @@ public class AnimalDTO {
     private String aBirth; //생일
     private String aBreed; //종류
     private boolean aNeut; //중성화 여부
+    private String aPhoto; //사진
 }

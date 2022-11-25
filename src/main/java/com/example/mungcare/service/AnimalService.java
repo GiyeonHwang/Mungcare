@@ -26,6 +26,7 @@ public interface AnimalService {
                 .aBirth(java.sql.Date.valueOf(dto.getABirth()))
                 .aBreed(dto.getABreed())
                 .aNeut(dto.isANeut())
+                .aPhoto(dto.getAPhoto())
                 .build();
 
         return animal;
@@ -42,6 +43,7 @@ public interface AnimalService {
                 .aBirth(to)
                 .aBreed(animal.getABreed())
                 .aNeut(animal.isANeut())
+                .aPhoto(animal.getAPhoto())
                 .build();
         return dto;
     }

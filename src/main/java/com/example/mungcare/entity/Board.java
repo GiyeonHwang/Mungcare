@@ -1,5 +1,6 @@
 package com.example.mungcare.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -45,6 +46,7 @@ public class Board{
     //Lazy loading(지연 로딩): Eager loading과 반대되는 개념.빠른 속도으 처리 가능
     @ManyToOne(fetch = FetchType.LAZY) //명시적으로 Lazy 로딩 지정
     @JoinColumn(name ="id")
+    @JsonIgnore //저장 성공한 객체를 확인시키기 위한 JSON response에서 figure를 제외하고 보낸다.
     private Member id; //게시글 작성자
 
     @PrePersist

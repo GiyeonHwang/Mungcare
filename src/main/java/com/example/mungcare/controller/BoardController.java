@@ -55,6 +55,7 @@ public class BoardController {
         log.info("--------------"+bNo);
 
         Board detail = boardService.read(bNo);
+        System.out.println("---------------------------------------------------------"+detail);
         return detail;
     }
 

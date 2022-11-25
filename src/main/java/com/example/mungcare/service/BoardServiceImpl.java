@@ -105,6 +105,7 @@ public class BoardServiceImpl implements BoardService{
         //엔티티 객체를 가져왔다면, entityToDto()를 이용해 엔티티 객체를 DTO를 변환해서 반환
         Optional<Board> result = boardRepository.findById(bNo);
         //return result.get();
+        System.out.println(result.get());
         return result.isPresent() ? result.get() : null;//isPresent(): null이 아닐 경우
     }
 
