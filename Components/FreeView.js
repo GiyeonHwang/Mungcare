@@ -1,27 +1,14 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View , ScrollView, StyleSheet, TextInput , Button, Alert,Image, TouchableOpacity } from 'react-native';
+import { Text, View , ScrollView, StyleSheet,Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-// import { Text, View, Button } from "react-native";
-
-//navigation사용할 때 필요
-
-
 
 export default function FreeView ()  {
 
     const [frData, setFrData] = React.useState([]);
     
-    // const pressHandler = () => {
-    //     // 페이지 이동. navigate = push
-    //     // 변수는 routes 파일 screens 내 키값을 사용한다
-    //     navigation.navigate('FreeBoardDetail');
-    //   }
-
-     const navigation = useNavigation();
-    
+    const navigation = useNavigation();
 
     React.useEffect(()=>{
         axios.post("http://192.168.2.94:5000/board/search", null,{
@@ -41,21 +28,19 @@ export default function FreeView ()  {
         })
       },[])
 
+      
 
     return(
         <ScrollView>
           
-        {frData && frData.map((e, check)=>{
-
-                const viewDetail = () => {
-                    navigation.navigate('FreeBoardDetail' , {
-                        bno : e.bno 
-                    });
-                }
-
+        {frData && frData.map((e)=>{
+            const onDetail = () => {
+                navigation.navigate("FreeBoardDetail" , {no : e.bno});
+            // return;
+            }
             return(
-                <>
-              <TouchableOpacity onPress={() => viewDetail()}>
+                
+              <TouchableOpacity onPress={() => onDetail()}>
                 <View style={{alignItems:"center",width:"50%",height:"60%",marginBottom:20,padding:5}}>
                   
                 <View style={{alignItems:"center", justifyContent: "center",width:"100%",borderWidth:3,borderBottomWidth:0,height:"70%",borderColor:"black"}}>
@@ -79,7 +64,7 @@ export default function FreeView ()  {
                 
             </View>
             </TouchableOpacity>
-            </>
+            
             )
             
         })}
