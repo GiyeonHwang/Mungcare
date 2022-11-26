@@ -4,13 +4,15 @@ import { createDrawerNavigator,
   DrawerItem, } from "@react-navigation/drawer";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native";
+import { Alert } from "react-native";
 
 import BottomTab from "./BottomTab";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import MyPage from "../Pages/MyPage/MyPage";
 import FreeBoardMain from "../Pages/Boards/FreeBoard/FreeBoardMain";
 import Icon from "react-native-vector-icons/Ionicons";
 import MenuButton from "./MenuButton";
-
+import Login from "../Pages/SignUp/Login";
 
 const Drawer = createDrawerNavigator();
 
@@ -45,6 +47,23 @@ const Drawer = createDrawerNavigator();
 //   );
 // };
 
+// const Logout=({navigation})=>{
+//   Alert.alert("잠깐만요!", "로그아웃 하실건가요?", [
+//     {
+//       text: "아니요",
+//       onPress: ({navigation}) => null,
+//     },
+//     { text: "예", onPress: ({navigation}) => {
+//       AsyncStorage.removeItem('id');
+//       navigation.navigate('Login')
+//     }}
+//   ]);
+// };
+
+
+
+
+
 const CustomDrawer = ({ navigation }) => {
   const goToStack = (stackName) => {
     navigation.navigate(stackName);
@@ -64,6 +83,18 @@ const CustomDrawer = ({ navigation }) => {
       <DrawerItem label="자유게시판" onPress={() => goToStack("자유게시판")} />
       <DrawerItem label="글쓰기" onPress={() => goToStack("글쓰기")} />
       <DrawerItem label="Mypage"onPress={() => goToStack("마이페이지")}/>
+      <DrawerItem label="로그아웃" onPress={() => 
+        Alert.alert("잠깐만요!", "로그아웃 하실건가요?", [
+          {
+            text: "아니요",
+            onPress: () => null,
+          },
+          { text: "예", onPress: () => {
+            AsyncStorage.clear();
+            navigation.navigate('Login');
+          }}
+        ])
+       }/>
     </DrawerContentScrollView>
   );
 };
@@ -78,6 +109,7 @@ const DrawerNavigater = () => {
       <Drawer.Screen name="BottomTab" component={BottomTab} options={{headerShown: false}}/>
       {/* <Drawer.Screen name="FreeBoardStackScreen" component={FreeBoardStackScreen} options={{headerShown: false}} />
       <Drawer.Screen name="MyPage" component={MyPageStackScreen} options={{headerShown: false}} /> */}
+      {/* <Drawer.Screen name="Login" component={Login} options={{headerShown: false}}/> */}
     </Drawer.Navigator>
   );
 };
