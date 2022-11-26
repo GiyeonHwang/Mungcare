@@ -69,6 +69,7 @@ const MainStackScreen = ({ navigation}) => {
       <MainStack.Screen name="DonateMain" component={DonateMain} />
       <MainStack.Screen name="FindMeMain" component={FindMeMain} />
       <MainStack.Screen name="FreeBoardMain" component={FreeBoardMain} />
+      <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail} />
       <MainStack.Screen name="CalenderMain" component={CalenderMain} />
       {/*-->  디테일 페이지들도 임포트하고 넣어줘야함 <--*/}
       {/*--> 함께하는 공간 자리<--*/}

@@ -1,11 +1,15 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, View, SafeAreaView, StyleSheet, TextInput, Button, Alert, Image } from 'react-native';
 import Constants from 'expo-constants';
 import Comment from '../../../Components/Comment';
 
-export default function FreeBoardDetail({ navigation }) {
+export default function FreeBoardDetail({ navigation , route}) {
+
+    React.useEffect = () => {
+        console.log(route.bno);
+    }
 
     const pressHandler = () => {
         // 뒤로 돌아가기. goBack = pop
