@@ -1,8 +1,5 @@
-import axios from 'axios';
-import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, SafeAreaView, StyleSheet, TextInput, Button, Alert, Image } from 'react-native';
-import Constants from 'expo-constants';
+import { Text, View, StyleSheet } from 'react-native';
 
 export default function Comment() {
 

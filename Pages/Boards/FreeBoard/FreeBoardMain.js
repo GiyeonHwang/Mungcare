@@ -17,15 +17,17 @@ export default function FreeBoardMain({ navigation }) {
   }
 
   return (
-    <View style={{ width: "100%", height: "100%"}}>
-      
-      <FreeView/>
-      <View>
-      <Button title="자유게시판 디테일로 이동"
-          onPress={pressHandler}
-        />
-      </View>
-    </View>
+    <SafeAreaView>
+      <ScrollView style={{ width: "100%", height: "100%"}}>
+        
+        <FreeView/>
+        <View>
+        <Button title="자유게시판 디테일로 이동"
+            onPress={pressHandler}
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
