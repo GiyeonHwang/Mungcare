@@ -5,6 +5,10 @@ import { createDrawerNavigator,
 import { createStackNavigator } from "@react-navigation/stack";
 import { TouchableOpacity } from "react-native";
 import { Alert } from "react-native";
+import { CommonActions} from '@react-navigation/native';
+import { NavigationActions } from "@react-navigation/native";
+
+
 
 import BottomTab from "./BottomTab";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -14,6 +18,8 @@ import Icon from "react-native-vector-icons/Ionicons";
 import MenuButton from "./MenuButton";
 import Login from "../Pages/SignUp/Login";
 
+
+import * as Update from 'expo-updates';
 const Drawer = createDrawerNavigator();
 
 
@@ -60,11 +66,18 @@ const Drawer = createDrawerNavigator();
 //   ]);
 // };
 
+// function Restart(){
+// Update.reloadAsync();
+// }
 
 
 
 
 const CustomDrawer = ({ navigation }) => {
+
+ 
+
+
   const goToStack = (stackName) => {
     navigation.navigate(stackName);
   };
@@ -90,8 +103,7 @@ const CustomDrawer = ({ navigation }) => {
             onPress: () => null,
           },
           { text: "예", onPress: () => {
-            AsyncStorage.clear();
-            navigation.navigate('Login');
+            AsyncStorage.clear().then(navigation.navigate('SplashScreen'));
           }}
         ])
        }/>
@@ -101,15 +113,16 @@ const CustomDrawer = ({ navigation }) => {
 
 
 const DrawerNavigater = () => {
+
+
+
+
   return (
     <Drawer.Navigator 
       drawerContent={({ navigation }) => (
       <CustomDrawer navigation={navigation} />
     )}>
       <Drawer.Screen name="BottomTab" component={BottomTab} options={{headerShown: false}}/>
-      {/* <Drawer.Screen name="FreeBoardStackScreen" component={FreeBoardStackScreen} options={{headerShown: false}} />
-      <Drawer.Screen name="MyPage" component={MyPageStackScreen} options={{headerShown: false}} /> */}
-      {/* <Drawer.Screen name="Login" component={Login} options={{headerShown: false}}/> */}
     </Drawer.Navigator>
   );
 };

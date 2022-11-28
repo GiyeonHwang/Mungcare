@@ -29,127 +29,72 @@ import Ranking from './Pages/Ranking/Ranking';
 import SkinMain from './Pages/Skin/SkinMain';
 import SkinResult from './Pages/Skin/SkinResult';
 import BottomTab from './Components/BottomTab';
-
+import SplashScreen from './Pages/SignUp/SplashScreen.js';
 import DrawerNavigater from './Components/DrawerNavigater';
 
 
-import { Text, View, Button, ScrollView} from "react-native";
+import { Text, View, Button, ScrollView } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-
-
 import { createStackNavigator } from "@react-navigation/stack";
+
 const Stack = createStackNavigator();
 const LoginStack = createStackNavigator();
 
-
-// const getData = async (route) => {
-//   try {
-//     const value = await AsyncStorage.getItem('id');
-//     if (value == null) {
-//       console.log("아이디?", value);
-//       return "Login";
-//     }
-//     else {
-//       return "Main";
-//     }
-//   } catch (e) {
-//     console.log("getData 실패");
-//   }
-// }
-
-// const [userToken, setuserToken] = useState("");
-
-
-// React.useEffect(() => {
-//   // Storage에서 토큰 가져옴, 다른 화면으로 네비게이트
-//   const bootstrapAsync = async () => {
-//     let userToken2
-//     try {
-//       userToken2 = await AsyncStorage.getItem('id')
-//       setuserToken(userToken2);
-//     } catch (e) {
-//       // 토큰 가져오기 실패 FIXME: alert해주기
-//     }
-
-//     // FIXME: 토큰 유효한지 확인해주기
-
-//     // 스크린 언마운트됨, 버려짐
-//     // dispatch({ type: 'RESTORE_TOKEN', token: userToken })
-//   }
-
-//   bootstrapAsync()
-// }, [])
-
-// const LoginStackScreen = ({ navigation }) => {
-//   return (
-//     <LoginStack.Navigator>
-//       <LoginStack.Screen name="Login" component={Login}/>
-//       <LoginStack.Screen name="Join" component={Join}/>
-//     </LoginStack.Navigator>
-//   );
-// }
+const Auth = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{headerShown: false,tabBarStyle: {display: 'none'}}}
+      />
+      <Stack.Screen
+        name="Join"
+        component={Join}
+        options={{headerShown: false,tabBarStyle: {display: 'none'}}}
+      />
+    </Stack.Navigator>
+  );
+};
 
 
-export default function App(){
-
-  const [Token, setToken] = useState(0);
-
-  React.useEffect(() => {
-    // Storage에서 토큰 가져옴, 다른 화면으로 네비게이트
-    const bootstrapAsync = async () => {
-      let userToken
-      try {
-        userToken = await AsyncStorage.getItem('id')
-        setToken(userToken);
-      } catch (e) {
-        // 토큰 가져오기 실패 FIXME: alert해주기
-      }
-  
-      // FIXME: 토큰 유효한지 확인해주기
-  
-      // 스크린 언마운트됨, 버려짐
-      // dispatch({ type: 'RESTORE_TOKEN', token: userToken })
-    }
-  
-    bootstrapAsync()
-  }, [])
-
-
-
-
-
-
-  return(
+export default function App() {
+  return (
     <NavigationContainer>
-      {/* <Stack.Navigator>
-      {userToken === null ?(
-        <Stack.Screen name="Login" component={Login} />
-      ) : (
-      <Stack.Screen name="DrawerNavigater" component={DrawerNavigater} />
-      )}
-      </Stack.Navigator> */}
+    <Stack.Navigator initialRouteName="SplashScreen">
+      {/* SplashScreen which will come once for 5 Seconds */}
+      <Stack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        // Hiding header for Splash Screen
+        options={{headerShown: false}}
+      />
+      {/* Auth Navigator: Include Login and Signup */}
+      <Stack.Screen
+        name="Auth"
+        component={Auth}
+        options={{headerShown: false}}
+      />
+      {/* Navigation Drawer as a landing page */}
+      <Stack.Screen
+        name="DrawerNavigater"
+        component={DrawerNavigater}
+        // Hiding header for Navigation Drawer
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
+  </NavigationContainer>
+);
+};
 
-      { Token ? (
-            // <Drawer.Navigator>
-            //     <Drawer.Screen name="Main" component={StackHome} />
-            //     <Drawer.Screen name="Board" component={BoardStack} />
-            //     <Drawer.Screen name="UserInfo" component={UserPage} />
-            // </Drawer.Navigator>
-            <DrawerNavigater/>
-        ) : (
-          <Stack.Navigator screenOptions={{
-            headerShown: false,
-          }}>
-            <>
-              <Stack.Screen name="Login" component={Login} />
-              <Stack.Screen name="Join" component={Join} />
-              <Stack.Screen name ="DrawerNavigater" component={DrawerNavigater}/>
-            </>
-          </Stack.Navigator>
-        )}
-    </NavigationContainer>    
-  )
-}
+
+
+
+
+
+
+
+

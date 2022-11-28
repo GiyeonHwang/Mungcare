@@ -34,7 +34,6 @@ import Write from '../Pages/Boards/Write';
 import Login from '../Pages/SignUp/Login';
 import Join from '../Pages/SignUp/Join';
 
-
 const Tab = createBottomTabNavigator();
 
 const MainStack = createStackNavigator();
@@ -105,7 +104,7 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="MyPage" component={MyPage} />
       <MainStack.Screen name="Play" component={Play} />
       <MainStack.Screen name="Food" component={Food} />
-      <MainStack.Screen name="Login" component={Login} />
+      {/* <MainStack.Screen name="Login" component={Login}  options={{headerShown: false ,tabBarStyle: {display: 'none'}}}/> */}
     </MainStack.Navigator>
   );
 }

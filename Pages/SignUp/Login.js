@@ -3,6 +3,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 
@@ -19,15 +21,13 @@ import {
 
 
 const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변수 navigation 넣어주기
-    // const isFocused = useIsFocused();
     const [id, setId] = useState("");
     const [pw, setPw] = useState("");
     const isFocused = useIsFocused();
+    const navigatePage = useNavigation();
+    const [Token, setToken] = useState(0);
 
 
-    useEffect(() => {
-
-    }, [isFocused]);
 
     const storeData = async (value) => {
         try {
@@ -51,6 +51,9 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
 
 
     function login() {
+
+
+
         if (id.trim() === "") {
             Alert.alert("아이디 입력 확인", "아이디가 입력되지 않았습니다.");
         } else if (pw.trim() === "") {
@@ -67,7 +70,7 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
             ).then((res) => {
                 if (res.data === id) {
                     storeData(res.data)
-                    navigation.navigate('Main');
+                    navigatePage.navigate('DrawerNavigater');
                     console.log(getData());
                 } else {
                     Alert.alert("로그인 실패", "아이디나 비밀번호를 확인하세요.");
@@ -82,7 +85,7 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
     }
 
     return (
-        <View style={styles.container}>
+        <View style={styles.container} >
             <View style={styles.inputView}>
                 <TextInput
                     style={styles.textInput}
