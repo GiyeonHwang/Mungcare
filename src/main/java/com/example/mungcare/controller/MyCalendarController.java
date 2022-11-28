@@ -2,6 +2,7 @@ package com.example.mungcare.controller;
 
 import com.example.mungcare.dto.AnimalDTO;
 import com.example.mungcare.dto.MyCalendarDTO;
+import com.example.mungcare.entity.MyCalendar;
 import com.example.mungcare.service.MyCalendarService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,6 +27,14 @@ public class MyCalendarController {
         Integer cNo = calendarService.calendarInput1(calendarDTO);
         System.out.println("cNo-----------"+cNo);
         return cNo;
+    }
+
+    @PostMapping("/check") //산책 중인지 체크
+    public boolean calendarCheck(MyCalendarDTO calendarDTO) {
+        log.info("check...");
+        boolean check = calendarService.calendarCheck(calendarDTO);
+        System.out.println("check-----------"+check);
+        return check;
     }
 
     @PostMapping("/end") //산책 시작

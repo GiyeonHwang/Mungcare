@@ -27,6 +27,7 @@ public class MyCalendarServiceImpl implements MyCalendarService{
             log.info("calendarInput-------------------");
             log.info(dto);
             MyCalendar calendar = dtoToEntity(dto);
+
             myCalendarRepository.save(calendar);
             return calendar.getCNo();
         } catch(Exception e) {
@@ -36,11 +37,22 @@ public class MyCalendarServiceImpl implements MyCalendarService{
     }
 
     @Override
+    public boolean calendarCheck(MyCalendarDTO dto) { //산책 중인지 체크
+        List<MyCalendar> entity = myCalendarRepository.findAll();
+        for (MyCalendar myCalendar : entity) {
+            //산책 시작되어있다. //앱을 중간에 나갔다 다시 들어올 때,
+            if(myCalendar.getCEndTime() == null && dto.getId().equals(myCalendar.getId().getId()) && dto.getCWalkDate().equals(myCalendar.getCWalkDate())) {
+                return false;
+            }
+        }
+        return true; //처음 산책 시작하면 바로 DB 저장
+    }
+
+    @Override
     public boolean calendarInput2(MyCalendarDTO dto) { //산책 종료
         List<MyCalendar> entity = myCalendarRepository.findAll();
 
         for (MyCalendar myCalendar : entity) {
-            System.out.println(myCalendar.getCEndTime());
             if(myCalendar.getCEndTime() == null && dto.getId().equals(myCalendar.getId().getId()) && dto.getCWalkDate().equals(myCalendar.getCWalkDate())) {
                 MyCalendar calendar = myCalendar;
                 calendar.changecPhoto(dto.getCPhoto());

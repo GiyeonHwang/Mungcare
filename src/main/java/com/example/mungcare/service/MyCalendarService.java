@@ -12,6 +12,7 @@ public interface MyCalendarService {
     boolean calendarInput2(MyCalendarDTO dto); //산책 종료
     List<MyCalendarDTO> allCalendar(String id); //회원에 대한 전체 일정
     List<MyCalendarDTO> dayCalendar(String id, Date cWalkDate); //회원과 날짜에 대한 일정
+    boolean calendarCheck(MyCalendarDTO dto); //산책 중인지 체크
 
     default MyCalendar dtoToEntity(MyCalendarDTO dto) {
         Member member = Member.builder().id(dto.getId()).build();

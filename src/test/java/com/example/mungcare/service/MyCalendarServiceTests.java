@@ -24,6 +24,17 @@ public class MyCalendarServiceTests {
     }
 
     @Test
+    public void testCheck() {
+        MyCalendarDTO dto = MyCalendarDTO.builder()
+                .id("user5")
+                .cStartTime(java.sql.Time.valueOf("10:25:31"))
+                .cWalkDate(java.sql.Date.valueOf("2022-11-24"))
+                .build();
+        boolean cNo = myCalendarService.calendarCheck(dto);
+        System.out.println("-------------------"+cNo);
+    }
+
+    @Test
     public void testRegister2() {
         MyCalendarDTO dto = MyCalendarDTO.builder()
                 .cNo(7)
