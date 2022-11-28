@@ -28,21 +28,28 @@ public class ReplyController {
     public List<ReplyDTO> replyList(@RequestParam("bNo")Integer bNo) {
         log.info("rList..."+bNo);
         List<ReplyDTO> result = replyService.getList(bNo);
-
+        System.out.println("--------------------"+result);
         return result;
     }
 
     @PostMapping("/remove") //특정 게시물의 댓글 삭제
-    public boolean replyRemove(@RequestParam("rNo") Integer rNo) {
+    public boolean replyRemove(@RequestParam("rNo") Integer rNo, @RequestParam("bNo") Integer bNo) {
         log.info("rRemove..."+rNo);
-        boolean result = replyService.remove(rNo);
+        boolean result = replyService.remove(rNo, bNo);
         return result;
     }
 
-    @PostMapping("/modify") //특정 게시물의 댓글 수정
-    public Reply replyModfiy(ReplyDTO replyDTO) {
+    @PostMapping("/modify") //특정 게시물의 댓글 수정 폼
+    public ReplyDTO replyModfiy(Integer rNo) {
         log.info("rModify...");
-        Reply result = replyService.modify(replyDTO);
+        ReplyDTO result = replyService.modify(rNo);
+        return result;
+    }
+
+    @PostMapping("/modifyAction") //특정 게시물의 댓글 수정 액션
+    public boolean replyModfiyAction(ReplyDTO replyDTO) {
+        log.info("rmodifyAction...");
+        boolean result = replyService.modifyAction(replyDTO);
         return result;
     }
 

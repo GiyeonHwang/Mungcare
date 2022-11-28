@@ -17,7 +17,7 @@ public interface BoardService {
     PageResultDTO<BoardDTO, Board> boardList(PageRequestDTO pageRequestDTO); //글 목록(페이징 처리O)
     PageResultDTO<BoardDTO, Board> boardCategoryList(PageRequestDTO pageRequestDTO); //글 카테고리 목록(페이징 처리O)
     //List<BoardDTO> boardList();
-    Board read(Integer bNo); //글 상세 보기
+    BoardDTO read(Integer bNo); //글 상세 보기
     boolean remove(Integer bNo); //글 삭제하기
     Integer modify(BoardDTO dto); //글 수정하기
     void updateView(Integer bNo); //조회수

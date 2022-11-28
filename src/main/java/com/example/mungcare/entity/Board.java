@@ -71,6 +71,9 @@ public class Board{
     public void updateReplyCount(Integer bReply) {
         this.bReply = bReply + 1;
     }
+    public void deleteReplyCount(Integer bReply) {
+        this.bReply = bReply - 1;
+    }
 
     public Board updateLikeCount(Integer bNo) {
         this.bLike = bLike + 1;

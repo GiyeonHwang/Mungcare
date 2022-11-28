@@ -1,6 +1,8 @@
 package com.example.mungcare.service;
 
+import com.example.mungcare.dto.AnimalDTO;
 import com.example.mungcare.dto.MyCalendarDTO;
+import com.example.mungcare.entity.Animal;
 import com.example.mungcare.entity.MyCalendar;
 import com.example.mungcare.repository.MyCalendarRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +21,7 @@ public class MyCalendarServiceImpl implements MyCalendarService{
     private final MyCalendarRepository myCalendarRepository;
 
     @Override
-    public Integer calendarInput(MyCalendarDTO dto) { //캘린더 일정 등록
+    public Integer calendarInput1(MyCalendarDTO dto) { //산책 시작
         try {
             validate(dtoToEntity(dto));
             log.info("calendarInput-------------------");
@@ -30,6 +33,23 @@ public class MyCalendarServiceImpl implements MyCalendarService{
             log.info(e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public boolean calendarInput2(MyCalendarDTO dto) { //산책 종료
+        List<MyCalendar> entity = myCalendarRepository.findAll();
+
+        for (MyCalendar myCalendar : entity) {
+            System.out.println(myCalendar.getCEndTime());
+            if(myCalendar.getCEndTime() == null && dto.getId().equals(myCalendar.getId().getId()) && dto.getCWalkDate().equals(myCalendar.getCWalkDate())) {
+                MyCalendar calendar = myCalendar;
+                calendar.changecPhoto(dto.getCPhoto());
+                calendar.changeCEndTime(dto.getCEndTime());
+                myCalendarRepository.save(calendar);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

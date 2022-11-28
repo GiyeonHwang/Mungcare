@@ -50,11 +50,11 @@ public class BoardController {
     }
 
     @PostMapping("/detailView") //글 상세보기
-    public Board boardDetail(@RequestParam("bNo")Integer bNo) {
+    public BoardDTO boardDetail(@RequestParam("bNo")Integer bNo) {
         log.info("detailView...");
         log.info("--------------"+bNo);
 
-        Board detail = boardService.read(bNo);
+        BoardDTO detail = boardService.read(bNo);
         System.out.println("---------------------------------------------------------"+detail);
         return detail;
     }

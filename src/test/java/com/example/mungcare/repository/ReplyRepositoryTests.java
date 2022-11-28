@@ -23,15 +23,15 @@ public class ReplyRepositoryTests {
 
     @Test
     public void insertReply1() {
-        Board board = Board.builder().bNo(2).build();
-        Member member = Member.builder().id("user").build();
+        Board board = Board.builder().bNo(33).build();
+        Member member = Member.builder().id("user2").build();
 
         Reply reply = Reply.builder()
-                .rContent("Reply...")
+                .rContent("Reply2...")
                 .bNo(board)
                 .id(member)
                 .build();
-        updateReply(2);
+        updateReply(33);
         replyRepository.save(reply);
     }
 

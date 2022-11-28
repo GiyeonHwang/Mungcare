@@ -8,7 +8,8 @@ import java.sql.Date;
 import java.util.List;
 
 public interface MyCalendarService {
-    Integer calendarInput(MyCalendarDTO dto); //캘린더 일정 추가
+    Integer calendarInput1(MyCalendarDTO dto); //산책 시작
+    boolean calendarInput2(MyCalendarDTO dto); //산책 종료
     List<MyCalendarDTO> allCalendar(String id); //회원에 대한 전체 일정
     List<MyCalendarDTO> dayCalendar(String id, Date cWalkDate); //회원과 날짜에 대한 일정
 

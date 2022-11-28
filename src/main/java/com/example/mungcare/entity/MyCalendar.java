@@ -26,6 +26,15 @@ public class MyCalendar {
     private Time cStartTime; //시작시간
     private Time cEndTime; //끝나는 시간
     private Date cWalkDate; //날짜
+    @Column(length = 1500)
+    private String cPhoto; //사진
 
     private Double cKm; //산책 거리
+
+    public void changeCEndTime(Time cEndTime) { //끝나는 시간 수정
+        this.cEndTime = cEndTime;
+    }
+    public void changecPhoto(String cPhoto) { //인증 사진 수정
+        this.cPhoto = cPhoto;
+    }
 }

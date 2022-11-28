@@ -20,12 +20,20 @@ import java.util.List;
 public class MyCalendarController {
     private final MyCalendarService calendarService;
 
-    @PostMapping("/register") //캘린더 등록
-    public Integer calendarRegister(MyCalendarDTO calendarDTO) {
-        log.info("register...");
-        Integer cNo = calendarService.calendarInput(calendarDTO);
+    @PostMapping("/satrt") //산책 시작
+    public Integer calendarStart(MyCalendarDTO calendarDTO) {
+        log.info("satrt...");
+        Integer cNo = calendarService.calendarInput1(calendarDTO);
         System.out.println("cNo-----------"+cNo);
         return cNo;
+    }
+
+    @PostMapping("/end") //산책 시작
+    public boolean calendarEnd(MyCalendarDTO calendarDTO) {
+        log.info("end...");
+        boolean result = calendarService.calendarInput2(calendarDTO);
+        System.out.println("cNo-----------"+result);
+        return result;
     }
 
     @PostMapping("/allList") //회원에 대한 전체 산책 현황

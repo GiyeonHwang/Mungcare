@@ -36,6 +36,7 @@ public class BoardServiceImpl implements BoardService{
             log.info(dto);
             Board board = dtoToEntity(dto);
             boardRepository.save(board);
+            System.out.println("------------------------"+board);
             return board.getBNo();
         } catch(Exception e) {
             log.info(e.getMessage());
@@ -98,15 +99,14 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    @Transactional //Lazy loading(지연 로딩)을 했기 때문
-    public Board read(Integer bNo) { //글 상세보기
+    public BoardDTO read(Integer bNo) { //글 상세보기
         updateView(bNo);
 
         //엔티티 객체를 가져왔다면, entityToDto()를 이용해 엔티티 객체를 DTO를 변환해서 반환
         Optional<Board> result = boardRepository.findById(bNo);
         //return result.get();
-        System.out.println(result.get());
-        return result.isPresent() ? result.get() : null;//isPresent(): null이 아닐 경우
+        System.out.println(entityToDTO(result.get()));
+        return result.isPresent() ? entityToDTO(result.get()) : null;//isPresent(): null이 아닐 경우
     }
 
     @Override

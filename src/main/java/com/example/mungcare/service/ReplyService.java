@@ -10,8 +10,9 @@ import java.util.List;
 public interface ReplyService {
     Integer register(ReplyDTO replyDTO); //댓글 작성
     List<ReplyDTO> getList(Integer bNo); //특정 게시물의 댓글 목록
-    Reply modify(ReplyDTO replyDTO); //댓글 수정
-    boolean remove(Integer rNo); //댓글 삭제
+    ReplyDTO modify(Integer rNo); //댓글 수정
+    boolean modifyAction(ReplyDTO replyDTO); //댓글 수정
+    boolean remove(Integer rNo, Integer bNo); //댓글 삭제
 
     //ReplyDTO를 Reply 객체로 변환 Board 객체의 처리가 수반됨.
     default Reply dtoToEntity(ReplyDTO replyDTO) {

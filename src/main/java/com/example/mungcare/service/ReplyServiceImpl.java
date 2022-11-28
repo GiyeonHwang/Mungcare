@@ -60,7 +60,7 @@ public class ReplyServiceImpl implements ReplyService{
             List<ReplyDTO> rList = new ArrayList<>();
 
             for (Reply reply : entity) {
-                if(reply.getBNo().equals(bNo)){
+                if(reply.getBNo().getBNo().equals(bNo)){
                     ReplyDTO dto = entityToDTO(reply);
                     rList.add(dto);
                 }
@@ -75,27 +75,41 @@ public class ReplyServiceImpl implements ReplyService{
     }
 
     @Override
-    public Reply modify(ReplyDTO replyDTO) { //댓글 수정
+    public ReplyDTO modify(Integer rNo) { //댓글 수정 폼
+        Optional<Reply> result = replyRepository.findById(rNo);
+        System.out.println(entityToDTO(result.get()));
+        return result.isPresent() ? entityToDTO(result.get()) : null;//isPresent(): null이 아닐 경우
+    }
+
+    @Override
+    public boolean modifyAction(ReplyDTO replyDTO) { //댓글 수정 액션
         Optional<Reply> result = replyRepository.findById(replyDTO.getRNo());
         if(result.isPresent()) {
             Reply reply = result.get();
             reply.changeContent(replyDTO.getRContent());
 
             replyRepository.save(reply);
-            return reply;
+            return true;
         }
-        return null;
+        return false;
     }
 
     @Override
-    public boolean remove(Integer rNo) { //댓글 삭제
+    public boolean remove(Integer rNo, Integer bNo) { //댓글 삭제
         try{
             replyRepository.deleteById(rNo);
+            deleteReply(bNo);
             return true;
         } catch(Exception e) {
             log.info(e.getMessage());
             return false;
         }
+    }
+
+    public void deleteReply(Integer bNo) {
+        Board board = boardRepository.findById(bNo).get();
+        board.deleteReplyCount(board.getBReply());
+        boardRepository.save(board);
     }
 
     private void validate(final Reply reply) {

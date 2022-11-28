@@ -18,5 +18,6 @@ public class MyCalendarDTO {
     private Time cStartTime; //시작시간
     private Time cEndTime; //끝나는 시간
     private Date cWalkDate; //날짜
+    private String cPhoto; //사진
     private Double cKm; //산책 거리
 }

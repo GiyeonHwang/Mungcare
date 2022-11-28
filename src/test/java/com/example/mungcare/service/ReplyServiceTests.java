@@ -26,7 +26,7 @@ public class ReplyServiceTests {
                 .rContent("Reply...2")
                 .build();
 
-        replyService.modify(dto);
+        replyService.modify(1);
         System.out.println("=============================="+dto);
     }
 }
