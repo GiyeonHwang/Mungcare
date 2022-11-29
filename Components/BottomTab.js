@@ -22,6 +22,8 @@ import WalkTogether from '../Pages/Map/WalkTogether';
 import MyPage from '../Pages/MyPage/MyPage';
 import Food from '../Pages/MyPage/Food';
 import AddAnimal from '../Pages/MyPage/AddAnimal';
+import ModifyAnimal from '../Pages/MyPage/ModifyAnimal';
+import AnimalList from '../Pages/MyPage/AnimalList';
 import AddFood from '../Pages/MyPage/AddFood';
 import Play from '../Pages/MyPage/Play';
 import NewsMain from '../Pages/News/NewsMain';
@@ -33,7 +35,9 @@ import MenuButton from "./MenuButton";
 import Write from '../Pages/Boards/Write';
 import Login from '../Pages/SignUp/Login';
 import Join from '../Pages/SignUp/Join';
-
+import MyInfo from '../Pages/MyPage/MyInfo';
+import MyPageModify from '../Pages/MyPage/MyPageModify';
+import AnimalDetail from '../Pages/MyPage/AnimalDetail';
 const Tab = createBottomTabNavigator();
 
 const MainStack = createStackNavigator();
@@ -102,7 +106,15 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="Ranking" component={Ranking} />
       <MainStack.Screen name="SkinMain" component={SkinMain} />
       <MainStack.Screen name="MyPage" component={MyPage} />
-      <MainStack.Screen name="Play" component={Play} />
+      {/* 애완동물 리스트 */}
+      <MainStack.Screen name="AnimalList" component={AnimalList}/>
+      {/* 애완동물 추가 */}
+      <MainStack.Screen name="AddAnimal" component={AddAnimal}/>
+      {/* 애완동물 수정 */}
+      <MainStack.Screen name="ModifyAnimal" component={ModifyAnimal}/>
+      {/* 놀기 */}
+      <MainStack.Screen name="Play" component={Play}/> 
+
       <MainStack.Screen name="Food" component={Food} />
       {/* <MainStack.Screen name="Login" component={Login}  options={{headerShown: false ,tabBarStyle: {display: 'none'}}}/> */}
     </MainStack.Navigator>
@@ -122,13 +134,16 @@ const FreeStackScreen = ({ navigation }) => {
   );
 }
 
+
 const MyPageStackScreen = ({ navigation }) => {
   return (
     <MyPageStack.Navigator>
       <MyPageStack.Screen name="MyPage" component={MyPage}
-        options={{
-          headerLeft: () => <MenuButton />,
-        }} />
+      options={{
+        headerLeft: () => <MenuButton/>,
+      }} />
+      <MyPageStack.Screen name="MyPageModify" component={MyPageModify} />
+      <MyPageStack.Screen name="MyInfo" component={MyInfo}/>
     </MyPageStack.Navigator>
   );
 }

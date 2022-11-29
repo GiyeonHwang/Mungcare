@@ -37,10 +37,12 @@ export default function Main({ navigation }) {
 
 
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View style={{ width: "100%", height: "100%", borderWidth: 1 }}>
-          <View style={{ width: "100%", height: "15%", flexDirection: "row", justifyContent: "center", marginBottom: 5 }}>
+ 
+   
+     
+        <View style={{ width: "100%", height: "50%", borderWidth: 1 }}>
+          
+          <View style={{ width: "100%", height: "30%", flexDirection: "row", justifyContent: "center", marginBottom: 5 }}>
             <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, alignItems: "center", justifyContent: "center", margin: 7 }}
               onPress={() => navigation.navigate('MainBoard')}
             >
@@ -58,7 +60,7 @@ export default function Main({ navigation }) {
               <Text style={{ fontWeight: "bold", fontSize: 20 }}>Map</Text>
             </TouchableOpacity>
           </View>
-          <View style={{ width: "100%", height: "15%", flexDirection: "row", justifyContent: "center", marginBottom: 5 }}>
+          <View style={{ width: "100%", height: "30%", flexDirection: "row", justifyContent: "center", marginBottom: 5 }}>
             <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, borderColor: "white", alignItems: "center", justifyContent: "center", margin: 7 }}
               onPress={() => navigation.navigate('Walk')}
             >
@@ -78,7 +80,7 @@ export default function Main({ navigation }) {
               <Text style={{ fontWeight: "bold", fontSize: 20 }}>Ranking</Text>
             </TouchableOpacity>
           </View>
-          <View style={{ width: "100%", height: "15%", flexDirection: "row", justifyContent: "center", marginBottom: 5 }}>
+          <View style={{ width: "100%", height: "30%", flexDirection: "row", justifyContent: "center", marginBottom: 5 }}>
             <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, borderColor: "white", alignItems: "center", justifyContent: "center", margin: 7 }}
               onPress={() => navigation.navigate('SkinMain')}
             >
@@ -99,10 +101,10 @@ export default function Main({ navigation }) {
             </TouchableOpacity>
           </View>
           <View style={{ width: "50%", height: "100%", marginTop: 10, flexDirection: "row" }}>
-          
           </View>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+       
+    
+    
   )
 }
