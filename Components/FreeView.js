@@ -14,7 +14,7 @@ export default function FreeView({ bno, btitle, bcontent, id }) {
   }
 
   return (
-      <View style={styles.container}>
+      <TouchableOpacity onPress={onDetail} style={styles.container}>
         <View style={styles.imageView}>
           <Image
             source={{ uri: 'https://picsum.photos/id/237/200/300' }}
@@ -33,7 +33,7 @@ export default function FreeView({ bno, btitle, bcontent, id }) {
             <Text style={styles.titleText}>{id}</Text><Text style={styles.titleText}><Text></Text></Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
   )
 };
 
