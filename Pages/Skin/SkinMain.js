@@ -19,7 +19,7 @@ export default class SkinMain extends React.Component{
     return (
       <WebView
         source={{uri: 'https://rhj7513.github.io/AITest/web/'}}
-        style={{marginTop: 20}}
+        style={{margin: 1}}
       />
     );
   }

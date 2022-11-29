@@ -8,6 +8,12 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+//처음 앱 실행했을 때 움직이는 발바닥 밑에 install 다 해줘야 돼
+//npm i --save lottie-react-native
+//npm i --save lottie-ios@3.2.3
+import LottieView from 'lottie-react-native';
+
 const SplashScreen = ({navigation}) => {
   //State for ActivityIndicator animation
   const [animating, setAnimating] = useState(true);
@@ -21,22 +27,16 @@ const SplashScreen = ({navigation}) => {
       AsyncStorage.getItem('id').then((value) =>
         navigation.replace(value === null ? 'Auth' : 'DrawerNavigater'),
       );
-    }, 3000);
+    }, 1500);
   }, []);
 
   return (
     <View style={styles.container}>
-      {/* <Image
-        source={require('../src/viva-logo-with-txt.png')}
-        style={{width: wp(55), resizeMode: 'contain', margin: 30}}
-      /> */}
-      {/* <ActivityIndicator
-        animating={animating}
-        color="#6990F7"
-        size="large"
-        style={styles.activityIndicator}
-      /> */}
-      <Text>여기에 로고 넣기</Text>
+       <LottieView 
+          source={require('../../assets/dog.json') /** 움직이는 LottieView */
+          }
+          autoPlay loop
+        />
     </View>
   );
 };
