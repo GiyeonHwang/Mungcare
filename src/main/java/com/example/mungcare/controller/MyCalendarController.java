@@ -1,8 +1,6 @@
 package com.example.mungcare.controller;
 
-import com.example.mungcare.dto.AnimalDTO;
 import com.example.mungcare.dto.MyCalendarDTO;
-import com.example.mungcare.entity.MyCalendar;
 import com.example.mungcare.service.MyCalendarService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -21,7 +19,7 @@ import java.util.List;
 public class MyCalendarController {
     private final MyCalendarService calendarService;
 
-    @PostMapping("/satrt") //산책 시작
+    @PostMapping("/satrt") //산책 시작 or 놀기 인증
     public Integer calendarStart(MyCalendarDTO calendarDTO) {
         log.info("satrt...");
         Integer cNo = calendarService.calendarInput1(calendarDTO);
@@ -45,14 +43,14 @@ public class MyCalendarController {
         return result;
     }
 
-    @PostMapping("/allList") //회원에 대한 전체 산책 현황
+    @PostMapping("/allList") //회원에 대한 전체 산책 및 놀기 현황
     public List<MyCalendarDTO> calendarAll(@RequestParam("id")String id) {
         log.info("calendarAll");
         List<MyCalendarDTO> cList = calendarService.allCalendar(id);
         return cList;
     }
 
-    @PostMapping("/dayList") //회원에 대한 전체 산책 현황
+    @PostMapping("/dayList") //회원과 날짜에 대한 산책 및 놀기 현황
     public List<MyCalendarDTO> calendarDay(@RequestParam("id")String id, @RequestParam("cWalkDate") Date cWalkDate) {
         log.info("calendarDay");
         List<MyCalendarDTO> cList = calendarService.dayCalendar(id, cWalkDate);

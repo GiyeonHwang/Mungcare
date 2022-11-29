@@ -25,11 +25,13 @@ public class MyCalendar {
 
     private Time cStartTime; //시작시간
     private Time cEndTime; //끝나는 시간
-    private Date cWalkDate; //날짜
+    @Column(nullable = false)
+    private Date cDate; //날짜
     @Column(length = 1500)
     private String cPhoto; //사진
 
     private Double cKm; //산책 거리
+    private String cType; //산책인지 놀기인지 체크하기
 
     public void changeCEndTime(Time cEndTime) { //끝나는 시간 수정
         this.cEndTime = cEndTime;

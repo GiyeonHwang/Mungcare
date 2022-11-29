@@ -1,8 +1,6 @@
 package com.example.mungcare.service;
 
-import com.example.mungcare.dto.AnimalDTO;
 import com.example.mungcare.dto.MyCalendarDTO;
-import com.example.mungcare.entity.Animal;
 import com.example.mungcare.entity.MyCalendar;
 import com.example.mungcare.repository.MyCalendarRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +18,7 @@ public class MyCalendarServiceImpl implements MyCalendarService{
     private final MyCalendarRepository myCalendarRepository;
 
     @Override
-    public Integer calendarInput1(MyCalendarDTO dto) { //산책 시작
+    public Integer calendarInput1(MyCalendarDTO dto) { //산책 시작 or 놀기 인증 완료
         try {
             validate(dtoToEntity(dto));
             log.info("calendarInput-------------------");
@@ -41,7 +38,8 @@ public class MyCalendarServiceImpl implements MyCalendarService{
         List<MyCalendar> entity = myCalendarRepository.findAll();
         for (MyCalendar myCalendar : entity) {
             //산책 시작되어있다. //앱을 중간에 나갔다 다시 들어올 때,
-            if(myCalendar.getCEndTime() == null && dto.getId().equals(myCalendar.getId().getId()) && dto.getCWalkDate().equals(myCalendar.getCWalkDate())) {
+            if(myCalendar.getCEndTime() == null && myCalendar.getCType().equals("walk")
+                    && dto.getId().equals(myCalendar.getId().getId()) && dto.getCDate().equals(myCalendar.getCDate())) {
                 return false;
             }
         }
@@ -53,7 +51,8 @@ public class MyCalendarServiceImpl implements MyCalendarService{
         List<MyCalendar> entity = myCalendarRepository.findAll();
 
         for (MyCalendar myCalendar : entity) {
-            if(myCalendar.getCEndTime() == null && dto.getId().equals(myCalendar.getId().getId()) && dto.getCWalkDate().equals(myCalendar.getCWalkDate())) {
+            if(myCalendar.getCEndTime() == null && myCalendar.getCType().equals("walk")
+                    && dto.getId().equals(myCalendar.getId().getId()) && dto.getCDate().equals(myCalendar.getCDate())) {
                 MyCalendar calendar = myCalendar;
                 calendar.changecPhoto(dto.getCPhoto());
                 calendar.changeCEndTime(dto.getCEndTime());
@@ -92,7 +91,7 @@ public class MyCalendarServiceImpl implements MyCalendarService{
             List<MyCalendarDTO> cList = new ArrayList<>();
 
             for(MyCalendar calendar : entity) {
-                if(id.equals(calendar.getId().getId()) && cWalkDate.equals(calendar.getCWalkDate())) {
+                if(id.equals(calendar.getId().getId()) && cWalkDate.equals(calendar.getCDate())) {
                     MyCalendarDTO dto = entityToDTO(calendar);
                     cList.add(dto);
                 }

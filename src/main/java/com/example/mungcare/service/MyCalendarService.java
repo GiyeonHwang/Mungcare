@@ -8,7 +8,7 @@ import java.sql.Date;
 import java.util.List;
 
 public interface MyCalendarService {
-    Integer calendarInput1(MyCalendarDTO dto); //산책 시작
+    Integer calendarInput1(MyCalendarDTO dto); //산책 시작 or 놀기 인증 완료
     boolean calendarInput2(MyCalendarDTO dto); //산책 종료
     List<MyCalendarDTO> allCalendar(String id); //회원에 대한 전체 일정
     List<MyCalendarDTO> dayCalendar(String id, Date cWalkDate); //회원과 날짜에 대한 일정
@@ -22,7 +22,8 @@ public interface MyCalendarService {
                 .cStartTime(dto.getCStartTime())
                 .cEndTime(dto.getCEndTime())
                 .cKm(dto.getCKm())
-                .cWalkDate(dto.getCWalkDate())
+                .cDate(dto.getCDate())
+                .cType(dto.getCType())
                 .id(member)
                 .build();
         return calendar;
@@ -35,7 +36,8 @@ public interface MyCalendarService {
                 .cStartTime(calendar.getCStartTime())
                 .cEndTime(calendar.getCEndTime())
                 .cKm(calendar.getCKm())
-                .cWalkDate(calendar.getCWalkDate())
+                .cDate(calendar.getCDate())
+                .cType(calendar.getCType())
                 .id(member.getId())
                 .build();
         return dto;

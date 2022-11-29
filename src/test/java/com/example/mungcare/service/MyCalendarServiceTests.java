@@ -17,7 +17,7 @@ public class MyCalendarServiceTests {
         MyCalendarDTO dto = MyCalendarDTO.builder()
                 .id("user4")
                 .cStartTime(java.sql.Time.valueOf("10:25:31"))
-                .cWalkDate(java.sql.Date.valueOf("2022-11-24"))
+                .cDate(java.sql.Date.valueOf("2022-11-24"))
                 .build();
         Integer cNo = myCalendarService.calendarInput1(dto);
         System.out.println("-------------------"+cNo);
@@ -28,7 +28,7 @@ public class MyCalendarServiceTests {
         MyCalendarDTO dto = MyCalendarDTO.builder()
                 .id("user5")
                 .cStartTime(java.sql.Time.valueOf("10:25:31"))
-                .cWalkDate(java.sql.Date.valueOf("2022-11-24"))
+                .cDate(java.sql.Date.valueOf("2022-11-24"))
                 .build();
         boolean cNo = myCalendarService.calendarCheck(dto);
         System.out.println("-------------------"+cNo);
@@ -40,7 +40,7 @@ public class MyCalendarServiceTests {
                 .cNo(7)
                 .id("user4")
                 .cEndTime(java.sql.Time.valueOf("10:50:46"))
-                .cWalkDate(java.sql.Date.valueOf("2022-11-24"))
+                .cDate(java.sql.Date.valueOf("2022-11-24"))
                 .cPhoto("hihi")
                 .build();
         boolean cNo = myCalendarService.calendarInput2(dto);

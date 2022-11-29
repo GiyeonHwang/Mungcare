@@ -17,7 +17,8 @@ public class MyCalendarDTO {
     private String id; //작성자
     private Time cStartTime; //시작시간
     private Time cEndTime; //끝나는 시간
-    private Date cWalkDate; //날짜
+    private Date cDate; //날짜
     private String cPhoto; //사진
     private Double cKm; //산책 거리
+    private String cType; //산책인지 놀기인지 체크하기
 }

@@ -26,14 +26,14 @@ public class PointController {
         return totalPoint;
     }
 
-    @PostMapping("/ranking") //포인트 랭킹
+    @PostMapping("/ranking") //하루 전날의 포인트 랭킹
     public List<PointDTO> pointRank() {
         log.info("pointRank...");
         List<PointDTO> rankResult = pointService.rankList();
         System.out.println("rankResult-----------"+rankResult);
         return rankResult;
     }
-    @PostMapping("/mypoint") //포인트 랭킹
+    @PostMapping("/mypoint") //나의 일주일 포인트 내역
     public List<PointDTO> myPoint(@RequestParam("id")String id) {
         log.info("myPoint...");
         List<PointDTO> myPointRes = pointService.myPoint(id);

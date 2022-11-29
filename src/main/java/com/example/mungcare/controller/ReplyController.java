@@ -33,7 +33,7 @@ public class ReplyController {
     }
 
     @PostMapping("/remove") //특정 게시물의 댓글 삭제
-    public boolean replyRemove(@RequestParam("rNo") Integer rNo, @RequestParam("bNo") Integer bNo) {
+    public boolean replyRemove(@RequestParam("rNo")Integer rNo, @RequestParam("bNo")Integer bNo) {
         log.info("rRemove..."+rNo);
         boolean result = replyService.remove(rNo, bNo);
         return result;
