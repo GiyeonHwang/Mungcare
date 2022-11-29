@@ -51,9 +51,6 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
 
 
     function login() {
-
-
-
         if (id.trim() === "") {
             Alert.alert("아이디 입력 확인", "아이디가 입력되지 않았습니다.");
         } else if (pw.trim() === "") {
@@ -113,7 +110,6 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
             >
                 <Text style={styles.forgotButton}>회원가입</Text>
             </TouchableOpacity>
-
             <TouchableOpacity
                 style={styles.loginBtn}
                 onPress={() => login()}

@@ -103,8 +103,5 @@ export default function Main({ navigation }) {
           <View style={{ width: "50%", height: "100%", marginTop: 10, flexDirection: "row" }}>
           </View>
         </View>
-       
-    
-    
   )
 }

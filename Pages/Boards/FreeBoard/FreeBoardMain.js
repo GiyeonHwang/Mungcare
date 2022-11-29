@@ -7,13 +7,6 @@ import FreeView from '../../../Components/FreeView';
 
 export default function FreeBoardMain({ navigation }) {
 
-
-
-
-
-
-
-
   const [frData, setFrData] = React.useState([]);
 
   React.useEffect(() => {
@@ -36,6 +29,7 @@ export default function FreeBoardMain({ navigation }) {
 
   const onDetail = () => {
     navigation.navigate("FreeBoardDetail", { no: frData.bno });
+
   }
 
 
