@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView,Dimensions  ,SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export default function FreeView({ bno, btitle, bcontent, id }) {
@@ -40,11 +40,12 @@ export default function FreeView({ bno, btitle, bcontent, id }) {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    width: 350,
-    height: 200,
+    width: Dimensions.get('window').width * 0.45,
+    height: Dimensions.get('window').height * 0.35,
     marginBottom: 20,
     marginTop:5,
-    padding: 5
+    padding: 5,
+
   },
   imageView: {
     alignItems: "center",

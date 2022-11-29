@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from "react";
-import { Text, View, ScrollView, SafeAreaView, Image, StyleSheet, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
+import { Text, View, ScrollView, SafeAreaView, Image, StyleSheet,Dimensions, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
 import FreeView from '../../../Components/FreeView';
 
 
@@ -36,13 +36,14 @@ export default function FreeBoardMain({ navigation }) {
   return (
     
     <ScrollView> 
+      <View style={{Width:Dimensions.get('window').width * 0.1, flexDirection: "row",flexWrap: "wrap",justifyContent:"center"}}>    
     {frData.map((e) =>(
       <FreeView key={e.id} {...e}/>
         )   
       )
     }
+      </View>
     </ScrollView>
-
   );
 }
 
