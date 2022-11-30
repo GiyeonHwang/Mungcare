@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect } from "react";
+import React, { useCallback,useEffect } from "react";
 import { Text, View, ScrollView, SafeAreaView, TouchableOpacity, StyleSheet, Alert,useWindowDimensions,Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import Comment from '../../../Components/Comment';
@@ -31,10 +31,118 @@ export default function FreeBoardDetail({ navigation, route }) {
             })
     }, [])
 
-    const pressHandler = () => {
-        // 뒤로 돌아가기. goBack = pop
-        navigation.goBack();
-        // navigation.pop();
+export default function FreeBoardDetail({ navigation , route }) {
+
+    const [sid,setSid] = React.useState("");
+    const [bno,setBno] = React.useState(route.params.no);
+    const [detailInfo,setDetailInfo] = React.useState({});
+    const [content,setContent] = React.useState("");
+    const contentWidth = useWindowDimensions().width;
+
+    const [replyList,setReplyList] = React.useState([]);
+    const [rContent,setRContent] = React.useState("");
+
+    const [likeCheck,setLikeCheck] = React.useState(false); // 좋아요 여부 체크
+
+        
+
+    React.useEffect(() => { 
+        const getSid = async () => {
+
+            setSid(await load());
+    
+            await axios.post("http://192.168.2.94:5000/board/detailView",null,{
+                params:{bNo : bno}
+            })
+            .then((res) => {
+                console.log(JSON.stringify(res.data, null, "\t"));
+                setDetailInfo(res.data);
+                setContent(res.data.bcontent);
+                console.log(content);
+            })
+            .catch(e => {
+                console.log("디테일 로드 실패");
+            })
+            
+        }
+        getSid();
+    },[])
+
+    React.useEffect(() => {
+        
+
+        axios.post("http://192.168.2.94:5000/reply/list",null,{
+            params:{bNo : bno}
+        })
+        .then((res) => {
+            console.log(JSON.stringify(res.data, null, "\t"));
+            setReplyList(res.data);
+        })
+        .catch(e => {
+            console.log("댓글 로드 실패");
+        })
+        
+    },[])
+
+    React.useEffect(() => {
+
+        axios.post("http://192.168.2.94:5000/like/check",null,{
+            params:{
+                id : sid,
+                bNo : bno
+            }
+        })
+        .then((res)=> {
+            console.log("좋아요 체크 : ",res.data);
+            setLikeCheck(res.data);
+        })
+        .catch((e)=>{
+            console.log("좋아요 체크 오류");
+        })
+    },[])
+
+    const sendReply = () =>
+    {
+        console.log("현재 세션 id : " , sid);
+        axios.post("http://192.168.2.94:5000/reply/write",null,{
+            params:{
+                id:sid,
+                rContent:rContent,
+                bNo:route.params.no
+            }
+        })
+        .then(function(res){
+            setRContent("");
+            console.log(res.data);
+        })
+    }
+
+    const clickLike = () => {
+        axios.post("http://192.168.2.94:5000/like/likeAction",null,{
+            params:{
+                id : sid,
+                bNo : bno
+            }
+        })
+        .then((res) => {
+            console.log("결과: ",res.data);
+            setLikeCheck(res.data);
+        })
+        .catch((e)=>{
+            console.log("좋아요액션 실패");
+        })
+    }
+
+    const load = async () => {
+        try{
+            const id = await AsyncStorage.getItem('id');
+            console.log("아이디: " ,id);
+            return id;
+        }
+        catch(e)
+        {
+            console.log("로드 에러" , e);
+        }
     }
 
     // 상세 정보 가져오기
@@ -120,19 +228,55 @@ export default function FreeBoardDetail({ navigation, route }) {
                     </View>
 
                 </View>
-            </View>
             <View>
-                <HTML source={{ html: content }} contentWidth={contentWidth} />
+                <HTML source={{html:content}} contentWidth={contentWidth}/>
             </View>
-            <View style={{ width: "100%",height: Dimensions.get('window').height * 0.05, borderTopWidth: 0.7, borderBottomWidth: 0.5, justifyContent: "center", padding: 10 }}>
-                <Text style={{ textAlignVertical: "center" }}><Text style={{ color: "red" }}>{detailInfo.breply}</Text> 댓글</Text>
+            <View style={{width:"100%",height:"8%",borderTopWidth:0.7,borderBottomWidth:0.5,justifyContent:"center",padding:10}}>
+                <Text style={{textAlignVertical:"center"}}><Text style={{color:"red"}}>{detailInfo.breply}</Text> 댓글</Text> 
+                {
+                    likeCheck 
+                    ? 
+                    <Button
+                        title = "좋아요 취소"
+                        onPress={clickLike}
+                    />
+                    : 
+                    <Button
+                        title = "좋아요"
+                        onPress={clickLike}
+                    />
+                }
             </View>
-            <Comment />
-            <Comment />
-            <Comment />
-        </ScrollView>
+            <View>  
+                <TextInput
+                    onChangeText={setRContent}
+                    value={rContent}
+                />
+                <Button
+                    title = "입력"
+                    onPress={sendReply}
+                />
+            </View>
+            {
+                replyList.map((e,index) =>{
+
+                    return (
+                        <Comment
+                        key = {index}
+                        nickname = {e.id}
+                        content = {e.rcontent}
+                        rNo = {e.rno}
+                        bNo = {e.bno}
+                    />
+                    )
+                })
+            }
+            </View>
+            </ScrollView>
+        
     )
-}
+}}
+
 
 const styles = StyleSheet.create({
     container: {

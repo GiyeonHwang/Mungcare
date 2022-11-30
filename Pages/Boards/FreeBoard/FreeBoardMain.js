@@ -29,7 +29,6 @@ export default function FreeBoardMain({ navigation }) {
 
   const onDetail = () => {
     navigation.navigate("FreeBoardDetail", { no: frData.bno });
-
   }
 
 

@@ -65,7 +65,6 @@ export default function Main({ navigation }) {
 
     }, []))
 
-
   return (
 
     <SafeAreaView>
