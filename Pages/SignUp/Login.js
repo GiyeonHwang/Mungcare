@@ -55,7 +55,6 @@ const Login = ({navigation}) => {       // 화면 이동을 위해 매개변수 
             ).then((res) => {
                 if (res.data === id) {
                     storeData(res.data)
-                    console.log(getData());
                     navigation.navigate("Main");
                 } else {
                     Alert.alert("로그인 실패", "아이디나 비밀번호를 확인하세요.");

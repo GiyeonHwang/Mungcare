@@ -105,8 +105,6 @@ export default function Main({ navigation}){
         </TouchableOpacity>
       </View>
       <View style={{width:"100%",height:"100%",marginTop:10,flexDirection:"row"}}>
-      <FreeView/>
-      <FreeView/>
       </View>
     </View>
     )
