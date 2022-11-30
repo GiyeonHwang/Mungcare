@@ -6,7 +6,8 @@ import com.example.mungcare.entity.Like;
 import com.example.mungcare.entity.Member;
 
 public interface LikeService {
-    boolean addLike(String id, Integer bNo);
+    boolean addLike(String id, Integer bNo); //좋아요 등록/삭제
+    boolean check(String id, Integer bNo); //좋아요 했는지 체크
 
     default Like dtoToEntity(LikeDTO dto) {
         Member member = Member.builder().id(dto.getId()).build();

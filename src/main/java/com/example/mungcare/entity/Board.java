@@ -75,7 +75,7 @@ public class Board{
         this.bReply = bReply - 1;
     }
 
-    public Board updateLikeCount(Integer bNo) {
+    public Board updateLikeCount(Integer bLike) {
         this.bLike = bLike + 1;
         return this;
     }
