@@ -118,4 +118,16 @@ public class BoardRepositoryTests {
             System.out.println("***board: "+board);
         }
     }
+
+    @Test
+    public void testPhoto() {
+        Board board = boardRepository.findById(58).get();
+        String str = "src=\"";
+        String text = board.getBContent();
+        System.out.println(text);
+        boolean photo = text.contains(str);
+        System.out.println(photo);
+//        System.out.println(text.split(str)[1].split("\">")[0]);
+
+    }
 }

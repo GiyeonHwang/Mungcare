@@ -104,7 +104,7 @@ public class BoardServiceTests {
 
     @Test
     public void testRemove() {
-        Integer bNo = 1;
+        Integer bNo = 34;
         boardService.remove(bNo);
     }
 

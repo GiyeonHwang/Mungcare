@@ -15,9 +15,9 @@ public class MyCalendarServiceTests {
     @Test
     public void testRegister() {
         MyCalendarDTO dto = MyCalendarDTO.builder()
-                .id("user4")
+                .id("user")
                 .cStartTime(java.sql.Time.valueOf("10:25:31"))
-                .cDate(java.sql.Date.valueOf("2022-11-24"))
+                .cDate(java.sql.Date.valueOf("2022-11-30"))
                 .build();
         Integer cNo = myCalendarService.calendarInput1(dto);
         System.out.println("-------------------"+cNo);

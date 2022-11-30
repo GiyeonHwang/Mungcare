@@ -22,4 +22,5 @@ public class BoardDTO {
     private Integer bReply; //게시글 댓글 수
     private LocalDateTime bCreateTime; //게시글 작성 시간
     private String id; //게시글 작성자 닉네임
+    private String bPhoto; //사진
 }

@@ -35,6 +35,13 @@ public class BoardServiceImpl implements BoardService{
             log.info("boardInput-------------------");
             log.info(dto);
             Board board = dtoToEntity(dto);
+            String split1 = "src=\"";
+            String split2 = "\">";
+            String text = dto.getBContent();
+            if(text.contains(split1)) {
+                String photo = text.split(split1)[1].split(split2)[0];
+                board.updatePhoto(photo);
+            }
             boardRepository.save(board);
             System.out.println("------------------------"+board);
             return board.getBNo();
@@ -116,8 +123,8 @@ public class BoardServiceImpl implements BoardService{
         boardRepository.save(board);
     }
 
-    @Transactional
     @Override
+    @Transactional
     public boolean remove(Integer bNo) { //글 삭제
         try {
 //            replyRepository.deleteByBno(bNo);
@@ -137,6 +144,11 @@ public class BoardServiceImpl implements BoardService{
             Board board = result.get();
             board.changeTitle(dto.getBTitle());
             board.changeContent(dto.getBContent());
+            String split1 = "src=\"";
+            String split2 = "\">";
+            String text = dto.getBContent();
+            String photo = text.split(split1)[1].split(split2)[0];
+            board.updatePhoto(photo);
 
             boardRepository.save(board);
             return board.getBNo();

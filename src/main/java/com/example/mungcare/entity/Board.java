@@ -35,6 +35,7 @@ public class Board{
     private Integer bLike; //게시글 좋아요수
 
     private Integer bReply; //게시글 댓글 수
+    private String bPhoto; //사진
 
     @Column(updatable = false, nullable = false)
     @CreatedDate //Entity가 생성되어 저장될 때 시간이 자동 저장된다.
@@ -58,9 +59,12 @@ public class Board{
 
     public void changeTitle(String title) { //게시글 제목 수정
         this.bTitle = title;
-    }
+    } 
     public void changeContent(String content) { //게시글 내용 수정
         this.bContent = content;
+    }
+    public void updatePhoto(String bPhoto) { //사진 업데이트
+        this.bPhoto = bPhoto;
     }
 
     public Board updateViewCount(Integer bViewCount) { //게시글 조회수 update
@@ -68,19 +72,20 @@ public class Board{
         return this;
     }
 
-    public void updateReplyCount(Integer bReply) {
+    public void updateReplyCount(Integer bReply) { //게시물 조회수 증가
         this.bReply = bReply + 1;
     }
-    public void deleteReplyCount(Integer bReply) {
+
+    public void deleteReplyCount(Integer bReply) { //게시물 조회수 감소
         this.bReply = bReply - 1;
     }
 
-    public Board updateLikeCount(Integer bLike) {
+    public Board updateLikeCount(Integer bLike) { //좋아요 수 증가
         this.bLike = bLike + 1;
         return this;
     }
 
-    public Board deleteLikeCount(Integer bLike) {
+    public Board deleteLikeCount(Integer bLike) { //좋아요 수 감소
         this.bLike = bLike - 1;
         return this;
     }
