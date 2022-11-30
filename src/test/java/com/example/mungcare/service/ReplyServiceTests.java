@@ -18,15 +18,4 @@ public class ReplyServiceTests {
 //        List<ReplyDTO> replyDTOList = replyService.getList(bNo);
 //        replyDTOList.forEach(replyDTO -> System.out.println(replyDTO));
 //    }
-
-    @Test
-    public void testModify() {
-        ReplyDTO dto = ReplyDTO.builder()
-                .rNo(1)
-                .rContent("Reply...2")
-                .build();
-
-        replyService.modify(1);
-        System.out.println("=============================="+dto);
-    }
 }

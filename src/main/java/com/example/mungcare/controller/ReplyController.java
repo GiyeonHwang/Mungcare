@@ -39,13 +39,6 @@ public class ReplyController {
         return result;
     }
 
-    @PostMapping("/modify") //특정 게시물의 댓글 수정 폼
-    public ReplyDTO replyModfiy(Integer rNo) {
-        log.info("rModify...");
-        ReplyDTO result = replyService.modify(rNo);
-        return result;
-    }
-
     @PostMapping("/modifyAction") //특정 게시물의 댓글 수정 액션
     public boolean replyModfiyAction(ReplyDTO replyDTO) {
         log.info("rmodifyAction...");

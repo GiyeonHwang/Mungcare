@@ -73,14 +73,6 @@ public class ReplyServiceImpl implements ReplyService{
         }
 
     }
-
-    @Override
-    public ReplyDTO modify(Integer rNo) { //댓글 수정 폼
-        Optional<Reply> result = replyRepository.findById(rNo);
-        System.out.println(entityToDTO(result.get()));
-        return result.isPresent() ? entityToDTO(result.get()) : null;//isPresent(): null이 아닐 경우
-    }
-
     @Override
     public boolean modifyAction(ReplyDTO replyDTO) { //댓글 수정 액션
         Optional<Reply> result = replyRepository.findById(replyDTO.getRNo());

@@ -10,7 +10,6 @@ import java.util.List;
 public interface ReplyService {
     Integer register(ReplyDTO replyDTO); //댓글 작성
     List<ReplyDTO> getList(Integer bNo); //특정 게시물의 댓글 목록
-    ReplyDTO modify(Integer rNo); //댓글 수정
     boolean modifyAction(ReplyDTO replyDTO); //댓글 수정
     boolean remove(Integer rNo, Integer bNo); //댓글 삭제
 
