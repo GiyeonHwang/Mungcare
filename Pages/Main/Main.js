@@ -70,8 +70,8 @@ export default function Main({ navigation }) {
 
     <SafeAreaView>
       <ScrollView>
-        <View style={{ width: "100%", height: "30%" }}>
-
+        <View style={{ width: "100%"}}>
+          <View style={{ width: "100%", height: "40%" }}>
           <View style={{ width: "100%", height: "30%", flexDirection: "row", justifyContent: "center", marginBottom: 5 }}>
             <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, alignItems: "center", justifyContent: "center", margin: 7 }}
               onPress={() => navigation.navigate('MainBoard')}
@@ -130,9 +130,9 @@ export default function Main({ navigation }) {
               <Text style={{ fontWeight: "bold", fontSize: 20 }}>Play</Text>
             </TouchableOpacity>
           </View>
+          </View>
 
-
-          <View style={{ Width: Dimensions.get('window').width * 1, marginTop: 15, flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
+          <View style={{ Width: Dimensions.get('window').width * 1, height: Dimensions.get('window').height * 0.75 ,marginTop: 15, flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
             {frData.map((e) => (
               <FreeView key={e.id} {...e} />
             )

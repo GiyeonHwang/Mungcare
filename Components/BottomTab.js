@@ -38,6 +38,7 @@ import Join from '../Pages/SignUp/Join';
 import MyInfo from '../Pages/MyPage/MyInfo';
 import MyPageModify from '../Pages/MyPage/MyPageModify';
 import AnimalDetail from '../Pages/MyPage/AnimalDetail';
+import FreeView from './FreeView';
 const Tab = createBottomTabNavigator();
 
 const MainStack = createStackNavigator();
@@ -114,6 +115,7 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="Play" component={Play}/> 
 
       <MainStack.Screen name="Food" component={Food} />
+      <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail} />
       {/* <MainStack.Screen name="Login" component={Login}  options={{headerShown: false ,tabBarStyle: {display: 'none'}}}/> */}
     </MainStack.Navigator>
   );
@@ -128,6 +130,7 @@ const FreeStackScreen = ({ navigation }) => {
           headerLeft: () => <MenuButton />,
         }} />
       <HomeStack.Screen name="FreeBoardDetail" component={FreeBoardDetail} />
+      <HomeStack.Screen name="FreeView" component={FreeView} />
     </HomeStack.Navigator>
   );
 }
@@ -176,8 +179,8 @@ const BottomTab = (route) => {
         } />
       <Tab.Screen name="글쓰기" component={WriteStackScreen}
         options={({ route }) => ({ headerShown: false })} />
-      <Tab.Screen name="자유게시판" component={FreeStackScreen}
-        options={({ route }) => ({ headerShown: false })} />
+      {/* <Tab.Screen name="자유게시판" component={FreeStackScreen}
+        options={({ route }) => ({ headerShown: false })} /> */}
       <Tab.Screen name="마이페이지" component={MyPageStackScreen}
         options={({ route }) => ({ headerShown: false })} />
     </Tab.Navigator>
