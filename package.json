@@ -40,7 +40,8 @@
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "~3.18.0",
     "react-native-splash-screen": "^3.3.0",
-    "react-native-webview": "^11.24.0"
+    "react-native-webview": "^11.24.0",
+    "react-useinterval": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
