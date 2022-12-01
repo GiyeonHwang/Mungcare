@@ -15,7 +15,7 @@ export default function FindMeMain({ navigation }) {
         page: 1,
         size: 10,
         type: "type",
-        keyword: "찾아주세요게시판"
+        keyword: "찾아줘게시판"
       }
     })
       .then(function (res) {

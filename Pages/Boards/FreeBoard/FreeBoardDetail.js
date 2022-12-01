@@ -28,6 +28,10 @@ export default function FreeBoardDetail({ navigation , route }) {
     const [bviewCount,setBviewCount] = React.useState("");
     const [breply,setBreply] = React.useState("");
 
+
+    const [WriterId,setWriterId] = React.useState("");
+
+  
     const getSid = async () => {
 
         setSid(await load());
@@ -132,6 +136,7 @@ export default function FreeBoardDetail({ navigation , route }) {
     const load = async () => {
         try{
             const id = await AsyncStorage.getItem('id');
+            setWriterId(id);
             console.log("아이디: " ,id);
             return id;
         }
@@ -187,6 +192,11 @@ export default function FreeBoardDetail({ navigation , route }) {
             })    
     }
 
+    //수정하기
+    const ModifyAction = () => {
+        navigation.push("ModifyBoard",{bno:bno,btitle:btitle,bcontent:content,});
+    }
+
 
 
 
@@ -194,29 +204,37 @@ export default function FreeBoardDetail({ navigation , route }) {
         <ScrollView style={styles.container}>
             <View style={{ width: "100%", height: Dimensions.get('window').height * 1, borderTopWidth: 1, borderBottomWidth: 1, padding: 10 }}>
                 <View style={{ width: "100%", height: Dimensions.get('window').height * 0.03, flexDirection: "row", justifyContent: 'space-between', marginBottom: 5 }}>
-                    <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{detailInfo.btitle}</Text>
-                    <Text style={{ color: "red", fontSize: 15, textAlignVertical: "bottom" }}> {detailInfo.blike}<Text> 좋아요</Text></Text>
+                    <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{btitle}</Text>
+                    <Text style={{ color: "red", fontSize: 15, textAlignVertical: "bottom" }}> {blike}<Text> 좋아요</Text></Text>
                 </View>
                 <View style={{ width: "100%",height: Dimensions.get('window').height * 0.05, flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
 
                     <View style={{ flexDirection: "row", width: "15%",alignItems:"center" }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{detailInfo.id}</Text>
+                        <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{id}</Text>
                         <View style={{ height: "100%", borderLeftWidth: 0.5, borderColor: "grey", alignItems: "center", marginLeft: 5, flexDirection: "row" }}>
-                            <Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>조회수{detailInfo.bviewCount}</Text>
+                            <Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>조회수{bviewCount}</Text>
                         </View>
                     </View>
 
+
+                    {id === WriterId &&
                     <View style={{ borderColor: "grey", flexDirection: "row" }}>
-                        <TouchableOpacity><Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginRight: 5 }}>글 수정</Text></TouchableOpacity>
+                        <View>
+                        <TouchableOpacity onPress={() =>
+                               
+                                            ModifyAction()
+                               
+                        }><Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginRight: 5 }}>글 수정</Text></TouchableOpacity>
+                        </View>
                         <View style={{ height: "50%", borderLeftWidth: 0.5, borderColor: "grey", alignItems: "center", marginLeft: 5, flexDirection: "row" }}>
                             <TouchableOpacity onPress={() =>
                                 Alert.alert("잠깐만요!", "정말로 삭제 하실건가요?", [
                                     {
-                                        text: "아니요",
+                                        text: "취소",
                                         onPress: () => null,
                                     },
                                     {
-                                        text: "예", onPress: () => {
+                                        text: "삭제", onPress: () => {
                                             DeleteAction();
                                         }
                                     }
@@ -224,7 +242,7 @@ export default function FreeBoardDetail({ navigation , route }) {
                             }><Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>글 삭제</Text></TouchableOpacity>
                         </View>
                     </View>
-
+                    }
                 </View>
             <View>
                 <HTML source={{html:content}} contentWidth={contentWidth}/>

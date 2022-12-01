@@ -103,7 +103,7 @@ export default function Write() {
 
     await axios({
       method : 'post',
-      url : 'http://192.168.2.94:5000/upload',
+      url : 'http://192.168.2.94:5000/board/write',
       headers:{
         'content-type' : 'multipart/form-data',
       },
@@ -177,6 +177,8 @@ export default function Write() {
                     {/* 하단에 버튼 누르면 바뀌는 것들 */}
                     <RichToolbar 
                       editor={richText}
+                      selectedIconTint="#873c1e"
+                      iconTint="#312921"
                       onPressAddImage = {uploadImage}
                       actions={[  actions.setBold
                                 , actions.setItalic

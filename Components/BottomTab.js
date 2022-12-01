@@ -40,6 +40,7 @@ import MyInfo from '../Pages/MyPage/MyInfo';
 import MyPageModify from '../Pages/MyPage/MyPageModify';
 import AnimalDetail from '../Pages/MyPage/AnimalDetail';
 import FreeView from './FreeView';
+import ModifyBoard from './ModifyBoard';
 const Tab = createBottomTabNavigator();
 
 const MainStack = createStackNavigator();
@@ -119,6 +120,7 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="Food" component={Food} />
       <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail} />
       <MainStack.Screen name="FindMeDetail" component={FindMeDetail} />
+      <MainStack.Screen name="ModifyBoard" component={ModifyBoard} />
       {/* <MainStack.Screen name="Login" component={Login}  options={{headerShown: false ,tabBarStyle: {display: 'none'}}}/> */}
     </MainStack.Navigator>
   );
