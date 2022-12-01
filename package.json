@@ -37,7 +37,8 @@
     "react-native-screens": "~3.18.0",
     "react-native-select-dropdown": "^3.0.3",
     "react-native-vector-icons": "^9.2.0",
-    "react-native-webview": "^11.24.0"
+    "react-native-webview": "^11.24.0",
+    "react-useinterval": "^1.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

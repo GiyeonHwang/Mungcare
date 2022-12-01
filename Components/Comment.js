@@ -1,20 +1,24 @@
 import axios from "axios";
-import React, { Component, useCallback } from "react";
+import React, { Component, forwardRef, useCallback, useState } from "react";
 import { Text, View, StyleSheet , Button ,TextInput} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Comment({ nickname , content , rNo , bNo}) {
+
+export default function Comment({ nickname , content , rNo , bNo , reply}) {
     
+    
+
     const [rContent,setRContent] = React.useState("");
     const [okModify,setOkModify] = React.useState(false); // 댓글 수정 
     const [modifyContent,setModifyContent] = React.useState("");
     const [sid,setSid] = React.useState("");
 
+    const getSid = async () => {
+        setSid(await load());
+    }
+
     React.useEffect(() => {
-        const getSid = async () => {
-            setSid(await load());
-            setRContent(content);
-        }
+        setRContent(content);
         getSid();
     })
 
@@ -42,7 +46,7 @@ export default function Comment({ nickname , content , rNo , bNo}) {
             console.log("모디파이 액션 결과: ",res.data);
             setModifyContent(modifyContent);
             setOkModify(false);
-            forceUpdate;
+            reply();
         })
     }
 
@@ -67,7 +71,8 @@ export default function Comment({ nickname , content , rNo , bNo}) {
             <View style={styles.comment}>
                 <Text style={styles.nickname}>{nickname}</Text>
                 {
-                    sid == nickname && !okModify
+                    //닉네임 일치 및 모디파이 버튼을 누르지 않으면 
+                    sid == nickname && !okModify 
                     ?
                     <View>
                         <Text>{rContent}</Text>
@@ -76,6 +81,7 @@ export default function Comment({ nickname , content , rNo , bNo}) {
                     </View>
                     :
                     (
+                    //닉네임 일치 및 모디파이 버튼을 누름
                     sid == nickname && okModify
                     ?
                     <View>
@@ -87,7 +93,8 @@ export default function Comment({ nickname , content , rNo , bNo}) {
                         <Button onPress={() => {setOkModify(false); setModifyContent("")}} title="취소" />
                     </View>
                     :
-                    <Text>{content}</Text>
+                    // 닉네임 불일치
+                    <Text>{rContent}</Text>
                     )
                 }
             </View>

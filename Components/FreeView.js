@@ -126,7 +126,7 @@ const FreeView = (items) => {
   const navigation = useNavigation();
 
   const clickCard = () => {
-    navigation.navigate("FreeBoardDetail",{no:39});
+    navigation.navigate("FreeBoardDetail",{no:61});
   }
 
     return(
