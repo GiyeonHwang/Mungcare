@@ -156,7 +156,7 @@ export default function AddAnimal({ navigation }) {
 
         await axios({
             method: 'post',
-            url: 'http://192.168.2.77:5000/upload',
+            url: 'http://192.168.2.94:5000/upload',
             headers: {
                 'content-type': 'multipart/form-data',
             },

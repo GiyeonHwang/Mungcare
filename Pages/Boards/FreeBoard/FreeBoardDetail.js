@@ -1,35 +1,12 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback,useEffect } from "react";
-import { Text, View, ScrollView, SafeAreaView, TouchableOpacity, StyleSheet, Alert,useWindowDimensions,Dimensions } from 'react-native';
+import { Text, View, ScrollView, SafeAreaView,Button ,TouchableOpacity,TextInput ,StyleSheet, Alert,useWindowDimensions,Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import Comment from '../../../Components/Comment';
 import HTML from 'react-native-render-html';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function FreeBoardDetail({ navigation, route }) {
-
-    const [bno, setBno] = React.useState(route.params.no);
-    const [detailInfo, setDetailInfo] = React.useState({});
-    const [content, setContent] = React.useState("");
-    const contentWidth = useWindowDimensions().width;
-    const [userToken, setuserToken] = React.useState("");
-
-
-
-    React.useEffect(() => {
-        console.log(bno);
-
-        axios.post("http://192.168.2.94:5000/board/detailView", null, {
-            params: { bNo: bno }
-        })
-            .then(function (res) {
-                console.log(JSON.stringify(res.data, null, "\t"));
-                setDetailInfo(res.data);
-                setContent(res.data.bcontent);
-                console.log(content);
-            })
-    }, [])
 
 export default function FreeBoardDetail({ navigation , route }) {
 
@@ -181,12 +158,14 @@ export default function FreeBoardDetail({ navigation , route }) {
             .then(function (res) {
                 // console.log("나는 Deleteres: ", res);
                 // console.log("Deleteresres.data: ", res.data);
+                if(res){
+                    Alert.alert("삭제완료");
+                    navigation.navigate("Main"); 
+                }
             })
             .catch(function (error) {
                 console.log("삭제 실패: ", error);
-            })
-            Alert.alert("삭제완료");
-            navigation.navigate("Main");
+            })    
     }
 
 
@@ -194,14 +173,14 @@ export default function FreeBoardDetail({ navigation , route }) {
 
     return (
         <ScrollView style={styles.container}>
-            <View style={{ width: "100%", height: Dimensions.get('window').height * 0.1, borderTopWidth: 1, borderBottomWidth: 1, padding: 10 }}>
-                <View style={{ width: "100%", height: "40%", flexDirection: "row", justifyContent: 'space-between', marginBottom: 5 }}>
+            <View style={{ width: "100%", height: Dimensions.get('window').height * 1, borderTopWidth: 1, borderBottomWidth: 1, padding: 10 }}>
+                <View style={{ width: "100%", height: Dimensions.get('window').height * 0.03, flexDirection: "row", justifyContent: 'space-between', marginBottom: 5 }}>
                     <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{detailInfo.btitle}</Text>
                     <Text style={{ color: "red", fontSize: 15, textAlignVertical: "bottom" }}> {detailInfo.blike}<Text> 좋아요</Text></Text>
                 </View>
-                <View style={{ width: "100%", height: "60%", flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+                <View style={{ width: "100%",height: Dimensions.get('window').height * 0.05, flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
 
-                    <View style={{ flexDirection: "row", width: "15%" }}>
+                    <View style={{ flexDirection: "row", width: "15%",alignItems:"center" }}>
                         <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{detailInfo.id}</Text>
                         <View style={{ height: "100%", borderLeftWidth: 0.5, borderColor: "grey", alignItems: "center", marginLeft: 5, flexDirection: "row" }}>
                             <Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>조회수{detailInfo.bviewCount}</Text>
@@ -275,7 +254,7 @@ export default function FreeBoardDetail({ navigation , route }) {
             </ScrollView>
         
     )
-}}
+}
 
 
 const styles = StyleSheet.create({

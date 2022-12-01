@@ -1,9 +1,9 @@
 
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView,Dimensions  ,SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, Dimensions, Button, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export default function FreeView({ bno, btitle, bcontent, id }) {
+export default function FreeView({ bno, btitle, bcontent, id, bphoto }) {
 
   // const [cardInfo,setCardInfo] = useState(props.items);
 
@@ -13,28 +13,34 @@ export default function FreeView({ bno, btitle, bcontent, id }) {
   const onDetail = () => {
     navigation.navigate("FreeBoardDetail", { no: bno });
   }
+  console.log("서버에서 온 phto", bphoto);
 
   return (
-      <TouchableOpacity onPress={onDetail} style={styles.container}>
-        <View style={styles.imageView}>
-          <Image
-            source={{ uri: 'https://picsum.photos/id/237/200/300' }}
-            style={styles.image}
-          />
+
+    <TouchableOpacity onPress={onDetail} style={styles.container}>
+
+      <View style={styles.imageView}>
+        <Image
+          source={{ uri: bphoto }}
+          style={styles.image}
+        />
+      </View>
+
+      <View style={styles.contentBox}>
+        <View style={styles.title}>
+          <Text style={styles.titleText}>{btitle}</Text>
+          <Text style={styles.titleText}> 댓글수</Text>
         </View>
-        <View style={styles.contentBox}>
-          <View style={styles.title}>
-            <Text style={styles.titleText}>{btitle}</Text>
-            <Text style={styles.titleText}> 댓글수</Text>
-          </View>
-          <View style={styles.content}>
-            <Text style={{ fontWeight: "bold" }}>내용부분</Text>
-          </View>
-          <View style={styles.bottomContent}>
-            <Text style={styles.titleText}>{id}</Text><Text style={styles.titleText}><Text></Text></Text>
-          </View>
+
+        <View style={styles.content}>
+          <Text style={{ fontWeight: "bold" }}>{bcontent}</Text>
         </View>
-      </TouchableOpacity>
+        <View style={styles.bottomContent}>
+          <Text style={styles.titleText}>{id}</Text><Text style={styles.titleText}><Text></Text></Text>
+        </View>
+      </View>
+    </TouchableOpacity>
+
   )
 };
 
@@ -43,10 +49,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: Dimensions.get('window').width * 0.45,
     height: Dimensions.get('window').height * 0.35,
-    marginBottom: 20,
-    marginTop:5,
+    marginTop: 20,
     padding: 5,
-
+    position: "relative",
   },
   imageView: {
     alignItems: "center",
@@ -54,7 +59,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderWidth: 3,
     borderBottomWidth: 0,
-    height: "70%",
+    height: "80%",
     borderColor: "black"
   },
   image: {
@@ -64,7 +69,7 @@ const styles = StyleSheet.create({
   contentBox: {
     alignItems: "center",
     width: "100%",
-    height: "40%",
+    // height: "40%",
     borderWidth: 2,
     borderTopWidth: 0,
     borderColor: "black",
@@ -76,8 +81,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: "center",
     width: "100%",
-    height: "30%",
-    backgroundColor: "#F1E7DD"
+    // height: "30%",
+    backgroundColor: "#F1E7DD",
+
   },
   titleText: {
     fontWeight: "bold",
@@ -85,16 +91,19 @@ const styles = StyleSheet.create({
   },
   content: {
     width: "100%",
-    height: "50%",
-    backgroundColor: "#F1E7DD"
+    // height: "50%",
+    backgroundColor: "#F1E7DD",
+
   },
   bottomContent: {
     flexDirection: "row",
     justifyContent: 'space-between',
     alignItems: "center",
     width: "100%",
-    height: "20%",
-    backgroundColor: "#F1E7DD"
+    height: Dimensions.get('window').height * 0.02,
+    backgroundColor: "#F1E7DD",
+
+
   },
 
 });

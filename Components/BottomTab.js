@@ -13,6 +13,7 @@ import MainBoard from '../Pages/Boards/MainBoard';
 import AffectMain from '../Pages/Boards/Affect/AffectMain';
 import DonateMain from '../Pages/Boards/Donate/DonateMain';
 import FindMeMain from '../Pages/Boards/FindMe/FindMeMain';
+import FindMeDetail from '../Pages/Boards/FindMe/FindMeDetail';
 import FreeBoardMain from '../Pages/Boards/FreeBoard/FreeBoardMain';
 import FreeBoardDetail from '../Pages/Boards/FreeBoard/FreeBoardDetail';
 import CalenderMain from '../Pages/Calender/CalenderMain';
@@ -99,6 +100,7 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="DonateMain" component={DonateMain} />
       <MainStack.Screen name="FindMeMain" component={FindMeMain} />
       <MainStack.Screen name="CalenderMain" component={CalenderMain} />
+      <MainStack.Screen name="FreeBoardMain" component={FreeBoardMain} />
       {/*-->  디테일 페이지들도 임포트하고 넣어줘야함 <--*/}
       {/*--> 함께하는 공간 자리<--*/}
       <MainStack.Screen name="Walk" component={Walk} />
@@ -116,6 +118,7 @@ const MainStackScreen = ({ navigation }) => {
 
       <MainStack.Screen name="Food" component={Food} />
       <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail} />
+      <MainStack.Screen name="FindMeDetail" component={FindMeDetail} />
       {/* <MainStack.Screen name="Login" component={Login}  options={{headerShown: false ,tabBarStyle: {display: 'none'}}}/> */}
     </MainStack.Navigator>
   );

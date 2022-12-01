@@ -180,7 +180,7 @@ export default function Join(navigation) {
 
   function register() {
 
-    axios.post("http://192.168.2.77:5000/member/register", null, {
+    axios.post("http://192.168.2.94:5000/member/register", null, {
       params: {
         id: id,
         pw: pw,

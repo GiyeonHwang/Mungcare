@@ -79,7 +79,7 @@ export default function Walk({navigation}) {
     const date = new Date();
     const day = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
     //산책 중인지 아닌지 확인
-    axios.post("http://192.168.2.94:5000/calendar/scheck", null, {
+    axios.post("http://172.30.1.7:5000/calendar/scheck", null, {
       params: {
         id: "user", //로그인한 사용자
         cWalkDate : day,
@@ -176,7 +176,7 @@ export default function Walk({navigation}) {
 
     await axios({
       method: 'post',
-      url: 'http://192.168.2.77:5000/upload',
+      url: 'http://172.30.1.7:5000/upload',
       headers: {
         'content-type': 'multipart/form-data',
       },

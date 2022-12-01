@@ -93,7 +93,7 @@ const CustomDrawer = ({ navigation }) => {
           borderColor: "#ccc",
         }}
       />
-      <DrawerItem label="자유게시판" onPress={() => goToStack("자유게시판")} />
+      <DrawerItem label="자유게시판" onPress={() => goToStack("FreeBoardMain")} />
       <DrawerItem label="글쓰기" onPress={() => goToStack("글쓰기")} />
       <DrawerItem label="Mypage"onPress={() => goToStack("마이페이지")}/>
       <DrawerItem label="로그아웃" onPress={() => 
