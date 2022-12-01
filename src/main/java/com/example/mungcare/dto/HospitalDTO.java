@@ -13,6 +13,6 @@ public class HospitalDTO {
     private Integer hNo; //병원 정보 번호
     private String hName; //병원 이름
     private String address; //병원 주소
-    private String latitude; //위도
-    private String longitude; //경도
+    private Double latitude; //위도
+    private Double longitude; //경도
 }

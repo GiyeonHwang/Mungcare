@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface HospitalService {
     List<HospitalDTO> hospitalList(); //병원 전체 목록
+    List<HospitalDTO> hospitalRadius(Double latitude, Double longitude); //내 위치에 가까운 병원 목록
 
     default HospitalDTO entityToDTO(Hospital hospital) {
         HospitalDTO dto = HospitalDTO.builder()

@@ -6,20 +6,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
-import java.util.ArrayList;
+import java.sql.Time;
 import java.util.List;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class PointDTO {
-    private String id; //회원 아이디
-    private Date pointDate; //포인트 쌓인 요일
-    private Integer walkPoint; //산책 포인트
-    private Integer playPoint; //놀기 포인트
-    private Integer totalPoint; //해당 날짜의 총 포인트
+public class WalkDTO {
+    private String id; //사용자
+    private Double latitude; //사용자 위도
+    private Double longitude; //사용자 경도
+    private Time wTime; //공지사항 - 모일 날짜
     private List<Animal> animalList; //사용자의 반려동물 정보 목록
-
 }

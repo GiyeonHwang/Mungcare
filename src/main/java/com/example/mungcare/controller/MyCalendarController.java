@@ -19,7 +19,7 @@ import java.util.List;
 public class MyCalendarController {
     private final MyCalendarService calendarService;
 
-    @PostMapping("/satrt") //산책 시작 or 놀기 인증
+    @PostMapping("/start") //산책 시작 or 놀기 인증
     public Integer calendarStart(MyCalendarDTO calendarDTO) {
         log.info("satrt...");
         Integer cNo = calendarService.calendarInput1(calendarDTO);
@@ -35,7 +35,7 @@ public class MyCalendarController {
         return check;
     }
 
-    @PostMapping("/end") //산책 시작
+    @PostMapping("/end") //산책 종료
     public boolean calendarEnd(MyCalendarDTO calendarDTO) {
         log.info("end...");
         boolean result = calendarService.calendarInput2(calendarDTO);

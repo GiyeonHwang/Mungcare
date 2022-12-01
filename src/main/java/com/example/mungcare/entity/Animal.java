@@ -2,10 +2,7 @@ package com.example.mungcare.entity;
 
 import com.example.mungcare.repository.AnimalId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -18,6 +15,7 @@ import java.sql.Date;
 @AllArgsConstructor //필드 값을 다 넣은 생성자x
 @NoArgsConstructor //기본 생성자
 @Table(name = "animal")
+@ToString(exclude = "id")
 @IdClass(AnimalId.class) //복합키
 public class Animal {
     @Id
@@ -45,6 +43,7 @@ public class Animal {
 
     @Column(length = 1500)
     private String aPhoto; //사진
+
 
     public void changeBirth(Date aBirth) { //생일 수정
         this.aBirth = aBirth;

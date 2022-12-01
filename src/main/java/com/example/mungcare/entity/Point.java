@@ -2,10 +2,7 @@ package com.example.mungcare.entity;
 
 import com.example.mungcare.repository.PointId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -18,12 +15,13 @@ import java.sql.Date;
 @AllArgsConstructor //필드 값을 다 넣은 생성자x
 @NoArgsConstructor //기본 생성자
 @Table(name = "point")
+@ToString(exclude = "id")
 @IdClass(PointId.class) //복합키
 public class Point {
     @Id
     @ManyToOne(fetch = FetchType.LAZY) //명시적으로 Lazy 로딩 지정
     @OnDelete(action = OnDeleteAction.CASCADE) //회원 삭제되면 해당 포인트들도 삭제
-    @JoinColumn(name ="id")
+    @JoinColumn(name = "id")
     @JsonIgnore //저장 성공한 객체를 확인시키기 위한 JSON response에서 figure를 제외하고 보낸다.
     private Member id;
 
@@ -42,7 +40,7 @@ public class Point {
     }
 
     public void calcWalk(Integer walkPointRe, Integer walkPoint) { //산책 포인트 누적
-        this.walkPoint = walkPointRe+walkPoint;
+        this.walkPoint = walkPointRe + walkPoint;
     }
 
     public void calcPlay(Integer playPointRe, Integer playPoint) { //놀기 포인트 누적

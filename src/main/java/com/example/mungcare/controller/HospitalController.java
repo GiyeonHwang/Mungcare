@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -21,6 +22,14 @@ public class HospitalController {
     public List<HospitalDTO> hospitalInfo() {
         log.info("list...");
         List<HospitalDTO> hList = hospitalService.hospitalList();
+        return hList;
+    }
+
+    @PostMapping("/surrounnding") //내 위치 기준(반경 2km) 주변 병원 가져오기
+    public List<HospitalDTO> hospitalRadius(@RequestParam("latitude")Double latitude, @RequestParam("longitude")Double longitude) {
+        log.info("surrounnding...");
+        List<HospitalDTO> hList = hospitalService.hospitalRadius(latitude, longitude);
+        System.out.println("result---------------------------"+hList);
         return hList;
     }
 }

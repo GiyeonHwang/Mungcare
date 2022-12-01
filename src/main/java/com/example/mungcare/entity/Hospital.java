@@ -22,8 +22,8 @@ public class Hospital {
     private String address; //병원 주소
     
     @Column(length = 45)
-    private String latitude; //위도
+    private Double latitude; //위도
     
     @Column(length = 45)
-    private String longitude; //경도
+    private Double longitude; //경도
 }

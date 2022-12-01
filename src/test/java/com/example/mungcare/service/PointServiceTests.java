@@ -5,6 +5,7 @@ import com.example.mungcare.dto.PointDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,6 +34,7 @@ public class PointServiceTests {
     }
 
     @Test
+    @Transactional
     public void testRank() {
         List<PointDTO> result = pointService.rankList();
         System.out.println("==========================================================result: "+result);

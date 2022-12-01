@@ -59,6 +59,7 @@ public class PointServiceImpl implements PointService{
     }
 
     @Override
+    @Transactional
     public List<PointDTO> rankList() { //랭킹 목록
         try {
             log.info("rankList-------------------");
@@ -71,7 +72,7 @@ public class PointServiceImpl implements PointService{
             Calendar cal = new GregorianCalendar(Locale.KOREA);
             cal.add(Calendar.DATE,-1);
             String yesterday = format.format(cal.getTime()); //하루 전
-
+            System.out.println("Yesterday..."+yesterday);
             for(Point point : entity) {
                 if(yesterday.equals(format.format(point.getPointDate()))) { //하루 전날의 totalpoint를 가져와서, 랭킹을 나타낸다.
                     PointDTO dto = entityToDTO(point);
