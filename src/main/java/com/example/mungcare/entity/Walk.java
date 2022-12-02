@@ -38,4 +38,8 @@ public class Walk {
     public void changeLon(Double longitude) { //사용자 경도 수정
         this.longitude = longitude;
     }
+
+//    public void changeWTime(Time wTime) { //공지사항에 올릴 만나는 시간
+//        this.wTime = wTime;
+//    }
 }

@@ -66,6 +66,9 @@ public class Board{
     public void updatePhoto(String bPhoto) { //사진 업데이트
         this.bPhoto = bPhoto;
     }
+    public void updateBType(String bType) { //게시글 카테고리 변경
+        this.bType = bType;
+    }
 
     public Board updateViewCount(Integer bViewCount) { //게시글 조회수 update
         this.bViewCount = bViewCount + 1;

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -41,4 +42,11 @@ public class WalkController {
         System.out.println("wList: "+wList);
         return wList;
     }
+
+//    @PostMapping("/notice") //같이 산책하기 공지 올리기
+//    public boolean walktogether(@RequestBody HashMap<String, Object> walkTogether) {
+//
+//        System.out.println(walkTogether);
+//        return true;
+//    }
 }

@@ -15,4 +15,5 @@ public class HospitalDTO {
     private String address; //병원 주소
     private Double latitude; //위도
     private Double longitude; //경도
+    private String tell; //전화번호
 }

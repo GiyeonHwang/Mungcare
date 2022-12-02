@@ -1,6 +1,7 @@
 package com.example.mungcare.service;
 
 import com.example.mungcare.dto.MyCalendarDTO;
+import com.example.mungcare.dto.PointDTO;
 import com.example.mungcare.entity.MyCalendar;
 import com.example.mungcare.repository.MyCalendarRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @Log4j2
 public class MyCalendarServiceImpl implements MyCalendarService{
     private final MyCalendarRepository myCalendarRepository;
+//    private final PointService pointService;
 
     @Override
     public Integer calendarInput1(MyCalendarDTO dto) { //산책 시작 or 놀기 인증 완료
@@ -24,6 +26,11 @@ public class MyCalendarServiceImpl implements MyCalendarService{
             log.info("calendarInput-------------------");
             log.info(dto);
             MyCalendar calendar = dtoToEntity(dto);
+
+//            if(calendar.getCType().equals("play")) {
+//                PointDTO pointDTO = new PointDTO(dto.getId(), dto.getCDate(), 0, 5);
+//                pointService.pointInput(pointDTO);
+//            }
 
             myCalendarRepository.save(calendar);
             return calendar.getCNo();
@@ -57,6 +64,9 @@ public class MyCalendarServiceImpl implements MyCalendarService{
                 calendar.changecPhoto(dto.getCPhoto());
                 calendar.changeCEndTime(dto.getCEndTime());
                 myCalendarRepository.save(calendar);
+
+//                PointDTO pointDTO = new PointDTO(dto.getId(), dto.getCDate(), 0, 5);
+//                pointService.pointInput(pointDTO);
                 return true;
             }
         }

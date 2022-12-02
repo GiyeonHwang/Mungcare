@@ -147,9 +147,11 @@ public class BoardServiceImpl implements BoardService{
             String split1 = "src=\"";
             String split2 = "\">";
             String text = dto.getBContent();
-            String photo = text.split(split1)[1].split(split2)[0];
-            board.updatePhoto(photo);
-
+            if(text.contains(split1)) {
+                String photo = text.split(split1)[1].split(split2)[0];
+                board.updatePhoto(photo);
+            }
+            board.updateBType(dto.getBType());
             boardRepository.save(board);
             return board.getBNo();
         }

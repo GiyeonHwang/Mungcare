@@ -26,4 +26,7 @@ public class Hospital {
     
     @Column(length = 45)
     private Double longitude; //경도
+
+    @Column(length = 100)
+    private String tell; //전화번호
 }

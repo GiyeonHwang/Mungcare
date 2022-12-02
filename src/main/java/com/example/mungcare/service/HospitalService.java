@@ -16,6 +16,7 @@ public interface HospitalService {
                 .address(hospital.getAddress())
                 .latitude(hospital.getLatitude())
                 .longitude(hospital.getLongitude())
+                .tell(hospital.getTell())
                 .build();
         return dto;
     }
