@@ -31,6 +31,12 @@ public class Walk {
 
     private Time wTime; //공지사항 - 모일 날짜
 
+    @Column(length = 1000)
+    private String wContent; //공지사항 - 모임 장소
+
+    @Column(length = 2000)
+    private String walkTogether; //공지사항 보낼 사람들
+
     public void changeLat(Double latitude) { //사용자 위도 수정
         this.latitude = latitude;
     }
@@ -39,7 +45,15 @@ public class Walk {
         this.longitude = longitude;
     }
 
-//    public void changeWTime(Time wTime) { //공지사항에 올릴 만나는 시간
-//        this.wTime = wTime;
-//    }
+    public void changeWTime(Time wTime) { //공지사항에 올릴 만나는 시간 수정
+        this.wTime = wTime;
+    }
+    
+    public void changeWContent(String wContent) { //공지사항에 올릴 만나는 장소 수정
+        this.wContent = wContent;
+    }
+    
+    public void changeWalkTogether(String walkTogether) { //공지사항 보낼 사람들
+        this.walkTogether = walkTogether;
+    }
 }

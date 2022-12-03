@@ -44,9 +44,11 @@ public class WalkController {
     }
 
 //    @PostMapping("/notice") //같이 산책하기 공지 올리기
-//    public boolean walktogether(@RequestBody HashMap<String, Object> walkTogether) {
-//
-//        System.out.println(walkTogether);
-//        return true;
+//    public boolean walktogether(WalkDTO walkDTO) {
+//        log.info("notice...");
+//        //walktogether: [user, user1, user2]
+//         boolean result = walkService.walkNotice(walkDTO);
+//        System.out.println(result);
+//        return result;
 //    }
 }

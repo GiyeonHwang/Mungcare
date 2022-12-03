@@ -69,6 +69,25 @@ public class WalkServiceImpl implements WalkService{
         }
         return wList.isEmpty() ? null : wList;
     }
+
+//    public boolean walkNotice(WalkDTO dto) { //공지사항 보낼 사람 목록 및 내용
+//        try {
+//            List<Walk> entity = walkRepository.findAll();
+//            for(Walk walk : entity) {
+//                if(dto.getId().equals(walk.getId().getId())) {
+//                    walk.changeWTime(dto.getWTime());
+//                    walk.changeWContent(dto.getWContent());
+//                    walk.changeWalkTogether(dto.getWalkTogether());
+//                    walkRepository.save(walk);
+//                }
+//            }
+//            return true;
+//        } catch(Exception e) {
+//            log.info(e.getMessage());
+//            return false;
+//        }
+//    }
+
     private void validate(final Walk walk) {
         if(walk == null) {
             log.warn("Entity cannot be null.");

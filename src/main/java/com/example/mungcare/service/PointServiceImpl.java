@@ -96,10 +96,10 @@ public class PointServiceImpl implements PointService{
             
             Calendar cal = new GregorianCalendar(Locale.KOREA);
             cal.add(Calendar.DATE,-7); //일주일 전
-
             for(Point point : entity) {
                 //cal.getTime()은 point.getPointDate()보다 이전이다.
-                //id가 같고, 일주일 전까지의 내역만 보여주기
+                //id가 같고, 일주일 전부터 현재까지의 포인트 내역만 보여주기
+                //=> cal.getTime() 하루 뒤부터 현재 날짜까지의 포인트 내역
                 if (id.equals(point.getId().getId()) && cal.getTime().before(point.getPointDate())) {
                     PointDTO dto = entityToDTO(point);
                     pList.add(dto);

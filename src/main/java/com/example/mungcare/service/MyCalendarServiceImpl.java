@@ -9,6 +9,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +19,7 @@ import java.util.List;
 @Log4j2
 public class MyCalendarServiceImpl implements MyCalendarService{
     private final MyCalendarRepository myCalendarRepository;
-//    private final PointService pointService;
+    private final PointService pointService;
 
     @Override
     public Integer calendarInput1(MyCalendarDTO dto) { //산책 시작 or 놀기 인증 완료
@@ -27,10 +29,15 @@ public class MyCalendarServiceImpl implements MyCalendarService{
             log.info(dto);
             MyCalendar calendar = dtoToEntity(dto);
 
-//            if(calendar.getCType().equals("play")) {
-//                PointDTO pointDTO = new PointDTO(dto.getId(), dto.getCDate(), 0, 5);
-//                pointService.pointInput(pointDTO);
-//            }
+            if(calendar.getCType().equals("play")) { //놀기일 경우, 포인트 등록
+                PointDTO pointDTO = PointDTO.builder()
+                        .id(dto.getId())
+                        .pointDate(dto.getCDate())
+                        .walkPoint(0)
+                        .playPoint(5)
+                        .build();
+                pointService.pointInput(pointDTO);
+            }
 
             myCalendarRepository.save(calendar);
             return calendar.getCNo();
@@ -42,35 +49,56 @@ public class MyCalendarServiceImpl implements MyCalendarService{
 
     @Override
     public boolean calendarCheck(MyCalendarDTO dto) { //산책 중인지 체크
-        List<MyCalendar> entity = myCalendarRepository.findAll();
-        for (MyCalendar myCalendar : entity) {
-            //산책 시작되어있다. //앱을 중간에 나갔다 다시 들어올 때,
-            if(myCalendar.getCEndTime() == null && myCalendar.getCType().equals("walk")
-                    && dto.getId().equals(myCalendar.getId().getId()) && dto.getCDate().equals(myCalendar.getCDate())) {
-                return false;
+        try {
+            List<MyCalendar> entity = myCalendarRepository.findAll();
+            for (MyCalendar myCalendar : entity) {
+                //산책 시작되어있다. //앱을 중간에 나갔다 다시 들어올 때,
+                if(myCalendar.getCEndTime() == null && myCalendar.getCType().equals("walk")
+                        && dto.getId().equals(myCalendar.getId().getId()) && dto.getCDate().equals(myCalendar.getCDate())) {
+                    return false;
+                }
             }
+            return true; //처음 산책 시작하면 바로 DB 저장
+        } catch(Exception e) {
+            log.info(e.getMessage());
+            return false;
         }
-        return true; //처음 산책 시작하면 바로 DB 저장
+
     }
 
     @Override
     public boolean calendarInput2(MyCalendarDTO dto) { //산책 종료
-        List<MyCalendar> entity = myCalendarRepository.findAll();
+        try {
+            List<MyCalendar> entity = myCalendarRepository.findAll();
+            System.out.println(dto);
+            for (MyCalendar myCalendar : entity) {
+                if(myCalendar.getCEndTime() == null && myCalendar.getCType().equals("walk")
+                        && dto.getId().equals(myCalendar.getId().getId()) && dto.getCDate().equals(myCalendar.getCDate())) {
+                    myCalendar.changecPhoto(dto.getCPhoto());
+                    myCalendar.changeCEndTime(dto.getCEndTime());
+                    System.out.println("myCalendar: "+myCalendar);
+                    myCalendarRepository.save(myCalendar);
 
-        for (MyCalendar myCalendar : entity) {
-            if(myCalendar.getCEndTime() == null && myCalendar.getCType().equals("walk")
-                    && dto.getId().equals(myCalendar.getId().getId()) && dto.getCDate().equals(myCalendar.getCDate())) {
-                MyCalendar calendar = myCalendar;
-                calendar.changecPhoto(dto.getCPhoto());
-                calendar.changeCEndTime(dto.getCEndTime());
-                myCalendarRepository.save(calendar);
+                    //시간에 따른 포인트 계산
+                    Integer walkPointResult = walkPointResult(myCalendar.getCStartTime().toLocalTime(), myCalendar.getCEndTime().toLocalTime());
+                    System.out.println("walkPointResult: " + walkPointResult);
 
-//                PointDTO pointDTO = new PointDTO(dto.getId(), dto.getCDate(), 0, 5);
-//                pointService.pointInput(pointDTO);
-                return true;
+                    //산책 시간에 따른 포인트 등록
+                    PointDTO pointDTO = PointDTO.builder()
+                            .id(dto.getId())
+                            .pointDate(dto.getCDate())
+                            .walkPoint(walkPointResult)
+                            .playPoint(0)
+                            .build();
+                    pointService.pointInput(pointDTO);
+                    return true;
+                }
             }
+            return false;
+        } catch(Exception e) {
+            log.info(e.getMessage());
+            return false;
         }
-        return false;
     }
 
     @Override
@@ -118,5 +146,23 @@ public class MyCalendarServiceImpl implements MyCalendarService{
             log.warn("Entity cannot be null.");
             throw new RuntimeException("Entity cannot be null.");
         }
+    }
+
+    private Integer walkPointResult(LocalTime cStartTime, LocalTime cEndTime) { //산책 시간에 따른 포인트 부여
+        //시간 차이 계산
+        Duration duration = Duration.between(cStartTime, cEndTime);
+        Long walkTime = duration.getSeconds()/60; //초로 받아 분으로 출력하기
+        System.out.println("walkTime: "+walkTime);
+
+        if(walkTime <= 0) //0분 이하
+            return 0;
+        else if(walkTime <= 10) //1분 이상 10분 이하
+            return 10;
+        else if(walkTime <= 20) //11분 이상 20분 이하
+            return 20;
+        else if(walkTime <= 29) //21분 이상 29분 이하
+            return 30;
+        else //30분 이상: 30point + 20point
+            return 50;
     }
 }
