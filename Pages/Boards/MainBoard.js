@@ -25,6 +25,7 @@ import FormData from 'form-data';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // 세션
 import FreeBoardMain from './FreeBoard/FreeBoardMain';
 import FindMeMain from './FindMe/FindMeMain';
+import AffectMain from './Affect/AffectMain';
 
 
 
@@ -61,6 +62,9 @@ export default function MainBoard({ navigation }) {
           else if(selectedItem == '찾아줘게시판'){
           setSwitchBoard('FindMeMain');
           }
+          else if(selectedItem == '자랑게시판'){
+            setSwitchBoard('AffectMain');
+            }
           // setbType(selectedItem);
         }}
         defaultValue={boards[0]}

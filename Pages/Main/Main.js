@@ -35,24 +35,7 @@ export default function Main({ navigation }) {
         console.log("게시판 전체 데이터 가져오기 실패: ", error)
       })
   }
-
-
   React.useEffect(() => {
-    // axios.post("http://192.168.2.94:5000/board/search", null, {
-    //   params: {
-    //     page: 1,
-    //     size: 10,
-    //     type: "type",
-    //     keyword: "자유게시판"
-    //   }
-    // })
-    //   .then(function (res) {
-    //     setFrData(res.data.dtoList);
-    //     console.log("리스폰스데이터:", res.data.dtoList[0].bno);
-    //   })
-    //   .catch(function (error) {
-    //     console.log("게시판 전체 데이터 가져오기 실패: ", error)
-    //   })
     selectList();
   }, [isFocused])
 
@@ -86,11 +69,10 @@ export default function Main({ navigation }) {
     }, []))
 
   return (
-
     <SafeAreaView>
       <ScrollView>
         <View style={{ width: "100%" }}>
-          <View style={{ width: "100%", height: "40%" }}>
+          <View style={{ width: "100%", height: Dimensions.get('window').height * 0.4, }}>
             <View style={{ width: "100%", height: "30%", flexDirection: "row", justifyContent: "center", marginBottom: 5 }}>
               <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, alignItems: "center", justifyContent: "center", margin: 7 }}
                 onPress={() => navigation.navigate('MainBoard')}
@@ -150,9 +132,7 @@ export default function Main({ navigation }) {
               </TouchableOpacity>
             </View>
           </View>
-
-
-          <View style={{ padding: 10, flex: 1 }}>
+          <View style={{ padding: 10, marginTop: 20, flex: 1 }}>
             <View style={[
               { marginLeft: Dimensions.get('window').width * 0.025, },
               { flexDirection: "row" },

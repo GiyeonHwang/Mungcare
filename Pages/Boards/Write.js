@@ -25,9 +25,9 @@ import * as ImagePicker from 'expo-image-picker';
 export default function Write() {
 
   //bType
-  const [bType,setbType] = useState('');
-  const [bTitle,setBTitle] = useState('');
-  const [bContent,setBContent] = useState('');
+  const [bType,setbType] = React.useState('자유게시판');
+  const [bTitle,setBTitle] = React.useState('');
+  const [bContent,setBContent] = React.useState('');
 
   // 세션 아이디 값 받아오기
   const getData = async () => {
@@ -103,7 +103,7 @@ export default function Write() {
 
     await axios({
       method : 'post',
-      url : 'http://192.168.2.94:5000/board/write',
+      url : 'http://192.168.2.77:5000/upload',
       headers:{
         'content-type' : 'multipart/form-data',
       },

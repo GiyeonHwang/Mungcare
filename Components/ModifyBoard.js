@@ -13,7 +13,8 @@ import {
     ImageStore,
     height,
     richTextHandle, Dimensions,
-    Button
+    Button,
+    TouchableOpacity
 } from 'react-native';
 import { actions, RichEditor, RichToolbar } from "react-native-pell-rich-editor";
 import SelectDropdown from 'react-native-select-dropdown';
@@ -24,28 +25,48 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // 세션
 //사진 업로드
 import * as ImagePicker from 'expo-image-picker';
 
-export default function ModifyBoard({route}) {
+export default function ModifyBoard({navigation,route}) {
     //셀렉트 목록
     const boards = ["자유게시판", "찾아줘게시판", "자랑게시판", "기부게시판"]
     //에디터 관련
     const richText = React.useRef();
-    const [descHTML, setDescHTML] = useState("");
-    const [showDescError, setShowDescError] = useState(false);
+    const [descHTML, setDescHTML] = React.useState("");
+    const [showDescError, setShowDescError] = React.useState(false);
     const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
 
     //서버에 전송할 변수
-    const [bNo,setbNo] = useState('');
-    const [bType,setbType] = useState('자유게시판');
-    const [bTitle,setBTitle] = useState('');
-    const [bContent,setBContent] = useState('');
+    const [bNo,setbNo] = React.useState('');
+    const [bType,setbType] = React.useState('자유게시판');
+    const [bTitle,setBTitle] = React.useState('');
+    const [bContent,setBContent] = React.useState('');
     
 
     //이전 디테일 페이지에서 보낸 라우트 변수들을 넣어서 텍스트에디터에 띄워줌
     React.useEffect(() => { 
         setbNo(route.params.bno);
         setBTitle(route.params.btitle);
-        setBContent(route.params.bContent);
+        setBContent(route.params.bcontent);
     },[])
+
+    React.useEffect(() => { 
+        navigation.setOptions({
+            headerRight: () => (
+              <Button title="글 수정" color='black'onPress={() =>
+                Alert.alert("잠깐만요!", "수정하실껀가요?", [
+                    {
+                        text: "취소",
+                        onPress: () => null,
+                    },
+                    {
+                        text: "수정", onPress: () => {
+                            ModifyAction();
+                        }
+                    }
+                ])
+            }  />
+            ),
+          });
+    },[navigation])
 
     const uploadImage = async () => { //이미지 셀렉터
         if (!status.granted) { // status로 권한이 있는지 확인
@@ -72,7 +93,7 @@ export default function ModifyBoard({route}) {
 
         await axios({
             method: 'post',
-            url: 'http://192.168.2.94:5000/board/modify',
+            url: 'http://192.168.2.77:5000/upload',
             headers: {
                 'content-type': 'multipart/form-data',
             },
@@ -83,7 +104,31 @@ export default function ModifyBoard({route}) {
             })
     }
 
-    
+
+    const ModifyAction=()=>{ //수정한 내용 서버로 전송
+        axios.post('http://192.168.2.94:5000/board/modify',null,{
+            params:{
+              bContent : bContent,
+              bTitle : bTitle,
+              bNo : bNo,
+              bType:bType
+            }
+          })
+          .then((res) => {
+              console.log("수정서버에서 온 데이터:",res.data);
+              if(res){
+                Alert.alert("수정완료");
+                navigation.navigate("Main"); 
+            }
+          })
+    }
+
+
+    console.log("제목 내용:",bTitle)
+    console.log("수정 게시글번호 :",bNo)
+    console.log("작성중 내용 :",bContent)
+    console.log("이전페이지 제목 :",route.params.btitle)
+    console.log("이전페이지 내용 :",route.params.bcontent)
     return (
         <ScrollView boxStyles={{ borderRadius: 0 }}>
             <SelectDropdown

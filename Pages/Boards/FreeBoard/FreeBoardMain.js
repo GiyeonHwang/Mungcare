@@ -41,7 +41,7 @@ export default function FreeBoardMain({ navigation }) {
       )
     }
     </View> */}
-      <View style={{ padding: 10, flex: 1 }}>
+      <View style={{ padding: 10 }}>
         <View style={[
           { marginLeft: Dimensions.get('window').width * 0.025, },
           { flexDirection: "row" },

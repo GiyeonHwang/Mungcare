@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, BackHandler, ScrollView, Alert } from 'react-native';
+import { Text, View, BackHandler, ScrollView, Alert,Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -120,7 +120,7 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="Food" component={Food} />
       <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail} />
       <MainStack.Screen name="FindMeDetail" component={FindMeDetail} />
-      <MainStack.Screen name="ModifyBoard" component={ModifyBoard} />
+      <MainStack.Screen name="ModifyBoard" component={ModifyBoard} options={{}}/>
       {/* <MainStack.Screen name="Login" component={Login}  options={{headerShown: false ,tabBarStyle: {display: 'none'}}}/> */}
     </MainStack.Navigator>
   );
