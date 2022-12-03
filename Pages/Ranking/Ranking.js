@@ -36,7 +36,6 @@ export default function Ranking(navigation){
               <Text >이름</Text>
             </View>
       </View>
-        
         <View style={{flexDirection: 'column', justifyContent: 'center',  width:"40%", height:"60%",}}>
           <View style={{alignItems: 'center',}}>
             <Image source={ require('../../assets/images/king.png')} style={styles.kingimg} />

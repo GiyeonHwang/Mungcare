@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback,useEffect } from "react";
-import { Text, View, ScrollView, SafeAreaView,Button ,TouchableOpacity,TextInput ,StyleSheet, Alert,useWindowDimensions,Dimensions } from 'react-native';
+import { Text, View, Image,ScrollView, SafeAreaView,Button ,TouchableOpacity,TextInput ,StyleSheet, Alert,useWindowDimensions,Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import Comment from '../../../Components/Comment';
 import HTML from 'react-native-render-html';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import Heart from './assets/images/heart.png';
+// import Beanheart from './assets/images/beanheart.png';
 
 
 export default function FreeBoardDetail({ navigation , route }) {
@@ -204,15 +206,25 @@ export default function FreeBoardDetail({ navigation , route }) {
         <ScrollView style={styles.container}>
             <View style={{ width: "100%", height: Dimensions.get('window').height * 1, borderTopWidth: 1, borderBottomWidth: 1, padding: 10 }}>
                 <View style={{ width: "100%", height: Dimensions.get('window').height * 0.03, flexDirection: "row", justifyContent: 'space-between', marginBottom: 5 }}>
-                    <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{btitle}</Text>
-                    <Text style={{ color: "red", fontSize: 15, textAlignVertical: "bottom" }}> {blike}<Text> 좋아요</Text></Text>
+                    <Text style={{ maxWidth:"50%",fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{btitle}</Text>
+                    <View style={{flexDirection: "row", alignItems:"center"}}>
+                    <Text style={{ color: "red", fontSize: 15, textAlignVertical: "bottom" }}> {blike} </Text>                
+                    {
+                    likeCheck 
+                    ? 
+                    <TouchableOpacity onPress={clickLike}><Image  source={ require('../../../assets/beanheart.jpeg')} style={{height:20,width:20}}/></TouchableOpacity>  
+                    : 
+                    <TouchableOpacity onPress={clickLike}><Image  source={ require('../../../assets/heart.jpeg')} style={{height:20,width:20}}/></TouchableOpacity>                      
+                    }
+                    </View>
                 </View>
                 <View style={{ width: "100%",height: Dimensions.get('window').height * 0.05, flexDirection: "row", alignItems: "center", justifyContent: "space-between"}}>
 
                     <View style={{ flexDirection: "row", width: "15%",alignItems:"center" }}>
                         <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{id}</Text>
                         <View style={{ height: "100%", borderLeftWidth: 0.5, borderColor: "grey", alignItems: "center", marginLeft: 5, flexDirection: "row" }}>
-                            <Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>조회수{bviewCount}</Text>
+                            <Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>조회수 </Text>
+                            <Text style={{fontSize:12,color:"gray"}}>{bviewCount}</Text>
                         </View>
                     </View>
 
@@ -247,31 +259,32 @@ export default function FreeBoardDetail({ navigation , route }) {
             <View>
                 <HTML source={{html:content}} contentWidth={contentWidth}/>
             </View>
-            <View style={{width:"100%",height:"8%",borderTopWidth:0.7,borderBottomWidth:0.5,justifyContent:"center",padding:10}}>
-                <Text style={{textAlignVertical:"center"}}><Text style={{color:"red"}}>{breply}</Text> 댓글</Text> 
-                {
+            <View style={{width:"100%",height:"5%",borderTopWidth:0.7,borderBottomWidth:0.5,justifyContent:"center",padding:10}}>
+                <Text style={{textAlignVertical:"center", color:"gray"}}><Text style={{color:"red"}}>{breply}</Text> 댓글</Text> 
+                {/* {
                     likeCheck 
                     ? 
-                    <Button
-                        title = "좋아요 취소"
-                        onPress={clickLike}
-                    />
+                    <TouchableOpacity onPress={clickLike}><Text>좋아요 취소</Text></TouchableOpacity>  
                     : 
-                    <Button
-                        title = "좋아요"
-                        onPress={clickLike}
-                    />
-                }
+                    <TouchableOpacity onPress={clickLike}><Text>좋아요</Text></TouchableOpacity>                      
+                } */}
             </View>
-            <View>  
+            <View style={{width:"100%",backgroundColor:"#EBE3D7",flexDirection:"row"}}>
+                <View style={{width:"80%",borderWidth:1}}>
                 <TextInput
                     onChangeText={setRContent}
+                    placeholder="댓글쓰기"
                     value={rContent}
+                    
                 />
-                <Button
-                    title = "입력"
+                </View> 
+                <View style={{justifyContent:"center"}}>
+                <TouchableOpacity
                     onPress={sendReply}
-                />
+                >
+                <Text>입력</Text>
+                </TouchableOpacity>
+                </View> 
             </View>
             {
                 replyList.map((e,index) =>{
