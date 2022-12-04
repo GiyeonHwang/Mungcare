@@ -118,7 +118,7 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="Play" component={Play}/> 
 
       <MainStack.Screen name="Food" component={Food} />
-      <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail} />
+      <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail}/>
       <MainStack.Screen name="FindMeDetail" component={FindMeDetail} />
       <MainStack.Screen name="ModifyBoard" component={ModifyBoard} options={{}}/>
       {/* <MainStack.Screen name="Login" component={Login}  options={{headerShown: false ,tabBarStyle: {display: 'none'}}}/> */}
@@ -127,18 +127,18 @@ const MainStackScreen = ({ navigation }) => {
 }
 
 
-const FreeStackScreen = ({ navigation }) => {
-  return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen name="FreeBoardMain" component={FreeBoardMain}
-        options={{
-          headerLeft: () => <MenuButton />,
-        }} />
-      <HomeStack.Screen name="FreeBoardDetail" component={FreeBoardDetail} />
-      <HomeStack.Screen name="FreeView" component={FreeView} />
-    </HomeStack.Navigator>
-  );
-}
+// const FreeStackScreen = ({ navigation }) => {
+//   return (
+//     <HomeStack.Navigator>
+//       <HomeStack.Screen name="FreeBoardMain" component={FreeBoardMain}
+//         options={{
+//           headerLeft: () => <MenuButton />,
+//         }} />
+//       <HomeStack.Screen name="FreeBoardDetail" component={FreeBoardDetail} />
+//       <HomeStack.Screen name="FreeView" component={FreeView} />
+//     </HomeStack.Navigator>
+//   );
+// }
 
 
 const MyPageStackScreen = ({ navigation }) => {
