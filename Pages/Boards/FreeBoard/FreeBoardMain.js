@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React from "react";
-import { Text, View, ScrollView, SafeAreaView, Image, StyleSheet, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
+import { Text, View, ScrollView, SafeAreaView, Image, StyleSheet, Dimensions, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
 import FreeView from '../../../Components/FreeView';
-
 
 
 export default function FreeBoardMain({ navigation }) {
@@ -20,7 +19,7 @@ export default function FreeBoardMain({ navigation }) {
     })
       .then(function (res) {
         setFrData(res.data.dtoList);
-        console.log("리스폰스데이터:", res.data.dtoList[0].bno);
+        console.log("리스폰스데이터:", res.data);
       })
       .catch(function (error) {
         console.log("게시판 전체 데이터 가져오기 실패: ", error)
@@ -33,15 +32,33 @@ export default function FreeBoardMain({ navigation }) {
 
 
   return (
-    
-    // <ScrollView> 
-    // {frData.map((e) =>(
-    //   <FreeView key={e.id} {...e}/>
-    //     )   
-    //   )
-    // }
-    // </ScrollView>
-    <FreeView/>
+
+    <ScrollView>
+      {/* <View style={{Width:Dimensions.get('window').width * 0.1,flexWrap: "wrap",flexDirection: "row",alignContent:"space-around"}}>    
+    {frData.map((e) =>(
+      <FreeView key={e.id} {...e}/>
+        )   
+      )
+    }
+    </View> */}
+      <View style={{ padding: 10 }}>
+        <View style={[
+          { marginLeft: Dimensions.get('window').width * 0.025, },
+          { flexDirection: "row" },
+          { flexWrap: "wrap" },
+          { alignContent: "space-around" },
+        ]}>
+          {frData.map((e) => (
+            <FreeView key={e.id} {...e} />
+          )
+          )
+          }
+        </View>
+      </View>
+
+    </ScrollView>
+
+
   );
 }
 

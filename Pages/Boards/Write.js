@@ -25,7 +25,7 @@ import * as ImagePicker from 'expo-image-picker';
 export default function Write() {
 
   //bType
-  const [bType,setbType] = React.useState('');
+  const [bType,setbType] = React.useState('자유게시판');
   const [bTitle,setBTitle] = React.useState('');
   const [bContent,setBContent] = React.useState('');
 
@@ -177,6 +177,8 @@ export default function Write() {
                     {/* 하단에 버튼 누르면 바뀌는 것들 */}
                     <RichToolbar 
                       editor={richText}
+                      selectedIconTint="#873c1e"
+                      iconTint="#312921"
                       onPressAddImage = {uploadImage}
                       actions={[  actions.setBold
                                 , actions.setItalic

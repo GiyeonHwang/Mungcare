@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from "react";
 import { Text, View, StyleSheet, Button, Alert } from 'react-native';
 import Checkbox from 'expo-checkbox';
-//npm install expo-checkbox
+//npm install expo-checkboxdfdfdd
 
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
@@ -19,7 +19,7 @@ export default function AnimalDetail({ navigation: { navigate } }) {
 
 
     React.useEffect(() => {
-
+        
 
         //포인트 내역 확인하기
         /*
