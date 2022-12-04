@@ -18,12 +18,14 @@ import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FormData from 'form-data';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // 세션
+import ServerPort from '../../Components/ServerPort';
 
 //사진 업로드
 import * as ImagePicker from 'expo-image-picker';
 
 export default function Write() {
 
+  const IP = ServerPort();
   //bType
   const [bType,setbType] = React.useState('자유게시판');
   const [bTitle,setBTitle] = React.useState('');
@@ -54,7 +56,7 @@ export default function Write() {
 
     const id = await getData();
 
-    axios.post('http://192.168.2.94:5000/board/write',null,{
+    axios.post(`${IP}/board/write`,null,{
       params:{
         bContent : bContent,
         bTitle : bTitle,
@@ -103,7 +105,7 @@ export default function Write() {
 
     await axios({
       method : 'post',
-      url : 'http://192.168.2.77:5000/upload',
+      url : `${IP}/upload`,
       headers:{
         'content-type' : 'multipart/form-data',
       },

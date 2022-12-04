@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { Component, forwardRef, useCallback, useState } from "react";
 import { Text, View, StyleSheet , Button ,TextInput,Dimensions,TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import ServerPort from "./ServerPort";
 
 export default function Comment({ nickname , content , rNo , bNo , reply}) {
     
@@ -12,7 +12,8 @@ export default function Comment({ nickname , content , rNo , bNo , reply}) {
     const [okModify,setOkModify] = React.useState(false); // 댓글 수정 
     const [modifyContent,setModifyContent] = React.useState("");
     const [sid,setSid] = React.useState("");
-
+    const IP = ServerPort();
+    
     const getSid = async () => {
         setSid(await load());
     }
@@ -36,7 +37,7 @@ export default function Comment({ nickname , content , rNo , bNo , reply}) {
     function modifyReplyAction()
     {
         console.log("rNo" , rNo , "rContent" , modifyContent);
-        axios.post("http://192.168.2.94:5000/reply/modifyAction",null,{
+        axios.post(`${IP}/reply/modifyAction`,null,{
             params:{
                 rNo: rNo,
                 rContent : modifyContent
@@ -53,7 +54,7 @@ export default function Comment({ nickname , content , rNo , bNo , reply}) {
     function deleteReply()
     {
         console.log(typeof(rNo));
-        axios.post("http://192.168.2.94:5000/reply/remove",null,{
+        axios.post(`${IP}/reply/remove`,null,{
             params:
             {
                 rNo: rNo,

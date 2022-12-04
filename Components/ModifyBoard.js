@@ -21,6 +21,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FormData from 'form-data';
 import AsyncStorage from '@react-native-async-storage/async-storage'; // 세션
+import ServerPort from './ServerPort';
 
 //사진 업로드
 import * as ImagePicker from 'expo-image-picker';
@@ -39,7 +40,7 @@ export default function ModifyBoard({navigation,route}) {
     const [bType,setbType] = React.useState('자유게시판');
     const [bTitle,setBTitle] = React.useState('');
     const [bContent,setBContent] = React.useState('');
-    
+    const IP = ServerPort();
 
     //이전 디테일 페이지에서 보낸 라우트 변수들을 넣어서 텍스트에디터에 띄워줌
     React.useEffect(() => { 
@@ -93,7 +94,7 @@ export default function ModifyBoard({navigation,route}) {
 
         await axios({
             method: 'post',
-            url: 'http://192.168.2.77:5000/upload',
+            url: `${IP}/upload`,
             headers: {
                 'content-type': 'multipart/form-data',
             },
@@ -106,7 +107,7 @@ export default function ModifyBoard({navigation,route}) {
 
 
     const ModifyAction=()=>{ //수정한 내용 서버로 전송
-        axios.post('http://192.168.2.94:5000/board/modify',null,{
+        axios.post(`${IP}/board/modify`,null,{
             params:{
               bContent : bContent,
               bTitle : bTitle,

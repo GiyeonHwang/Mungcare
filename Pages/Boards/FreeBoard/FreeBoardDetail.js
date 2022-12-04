@@ -6,7 +6,7 @@ import Constants from 'expo-constants';
 import Comment from '../../../Components/Comment';
 import HTML from 'react-native-render-html';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import ServerPort from '../../../Components/ServerPort';
 // import Heart from './assets/images/heart.png';
 // import Beanheart from './assets/images/beanheart.png';
 
@@ -31,15 +31,15 @@ export default function FreeBoardDetail({ navigation, route }) {
     const [bviewCount, setBviewCount] = React.useState("");
     const [breply, setBreply] = React.useState("");
 
-
     const [WriterId, setWriterId] = React.useState("");
 
+    const IP = ServerPort();
 
     const getSid = async () => {
 
         setSid(await load());
 
-        await axios.post("http://192.168.2.94:5000/board/detailView", null, {
+        await axios.post(`${IP}/board/detailView`, null, {
             params: { bNo: bno }
         })
             .then((res) => {
@@ -59,7 +59,7 @@ export default function FreeBoardDetail({ navigation, route }) {
     }
 
     const replyClear = () => {
-        axios.post("http://192.168.2.94:5000/reply/list", null, {
+        axios.post(`${IP}/reply/list`, null, {
             params: { bNo: bno }
         })
             .then((res) => {
@@ -80,7 +80,7 @@ export default function FreeBoardDetail({ navigation, route }) {
 
     React.useEffect(() => {
 
-        axios.post("http://192.168.2.94:5000/like/check", null, {
+        axios.post(`${IP}/like/check`, null, {
             params: {
                 id: sid,
                 bNo: bno
@@ -97,7 +97,7 @@ export default function FreeBoardDetail({ navigation, route }) {
 
     const sendReply = () => {
         console.log("현재 세션 id : ", sid);
-        axios.post("http://192.168.2.94:5000/reply/write", null, {
+        axios.post(`${IP}/reply/write`, null, {
             params: {
                 id: sid,
                 rContent: rContent,
@@ -113,7 +113,7 @@ export default function FreeBoardDetail({ navigation, route }) {
     }
 
     const clickLike = () => {
-        axios.post("http://192.168.2.94:5000/like/likeAction", null, {
+        axios.post(`${IP}/like/likeAction`, null, {
             params: {
                 id: sid,
                 bNo: bno
@@ -176,7 +176,7 @@ export default function FreeBoardDetail({ navigation, route }) {
 
     //삭제하기
     const DeleteAction = () => {
-        axios.post("http://192.168.2.94:5000/board/remove", null, {
+        axios.post(`${IP}/board/remove`, null, {
             params: { bNo: bno }
         })
             .then(function (res) {
