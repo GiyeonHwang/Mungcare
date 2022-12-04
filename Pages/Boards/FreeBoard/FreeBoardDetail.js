@@ -6,6 +6,7 @@ import Constants from 'expo-constants';
 import Comment from '../../../Components/Comment';
 import HTML from 'react-native-render-html';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 // import Heart from './assets/images/heart.png';
 // import Beanheart from './assets/images/beanheart.png';
 
@@ -107,6 +108,7 @@ export default function FreeBoardDetail({ navigation, route }) {
                 setRContent("");
                 console.log(res.data);
                 getSid();
+                replyClear();
             })
     }
 
@@ -199,12 +201,15 @@ export default function FreeBoardDetail({ navigation, route }) {
 
 
     return (
-        <ScrollView style={styles.container}>
-            <View style={{ width: "100%", height: Dimensions.get('window').height * 1, borderTopWidth: 1, borderBottomWidth: 1, padding: 10 }}>
+       
+        <View>
+        <ScrollView>
+
+            <View style={{ width: "100%", borderTopWidth: 1, borderBottomWidth: 1, padding: 10 }}>
                 <View style={{ width: "100%", height: Dimensions.get('window').height * 0.03, flexDirection: "row", justifyContent: 'space-between', marginBottom: 5 }}>
                     <Text style={{ maxWidth: "50%", fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{btitle}</Text>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <Text style={{ color: "red", fontSize: 15, textAlignVertical: "bottom" }}> {blike} </Text>
+                        <Text style={{ color: "red", fontSize: 16, textAlignVertical: "bottom" }}> {blike} </Text>
                         {
                             likeCheck
                                 ?
@@ -255,7 +260,7 @@ export default function FreeBoardDetail({ navigation, route }) {
                 <View>
                     <HTML source={{ html: content }} contentWidth={contentWidth} />
                 </View>
-                <View style={{ width: "100%", height: "5%", borderTopWidth: 0.7, borderBottomWidth: 0.5, justifyContent: "center", padding: 10 }}>
+                <View style={{ width: "100%", height: "6%", borderTopWidth: 0.7, borderBottomWidth: 0.5, justifyContent: "center", padding: 10 }}>
                     <Text style={{ textAlignVertical: "center", color: "gray" }}><Text style={{ color: "red" }}>{breply}</Text> 댓글</Text>
                     {/* {
                     likeCheck 
@@ -265,6 +270,7 @@ export default function FreeBoardDetail({ navigation, route }) {
                     <TouchableOpacity onPress={clickLike}><Text>좋아요</Text></TouchableOpacity>                      
                 } */}
                 </View>
+                <View > 
                 {
                     replyList.map((e, index) => {
 
@@ -280,27 +286,33 @@ export default function FreeBoardDetail({ navigation, route }) {
                         )
                     })
                 }
-                
+                </View>
             </View>
-            <View style={{ width: "100%", backgroundColor: "#EBE3D7", flexDirection: "row"}}>
-                    <View style={{ width: "80%", borderWidth: 1 }}>
+           
+        </ScrollView>
+        <View style={{backgroundColor: "#EBE3D7",maxHeight:Dimensions.get('window').height * 0.1 ,flexDirection: "row",marginTop:"auto",height:"auto",padding:8,paddingRight:3}}>
+                    <View style={{ width: Dimensions.get('window').width * 0.8,justifyContent:"center"}}>
                         <TextInput
+                            style={{width:"100%",fontSize:15}}
                             onChangeText={setRContent}
                             placeholder="댓글쓰기"
                             value={rContent}
-
+                            multiline={true}
+                            cursorColor="red"
+                            
                         />
                     </View>
-                    <View style={{ justifyContent: "center" }}>
+                    <View style={{ justifyContent: "center",alignItems:"center",width:Dimensions.get('window').width * 0.2 }}>
                         <TouchableOpacity
                             onPress={sendReply}
                         >
-                            <Text>입력</Text>
+                            <Image source={require('../../../assets/write.png')} style={{ height: 20, width: 20 }} />
                         </TouchableOpacity>
                     </View>
                 </View>
-        </ScrollView>
-
+                
+        </View>
+        
     )
 }
 
@@ -309,6 +321,6 @@ const styles = StyleSheet.create({
     container: {
         width: "100%",
         height: "100%",
-        backgroundColor: "#CCCCFF",
+        backgroundColor: "##EBE3D7",
     }
 });

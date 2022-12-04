@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { Component, forwardRef, useCallback, useState } from "react";
-import { Text, View, StyleSheet , Button ,TextInput} from 'react-native';
+import { Text, View, StyleSheet , Button ,TextInput,Dimensions,TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
@@ -62,6 +62,7 @@ export default function Comment({ nickname , content , rNo , bNo , reply}) {
         })
         .then((res) => {
             console.log(res.data);
+            reply();
         })
     }
 
@@ -69,32 +70,46 @@ export default function Comment({ nickname , content , rNo , bNo , reply}) {
         
         <View>
             <View style={styles.comment}>
-                <Text style={styles.nickname}>{nickname}</Text>
                 {
                     //닉네임 일치 및 모디파이 버튼을 누르지 않으면 
                     sid == nickname && !okModify 
                     ?
                     <View>
+                    <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+                    <Text style={styles.nickname}>{nickname}</Text>
+                    <View style={{flexDirection:"row"}}>     
+                    <TouchableOpacity style={{height: "50%", borderRightWidth: 0.5,borderColor:"gray"}} onPress={() => {setOkModify(true); setModifyContent(rContent)}}><Text style={{color:"gray",fontSize:12}}>글 수정  </Text></TouchableOpacity> 
+                    <TouchableOpacity onPress={() => deleteReply()}><Text style={{color:"gray",fontSize:12}}>  글 삭제</Text></TouchableOpacity>
+                    </View>
+                    </View>
+                    <View>
                         <Text>{rContent}</Text>
-                        <Button onPress={() => {setOkModify(true); setModifyContent(rContent)}} title="수정" />
-                        <Button onPress={() => deleteReply()} title="삭제" />
+                    </View>
                     </View>
                     :
                     (
                     //닉네임 일치 및 모디파이 버튼을 누름
                     sid == nickname && okModify
                     ?
-                    <View>
+                    <View style={{width:"100%",flexDirection:"row"}}>
                         <TextInput
                             value = {modifyContent}
                             onChangeText = {setModifyContent}
+                            placeholder="글 수정"
+                            style={{width:"70%"}}
+                            cursorColor="red"
                         />
-                        <Button onPress={() => modifyReplyAction()} title="수정하기" />
-                        <Button onPress={() => {setOkModify(false); setModifyContent("")}} title="취소" />
+                        <View  style={{width:"30%",flexDirection:"row",justifyContent:"center"}}>
+                        <TouchableOpacity style={{borderRightWidth:0.5,borderColor:"gray",justifyContent:"center"}} onPress={() => modifyReplyAction()}><Text style={{fontSize:12,color:"gray"}}>글 수정하기  </Text></TouchableOpacity>
+                        <TouchableOpacity style={{justifyContent:"center"}} onPress={() => {setOkModify(false); setModifyContent("")}}><Text style={{fontSize:12,color:"gray"}}>  취소</Text></TouchableOpacity>
+                        </View>
                     </View>
                     :
                     // 닉네임 불일치
+                    <View>
+                    <Text style={styles.nickname}>{nickname}</Text>    
                     <Text>{rContent}</Text>
+                    </View>
                     )
                 }
             </View>
@@ -107,11 +122,14 @@ export default function Comment({ nickname , content , rNo , bNo , reply}) {
 const styles = StyleSheet.create({
     container: {
         width : "100%",
+       
     },
     comment : {
         padding: 10, 
+        // height: Dimensions.get('window').height * 0.075,
+        borderColor:"black",
         borderTopWidth:0,
-        borderBottomWidth:0.5
+        borderBottomWidth: 0.3
     },
     nickname : {
         fontWeight:"bold",
