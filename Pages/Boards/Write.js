@@ -25,9 +25,9 @@ import * as ImagePicker from 'expo-image-picker';
 export default function Write() {
 
   //bType
-  const [bType,setbType] = useState('');
-  const [bTitle,setBTitle] = useState('');
-  const [bContent,setBContent] = useState('');
+  const [bType,setbType] = React.useState('');
+  const [bTitle,setBTitle] = React.useState('');
+  const [bContent,setBContent] = React.useState('');
 
   // 세션 아이디 값 받아오기
   const getData = async () => {
