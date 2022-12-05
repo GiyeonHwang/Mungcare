@@ -24,6 +24,8 @@ public interface MyCalendarService {
                 .cKm(dto.getCKm())
                 .cDate(dto.getCDate())
                 .cType(dto.getCType())
+                .cPhoto(dto.getCPhoto())
+                .cWalkTime(dto.getCWalkTime())
                 .id(member)
                 .build();
         return calendar;
@@ -38,6 +40,8 @@ public interface MyCalendarService {
                 .cKm(calendar.getCKm())
                 .cDate(calendar.getCDate())
                 .cType(calendar.getCType())
+                .cPhoto(calendar.getCPhoto())
+                .cWalkTime(calendar.getCWalkTime())
                 .id(member.getId())
                 .build();
         return dto;

@@ -35,7 +35,7 @@ public class Walk {
     private String wContent; //공지사항 - 모임 장소
 
     @Column(length = 2000)
-    private String walkTogether; //공지사항 보낼 사람들
+    private String walkPeople; //공지사항 보낼 사람들
 
     public void changeLat(Double latitude) { //사용자 위도 수정
         this.latitude = latitude;
@@ -53,7 +53,7 @@ public class Walk {
         this.wContent = wContent;
     }
     
-    public void changeWalkTogether(String walkTogether) { //공지사항 보낼 사람들
-        this.walkTogether = walkTogether;
+    public void changeWalkPeople(String walkPeople) { //공지사항 보낼 사람들
+        this.walkPeople = walkPeople;
     }
 }

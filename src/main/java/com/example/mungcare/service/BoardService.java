@@ -37,6 +37,7 @@ public interface BoardService {
                 .bReply(dto.getBReply())
                 .bCreateTime(dto.getBCreateTime())
                 .bPhoto(dto.getBPhoto())
+                .bText(dto.getBText())
                 .id(member)
                 .build();
 
@@ -56,6 +57,7 @@ public interface BoardService {
                 .bReply(board.getBReply())
                 .bCreateTime(board.getBCreateTime())
                 .bPhoto(board.getBPhoto())
+                .bText(board.getBText())
                 .id(member.getId())
                 .build();
         return dto;

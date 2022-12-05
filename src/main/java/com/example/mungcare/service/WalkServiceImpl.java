@@ -70,14 +70,14 @@ public class WalkServiceImpl implements WalkService{
         return wList.isEmpty() ? null : wList;
     }
 
-//    public boolean walkNotice(WalkDTO dto) { //공지사항 보낼 사람 목록 및 내용
+//    public boolean walkNotice(WalkDTO dto, String wtValue) { //공지사항 보낼 사람 목록 및 내용
 //        try {
 //            List<Walk> entity = walkRepository.findAll();
 //            for(Walk walk : entity) {
 //                if(dto.getId().equals(walk.getId().getId())) {
 //                    walk.changeWTime(dto.getWTime());
 //                    walk.changeWContent(dto.getWContent());
-//                    walk.changeWalkTogether(dto.getWalkTogether());
+//                    walk.changeWalkPeople(wtValue);
 //                    walkRepository.save(walk);
 //                }
 //            }

@@ -17,7 +17,7 @@ public class MyCalendarServiceTests {
         MyCalendarDTO dto = MyCalendarDTO.builder()
                 .id("user")
                 .cStartTime(java.sql.Time.valueOf("10:25:31"))
-                .cDate(java.sql.Date.valueOf("2022-11-30"))
+                .cDate(java.sql.Date.valueOf("2022-12-05"))
                 .build();
         Integer cNo = myCalendarService.calendarInput1(dto);
         System.out.println("-------------------"+cNo);
@@ -26,9 +26,9 @@ public class MyCalendarServiceTests {
     @Test
     public void testCheck() {
         MyCalendarDTO dto = MyCalendarDTO.builder()
-                .id("user5")
-                .cStartTime(java.sql.Time.valueOf("10:25:31"))
-                .cDate(java.sql.Date.valueOf("2022-11-24"))
+                .id("user")
+                .cStartTime(java.sql.Time.valueOf("12:03:27"))
+                .cDate(java.sql.Date.valueOf("2022-11-05"))
                 .build();
         boolean cNo = myCalendarService.calendarCheck(dto);
         System.out.println("-------------------"+cNo);
@@ -37,11 +37,10 @@ public class MyCalendarServiceTests {
     @Test
     public void testRegister2() {
         MyCalendarDTO dto = MyCalendarDTO.builder()
-                .cNo(7)
-                .id("user4")
-                .cEndTime(java.sql.Time.valueOf("10:50:46"))
-                .cDate(java.sql.Date.valueOf("2022-11-24"))
-                .cPhoto("hihi")
+                .id("user")
+                .cEndTime(java.sql.Time.valueOf("15:05:46"))
+                .cDate(java.sql.Date.valueOf("2022-12-05"))
+                .cPhoto("https://yt3.ggpht.com/ytc/AMLnZu-I4tSTsWV1tXJ90OmyEMyDdcedcqYhHT06sSU7=s900-c-k-c0x00ffffff-no-rj")
                 .build();
         boolean cNo = myCalendarService.calendarInput2(dto);
         System.out.println("-------------------"+cNo);

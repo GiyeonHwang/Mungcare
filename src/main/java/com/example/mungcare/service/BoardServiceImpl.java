@@ -6,22 +6,22 @@ import com.example.mungcare.dto.PageResultDTO;
 import com.example.mungcare.entity.Board;
 import com.example.mungcare.entity.QBoard;
 import com.example.mungcare.repository.BoardRepository;
-import com.example.mungcare.repository.ReplyRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.jsoup.select.Elements;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 @Service
 @RequiredArgsConstructor
 @Log4j2
@@ -35,13 +35,20 @@ public class BoardServiceImpl implements BoardService{
             log.info("boardInput-------------------");
             log.info(dto);
             Board board = dtoToEntity(dto);
+            String text = dto.getBContent(); //bContent 내용 가져옴
+
             String split1 = "src=\"";
             String split2 = "\">";
-            String text = dto.getBContent();
-            if(text.contains(split1)) {
-                String photo = text.split(split1)[1].split(split2)[0];
+
+            if(text.contains(split1)) { //이미지가 포함되는 내용일 경우
+                String photo = text.split(split1)[1].split(split2)[0]; //이미지만 추출
                 board.updatePhoto(photo);
             }
+            //텍스트만 추출하여 저장
+            Document doc = Jsoup.parse(text); //Jsoup 라이브러리 활용하여
+            String text2 = doc.text(); //html 태그 제외한 것만 추출
+            board.updateText(text2); //텍스트만 저장
+            
             boardRepository.save(board);
             System.out.println("------------------------"+board);
             return board.getBNo();
@@ -127,7 +134,6 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     public boolean remove(Integer bNo) { //글 삭제
         try {
-//            replyRepository.deleteByBno(bNo);
             boardRepository.deleteById(bNo);
             return true;
         } catch(Exception e) {
@@ -138,20 +144,27 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Integer modify(BoardDTO dto) { //글 수정
-        //수정 하는 항목: '제목', '내용'
+        //수정 하는 항목: '제목', '내용', '카테고리'
         Optional<Board> result = boardRepository.findById(dto.getBNo());
         if(result.isPresent()) {
             Board board = result.get();
-            board.changeTitle(dto.getBTitle());
-            board.changeContent(dto.getBContent());
+            board.changeTitle(dto.getBTitle()); //제목 수정
+            board.changeContent(dto.getBContent()); //내용 수정
+            String text = dto.getBContent(); //bContent 내용 가져옴
+
             String split1 = "src=\"";
             String split2 = "\">";
-            String text = dto.getBContent();
-            if(text.contains(split1)) {
-                String photo = text.split(split1)[1].split(split2)[0];
+
+            if(text.contains(split1)) { //이미지가 포함되는 내용일 경우
+                String photo = text.split(split1)[1].split(split2)[0]; //이미지만 추출
                 board.updatePhoto(photo);
             }
-            board.updateBType(dto.getBType());
+            //텍스트만 추출하여 저장
+            Document doc = Jsoup.parse(text); //Jsoup 라이브러리 활용하여
+            String text2 = doc.text(); //html 태그 제외한 것만 추출
+            board.updateText(text2); //텍스트만 저장
+            
+            board.updateBType(dto.getBType()); //카테고리 수정
             boardRepository.save(board);
             return board.getBNo();
         }

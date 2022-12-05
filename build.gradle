@@ -39,6 +39,10 @@ dependencies {
     //querydsl 위한 추가 내용  - dependencies 추가
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+    //websocket 위한 추가 내용
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    //html 파서 기능 - jsoup
+    implementation 'org.jsoup:jsoup:1.14.2'
 }
 
 test {

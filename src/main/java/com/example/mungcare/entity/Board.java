@@ -36,6 +36,7 @@ public class Board{
 
     private Integer bReply; //게시글 댓글 수
     private String bPhoto; //사진
+    private String bText; //내용(글만)
 
     @Column(updatable = false, nullable = false)
     @CreatedDate //Entity가 생성되어 저장될 때 시간이 자동 저장된다.
@@ -65,6 +66,9 @@ public class Board{
     }
     public void updatePhoto(String bPhoto) { //사진 업데이트
         this.bPhoto = bPhoto;
+    }
+    public void updateText(String bText) { //내용(글)업데이트
+        this.bText = bText;
     }
     public void updateBType(String bType) { //게시글 카테고리 변경
         this.bType = bType;

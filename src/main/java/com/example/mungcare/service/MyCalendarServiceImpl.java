@@ -30,6 +30,7 @@ public class MyCalendarServiceImpl implements MyCalendarService{
             MyCalendar calendar = dtoToEntity(dto);
 
             if(calendar.getCType().equals("play")) { //놀기일 경우, 포인트 등록
+                calendar.changeCPhoto(dto.getCPhoto());
                 PointDTO pointDTO = PointDTO.builder()
                         .id(dto.getId())
                         .pointDate(dto.getCDate())
@@ -74,13 +75,20 @@ public class MyCalendarServiceImpl implements MyCalendarService{
             for (MyCalendar myCalendar : entity) {
                 if(myCalendar.getCEndTime() == null && myCalendar.getCType().equals("walk")
                         && dto.getId().equals(myCalendar.getId().getId()) && dto.getCDate().equals(myCalendar.getCDate())) {
-                    myCalendar.changecPhoto(dto.getCPhoto());
+                    myCalendar.changeCPhoto(dto.getCPhoto());
                     myCalendar.changeCEndTime(dto.getCEndTime());
                     System.out.println("myCalendar: "+myCalendar);
+
+
+                    //시간 차이 계산
+                    Duration duration = Duration.between(myCalendar.getCStartTime().toLocalTime(), myCalendar.getCEndTime().toLocalTime());
+                    Long walkTime = duration.getSeconds()/60; //초로 받아 분으로 출력하기
+
+                    myCalendar.changeCWalktTime(walkTime.intValue());
                     myCalendarRepository.save(myCalendar);
 
                     //시간에 따른 포인트 계산
-                    Integer walkPointResult = walkPointResult(myCalendar.getCStartTime().toLocalTime(), myCalendar.getCEndTime().toLocalTime());
+                    Integer walkPointResult = walkPointResult(walkTime);
                     System.out.println("walkPointResult: " + walkPointResult);
 
                     //산책 시간에 따른 포인트 등록
@@ -148,10 +156,7 @@ public class MyCalendarServiceImpl implements MyCalendarService{
         }
     }
 
-    private Integer walkPointResult(LocalTime cStartTime, LocalTime cEndTime) { //산책 시간에 따른 포인트 부여
-        //시간 차이 계산
-        Duration duration = Duration.between(cStartTime, cEndTime);
-        Long walkTime = duration.getSeconds()/60; //초로 받아 분으로 출력하기
+    private Integer walkPointResult(Long walkTime) { //산책 시간에 따른 포인트 부여
         System.out.println("walkTime: "+walkTime);
 
         if(walkTime <= 0) //0분 이하

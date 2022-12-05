@@ -4,10 +4,7 @@ import com.example.mungcare.dto.WalkDTO;
 import com.example.mungcare.service.WalkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -44,10 +41,11 @@ public class WalkController {
     }
 
 //    @PostMapping("/notice") //같이 산책하기 공지 올리기
-//    public boolean walktogether(WalkDTO walkDTO) {
+//    public boolean walktogether(WalkDTO walkDTO, @RequestParam("walkTogether")String walkTogether) {
 //        log.info("notice...");
-//        //walktogether: [user, user1, user2]
-//         boolean result = walkService.walkNotice(walkDTO);
+//        //walktogether: ["user", "user1", "user2"]
+//        String wtValue = walkTogether.replaceAll("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9,. ]", "");
+//         boolean result = walkService.walkNotice(walkDTO, wtValue);
 //        System.out.println(result);
 //        return result;
 //    }

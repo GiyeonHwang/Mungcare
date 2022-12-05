@@ -19,6 +19,6 @@ public class WalkDTO {
     private Double longitude; //사용자 경도
     private Time wTime; //공지사항 - 모일 날짜
     private String wContent; //공지사항 - 모임 장소
-    private String walkTogether; //공지사항 보낼 사람들
+    private String walkPeople; //공지사항 보낼 사람들
     private List<Animal> animalList; //사용자의 반려동물 정보 목록
 }

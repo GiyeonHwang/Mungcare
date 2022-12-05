@@ -32,11 +32,15 @@ public class MyCalendar {
 
     private Double cKm; //산책 거리
     private String cType; //산책인지 놀기인지 체크하기
+    private Integer cWalkTime; //총 산책 시간
 
     public void changeCEndTime(Time cEndTime) { //끝나는 시간 수정
         this.cEndTime = cEndTime;
     }
-    public void changecPhoto(String cPhoto) { //인증 사진 수정
+    public void changeCPhoto(String cPhoto) { //인증 사진 수정
         this.cPhoto = cPhoto;
+    }
+    public void changeCWalktTime(Integer cWalkTime) {
+        this.cWalkTime = cWalkTime;
     }
 }
