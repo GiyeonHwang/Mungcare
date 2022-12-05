@@ -134,42 +134,15 @@ export default function Main({ navigation }) {
               </TouchableOpacity>
             </View>
           </View>
-          {/* <View style={{ padding: 10, marginTop: 20 }}>
-            <View style={[
-              { marginLeft: Dimensions.get('window').width * 0.025, },
-              { flexDirection: "row" },
-              { flexWrap: "wrap" },
-              { alignContent: "space-around" },
-            ]}>
-              {frData.map((e) => (
-                <FreeView key={e.id} {...e} />
-              )
-              )
-              }
-            </View>
-          </View> */}
 
-
-          {/* 임시로 */}
-          {/* <View style={{ padding: 10, marginTop: 20,marginLeft: Dimensions.get('window').width * 0.025,flexDirection:"row",flexWrap:"wrap"}}>
-            
-              {frData.map((e) => (
-                <FreeView key={e.id} {...e} />
-              )
-              )
-              }
-          
-          </View> */}
-
+          {/* 맵을 2개 돌려서 id가 짝수는 왼쪽 홀수는 오른쪽에 렌더링해주기 */}
           <View style={{flexDirection:"row",justifyContent:"center"}}>
           <View style={{ padding: 10, marginTop: 10 }}>
-
             {frData.filter((_, i) => i % 2 === 0).map((e) => (
               <FreeView key={e.id} {...e} />
             )
             )
             }
-
           </View>
           <View style={{ padding: 10, marginTop: 10}}>
 
@@ -178,39 +151,10 @@ export default function Main({ navigation }) {
             )
             )
             }
-
           </View>
           </View>
-
         </View>
-        {/* <FlatList
-            columnWrapperStyle={{
-              justifyContent: 'space-between',
-              marginBottom: 32,
-            }}
-            data={frData}
-            renderItem={({ item }) => <FreeView item={item} />}
-            keyExtractor={(index) => index}
-            // extraData={copyItemData}
-            numColumns={2}
-          /> */}
       </ScrollView>
-
-      {/*임시*/}
-      {/* <MasonryList
-            columnWrapperStyle={{
-              // justifyContent: 'space-between',
-              // marginBottom: 32,
-
-            }}
-            data={frData}
-            renderItem={({ item }) => <FreeView item={item}/>}
-            keyExtractor={(index) => index}
-            // extraData={copyItemData}
-            numColumns={2}
-          /> */}
-
-
     </SafeAreaView>
 
   )

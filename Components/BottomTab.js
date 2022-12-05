@@ -8,6 +8,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from "react-native-vector-icons/Ionicons";
+
 import Main from '../Pages/Main/Main';
 import MainBoard from '../Pages/Boards/MainBoard';
 import AffectMain from '../Pages/Boards/Affect/AffectMain';
@@ -95,6 +97,18 @@ const MainStackScreen = ({ navigation }) => {
 
       <MainStack.Screen name="Main" component={Main} options={{
         headerLeft: () => <MenuButton />,
+        headerTitle:"멍케어!",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
       }} />
       <MainStack.Screen name="MainBoard" component={MainBoard} />
       <MainStack.Screen name="AffectMain" component={AffectMain} />
@@ -178,21 +192,38 @@ const BottomTab = (route) => {
 
   // tabBarStyle: { display: getRoute(route) }, 
   return (
-    <Tab.Navigator initialRouteName="Main">
+    <Tab.Navigator initialRouteName="Main"
+   
+    screenOptions={{
+      tabBarShowLabel: false,
+      tabBarStyle:{backgroundColor:'#F2F2F2'}
+    }}
+    >
       <Tab.Screen name="메인" component={MainStackScreen}
-        options={({ route }) => ({headerShown: false, headerBackVisible: true, })
-        } />
+      
+        options={{headerShown:false,
+          tabBarIcon: () => (
+            <Icon name="ios-home"size={26} />
+          ),
+        }}
+       />
       <Tab.Screen name="글쓰기" component={WriteStackScreen}
-        options={({ route }) => ({ headerShown: false })} />
-      {/* <Tab.Screen name="자유게시판" component={FreeStackScreen}
-        options={({ route }) => ({ headerShown: false })} /> */}
+        options={{headerShown:false,
+          tabBarIcon: () => (
+            <Icon name="create"size={26} />
+          ),
+        }} />
+      
       <Tab.Screen name="마이페이지" component={MyPageStackScreen}
-        options={({ route }) => ({ headerShown: false })} />
+       options={{headerShown:false,
+        tabBarIcon: () => (
+          <Icon name="person"size={26} />
+        ),
+      }}/>
     </Tab.Navigator>
   );
 };
 export default BottomTab;
-
 
 
 

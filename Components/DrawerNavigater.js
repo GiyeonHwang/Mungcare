@@ -119,6 +119,11 @@ const DrawerNavigater = () => {
 
   return (
     <Drawer.Navigator 
+      screenOptions={{
+      drawerStyle: {
+        backgroundColor: '#F2F2F2',
+      },
+      }}
       drawerContent={({ navigation }) => (
       <CustomDrawer navigation={navigation} />
     )}>

@@ -34,7 +34,7 @@ export default function FreeBoardMain({ navigation }) {
   return (
 
     <ScrollView>
-      <View style={{ padding: 10 }}>
+      {/* <View style={{ padding: 10 }}>
         <View style={[
           { marginLeft: Dimensions.get('window').width * 0.025, },
           { flexDirection: "row" },
@@ -46,6 +46,26 @@ export default function FreeBoardMain({ navigation }) {
           )
           )
           }
+        </View>
+      </View> */}
+      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        <View style={{ padding: 10, marginTop: 10 }}>
+
+          {frData.filter((_, i) => i % 2 === 0).map((e) => (
+            <FreeView key={e.id} {...e} />
+          )
+          )
+          }
+
+        </View>
+        <View style={{ padding: 10, marginTop: 10 }}>
+
+          {frData.filter((_, i) => i % 2 !== 0).map((e) => (
+            <FreeView key={e.id} {...e} />
+          )
+          )
+          }
+
         </View>
       </View>
 
