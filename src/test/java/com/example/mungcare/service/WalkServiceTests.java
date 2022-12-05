@@ -26,10 +26,7 @@ public class WalkServiceTests {
 
     @Test
     public void testCheck() {
-        WalkDTO dto = WalkDTO.builder()
-                .id("Jj")
-                .build();
-        boolean result = walkService.walkCheck(dto);
+        boolean result = walkService.walkCheck("Jj");
         System.out.println("-------------------"+result);
     }
 

@@ -14,6 +14,7 @@ public interface PointService {
     List<PointDTO> rankList(); //포인트 랭킹
 
     List<PointDTO> myPoint(String id); //나의 일주일 포인트 내역
+    Integer totalMyPoint(String id); //나의 누적 포인트 점수
 
     default Point dtoToEntity(PointDTO dto) {
         Member member = Member.builder().id(dto.getId()).build();

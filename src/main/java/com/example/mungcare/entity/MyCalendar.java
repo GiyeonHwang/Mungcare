@@ -30,7 +30,6 @@ public class MyCalendar {
     @Column(length = 1500)
     private String cPhoto; //사진
 
-    private Double cKm; //산책 거리
     private String cType; //산책인지 놀기인지 체크하기
     private Integer cWalkTime; //총 산책 시간
 

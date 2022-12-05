@@ -18,6 +18,7 @@ public class WebSocketController {
     @MessageMapping("/message") // /app/message
     @SendTo("/chatroom/public") // SendTo 형태이면 모두에게 뿌리는거 같다. * 실 사용은 이걸로 할것.
     private Message receivePublicMessage(@Payload Message message){
+        System.out.println("-----------------------"+message);
         return message;
     } // 페이로드를 Class Message 형태로 받아온다. 그걸 다시 리턴
 

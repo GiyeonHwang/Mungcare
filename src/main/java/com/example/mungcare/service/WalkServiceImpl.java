@@ -26,7 +26,7 @@ public class WalkServiceImpl implements WalkService{
             Walk walk = dtoToEntity(dto);
 
             List<Walk> entity = walkRepository.findAll();
-            for(Walk walk1 : entity) {
+            for(Walk walk1 : entity) { //save는 추가, 수정 다 되는데 왜 for문을 하느냐? id값이 wNo로 GeneratedValue이기 때문.
                 if(dto.getId().equals(walk1.getId().getId())) {
                     walk1.changeLat(dto.getLatitude());
                     walk1.changeLon(dto.getLongitude());
@@ -43,50 +43,59 @@ public class WalkServiceImpl implements WalkService{
     }
 
     @Override
-    public boolean walkCheck(WalkDTO dto) { //같이 산책 중인지 체크
-        List<Walk> entity = walkRepository.findAll();
-        for(Walk walk : entity) {
-            if(dto.getId().equals(walk.getId().getId()))
-                return true;
+    public boolean walkCheck(String id) { //같이 산책 중인지 체크
+        try {
+            List<Walk> entity = walkRepository.findAll();
+            for(Walk walk : entity) {
+                if(id.equals(walk.getId().getId()))
+                    return true;
+            }
+            return false;
+        } catch(Exception e) {
+            log.info(e.getMessage());
+            return false;
         }
-        return false;
     }
 
     @Override
     @Transactional
     public List<WalkDTO> walkRadius(WalkDTO dto) { //내 위치 반경 1km 안에 있는 사람 목록
-        List<Walk> entity = walkRepository.findAll();
-        List<WalkDTO> wList = new ArrayList<>();
+        try {
+            List<Walk> entity = walkRepository.findAll();
+            List<WalkDTO> wList = new ArrayList<>();
 
-        for(Walk walk : entity) {
-            double distance = getDistance(dto.getLatitude(), dto.getLongitude(), walk.getLatitude(), walk.getLongitude());
-            System.out.println("------------------------"+walk+"==="+distance);
-            if(distance<=1) {
-                System.out.println("true=====");
-                WalkDTO result = entityToDTO(walk);
-                wList.add(result);
+            for(Walk walk : entity) {
+                double distance = getDistance(dto.getLatitude(), dto.getLongitude(), walk.getLatitude(), walk.getLongitude());
+                System.out.println("------------------------"+walk+"==="+distance);
+                if(distance<=1) {
+                    System.out.println("true=====");
+                    WalkDTO result = entityToDTO(walk);
+                    wList.add(result);
+                }
             }
+            return wList.isEmpty() ? null : wList;
+        } catch(Exception e) {
+            log.info(e.getMessage());
+            return null;
         }
-        return wList.isEmpty() ? null : wList;
     }
 
-//    public boolean walkNotice(WalkDTO dto, String wtValue) { //공지사항 보낼 사람 목록 및 내용
-//        try {
-//            List<Walk> entity = walkRepository.findAll();
-//            for(Walk walk : entity) {
-//                if(dto.getId().equals(walk.getId().getId())) {
-//                    walk.changeWTime(dto.getWTime());
-//                    walk.changeWContent(dto.getWContent());
-//                    walk.changeWalkPeople(wtValue);
-//                    walkRepository.save(walk);
-//                }
-//            }
-//            return true;
-//        } catch(Exception e) {
-//            log.info(e.getMessage());
-//            return false;
-//        }
-//    }
+    @Override
+    public boolean walkRemove(String id) { //같이 산책하기에 있는 해당 id의 위도, 경도 값 삭제
+        try {
+            List<Walk> entity = walkRepository.findAll();
+            for(Walk walk : entity) {
+                if(id.equals(walk.getId().getId())) {
+                    walkRepository.deleteById(walk.getWNo());
+                    return true;
+                }
+            }
+            return false;
+        } catch(Exception e) {
+            log.info(e.getMessage());
+            return false;
+        }
+    }
 
     private void validate(final Walk walk) {
         if(walk == null) {

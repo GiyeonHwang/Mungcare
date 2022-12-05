@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -25,9 +24,9 @@ public class WalkController {
     }
 
     @PostMapping("/check") //같이 산책 중인지 체크
-    public boolean walkCheck(WalkDTO walkDTO) {
+    public boolean walkCheck(@RequestParam("id") String id) {
         log.info("check...");
-        boolean check= walkService.walkCheck(walkDTO);
+        boolean check= walkService.walkCheck(id);
         System.out.println("check: "+check);
         return check;
     }
@@ -40,13 +39,11 @@ public class WalkController {
         return wList;
     }
 
-//    @PostMapping("/notice") //같이 산책하기 공지 올리기
-//    public boolean walktogether(WalkDTO walkDTO, @RequestParam("walkTogether")String walkTogether) {
-//        log.info("notice...");
-//        //walktogether: ["user", "user1", "user2"]
-//        String wtValue = walkTogether.replaceAll("[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9,. ]", "");
-//         boolean result = walkService.walkNotice(walkDTO, wtValue);
-//        System.out.println(result);
-//        return result;
-//    }
+    @PostMapping("/end") //해당 id 정보(같이 산책-위도,경도) 삭제
+    public boolean walkEnd(@RequestParam("id") String id) {
+        log.info("end...");
+        boolean result = walkService.walkRemove(id);
+        System.out.println("result: "+result);
+        return result;
+    }
 }

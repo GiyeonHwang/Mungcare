@@ -112,6 +112,24 @@ public class PointServiceImpl implements PointService{
         }
     }
 
+    public Integer totalMyPoint(String id) { //나의 누적 포인트 점수
+        try {
+            log.info("totalPoint-------------------");
+            List<Point> entity = pointRepository.findAll();
+            Integer total = 0;
+            for(Point point : entity) {
+                if (id.equals(point.getId().getId())) {
+                    PointDTO dto = entityToDTO(point);
+                    total += dto.getTotalPoint();
+                }
+            }
+            return total;
+        } catch(Exception e) {
+            log.info(e.getMessage());
+            return null;
+        }
+    }
+
     private void validate(final Point point) {
         if(point == null) {
             log.warn("Entity cannot be null.");
