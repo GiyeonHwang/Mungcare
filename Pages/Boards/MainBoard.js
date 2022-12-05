@@ -49,6 +49,7 @@ export default function MainBoard({ navigation }) {
   //     setSwitchBoard('FindMeMain');
   //   }
   // })
+  console.log("현재 게시판",SwitchBoard);
 
   return (
     <ScrollView boxStyles={{ borderRadius: 1 }}>

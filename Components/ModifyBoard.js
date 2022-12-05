@@ -94,7 +94,7 @@ export default function ModifyBoard({navigation,route}) {
 
         await axios({
             method: 'post',
-            url: `${IP}/upload`,
+            url: `http://192.168.2.77:5000/upload`,
             headers: {
                 'content-type': 'multipart/form-data',
             },
@@ -160,8 +160,8 @@ export default function ModifyBoard({navigation,route}) {
                 rowTextStyle={styles.dropdown1RowTxtStyle}
             />
             <TextInput
-                style={{ width: Dimensions.get('window').width * 1, height: Dimensions.get('window').height * 0.06, borderWidth: 0, borderBottomWidth: 1 }}
-                placeholder="    제목을 입력해주세요."
+                style={{ width: Dimensions.get('window').width * 1, height: Dimensions.get('window').height * 0.06, borderWidth: 0, borderBottomWidth: 1 ,padding:15}}
+                placeholder="제목을 입력해주세요."
                 value={bTitle}
                 onChangeText={text => setBTitle(text)}
             />
@@ -184,7 +184,7 @@ export default function ModifyBoard({navigation,route}) {
             />
             <RichEditor
                 ref={richText} // from useRef()
-                value={bContent}
+                initialContentHTML={bContent}
                 onChange={ text => setBContent(text)}
                 placeholder="내용을 적어주세요"
                 androidHardwareAccelerationDisabled={true}

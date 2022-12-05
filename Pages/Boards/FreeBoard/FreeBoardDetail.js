@@ -257,10 +257,10 @@ export default function FreeBoardDetail({ navigation, route }) {
                         </View>
                     }
                 </View>
-                <View>
+                <View style={{padding:8}}>
                     <HTML source={{ html: content }} contentWidth={contentWidth} />
                 </View>
-                <View style={{ width: "100%", height: "6%", borderTopWidth: 0.7, borderBottomWidth: 0.5, justifyContent: "center", padding: 10 }}>
+                <View style={{ width: "100%", height: Dimensions.get('window').height * 0.05, borderTopWidth: 0.7, borderBottomWidth: 0.5, justifyContent: "center", padding: 10 }}>
                     <Text style={{ textAlignVertical: "center", color: "gray" }}><Text style={{ color: "red" }}>{breply}</Text> 댓글</Text>
                     {/* {
                     likeCheck 

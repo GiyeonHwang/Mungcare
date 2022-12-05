@@ -14,7 +14,7 @@ export default function DonateMain({ navigation }) {
         page: 1,
         size: 10,
         type: "type",
-        keyword: "자유게시판"
+        keyword: "기부게시판"
       }
     })
       .then(function (res) {
@@ -27,20 +27,13 @@ export default function DonateMain({ navigation }) {
   }, [])
 
   const onDetail = () => {
-    navigation.navigate("FreeBoardDetail", { no: frData.bno });
+    navigation.navigate("FindMeDetail", { no: frData.bno });
   }
 
 
   return (
 
     <ScrollView>
-      {/* <View style={{Width:Dimensions.get('window').width * 0.1,flexWrap: "wrap",flexDirection: "row",alignContent:"space-around"}}>    
-    {frData.map((e) =>(
-      <FreeView key={e.id} {...e}/>
-        )   
-      )
-    }
-    </View> */}
       <View style={{ padding: 10 }}>
         <View style={[
           { marginLeft: Dimensions.get('window').width * 0.025, },

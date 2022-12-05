@@ -34,13 +34,6 @@ export default function AffectMain({ navigation }) {
   return (
 
     <ScrollView>
-      {/* <View style={{Width:Dimensions.get('window').width * 0.1,flexWrap: "wrap",flexDirection: "row",alignContent:"space-around"}}>    
-    {frData.map((e) =>(
-      <FreeView key={e.id} {...e}/>
-        )   
-      )
-    }
-    </View> */}
       <View style={{ padding: 10 }}>
         <View style={[
           { marginLeft: Dimensions.get('window').width * 0.025, },

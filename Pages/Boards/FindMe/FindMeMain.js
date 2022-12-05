@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React from "react";
-import { Text, View, ScrollView, SafeAreaView, Image, StyleSheet,Dimensions, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
+import { Text, View, ScrollView, SafeAreaView, Image, StyleSheet, Dimensions, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
 import FreeView from '../../../Components/FreeView';
-
 
 
 export default function FindMeMain({ navigation }) {
@@ -33,23 +32,26 @@ export default function FindMeMain({ navigation }) {
 
 
   return (
-    
-    <ScrollView> 
-      <View style={{ padding: 10, flex: 1 }}>
-            <View style={[
-              {marginLeft:Dimensions.get('window').width * 0.025,},
-              {flexDirection:"row"},
-              {flexWrap: "wrap"},
-              { alignContent:"space-around" },
-            ]}>
-              {frData.map((e) => (
-                <FreeView key={e.id} {...e} />
-              )
-              )
-              }
-            </View>
-          </View>
+
+    <ScrollView>
+      <View style={{ padding: 10 }}>
+        <View style={[
+          { marginLeft: Dimensions.get('window').width * 0.025, },
+          { flexDirection: "row" },
+          { flexWrap: "wrap" },
+          { alignContent: "space-around" },
+        ]}>
+          {frData.map((e) => (
+            <FreeView key={e.id} {...e} />
+          )
+          )
+          }
+        </View>
+      </View>
+
     </ScrollView>
+
+
   );
 }
 

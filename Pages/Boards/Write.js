@@ -105,7 +105,7 @@ export default function Write() {
 
     await axios({
       method : 'post',
-      url : `${IP}/upload`,
+      url : `http://192.168.2.77:5000/upload`,
       headers:{
         'content-type' : 'multipart/form-data',
       },
