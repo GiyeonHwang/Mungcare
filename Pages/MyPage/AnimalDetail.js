@@ -9,7 +9,6 @@ import Checkbox from 'expo-checkbox';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { SYSTEM_BRIGHTNESS } from 'expo-permissions';
 const Stack = createStackNavigator();
 
 //동물 info가져오기

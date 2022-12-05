@@ -8,6 +8,7 @@ import {
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 //처음 앱 실행했을 때 움직이는 발바닥 밑에 install 다 해줘야 돼
 //npm i --save lottie-react-native
 //npm i --save lottie-ios@3.2.3

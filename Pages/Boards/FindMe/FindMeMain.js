@@ -1,24 +1,116 @@
 import axios from 'axios';
-import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View , SafeAreaView, StyleSheet, TextInput , Button, Alert } from 'react-native';
-import Constants from 'expo-constants';
-
-// import { Text, View, Button } from "react-native";
-
-//navigation사용할 때 필요
-import 'react-native-gesture-handler';
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-const Stack = createStackNavigator();
+import { Text, View, ScrollView, SafeAreaView, Image, StyleSheet, Dimensions, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
+import FreeView from '../../../Components/FreeView';
 
 
-export default function FindMeMain(navigation){
-    return(
-    <View>
-      <Text>FindMeMain페이지입니다.</Text>
-    </View>
-    )
+export default function FindMeMain({ navigation }) {
+
+  const [frData, setFrData] = React.useState([]);
+
+  React.useEffect(() => {
+    axios.post("http://192.168.2.94:5000/board/search", null, {
+      params: {
+        page: 1,
+        size: 10,
+        type: "type",
+        keyword: "찾아줘게시판"
+      }
+    })
+      .then(function (res) {
+        setFrData(res.data.dtoList);
+        console.log("리스폰스데이터:", res.data);
+      })
+      .catch(function (error) {
+        console.log("게시판 전체 데이터 가져오기 실패: ", error)
+      })
+  }, [])
+
+  const onDetail = () => {
+    navigation.navigate("FindMeDetail", { no: frData.bno });
+  }
+
+
+  return (
+
+    <ScrollView>
+      <View style={{ padding: 10 }}>
+        <View style={[
+          { marginLeft: Dimensions.get('window').width * 0.025, },
+          { flexDirection: "row" },
+          { flexWrap: "wrap" },
+          { alignContent: "space-around" },
+        ]}>
+          {frData.map((e) => (
+            <FreeView key={e.id} {...e} />
+          )
+          )
+          }
+        </View>
+      </View>
+
+    </ScrollView>
+
+
+  );
 }
 
 
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    width: "100%",
+    height: "50%",
+    marginBottom: 20,
+    padding: 5
+  },
+  imageView: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "50%",
+    borderWidth: 3,
+    borderBottomWidth: 0,
+    height: "40%",
+    borderColor: "black"
+  },
+  image: {
+    width: "100%",
+    height: "100%"
+  },
+  contentBox: {
+    alignItems: "center",
+    width: "50%",
+    height: "50%",
+    borderWidth: 2,
+    borderTopWidth: 0,
+    borderColor: "black",
+    backgroundColor: "#F1E7DD",
+    padding: 10
+  },
+  title: {
+    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: "center",
+    width: "100%",
+    height: "50%",
+    backgroundColor: "#F1E7DD"
+  },
+  titleText: {
+    fontWeight: "bold",
+    fontSize: 10
+  },
+  content: {
+    width: "100%",
+    height: "50%",
+    backgroundColor: "#F1E7DD"
+  },
+  bottomContent: {
+    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: "center",
+    width: "100%",
+    height: "50%",
+    backgroundColor: "#F1E7DD"
+  },
+
+});

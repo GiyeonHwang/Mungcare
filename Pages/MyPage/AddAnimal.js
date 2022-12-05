@@ -1,10 +1,14 @@
 import axios from 'axios';
 import React from "react";
-import { Text, View, SafeAreaView, StyleSheet, TextInput, Button, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, SafeAreaView, StyleSheet, TextInput, Button, Alert, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Postcode from '@actbase/react-daum-postcode';
 import Modal from "react-native-modal";
 import Checkbox from 'expo-checkbox';
 //npm install expo-checkbox
+
+//이미지 업로드
+import * as ImagePicker from 'expo-image-picker';
+
 
 
 //navigation 사용할 때 필요
@@ -14,7 +18,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
 
 
-export default function AddAnimal(navigation) {
+export default function AddAnimal({ navigation }) {
 
     const [aName, setAnimalName] = React.useState(""); //애완동물 이름
     const [aSex, setAnimalSex] = React.useState(""); //성별
@@ -32,8 +36,13 @@ export default function AddAnimal(navigation) {
     const [okBirth, setOkBirth] = React.useState(false);
     const [okBreed, setOkBreed] = React.useState(false);
 
+
+    //갤러리 권한 요청이 되어있는지 확인
+    const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
+    const [imguri, setImgUri] = React.useState("https://3.bp.blogspot.com/-ZKBbW7TmQD4/U6P_DTbE2MI/AAAAAAAADjg/wdhBRyLv5e8/s1600/noimg.gif");
+
     const regiButton = () => {
-        if (okName & okSex & okBirth & okBirth & okBreed & aNeat) {
+        if (okName & okSex & okBirth & okBirth & okBreed) {
             return false;
         }
         return true;
@@ -52,7 +61,7 @@ export default function AddAnimal(navigation) {
     //생일
     const validateBirth = aBirth => {
         const regex = /^([0-9]{4})-?([0-9]{2})-?([0-9]{2})$/;
-        
+
         return regex.test(aBirth);
     }
     //종류
@@ -109,34 +118,109 @@ export default function AddAnimal(navigation) {
         setOkBreed(validateBreed(changeBreed));
     };
 
+    const uploadImage = async () => {
+
+        if (!status.granted) { // status로 권한이 있는지 확인
+            const permission = await requestPermission();
+            if (!permission.granted) {
+                return null;
+            }
+        }
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: false,
+            quality: 1,
+            aspect: [1, 1]
+        });
+
+        if (result.canceled) {
+            return null;
+        }
+        console.log(result)
+        setImgUri(result.uri);
+
+        const localUri = result.assets[0].uri;
+
+        const filename = localUri.split('/').pop();
+        const match = /\.(\w+)$/.exec(filename ?? '');
+        const type = match ? `image/${match[1]}` : `image`;
+        const formData = new FormData();
+        formData.append('multipartFileList', { uri: localUri, name: filename, type });
+
+
+
+
+        console.log(formData);
+
+
+        await axios({
+            method: 'post',
+            url: 'http://192.168.2.94:5000/upload',
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+            data: formData
+        })
+            .then((res) => {
+                console.log(res.data);
+                setImgUri(res.data[0]);
+            })
+
+
+    }
+
+
+
     function insertAnimal() {
         //서버로 전송
-        console.log(typeof(aBirth));
+        console.log(typeof (aBirth));
         console.log(aBirth);
-        /*
+
         axios.post("http://192.168.2.94:5000/animal/write", null, {
-            params : {
-                a_name : aName,
-                id:"user",
-                a_birth : aBirth,
-                a_breed : aBreed,
-                a_neat : aNeat,
-                a_sex : aSex,
+            params: {
+                id: "user",
+                aName: aName,
+                aSex: aSex,
+                aBirth: aBirth,
+                aBreed: aBreed,
+                aNeat: aNeat,
+                aPhoto: imguri
             }
         })
-        .then(function (res){
-            console.log(res);
-            console.log(res.data);
-        })
-        .catch(function (error){
-            console.log(error)
-        })*/
+            .then(function (res) {
+                console.log(res);
+                console.log(res.data);
+
+                Alert.alert("등록 완료!")
+                navigation.navigate("MyPage");
+            })
+            .catch(function (error) {
+                console.log(error)
+                Alert.alert("저장에 실패하였습니다")
+            })
 
     }
 
     return (
         <SafeAreaView style={styles.box}>
-            <ScrollView>
+            <ScrollView >
+
+
+                <View sytle={{ alignContent: 'center', width: '100%', padding: 10, alignItems: 'center', }}>
+                    <View style={{ padding: 20, alignContent: 'center', flexDirection: 'row' }}>
+                        <View style={{ width: '50%', backgroundColor: 'yellow', alignItems: 'center', }}>
+                            <Image style={{ resizeMode: "cover", width: 100, height: 100, borderRadius: 50, borderWidth: 3 }} source={{ uri: imguri }} />
+                        </View>
+
+                        <View style={{ backgroundColor: 'red', width: '50%', justifyContent: 'center' }}>
+                            <Button title='이미지 넣기' onPress={uploadImage}></Button>
+                            <Text style={{ fontSize: 15 }}>* 사진은 수정할 수 없습니다.</Text>
+                        </View>
+                    </View>
+                </View>
+
+
                 <Text style={styles.text}>애완동물 이름</Text>
                 <TextInput
                     style={styles.input}
@@ -170,14 +254,17 @@ export default function AddAnimal(navigation) {
                     placeholder="견종"
                 />
                 <Text style={styles.text}>{errorMessageBreed}</Text>
-                <Checkbox style={styles.checkbox} value={aNeat} onValueChange={setAnimalNeat} />
-                <Text style={styles.paragraph}>중성화 여부</Text>
-
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={styles.section}>
+                        <Checkbox style={styles.checkbox} value={aNeat} onValueChange={setAnimalNeat} />
+                        <Text style={styles.paragraph}>중성화 여부</Text>
+                    </View>
+                </View>
                 <View style={styles.button}>
                     <Button
                         disabled={regiButton()}
                         color="#CCCCFF"
-                        title="회원가입"
+                        title="추가하기"
                         onPress={() => insertAnimal()}
                     />
                 </View>
@@ -191,10 +278,9 @@ export default function AddAnimal(navigation) {
 const styles = StyleSheet.create({
     box: {
         flex: 1,
-        marginTop: "15%",
+        alignContent: 'center',
+        justifyContent: 'center'
         // marginHorizontal: 61,
-
-
     },
     input: {
         borderRadius: 8,
@@ -211,6 +297,16 @@ const styles = StyleSheet.create({
         marginTop: "5%",
         marginHorizontal: "5%",
         marginBottom: "5%"
-    }
+    },
+    checkbox: {
+        margin: 8,
+    },
+    paragraph: {
+        fontSize: 15,
+    },
+    section: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
 
 });

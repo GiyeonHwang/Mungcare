@@ -16,18 +16,18 @@ const Stack = createStackNavigator();
 
 
 
-export default function MyPage(navigation) {
-    const [id, setId] = React.useState(""); // 아이디
-    const [pw, setPw] = React.useState(""); // 비밀번호
+export default function MyPage({ navigation, route }) {
+    const [id, setId] = React.useState(route.params.info[0]); // 아이디
+    const [pw, setPw] = React.useState(route.params.info[1]); // 비밀번호
     const [pwEq, setPwEq] = React.useState(""); // 비밀번호 확인
-    const [name, setName] = React.useState(""); // 이름
-    const [nickname, setNickname] = React.useState(""); //닉네임
-    const [phone, setPhone] = React.useState(""); // 전화번호
-    const [address, onChangeAddress] = React.useState(""); // 도로명 주소
-    const [detail_Address, setDetailAddress] = React.useState(""); // 상세 주소
-    const [location_Num, onChangeLocationNum] = React.useState(""); // 우편번호
-    const [check, setCheck] = React.useState(true); //스피너 위치기반 서비스 허용 여부
-
+    const [name, setName] = React.useState(route.params.info[2]); // 이름
+    const [nickname, setNickname] = React.useState(route.params.info[3]); //닉네임
+    const [phone, setPhone] = React.useState(route.params.info[4]); // 전화번호
+    const [address, onChangeAddress] = React.useState(route.params.info[5]); // 도로명 주소
+    const [detail_Address, setDetailAddress] = React.useState(route.params.info[6]); // 상세 주소
+    const [location_Num, onChangeLocationNum] = React.useState(route.params.info[7]); // 우편번호
+    const [check, setCheck] = React.useState(route.params.info[8]); //스피너 위치기반 서비스 허용 여부
+    const [point, setPoint] = React.useState(route.params.info[9]); // 포인트
 
     //해당 페이지 on , off
     const [isModal, setModal] = React.useState(false); // 도로명 주소 찾기 api 모달창 on,off
@@ -43,11 +43,7 @@ export default function MyPage(navigation) {
     const [okDetail, setOkDetail] = React.useState(false);
 
 
-    const regiButton = () =>{
-        console.log("regiButton");
-    }
 
-    /*
     const regiButton = () => {
         if (okId & okPw & okPwEq & okName & okNickname & okPhone & okDetail & detailEditable == true) {
           return false;
@@ -165,7 +161,7 @@ export default function MyPage(navigation) {
         );
         setOkPhone(validatePhone(changedPhone));
       }
-    
+      // 상세주소
       const handleDetailChange = (detail_Address) => {
         setDetailAddress(detail_Address);
         setErrorMessageDetail(
@@ -173,46 +169,9 @@ export default function MyPage(navigation) {
         );
         setOkDetail(validateDetail(detail_Address));
       }
-*/
 
 
-    React.useEffect(() => {
-        //개인 정보 수정
-        //아직 미완
-        //닉네임 중복 여부 확인
-        //이메일 수정 X
-
-
-
-        // 서버에 요청
-        /*
-        axios.post("http://192.168.2.94:5000/member/mypage", null, {
-            params : {
-                id: "user3" //sessionStorage에 있는 id값
-            }
-        })
-        .then(function (res){
-            console.log(res.data);
-
-            setId(res.data.id);
-            setPw(res.data.pw);
-            setName(res.data.name);
-            setNickname(res.data.nickname);
-            setPhone(res.data.phone);
-            setAddress(res.data.address);
-            setDetailAddress(res.data.detail_Address);
-            //setCheck(res.data.check);
-        })
-        .catch(function (error){
-            console.log(error)
-        })*/
-
-
-
-    }, []);
-
-
-    function update(){
+    function update() {
         console.log("update");
         //update하기
         /*
@@ -248,11 +207,8 @@ export default function MyPage(navigation) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}> 회원정보 수정 </Text>
-            <View style={styles.title}>
-
-                <ScrollView>
-
+            <ScrollView>
+                <View style={styles.title}>
                     <View style={{ padding: 10, }}>
                         <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
                             <View style={styles.infoName}>
@@ -262,7 +218,7 @@ export default function MyPage(navigation) {
                                 <TextInput
                                     style={styles.input}
                                     value={nickname}
-                                    onChangeText={setNickname}
+                                    onChangeText={handleNicknameChange}
                                     placeholder="useless placeholder"
                                 />
                             </View>
@@ -275,12 +231,7 @@ export default function MyPage(navigation) {
                             </View>
                             <View style={styles.info}>
                                 {/* 이메일은 수정X */}
-                                <TextInput
-                                    style={styles.input}
-                                    value={id}
-                                    // 데이터베이스에 저장되어 있는 값
-                                    placeholder="useless placeholder"
-                                />
+                                <Text>{id}</Text>
                             </View>
                         </View>
                     </View>
@@ -291,12 +242,7 @@ export default function MyPage(navigation) {
                             </View>
                             <View style={styles.info}>
                                 {/* 이름 수정X? */}
-                                <TextInput
-                                    style={styles.input}
-                                    onChangeText={setName}
-                                    value={name}
-                                    placeholder="useless placeholder"
-                                />
+                                <Text>{name}</Text>
                             </View>
                         </View>
                     </View>
@@ -308,7 +254,7 @@ export default function MyPage(navigation) {
                             <View style={styles.info}>
                                 <TextInput
                                     style={styles.input}
-                                    onChangeText={setPw}
+                                    onChangeText={handlePwChange}
                                     value={pw}
                                     placeholder="useless placeholder"
                                 />
@@ -323,7 +269,7 @@ export default function MyPage(navigation) {
                             <View style={styles.info}>
                                 <TextInput
                                     style={styles.input}
-                                    onChangeText={setPwEq}
+                                    onChangeText={handlePwEqChange}
                                     value={pwEq}
                                     placeholder="useless placeholder"
                                 />
@@ -338,58 +284,58 @@ export default function MyPage(navigation) {
                             <View style={styles.info}>
                                 <TextInput
                                     style={styles.input}
-                                    onChangeText={setPhone}
+                                    onChangeText={handlePhoneChange}
                                     value={phone}
                                     placeholder="useless placeholder"
                                 />
                             </View>
                         </View>
                     </View>
-                    
+
                     <View style={{ padding: 10, }}>
-                            <TouchableOpacity onPress={() => setModal(true)}>
-                                <Text style={styles.text}>우편번호</Text>
-                                <TextInput
-                                    editable={false}
-                                    style={styles.input}
-                                    value={location_Num}
-                                    placeholder="우편번호"
-                                />
-                                <Text style={styles.text}>주소지</Text>
-                                <TextInput
-                                    editable={false}
-                                    style={styles.input}
-                                    value={address}
-                                    placeholder="주소지 입력"
-                                />
-                                <Modal isVisible={isModal}>
-                                    <Postcode
-                                        style={{ width: "100%", height: "80%" }}
-                                        jsOptions={{ animation: true, hideMapBtn: true }}
-                                        onSelected={data => { // 주소를 선택하면
-                                            //  alert(JSON.stringify(data)); // 데이터가 제이손 형태
-                                            console.log(JSON.stringify(data)); // 도로명 주소 콘솔로 출력
-                                            onChangeLocationNum(data.zonecode); // 우편번호 기입
-                                            onChangeAddress(data.address); // 주소명 기입
-                                            setDetailEditable(true); // 상세 주소 활성화
-                                            setModal(false); // 주소찾기 종료
-                                        }}
-                                    />
-                                    <Button
-                                        title="닫기"
-                                        color="#CCCCFF"
-                                        onPress={() => setModal(false)} // 도로명 주소찾기 강제 종료
-                                    />
-                                </Modal>
-                            </TouchableOpacity>
-                            <Text style={styles.text}>세부주소</Text>
+                        <TouchableOpacity onPress={() => setModal(true)}>
+                            <Text style={styles.text}>우편번호</Text>
                             <TextInput
-                                editable={detailEditable}
-                                onChangeText={setDetailAddress}
+                                editable={false}
                                 style={styles.input}
-                                value={detail_Address}
-                                placeholder="세부 주소"
+                                value={location_Num}
+                                placeholder="우편번호"
                             />
+                            <Text style={styles.text}>주소지</Text>
+                            <TextInput
+                                editable={false}
+                                style={styles.input}
+                                value={address}
+                                placeholder="주소지 입력"
+                            />
+                            <Modal isVisible={isModal}>
+                                <Postcode
+                                    style={{ width: "100%", height: "80%" }}
+                                    jsOptions={{ animation: true, hideMapBtn: true }}
+                                    onSelected={data => { // 주소를 선택하면
+                                        //  alert(JSON.stringify(data)); // 데이터가 제이손 형태
+                                        console.log(JSON.stringify(data)); // 도로명 주소 콘솔로 출력
+                                        onChangeLocationNum(data.zonecode); // 우편번호 기입
+                                        onChangeAddress(data.address); // 주소명 기입
+                                        setDetailEditable(true); // 상세 주소 활성화
+                                        setModal(false); // 주소찾기 종료
+                                    }}
+                                />
+                                <Button
+                                    title="닫기"
+                                    color="#CCCCFF"
+                                    onPress={() => setModal(false)} // 도로명 주소찾기 강제 종료
+                                />
+                            </Modal>
+                        </TouchableOpacity>
+                        <Text style={styles.text}>세부주소</Text>
+                        <TextInput
+                            editable={detailEditable}
+                            onChangeText={setDetailAddress}
+                            style={styles.input}
+                            value={detail_Address}
+                            placeholder="세부 주소"
+                        />
                     </View>
 
                     {/* 스피너 
@@ -398,16 +344,22 @@ export default function MyPage(navigation) {
                     }*/}
 
                     <View>
-                        {/* <Button title="수정" onPress={() => Alert.alert('ModifyInfo 페이지로 변환')} /> */}
-                        <Button
-                            disabled={regiButton()}
+                         {/* <Button title="수정" onPress={() => Alert.alert('ModifyInfo 페이지로 변환')} /> */}
+                         <Button
+                            disabled={regiButton}
                             color="#CCCCFF"
                             title="수정"
-                            onPress={() => update()}
+                            onPress={() => {
+                                // update()
+                                navigation.navigate("MyInfo",{
+                                    info : [id, pw, name, nickname, phone, address, detail_Address, location_Num, check, point],
+                                    title : "user Info"
+                                })
+                            }}
                         />
                     </View>
-                </ScrollView>
-            </View>
+                </View>
+            </ScrollView>
         </View>
     )
 }
