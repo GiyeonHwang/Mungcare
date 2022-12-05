@@ -1,27 +1,30 @@
 
 import React, { useEffect, useState } from "react";
-import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, Dimensions, Button, SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, useWindowDimensions,Dimensions, Button, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
-export default function FreeView({ bno, btitle, bcontent, id, bphoto,bviewCount }) {
-
+import HTML from 'react-native-render-html';
+export default function FreeView({ bno, btitle, bcontent, id,btext ,bphoto,bviewCount }) {
+  // export default function FreeView({ item }) {
+  const contentWidth = useWindowDimensions().width;
   // const [cardInfo,setCardInfo] = useState(props.items);
 
-  console.log("보드 메인에서 보낸 bno:", bno);
+  // console.log("보드 메인에서 보낸 bno:", bno);
   const navigation = useNavigation();
 
   const onDetail = () => {
     navigation.navigate("FreeBoardDetail", { no: bno });
   }
-  console.log("서버에서 온 phto", bphoto);
-
+  // console.log("서버에서 온 item.bno", item.bno);
+  // console.log("서버에서 온 btext", btext);
   return (
-    <TouchableOpacity onPress={onDetail}>
+    // <TouchableOpacity onPress={onDetail} style={{borderWidth:1}}>
+    <>
       {bphoto ?
+        <TouchableOpacity onPress={onDetail}>
         <View style={styles.container}>
           <View style={styles.imageView} >
             <Image
-              source={{ uri: bphoto }}
+              source={{ uri:bphoto }}
               style={styles.image}
               resizeMode="stretch"
             />
@@ -33,14 +36,16 @@ export default function FreeView({ bno, btitle, bcontent, id, bphoto,bviewCount 
             </View>
 
             <View style={styles.content}>
-              <Text style={{ fontWeight: "bold" }} numberOfLines={3} ellipsizeMode="tail">{bcontent}</Text>
+            <Text style={{ fontWeight: "bold" }} numberOfLines={3} ellipsizeMode="tail">{btext}</Text>
             </View>
             <View style={styles.bottomContent}>
               <Text style={{fontWeight:"normal",fontSize:10,color:"gray"}}>조회수 {bviewCount}</Text><Text style={styles.titleText}><Text></Text></Text>
             </View>
           </View>
         </View>
+        </TouchableOpacity>
         :
+        <TouchableOpacity onPress={onDetail}>
         <View style={styles.container2}>
           <View style={styles.noneimageView} />
           <View style={styles.contentBox2}>
@@ -49,15 +54,18 @@ export default function FreeView({ bno, btitle, bcontent, id, bphoto,bviewCount 
               <Text style={{ fontSize: 10,fontWeight:"bold" }}> {id}</Text>
             </View>
             <View style={styles.content2}>
-              <Text style={{ fontWeight: "bold" }} numberOfLines={3} ellipsizeMode="tail">{bcontent}</Text>
+           
+              <Text style={{ fontWeight: "bold" }} numberOfLines={3} ellipsizeMode="tail">{btext}</Text>
             </View>
             <View style={styles.bottomContent2}>
               <Text style={{fontWeight:"normal",fontSize:10,color:"gray"}}>조회수 {bviewCount}</Text><Text style={styles.titleText}><Text></Text></Text>
             </View>
           </View>
         </View>
+        </TouchableOpacity>
       }
-    </TouchableOpacity>
+     </>
+    
   )
 };
 const styles = StyleSheet.create({
@@ -67,15 +75,22 @@ const styles = StyleSheet.create({
     maxHeight: Dimensions.get('window').height * 0.5,
     marginTop: 0,
     padding: 5,
+    marginLeft:-Dimensions.get('window').width * 0.02,
+    marginRight:-Dimensions.get('window').width * 0.02,
+    paddingBottom:15,
     position: "relative",
   },
   container2: {
     alignItems: "center",
     width: Dimensions.get('window').width * 0.45,
     maxHeight: Dimensions.get('window').height * 0.2,
-    marginTop: 0,
+    marginTop: 5,
     padding: 5,
+    marginLeft: -Dimensions.get('window').width * 0.02,
+    marginRight:-Dimensions.get('window').width * 0.02,
+    paddingBottom:0,
     position: "relative",
+    
   },
   imageView: {
     alignItems: "center",
@@ -149,7 +164,7 @@ const styles = StyleSheet.create({
     width: "100%",
     maxHeight: "50%",
     backgroundColor: "#F1E7DD",
-    marginTop:10
+    marginTop:10,
   },
   bottomContent: {
     flexDirection: "row",

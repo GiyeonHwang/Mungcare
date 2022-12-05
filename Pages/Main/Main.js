@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, SafeAreaView, StyleSheet, TextInput, Button, Dimensions, Alert, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, SafeAreaView, StyleSheet, FlatList, TextInput, Button, Dimensions, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -10,6 +10,8 @@ import FreeView from '../../Components/FreeView';
 import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useIsFocused } from '@react-navigation/native';
+import MasonryList from '@react-native-seoul/masonry-list';
+
 
 export default function Main({ navigation }) {
 
@@ -72,7 +74,7 @@ export default function Main({ navigation }) {
     <SafeAreaView>
       <ScrollView>
         <View style={{ width: "100%" }}>
-          <View style={{ width: "100%", height: Dimensions.get('window').height * 0.4, }}>
+          <View style={{ width: "100%", height: Dimensions.get('window').height * 0.4 }}>
             <View style={{ width: "100%", height: "30%", flexDirection: "row", justifyContent: "center", marginBottom: 5 }}>
               <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, alignItems: "center", justifyContent: "center", margin: 7 }}
                 onPress={() => navigation.navigate('MainBoard')}
@@ -132,7 +134,7 @@ export default function Main({ navigation }) {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{ padding: 10, marginTop: 20, flex: 1 }}>
+          {/* <View style={{ padding: 10, marginTop: 20 }}>
             <View style={[
               { marginLeft: Dimensions.get('window').width * 0.025, },
               { flexDirection: "row" },
@@ -145,10 +147,72 @@ export default function Main({ navigation }) {
               )
               }
             </View>
+          </View> */}
+
+
+          {/* 임시로 */}
+          {/* <View style={{ padding: 10, marginTop: 20,marginLeft: Dimensions.get('window').width * 0.025,flexDirection:"row",flexWrap:"wrap"}}>
+            
+              {frData.map((e) => (
+                <FreeView key={e.id} {...e} />
+              )
+              )
+              }
+          
+          </View> */}
+
+          <View style={{flexDirection:"row",justifyContent:"center"}}>
+          <View style={{ padding: 10, marginTop: 10 }}>
+
+            {frData.filter((_, i) => i % 2 === 0).map((e) => (
+              <FreeView key={e.id} {...e} />
+            )
+            )
+            }
+
           </View>
+          <View style={{ padding: 10, marginTop: 10}}>
+
+            {frData.filter((_, i) => i % 2 !== 0).map((e) => (
+              <FreeView key={e.id} {...e} />
+            )
+            )
+            }
+
+          </View>
+          </View>
+
         </View>
+        {/* <FlatList
+            columnWrapperStyle={{
+              justifyContent: 'space-between',
+              marginBottom: 32,
+            }}
+            data={frData}
+            renderItem={({ item }) => <FreeView item={item} />}
+            keyExtractor={(index) => index}
+            // extraData={copyItemData}
+            numColumns={2}
+          /> */}
       </ScrollView>
+
+      {/*임시*/}
+      {/* <MasonryList
+            columnWrapperStyle={{
+              // justifyContent: 'space-between',
+              // marginBottom: 32,
+
+            }}
+            data={frData}
+            renderItem={({ item }) => <FreeView item={item}/>}
+            keyExtractor={(index) => index}
+            // extraData={copyItemData}
+            numColumns={2}
+          /> */}
+
+
     </SafeAreaView>
+
   )
 }
 
