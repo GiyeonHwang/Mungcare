@@ -37,15 +37,15 @@ public class BoardServiceImpl implements BoardService{
             Board board = dtoToEntity(dto);
             String text = dto.getBContent(); //bContent 내용 가져옴
 
-            String split1 = "src=\"";
-            String split2 = "\">";
-
-            if(text.contains(split1)) { //이미지가 포함되는 내용일 경우
-                String photo = text.split(split1)[1].split(split2)[0]; //이미지만 추출
-                board.updatePhoto(photo);
-            }
-            //텍스트만 추출하여 저장
             Document doc = Jsoup.parse(text); //Jsoup 라이브러리 활용하여
+
+            //사진 추출하여 저장
+            Elements imgs = doc.getElementsByTag("img"); //이미지 태그만 추출
+            if(imgs.size()>0) {
+                board.updatePhoto(imgs.get(0).attr("src")); //사진만 저장
+            }
+
+            //텍스트만 추출하여 저장
             String text2 = doc.text(); //html 태그 제외한 것만 추출
             board.updateText(text2); //텍스트만 저장
             
@@ -144,31 +144,36 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Integer modify(BoardDTO dto) { //글 수정
-        //수정 하는 항목: '제목', '내용', '카테고리'
-        Optional<Board> result = boardRepository.findById(dto.getBNo());
-        if(result.isPresent()) {
-            Board board = result.get();
-            board.changeTitle(dto.getBTitle()); //제목 수정
-            board.changeContent(dto.getBContent()); //내용 수정
-            String text = dto.getBContent(); //bContent 내용 가져옴
+        try {
+            //수정 하는 항목: '제목', '내용', '카테고리'
+            Optional<Board> result = boardRepository.findById(dto.getBNo());
+            if(result.isPresent()) {
+                Board board = result.get();
+                board.changeTitle(dto.getBTitle()); //제목 수정
+                board.changeContent(dto.getBContent()); //내용 수정
+                String text = dto.getBContent(); //bContent 내용 가져옴
 
-            String split1 = "src=\"";
-            String split2 = "\">";
+                Document doc = Jsoup.parse(text); //Jsoup 라이브러리 활용하여
 
-            if(text.contains(split1)) { //이미지가 포함되는 내용일 경우
-                String photo = text.split(split1)[1].split(split2)[0]; //이미지만 추출
-                board.updatePhoto(photo);
+                //사진 추출하여 저장
+                Elements imgs = doc.getElementsByTag("img"); //이미지 태그만 추출
+                if(imgs.size()>0) {
+                    board.updatePhoto(imgs.get(0).attr("src"));  //사진만 저장
+                }
+
+                //텍스트만 추출하여 저장
+                String text2 = doc.text(); //html 태그 제외한 것만 추출
+                board.updateText(text2); //텍스트만 저장
+                
+                board.updateBType(dto.getBType()); //카테고리 수정
+                boardRepository.save(board);
+                return board.getBNo();
             }
-            //텍스트만 추출하여 저장
-            Document doc = Jsoup.parse(text); //Jsoup 라이브러리 활용하여
-            String text2 = doc.text(); //html 태그 제외한 것만 추출
-            board.updateText(text2); //텍스트만 저장
-            
-            board.updateBType(dto.getBType()); //카테고리 수정
-            boardRepository.save(board);
-            return board.getBNo();
+            return null;
+        } catch(Exception e) {
+            log.info(e.getMessage());
+            return null;
         }
-        return null;
     }
 
 

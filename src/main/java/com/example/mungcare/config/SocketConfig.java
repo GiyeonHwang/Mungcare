@@ -19,5 +19,6 @@ public class SocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){ //Stomp가 받아오는걸 인식하는 메서드
         registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS(); // 마지막 경로가 /ws인 곳에서 받아온다 모든주소로 부터 SockJS를
+        System.out.println("-----------------------------------------------ws----------------------------------------------------");
     }
 }

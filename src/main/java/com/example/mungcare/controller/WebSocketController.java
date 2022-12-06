@@ -22,11 +22,11 @@ public class WebSocketController {
         return message;
     } // 페이로드를 Class Message 형태로 받아온다. 그걸 다시 리턴
 
-    @MessageMapping("/private-message")
-    public Message receivePrivateMessage(@Payload Message message){
-
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message); // /user/David/private
-        System.out.println(message.toString());
-        return message;
-    }
+//    @MessageMapping("/private-message")
+//    public Message receivePrivateMessage(@Payload Message message){
+//
+//        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message); // /user/David/private
+//        System.out.println(message.toString());
+//        return message;
+//    }
 }

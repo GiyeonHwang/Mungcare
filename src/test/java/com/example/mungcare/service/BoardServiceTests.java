@@ -21,13 +21,13 @@ public class BoardServiceTests {
     @Test
     public void testRegister() {
         BoardDTO dto = BoardDTO.builder()
-                .bContent("<div>갑니다가요</div><div>goodgood</div>")
-                .bTitle("bTItle"+3)
+                .bContent("<div>강아지<img src=\"https://www.shutterstock.com/image-photo/funny-red-welsh-corgi-pembroke-600w-2042038094.jpg\" style=\"font-size: 1em;\"></div>")
+                .bTitle("강아지")
                 .bType("자유게시판")
                 .bViewCount(0)
                 .bLike(0)
                 .bReply(0)
-                .id("user4")
+                .id("user3")
                 .build();
 
         Integer bno = boardService.boardInput(dto);
