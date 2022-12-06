@@ -22,7 +22,7 @@ import mung from '../../assets/images/mung.jpg';
 
 
 
-export default function Ranking(){
+export default function Ranking({ navigation }){
   // ranking정보 가져오기
     const [rdata, setRdata] = React.useState([]);
 
