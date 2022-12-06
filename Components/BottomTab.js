@@ -122,6 +122,7 @@ const MainStackScreen = ({ navigation }) => {
       {/*-->  디테일 페이지들도 임포트하고 넣어줘야함 <--*/}
       {/*--> 함께하는 공간 자리<--*/}
       <MainStack.Screen name="Walk" component={Walk} />
+      <MainStack.Screen name="WalkTogether" component={WalkTogether}/>
       <MainStack.Screen name="Ranking" component={Ranking} />
       <MainStack.Screen name="SkinMain" component={SkinMain} />
       <MainStack.Screen name="MyPage" component={MyPage} />

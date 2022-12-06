@@ -5,10 +5,10 @@
 
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/mung.jpg",
+    "icon": "./assets/images/mung.jpg",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/mung.jpg",
+      "image": "./assets/images/mung.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#FFFFFF"
     },

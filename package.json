@@ -38,6 +38,7 @@
     "react-native-paper": "^5.0.0-rc.10",
     "react-native-pell-rich-editor": "^1.8.8",
     "react-native-picker-select": "^8.0.4",
+    "react-native-popup-confirm-toast": "^2.2.5",
     "react-native-reanimated": "^2.13.0",
     "react-native-render-html": "^6.3.4",
     "react-native-responsive-screen": "^1.4.2",
@@ -47,7 +48,9 @@
     "react-native-splash-screen": "^3.3.0",
     "react-native-vector-icons": "^9.2.0",
     "react-native-webview": "^11.24.0",
-    "react-useinterval": "^1.0.2"
+    "react-stomp": "^5.1.0",
+    "react-useinterval": "^1.0.2",
+    "sockjs-client": "^1.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

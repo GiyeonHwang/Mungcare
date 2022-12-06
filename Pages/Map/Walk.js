@@ -11,6 +11,9 @@ import { Camera, Constants } from 'expo-camera';
 //이미지 업로드
 import * as ImagePicker from 'expo-image-picker';
 
+//로딩
+import LottieView from 'lottie-react-native';
+
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
@@ -22,18 +25,11 @@ const Stack = createStackNavigator();
 
 
 export default function Walk({navigation}) {
-  const [mapRegion, setmapRegion] = useState({ //나의 위치 usestate
-    latitude: 36.7987869, //위도
-    longitude: 127.0757584, //경도
-    latitudeDelta: 0.005, //확대되는 범위
-    longitudeDelta: 0.005, //확대되는 범위
-  });
+  const [mapRegion, setmapRegion] = React.useState("");
   //이동경로 표시하기
   const [gps, setGps] = React.useState([]);
-  const [latit, setLatit] = React.useState();
-  const [longit, setLongit] = React.useState();
-
-
+  const [lat, setLatit] = React.useState();
+  const [long, setLongit] = React.useState();
   //모달
   const [modalVisible, setModalVisible] = React.useState(false); //산책 전 안내사항
   const [photoModal, setPhotoModal] = React.useState(false); //사진찍는 모달
@@ -42,7 +38,7 @@ export default function Walk({navigation}) {
   //버튼
   const [start, setStart] = React.useState(true);
   const [success, setSuccess] = React.useState(false);
-  
+
   // 사진찍기
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [camera, setCamera] = useState(null);
@@ -51,9 +47,6 @@ export default function Walk({navigation}) {
   //아마존에 올린 사진 링크
   const [imgUri, setImgUri] = React.useState();
 
-  //사진 여부
-  const [final, setFinal] = React.useState(false);
-  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();  //갤러리 권한 요청이 되어있는지 확인
 
   useEffect(() => {
     (async () => {
@@ -66,31 +59,36 @@ export default function Walk({navigation}) {
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      let address = await Location.reverseGeocodeAsync(location.coords);
-      console.log(location);
-      console.log(address);
-      setmapRegion({ //현재 위치
+      //let address = await Location.reverseGeocodeAsync(location.coords);
+      console.log('location', location);
+      //console.log(address);
+
+      setmapRegion({ // 현재 위치
         latitude: location.coords.latitude,
-        longitude: location.coords.longitude
+        longitude: location.coords.longitude,
+        latitudeDelta: 0.005, // 확대되는 범위
+        longitudeDelta: 0.005, // 확대되는 범위
       })
     })();
 
 
     const date = new Date();
-    const day = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+    const day = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+    console.log('useeffect walk check')
+    console.log("-------------day: "+day);
     //산책 중인지 아닌지 확인
-    axios.post("http://172.30.1.7:5000/calendar/scheck", null, {
+    axios.post("http://192.168.2.94:5000/calendar/check", null, {
       params: {
         id: "user", //로그인한 사용자
-        cWalkDate : day,
+        cDate: day,
       }
     })
       .then(function (res) {
-        console.log(res)
-        console.log(res.data)
-        if (res.data === true) {
-          setModalVisible(true)
-
+        console.log('check',res.data)
+        if (res.data === true) { //산책 시작 가능
+          setStart(true)
+        } else {
+          setStart(false)
         }
       })
 
@@ -101,29 +99,32 @@ export default function Walk({navigation}) {
     //서버에 시간, 위치 보내기
     setModalVisible(true) //test
     const date = new Date();
-    const day = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
+    const day = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
     const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-    // axios.post("http://192.168.2.94:5000/calendar/start", null, {
-    //   params: {
-    //     id: "user", //로그인한 사용자
-    //     cStartTime: time, //시작시간
-    //     cWalkDate : day
-    //   }
-    // })
-    //   .then(function (res) {
-    //     console.log(res)
-    //     console.log(res.data)
-    //     if (res.data === true) {
-    //       setModalVisible(true)
-
-    //     }
-    //   })
+    
+    console.log('walk start')
+    axios.post("http://192.168.2.94:5000/calendar/start", null, {
+      params: {
+        id: "user", //로그인한 사용자
+        cStartTime: time, //시작시간
+        cDate: day,
+        cType: 'walk'
+      }
+    })
+      .then(function (res) {
+        console.log('start',res.data)
+      })
 
   }
 
 
   //산책종료 
   const stopWalk = () => {
+    (async () => {
+      const cameraStatus = await Camera.requestCameraPermissionsAsync();
+      setHasCameraPermission(cameraStatus.status === 'granted');
+    })();
+
     return Alert.alert(
       "산책 끝",
       "산책을 끝내려면 확인을 눌러 카메라를 실행하여 사진 찍어주세요(취소 시 적립이 안되고 저장되지 않습니다)",
@@ -150,12 +151,11 @@ export default function Walk({navigation}) {
     if (camera) {
       const data = await camera.takePictureAsync(null)
       setImage(data.uri);
-      console.log('data',data);
+      console.log('data', data.uri);
       setPhotoModal(false)
+
       //이미지 아마존 웹서버에 올리기
       uploadImage(data.uri);
-
-      setFinalModal(true)
     }
   }
 
@@ -174,9 +174,10 @@ export default function Walk({navigation}) {
 
     console.log('formData', formData)
 
+    //아마존 스토레이지에 저장
     await axios({
       method: 'post',
-      url: 'http://172.30.1.7:5000/upload',
+      url: 'http://192.168.2.77:5000/upload',
       headers: {
         'content-type': 'multipart/form-data',
       },
@@ -184,54 +185,36 @@ export default function Walk({navigation}) {
     })
       .then((res) => {
         console.log(res.data);
-        setImgUri(res.data[0]);//링크
-        setSuccess(true) //로딩창을 보여줌
+        setFinalModal(true)
+        setImgUri(res.data[0]); // 링크
+        setSuccess(true) // 로딩창을 보여줌
       })
   }
 
   const sendServer = () => {
     console.log("sendServer")
-    console.log('imgUri',imgUri);
+    console.log('imgUri', imgUri);
     const date = new Date();
-    const day = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
-    const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}` 
+    const day = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+    const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
 
     // axios.post("http://192.168.2.94:5000/calendar/end", null, {
-    //   params: {
-    //     id: "user",
-    //     cEndTime:time,
-    //     cWalkDate:day,
-    //     cPhoto:imgUri
-    //   }
-    // })
-    //   .then(function (res) {
-    //     console.log(res);
-    //     console.log(res.data);
-
-    //     Alert.alert("등록 완료!")
-    //     navigation.navigate("MyPage");
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error)
-    //     Alert.alert("저장에 실패하였습니다")
-    //   })
-
-
-  }
-
-
-  const walkTo = () => {
-    //서버에 위치 보내기
-    console.log("walkTogether")
-
-
-    // axios.post("링크링크" ,null, {
-    //   params : {
-    //     위도,
-    //     경도
-    //   }
-    // })
-
+    axios.post("http://192.168.2.94:5000/calendar/end", null, {
+      params: {
+        id: "user",
+        cEndTime: time,
+        cDate: day,
+        cPhoto: imgUri
+      }
+    })
+      .then(function (res) {
+        console.log(res.data);
+        Alert.alert("등록 완료!")
+      })
+      .catch(function (error) {
+        console.log(error)
+        Alert.alert("저장에 실패하였습니다")
+      })
   }
 
 
@@ -257,7 +240,7 @@ export default function Walk({navigation}) {
                 </View>
               </View>
               <View>
-                <Text>앱을 닫으면 위치정보를 가져올 수 없습니다</Text>
+                <Text>앱을 닫으면 위치정보를 가져올 수 없습니다 ????</Text>
                 <Text>산책을 건당 10Point입니다! 하루에 최대 50Point까지 적립 가능합니다</Text>
                 <Text>산책을 끝낼 때는 사진을 찍어야지 Point적립이 가능합니다!</Text>
                 <Text>사진은 갤러리에서 가져올 수 없으며 카메라를 허용해줘야지 인증할 수 있습니다</Text>
@@ -268,8 +251,10 @@ export default function Walk({navigation}) {
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => {
-                    setModalVisible(!modalVisible)
+                    // setModalVisible(!modalVisible)
                     setStart(false)
+                    console.log(finalModal)
+                    setModalVisible(!modalVisible)
 
                   }}>
                   <Text style={styles.textStyle}>확인</Text>
@@ -284,7 +269,7 @@ export default function Walk({navigation}) {
 
 
 
-        {/* 사진 찍은 후 모달 */}
+        {/* 사진 찍기 모달 */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -296,30 +281,48 @@ export default function Walk({navigation}) {
 
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-                <Camera
-                  ref={ref => setCamera(ref)}
-                  style={{
-                    height:400,
-                    width:300
-                  }}
-                  // style={styles.fixedRatio}
-                  type={type}
-                />
-              <View>
-                <Text>  </Text>
-                <View style={{ flexDirection: 'row', }}>
+              <Camera
+                ref={ref => setCamera(ref)}
+                style={{
+                  height: 400,
+                  width: 300,
+                }}
+                // style={styles.fixedRatio}
+                type={type}
+              />
+              <Text>  </Text>
+              <View style={{ width: 300, }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                  <View style={{ width: 50, }}></View>
                   <Pressable
                     onPress={() => {
                       console.log("찰칵")
                       takePicture()
-                      console.log(image)
-                      setFinal(true);
                     }} >
                     <View style={styles.takeButton} ></View>
                   </Pressable>
+                  <Pressable
+                    style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'center', }}
+                    onPress={() => {
+                      setType(
+                        type === Camera.Constants.Type.back
+                          ? Camera.Constants.Type.front
+                          : Camera.Constants.Type.back
+                      )
+                    }} >
+                    <View style={{
+                      borderColor: "white",
+                      justifyContent: 'center',
+                      width: 40,
+                      height: 40,
+                      borderRadius: 100
+                    }} >
+                      <Image style={{ resizeMode: "cover", width: '100%', height: '100%', borderRadius: 50, }}
+                        source={require('../../assets/images/ch.png')}></Image>
+                    </View>
+                  </Pressable>
                 </View>
               </View>
-              {/* {image && <Image source={{ uri: image }} style={{ flex: 1 }} />} */}
             </View>
 
           </View>
@@ -341,15 +344,15 @@ export default function Walk({navigation}) {
 
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              
+
               <View style={{ padding: 10, justifyContent: 'center' }}>
                 <View style={{ borderBottomWidth: 1, width: '100%', }}>
                   <Text style={{ fontSize: 30 }}>산책 완료!</Text>
                 </View>
               </View>
               <View style={{ padding: 10 }}>
-                <View style={{ backgroundColor: 'yellow', alignItems: 'center', justifyContent: 'center' }}>
-                  <Image source={{ uri: image }} style={{ resizeMode: "cover", height: 300, width: 220, borderWidth: 3 }} />
+                <View style={{ backgroundColor: 'yellow', alignItems: 'center', justifyContent: 'center', height: 350, width: 250 }}>
+                  <Image source={{ uri: image }} style={{ resizeMode: "cover", height: '100%', width: '100%', borderWidth: 3 }} />
                 </View>
               </View>
               <View style={{ padding: 10, alignContent: 'center', justifyContent: 'center' }}>
@@ -363,6 +366,7 @@ export default function Walk({navigation}) {
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
                   onPress={() => {
+
                     setFinalModal(!finalModal)
                     // 이미지 업로드 및 서버에 전송
                     sendServer()
@@ -379,43 +383,38 @@ export default function Walk({navigation}) {
 
 
 
+{
+  mapRegion != "" ? 
 
       <View style={styles.map}>
-        <MapView
+       
+          <MapView
           style={{ alignSelf: 'stretch', height: '100%' }}
-          // region={mapRegion}
-          // initialRegion={{mapRegion}}
-          initialRegion={{
-            latitude: 36.7987869,
-            longitude: 127.0757584,
-            latitudeDelta: 0.0005,
-            longitudeDelta: 0.0005,
-          }}
+          region={mapRegion}
+          // initialRegion={mapRegion}
 
           //사용자 위치에 맞게 마커가 표시된다.
           showsUserLocation={true}
-          // userLocationUpdateInterval = 
+          // userLocationUpdateInterval =
           onUserLocationChange={(e) => {
             //사용자가 이동하면 위치를 저장함
             //console.log("onUserLocationChange", e.nativeEvent.coordinate);
             //위치 위도경도를 저장함
 
-            // 너무 새새하게 나와서 자름! 
-            // 소숫점 4자리까지만 나오게 저장하게 함
-            // const lat = e.nativeEvent.coordinate.latitude.toFixed(4)
-            // const long = e.nativeEvent.coordinate.longitude.toFixed(4)
 
-            // const newCoordinate = {
-            //   latitude: lat,
-            //   longitude: long
-            // }
-            // setGps(gps.concat(newCoordinate));
-            // console.log("gps", gps);
+            const newCoordinate = {
+              latitude: e.nativeEvent.coordinate.latitude,
+              longitude: e.nativeEvent.coordinate.longitude
+            }
+            setLatit(e.nativeEvent.coordinate.latitude)
+            setLongit(e.nativeEvent.coordinate.longitude)
+            setGps(gps.concat(newCoordinate));
+            //console.log("gps", gps);
 
+            setmapRegion(newCoordinate)
             // setmapRegion(gps.concat(newCoordinate));
           }}
         >
-          {/* 마커표시 */}
           <Marker
             coordinate={mapRegion}
             draggable={true} //마커 드래그 가능
@@ -436,9 +435,7 @@ export default function Walk({navigation}) {
             </Callout>
           </Marker>
 
-          {/* 반경 */}
-          <Circle center={mapRegion} radius={500} />
-
+         
           <Polyline
             coordinates={gps}
             strokeColor="#4e90f7"
@@ -452,8 +449,21 @@ export default function Walk({navigation}) {
           {/* 버튼 */}
           {
             start ? <Pressable style={styles.button} onPress={startWalk} >
-              <Text style={styles.text}>start</Text>
-            </Pressable> :
+              <Text >      start      </Text>
+            </Pressable> : <><Pressable style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingVertical: 12,
+              paddingHorizontal: 32,
+              borderRadius: 4,
+              elevation: 3,
+              backgroundColor: 'red',
+              width: '30%'
+            }} onPress={stopWalk} >
+              <Text>stop</Text>
+
+            </Pressable>
+              <Text>              </Text>
               <Pressable style={{
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -461,20 +471,25 @@ export default function Walk({navigation}) {
                 paddingHorizontal: 32,
                 borderRadius: 4,
                 elevation: 3,
-                backgroundColor: 'red',
-              }} onPress={stopWalk} >
-                <Text style={styles.text}>stop</Text>
-              </Pressable>
-
+                backgroundColor: '#3AB5A9',
+                width: '30%'
+              }} onPress={() => navigation.navigate("WalkTogether", {
+                info: [ lat, long ],
+                title: "title",
+              })}>
+                <Text>togher</Text>
+              </Pressable></>
           }
-          <Text>              </Text>
-          <Pressable style={styles.button} onPress={navigation.navigate("WalkTogether")}>
-            <Text style={styles.text}>togher</Text>
-          </Pressable>
 
 
         </View>
       </View>
+      : <LottieView
+      source={require('../../assets/dog.json') /** 움직이는 LottieView */
+      }
+      autoPlay loop
+    />  
+    }
     </View>
   );
 };
@@ -490,14 +505,13 @@ const styles = StyleSheet.create({
   },
   map: {
     width: "100%",
-    height: "90%",
+    height: "92%",
   },
   buttons: {
-    padding: 10,
-    height: "10%",
+    padding: 5,
+    height: "8%",
     flexDirection: 'row',
     widh: "100%",
-    backgroundColor: 'yellow',
     justifyContent: 'center'
   },
   button: {
@@ -507,7 +521,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: 'orange',
+    backgroundColor: '#F7931D',
   },
   centeredView: {
     flex: 1,
@@ -546,15 +560,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   cameraContainer: {
-    flex:1,
+    flex: 1,
     flexDirection: 'row',
     backgroundColor: 'yellow'
   },
   fixedRatio: {
     flex: 1,
     aspectRatio: 1,
-    width:300,
-    height:500
+    width: 300,
+    height: 500
     // height:Constants.height*0.7,
     // width:Constants.width
   },
