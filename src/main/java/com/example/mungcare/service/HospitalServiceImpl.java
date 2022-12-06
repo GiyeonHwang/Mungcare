@@ -42,7 +42,7 @@ public class HospitalServiceImpl implements HospitalService{
         for(Hospital hospital : entity) {
             double distance = getDistance(latitude, longitude, hospital.getLatitude(), hospital.getLongitude());
 
-            if(distance<5) {
+            if(distance<2) {
                 System.out.println("------------------------"+hospital+"\n==="+distance);
                 System.out.println(hospital);
                 HospitalDTO dto = entityToDTO(hospital);
