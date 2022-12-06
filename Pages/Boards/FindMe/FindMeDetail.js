@@ -257,7 +257,7 @@ export default function FindeMeDetail({ navigation, route }) {
                         </View>
                     }
                 </View>
-                <View style={{padding:8}}>
+                <View style={{padding:8,borderTopWidth:0.7}}>
                     <HTML source={{ html: content }} contentWidth={contentWidth} />
                 </View>
                 <View style={{ width: "100%",height: Dimensions.get('window').height * 0.05, borderTopWidth: 0.7, borderBottomWidth: 0.5, justifyContent: "center", padding: 10 }}>

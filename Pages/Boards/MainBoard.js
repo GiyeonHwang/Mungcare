@@ -26,7 +26,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // 세션
 import FreeBoardMain from './FreeBoard/FreeBoardMain';
 import FindMeMain from './FindMe/FindMeMain';
 import AffectMain from './Affect/AffectMain';
-
+import DonateMain from './Donate/DonateMain';
 
 
 

@@ -67,7 +67,7 @@ export default function ModifyBoard({navigation,route}) {
             }  />
             ),
           });
-    },[navigation])
+    })
 
     const uploadImage = async () => { //이미지 셀렉터
         if (!status.granted) { // status로 권한이 있는지 확인
