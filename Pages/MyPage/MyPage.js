@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, StyleSheet, Button, Alert, Image } from 'react-native';
+import { Text, View, StyleSheet, Button, Alert, Image, ProgressBarAndroid } from 'react-native';
 import Constants from 'expo-constants';
 
 //navigation사용할 때 필요
@@ -9,6 +9,9 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// 사진 import해줌
+import coin from '../../assets/images/coin.png';
 
 const Stack = createStackNavigator();
 
@@ -66,46 +69,49 @@ export default function MyPage({navigation}) {
     // AsyncStorage.removeItem("check")
 
     return (
-        <>
-            <View style={{ width: '100%', height: '25%', padding: 10,  alignItems: 'center', }}>
-                <View style={{ padding: 10, width:'80%', height:'100%'}}>
-                    {/* 포인트, 프로필 */}
-                    <View style={{ flexDirection: 'row', backgroundColor:'red', height : '65%' , borderBottomWidth: 1,}}>
-                        <View style={{ backgroundColor: 'blue', width: '65%', padding: 10 }}>
-                            <View style={{ backgroundColor: 'white', height: '25%'}}>
-                                <Text style={{fontSize:13, }}>내 포인트</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', height: '75%', }}>
-                                <View style={{ width: '30%', height: '100%', backgroundColor: 'red', }}>
-                                    <View style={{ alignItems: 'center'}}>
-                                        <Image source={require('../../assets/images/coin.png')} style={{width:'100%',height:'100%'}} />
-                                    </View>
-                                </View>
-                                <View style={{ width: '70%', height: '100%', backgroundColor: 'yellow' }}>
-                                    <Text>{point}</Text>
-                                </View>
-                            </View>
+        <View style={styles.container}>
+           <View style={styles.pointbox}>
+                <View style={styles.mypagebox}>
+                    {/* <Text style={styles.mypagetext}>이곳은 MY PAGE입니다.</Text> */}
+                    <Image source={coin} style={styles.mypageimg}/>
+                    <View style={styles.mypagebox2}>
+                        <Text style={styles.mypagename}>username</Text>
+                        <View style={styles.mypagebox3}>
+                            <Text style={styles.mypageinfo}>받은 좋아요</Text>
+                            <Text style={styles.mypageinfo}>작성한 게시글</Text>
+                            <Text style={styles.mypageinfo}>강아지 이름</Text>
                         </View>
-                        <View style={{ backgroundColor: 'red', width: '35%', padding: 10 }}>
-                            {/* 프로필 */}
-                            <View style={{ alignItems: 'center'}}>
-                                <Image source={require('../../assets/images/coin.png')} style={{ width: '100%', height: '100%' }} />
-                            </View>
-                        </View>
-                    </View>
-                    {/* 포인트 현황, 닉네임 */}
-                    <View style={{ flexDirection: 'row', backgroundColor:'red', height : '30%'}}>
-                        <View style={{ backgroundColor:'lightgreen', width:'65%'}}>
-                            <Button title='포인트 현황보기' ></Button>
-                        </View>
-                        <View style={{padding:10, backgroundColor:'blue', width:'35%', alignContent:'center', }}>
-                            <Text >{nickname}</Text>
-                        </View>
-                        
                     </View>
                 </View>
             </View>
-            <View style={{ width: '100%', height: '75%', backgroundColor: 'lightgreen' }}>
+            <View style={styles.box2}>
+                <View>
+                    <Text>내 포인트</Text>
+                </View>
+                <View style={styles.androidbox}>
+                    <View style={styles.example}>
+                        <ProgressBarAndroid
+                        styleAttr="Horizontal"
+                        indeterminate={false}
+                        progress={0.5} //1등%만 보이니까 0으로 고정
+
+                        //   progress={rdata.length !=0?rdata[0].totalPoint/100:null} //1등%만 보이니까 0으로 고정
+                        />
+                    </View>
+                </View>
+
+            </View>
+            
+            
+
+
+
+
+
+
+
+
+            <View style={{flex:5, width: '100%', height: '70%', backgroundColor: 'lightgreen' }}>
                 <View style={{ padding: 30 }}>
                     <View style={{ padding: 10, width: '100%', backgroundColor: 'red', }}>
                         <Button title="상세 정보 페이지" onPress={() => {
@@ -131,17 +137,67 @@ export default function MyPage({navigation}) {
                     </View>
                 </View>
             </View>
-        </>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 24,
-        // backgroundColor: '#eaeaea',
-        backgroundColor:"#c9fffe"
     },
+    pointbox:{
+        flex: 2,
+        borderWidth:1,
+        marginHorizontal:"3%",
+        marginTop:"3%"
+    },
+    mypagebox:{
+        flexDirection: 'column',
+        // margin:"5%",
+        
+    },
+    mypagebox2:{
+        flexDirection: 'row',
+    },
+    mypagebox3:{
+        flexDirection: 'row',
+        // margin:'2%'
+        marginHorizontal:"2%"
+    },
+    mypagename:{
+        fontweight:'bold',
+        marginBottom:"30%",
+        marginLeft:"5%"
+        // marginHorizontal:"3%"
+        // left:"2%"
+    },
+    mypageimg:{
+        width:120,
+        height:120,
+        // bottom:"5%",
+        // left:"80%",
+        // marginBottom:"80%",
+
+    },
+    mypageinfo:{
+        // borderWidth:1,
+        marginLeft:'2%'
+    },
+    box2:{
+        flex:1
+    },
+    androidbox:{
+        marginHorizontal:"3%",
+
+    },
+    example: {
+        marginVertical: 10,
+    },
+
+
+
+
+
     title: {
         marginTop: 16,
         paddingVertical: 8,
