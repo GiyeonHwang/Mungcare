@@ -12,6 +12,7 @@
     "@actbase/react-daum-postcode": "^1.0.4",
     "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-native-masked-view/masked-view": "0.2.8",
+    "@react-native-seoul/masonry-list": "^1.4.1",
     "@react-navigation/bottom-tabs": "^6.4.1",
     "@react-navigation/drawer": "^6.5.1",
     "@react-navigation/native": "^6.0.14",

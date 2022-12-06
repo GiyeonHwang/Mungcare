@@ -88,7 +88,9 @@ export default function Main({ navigation }) {
                 <Text style={{ fontWeight: "bold", fontSize: 20 }}>캘린더</Text>
                 <Text style={{ fontWeight: "bold", fontSize: 20 }}>Calender</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, alignItems: "center", justifyContent: "center", margin: 7 }}>
+              <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, alignItems: "center", justifyContent: "center", margin: 7 }}
+              onPress={() => navigation.navigate('MapInfo')}
+              >
                 <Text style={{ fontWeight: "bold", fontSize: 20 }}>함께하는공간</Text>
                 <Text style={{ fontWeight: "bold", fontSize: 20 }}>Map</Text>
               </TouchableOpacity>

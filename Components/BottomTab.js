@@ -43,6 +43,7 @@ import MyPageModify from '../Pages/MyPage/MyPageModify';
 import AnimalDetail from '../Pages/MyPage/AnimalDetail';
 import FreeView from './FreeView';
 import ModifyBoard from './ModifyBoard';
+import MapInfo from '../Pages/Map/MapInfo';
 const Tab = createBottomTabNavigator();
 
 const MainStack = createStackNavigator();
@@ -116,6 +117,8 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="FindMeMain" component={FindMeMain} />
       <MainStack.Screen name="CalenderMain" component={CalenderMain} />
       <MainStack.Screen name="FreeBoardMain" component={FreeBoardMain} />
+      {/*MAP 병원 위치*/}
+      <MainStack.Screen name="MapInfo" component={MapInfo}/>
       {/*-->  디테일 페이지들도 임포트하고 넣어줘야함 <--*/}
       {/*--> 함께하는 공간 자리<--*/}
       <MainStack.Screen name="Walk" component={Walk} />
