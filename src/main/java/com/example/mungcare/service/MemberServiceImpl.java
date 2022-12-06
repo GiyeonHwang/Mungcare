@@ -15,6 +15,7 @@ import java.util.Optional;
 @Log4j2
 public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository; //자동 주입 final
+    private final PointService pointService;
 
     @Override
     public String memberInput(MemberDTO dto) { //회원가입
@@ -54,6 +55,7 @@ public class MemberServiceImpl implements MemberService{
         Optional<Member> result = memberRepository.findById(id);
         if(!result.isPresent())
             return null;
+        result.get().changeAccurePoint(pointService.totalMyPoint(id));
         return result.get();
     }
 

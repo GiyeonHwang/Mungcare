@@ -70,9 +70,7 @@ public class Member {
         this.location_Num = location_Num;
     }
 
-    public void calcAccure(Integer walkPoint, Integer playPoint) { //랭킹 누적 포인트
-        this.accurePoint = walkPoint + playPoint;
+    public void changeAccurePoint(Integer accurePoint) { //나의 총 누적 포인트 현황
+        this.accurePoint = accurePoint;
     }
-
-
 }

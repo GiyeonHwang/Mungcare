@@ -2,7 +2,6 @@ package com.example.mungcare.service;
 
 import com.example.mungcare.dto.PointDTO;
 import com.example.mungcare.entity.Point;
-import com.example.mungcare.repository.MemberRepository;
 import com.example.mungcare.repository.PointId;
 import com.example.mungcare.repository.PointRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,6 @@ import java.util.*;
 @Log4j2
 public class PointServiceImpl implements PointService{
     private final PointRepository pointRepository; //자동 주입 final
-    private final MemberRepository memberRepository; //자동 주입 final
 
     @Override
     public Integer pointInput(PointDTO dto) { //포인트 등록
