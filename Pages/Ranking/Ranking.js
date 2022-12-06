@@ -20,9 +20,26 @@ import Icon from 'react-native-vector-icons/Ionicons';
 // 사진 import
 import mung from '../../assets/images/mung.jpg';
 
+//로그인 유지
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const saveid = async () =>{
+  try{
+    const value = await AsyncStorage.getItem('id');
+    if(value != null){
+      console.log("유저 아이디 가져오기", value);
+    }
+  }catch(error){
+    console.log("캘린더 로그인 유지 실패,,,", error)
+  }
+}
+
+
 
 
 export default function Ranking(){
+  saveid()
+
   // ranking정보 가져오기
     const [rdata, setRdata] = React.useState([]);
 
