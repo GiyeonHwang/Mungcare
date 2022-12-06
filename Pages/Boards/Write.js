@@ -11,39 +11,25 @@ import {View,
         Alert,
         ImageStore,
         height,
-        richTextHandle,
+        richTextHandle,TouchableOpacity,
       Button} from 'react-native';
 import {actions, RichEditor, RichToolbar} from "react-native-pell-rich-editor";
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FormData from 'form-data';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // 세션
-import ServerPort from '../../Components/ServerPort';
 
 //사진 업로드
 import * as ImagePicker from 'expo-image-picker';
 
-export default function Write() {
+// keyboardAvoidingView
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 
-  const IP = ServerPort();
+export default function App() {
+
   //bType
-  const [bType,setbType] = React.useState('자유게시판');
-  const [bTitle,setBTitle] = React.useState('');
-  const [bContent,setBContent] = React.useState('');
-
-  // 세션 아이디 값 받아오기
-  const getData = async () => {
-    try {
-      const value = await AsyncStorage.getItem('id')
-      if(value !== null) {
-          return value;
-      }
-    } catch(e) {
-        console.log("not session");
-    }
-  }
-
-
+  const [bType,setbType] = useState('');
+  const [bTitle,setBTitle] = useState('');
+  const [bContent,setBContent] = useState('');
   // select 관련임
   const countries = ["자유게시판", "찾아줘게시판", "자랑게시판", "기부게시판"];
 
@@ -54,14 +40,12 @@ export default function Write() {
 
   const write = async () => {
 
-    const id = await getData();
-
-    axios.post(`${IP}/board/write`,null,{
+    axios.post('http://192.168.2.94:5000/board/write',null,{
       params:{
         bContent : bContent,
         bTitle : bTitle,
         bType : bType,
-        id: id
+        id:"user"
       }
     })
     .then((res) => {
@@ -105,7 +89,7 @@ export default function Write() {
 
     await axios({
       method : 'post',
-      url : `http://192.168.2.77:5000/upload`,
+      url : 'http://192.168.2.77:5000/upload',
       headers:{
         'content-type' : 'multipart/form-data',
       },
@@ -123,101 +107,148 @@ export default function Write() {
   }
 
   return (
-    <View style={styles.box}>
-      <Button title="Press Me" mode="contained" onPress={write}/>
-      <View style={{alignItems: 'center' , marginTop: "5%"}} >
-        <SelectDropdown
-          data={countries}
-          onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
-            setbType(selectedItem);
-          }}
-          defaultValue = {countries[0]}
-          buttonStyle={styles.dropdown1BtnStyle}
-          buttonTextStyle={styles.dropdown1BtnTxtStyle}
-          renderDropdownIcon={isOpened => {
-            return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-          }}
-          dropdownIconPosition={'right'}
-          dropdownStyle={styles.dropdown1DropdownStyle}
-          rowStyle={styles.dropdown1RowStyle}
-          rowTextStyle={styles.dropdown1RowTxtStyle}
-        />
-      </View>
-      <SafeAreaView style = {{marginTop : "3%" , backgroundColor : "red"}}> 
+    <View style={styles.container}>
+      <View style={styles.box}>
+        <View style={styles.dropbutton} >
+          {/* 게시판 선택하는 곳 */}
+          <SelectDropdown
+            data={countries}
+            onSelect={(selectedItem, index) => {
+              console.log(selectedItem, index);
+              setbType(selectedItem);
+            }}
+            defaultValue = {countries[0]}
+            buttonStyle={styles.dropdown1BtnStyle}
+            buttonTextStyle={styles.dropdown1BtnTxtStyle}
+            renderDropdownIcon={isOpened => {
+              return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+            }}
+            dropdownIconPosition={'right'}
+            dropdownStyle={styles.dropdown1DropdownStyle}
+            rowStyle={styles.dropdown1RowStyle}
+            rowTextStyle={styles.dropdown1RowTxtStyle}
+          />
+          <View style={styles.Button2}>
+            <Button title="등록" mode="contained" onPress={write} color={'#3AB5A9'}/>
+          </View>
+        </View>
 
-          {/* 제목입력 */}
-        <TextInput
-        style={styles.inputtitle}
-        placeholder="제목을 입력해주세요."
-        onChangeText={text => setBTitle(text)}
-        />     
-        
+        <SafeAreaView style = {{marginTop : "3%" , backgroundColor : "#EBE3D7", flex:1}}> 
 
-          {/* 에디터를 사용해서 글쓰기를 해보야요 ^^ */}
-            <ScrollView usecontainer = {true} 
-            >
-                <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}   style={{ flex: 1 }}>
-                      {/* <RichEditor
-                        ref={richText} // from useRef()
-                        onChange={richTextHandle}
-                        placeholder="Write your cool content here :)"
-                        androidHardwareAccelerationDisabled={true}
-                        style={styles.richTextEditorStyle}
-                        onHeightChange={handleHeightChange}
-                        initialHeight={600}
-                      /> */}
+          
 
-                    <RichEditor  
-                        containerStyle={{ minHeight: height }}
-                        useContainer
-                        editorStyle={{backgroundColor: "Skyblue"}}
-                        ref={richText}
-                        onChange={ text => setBContent(text)}
-                    />
+            {/* 제목입력 */}
+          <TextInput
+          style={styles.inputtitle}
+          placeholder="제목을 입력해주세요."
+          onChangeText={text => setBTitle(text)}
+          />    
 
-                    {/* 하단에 버튼 누르면 바뀌는 것들 */}
-                    <RichToolbar 
-                      editor={richText}
-                      selectedIconTint="#873c1e"
-                      iconTint="#312921"
-                      onPressAddImage = {uploadImage}
-                      actions={[  actions.setBold
-                                , actions.setItalic
-                                , actions.setUnderline
-                                , actions.heading1
-                                , actions.insertBulletsList
-                                , actions.insertOrderedList
-                                , actions.insertImage
-                                , actions.insertVideo ]}
-                      iconMap={{ [actions.heading1]: ({tintColor}) => (<Text style={[{color: tintColor}]}>H1</Text>), }}  
-                    />
-                </KeyboardAvoidingView>
-            </ScrollView>
+          {/* 하단에 버튼 누르면 바뀌는 것들 */}
+          {/* <RichToolbar 
+              
+              editor={richText}
+              onPressAddImage = {uploadImage}
+              actions={[  actions.setBold
+                        , actions.setItalic
+                        , actions.setUnderline
+                        , actions.heading1
+                        , actions.insertBulletsList
+                        , actions.insertOrderedList
+                        , actions.insertImage ]}
+              iconMap={{ [actions.heading1]: ({tintColor}) => (<Text style={[{color: tintColor}]}>H1</Text>), }}  
+            />  */}
+          
+
+            {/* 에디터를 사용해서 글쓰기를 해보야요 ^^ */}
+              {/* <ScrollView style={styles.container} > */}
+                  
+          <ScrollView>
+          <RichEditor
+                
+            ref={richText} // from useRef()
+            onChange={richTextHandle}
+            placeholder="Write your cool content here :)"
+            androidHardwareAccelerationDisabled={true}
+            // style={{flex: 1 }}
+            onHeightChange={handleHeightChange}
+            initialHeight={495}
+            // editorInitializedCallback={() => this.scrollRef.current.scrollTo({y: scrollY - 30, animated: true})}
+          />
+
+          </ScrollView>
+                      
+
+                  
+            {/* <TouchableOpacity style={styles.button}> */}
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}   style={{ flex: 1 }}>
+              {/* 하단에 버튼 누르면 바뀌는 것들 */}
+              <RichToolbar 
+                    
+                    editor={richText}
+                    onPressAddImage = {uploadImage}
+                    actions={[  actions.setBold
+                              , actions.setItalic
+                              , actions.setUnderline
+                              , actions.heading1
+                              , actions.insertBulletsList
+                              , actions.insertOrderedList
+                              , actions.insertImage ]}
+                    iconMap={{ [actions.heading1]: ({tintColor}) => (<Text style={[{color: tintColor}]}>H1</Text>), }}  
+                  /> 
+
+            {/* </TouchableOpacity> */}
+                
+
+                {/* <Button title="Press Me" mode="contained" style={{flex:1}} onPress={write}/> */}
+            </KeyboardAvoidingView>
+              
+            {/* </ScrollView> */}
 
         </SafeAreaView>
 
+      </View>
+
     </View>
+    
     
   );
 }
 
 const styles = StyleSheet.create({
+  container:{
+    flex:1,
+  },
+  innerContainer:{
+    flex:1,
+  },
   box:{
     flex: 1,
-    backgroundColor : 'yellow'
+    backgroundColor : '#EBE3D7', //아이보리
+  },
+  dropbutton:{
+    flexDirection: 'row',//react native에서 사용되는 가로 정렬
+    alignItems: 'center',
+    //  marginTop: "10%"
+  },
+  Button2:{
+    maring:'5%',
+    right:'5%'
   },
     drop:{
+    margin:"10%",
     backgroundColor: '#171717',
     alignItems: 'center',
     justifyContent: 'center', //세로로 가운데 갈 수 있게 해줌
     paddingHorizontal: 15
     },
     inputtitle: {
-      
+      // flex:1, //flex있으면 글자 입력할 때 키보드에 밀려서 안 보인다
       height: 40,
-      margin: 12,
+      // margin: 12,
       borderWidth: 1,
+      borderLeftWidth:0,
+      borderRightWidth:0,
       padding: 10,
       
     },
@@ -237,6 +268,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#444',
     justifyContent: 'center',
+    margin:'3%'
     
   },
   scrollViewContainer:{
@@ -249,4 +281,4 @@ const styles = StyleSheet.create({
   dropdown1DropdownStyle: {backgroundColor: '#EFEFEF'},
   dropdown1RowStyle: {backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5'},
   dropdown1RowTxtStyle: {color: '#444', textAlign: 'left'},
-  });
+  });;
