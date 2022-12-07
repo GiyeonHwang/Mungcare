@@ -147,7 +147,22 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="Play" component={Play}/> 
 
       <MainStack.Screen name="Food" component={Food} />
-      <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail}/>
+      <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail}
+      options={{
+        headerTitle:"게시판",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+      />
       <MainStack.Screen name="FindMeDetail" component={FindMeDetail} />
       <MainStack.Screen name="ModifyBoard" component={ModifyBoard} options={{}}/>
       <MainStack.Screen name="Write" component={Write}/>
