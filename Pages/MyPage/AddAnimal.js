@@ -4,11 +4,13 @@ import { Text, View, SafeAreaView, StyleSheet, TextInput, Button, Alert, Touchab
 import Postcode from '@actbase/react-daum-postcode';
 import Modal from "react-native-modal";
 import Checkbox from 'expo-checkbox';
+import ServerPort from '../../Components/ServerPort';
 //npm install expo-checkbox
 
 //이미지 업로드
 import * as ImagePicker from 'expo-image-picker';
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 //navigation 사용할 때 필요
@@ -17,9 +19,11 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
 
+const IP = ServerPort();
 
-export default function AddAnimal({ navigation }) {
-
+export default function AddAnimal({ navigation, route}) {
+    const [id, setId] = React.useState(""); // 아이디
+    const [check, setCheck] = React.useState(false);
     const [aName, setAnimalName] = React.useState(""); //애완동물 이름
     const [aSex, setAnimalSex] = React.useState(""); //성별
     const [aBirth, setAnimalBirth] = React.useState(""); //생일
@@ -35,7 +39,6 @@ export default function AddAnimal({ navigation }) {
     const [okSex, setOkSex] = React.useState(false);
     const [okBirth, setOkBirth] = React.useState(false);
     const [okBreed, setOkBreed] = React.useState(false);
-
 
     //갤러리 권한 요청이 되어있는지 확인
     const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -53,6 +56,37 @@ export default function AddAnimal({ navigation }) {
         const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-15|]{1,20}$/;
         return regex.test(aName);
     }
+
+    //애완동물 이름 겹치는지 확인
+    const checkName = aName => {
+        axios.post(`${IP}/animal/check`, null, {
+            params: {
+                id: route.params.id,
+                aName: aName
+            }
+        })
+        .then(function(res) {
+            setCheck(res.data);
+            // check =res.data;
+            console.log("------res: ",res.data);
+            // return res.data;
+            // if(res.data===true)
+            //     return true
+            // return res.data;
+        })
+        .then((res) => {
+            console.log("id: ",route.params.id);
+            console.log("aName: ",aName);
+            console.log("-----check: ",check);
+        }
+        )
+        .catch(function(error) {
+            console.log("반려동물 이름 중복체크 실패- ",error);
+        })
+        console.log("hihi",check);
+        return check;
+    }
+
     //성별
     const validateSex = aSex => {
         const regex = /^[가-힣|0-2|]$/;
@@ -84,9 +118,15 @@ export default function AddAnimal({ navigation }) {
     //애완동물 이름 핸들러
     const handleNameChange = (aName) => {
         const changeName = removespace(aName);
+        console.log("------checkName: ",checkName(changeName));
+        console.log("------validateName: ",validateName(changeName));
         setAnimalName(changeName);
         setErrorMessage(
-            validateName(changeName) ? "올바른 형식입니다" : "애완동물의 이름은 한글과 영어만 가능합니다"
+            validateName(changeName) && checkName(changeName) ? "올바른 형식입니다.1" : 
+            (validateName(changeName) ? (checkName(changeName) ? "올바른 형식입니다.2" : "중북되는 이름입니다.")
+             : "애완동물의 이름은 한글과 영어만 가능합니다")
+            // validateName(changeName) ? "올바른 형식입니다" : "애완동물의 이름은 한글과 영어만 가능합니다",
+            // checkName(changeName) ? "올바른 형식입니다." : "중복되는 이름입니다"
         );
         setOkName(validateName(changeName));
     };
@@ -156,7 +196,7 @@ export default function AddAnimal({ navigation }) {
 
         await axios({
             method: 'post',
-            url: 'http://192.168.2.94:5000/upload',
+            url: `${IP}/upload`,
             headers: {
                 'content-type': 'multipart/form-data',
             },
@@ -177,7 +217,7 @@ export default function AddAnimal({ navigation }) {
         console.log(typeof (aBirth));
         console.log(aBirth);
 
-        axios.post("http://192.168.2.94:5000/animal/write", null, {
+        axios.post(`${IP}/animal/write`, null, {
             params: {
                 id: "user",
                 aName: aName,

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
 import { Text, View, StyleSheet, Button, Alert } from 'react-native';
+import { ScrollView} from 'react-native-gesture-handler';
 import Checkbox from 'expo-checkbox';
 //npm install expo-checkboxdfdfdd
 
@@ -13,31 +14,25 @@ import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 const Stack = createStackNavigator();
 
 //동물 info가져오기
-export default function AnimalDetail({ navigation: { navigate } }) {
-
+export default function AnimalDetail({ navigation, route }) {
+    const [point, setPoint] = React.useState(route.params.point); // 포인트
     const [data, setData] = React.useState();
 
-
     React.useEffect(() => {
-        
-
         //포인트 내역 확인하기
-        /*
-        axios.post("http://192.168.2.94:5000/animal/list", null, {
+        axios.post("http://192.168.2.94:5000/point/weekPoint", null, {
             params: {
-                id: "user" //sessionStorage에 있는 id값
+                id: route.params.id //sessionStorage에 있는 id값
             }
         })
-            .then(function (res) {
-                console.log(res);
-                console.log(res.data);
-                setData(res.data);
-
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
-*/
+        .then(function (res) {
+            console.log(res);
+            console.log(res.data);
+            setData(res.data);
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
 
     }, []);
 
@@ -64,84 +59,52 @@ export default function AnimalDetail({ navigation: { navigate } }) {
                             alignItems: 'center',
                             width: "60%"
                         }}>
-                            <Text style={{ fontSize: 40 }}>포인트</Text>
+                            <Text style={{ fontSize: 40 }}>{point}</Text>
                         </View>
                     </View>
                 </View>
 
-
+                <ScrollView>
                 <View style={{ padding: 10, backgroundColor: "blue" }}>
-                    {/* map 돌리기 */}
                     <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
-                        <View style={{
-                            backgroundColor: "white",
-                            padding: 10,
-                            alignItems: 'center',
-                            width: "15%"
-                        }}>
-                            <Text style={{ fontSize: 20 }}>N</Text> 
+                        <View style={styles.infoNum}>
+                            <Text style={{ fontSize: 20 }}>날짜</Text>
                         </View>
-                        <View style={{
-                            backgroundColor: "yellow",
-                            padding: 10,
-                            alignItems: 'center',
-                            width: "50%"
-                        }}>
-                            <Text style={{ fontSize: 20 }}>포인트</Text>
+                        <View style={styles.info}>
+                            <Text style={{ fontSize: 20 }}>playPoint</Text>
                         </View>
-                        <View style={{
-                            backgroundColor: "lightgreen",
-                            padding: 10,
-                            alignItems: 'center',
-                            width: "35%"
-                        }}>
-                            <Button title="기록" />
+                        <View style={styles.info}>
+                            <Text style={{ fontSize: 20 }}>walkPoint</Text>
+                        </View>
+                        <View style={styles.info}>
+                            <Text style={{ fontSize: 20 }}>totalPoint</Text>
                         </View>
                     </View>
+                    {/* map 돌리기 */}
+                    {
+                        data && data.map((e, idx) => {
+                            return (
+                                    <View key={idx} style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
+                                        <View style={styles.infoNum}>
+                                            <Text style={{ fontSize: 20 }}>{e.pointDate}</Text>
+                                        </View>
+                                        <View style={styles.info}>
+                                            <Text style={{ fontSize: 20 }}>{e.playPoint}</Text>
+                                        </View>
+                                        <View style={styles.info}>
+                                            <Text style={{ fontSize: 20 }}>{e.walkPoint}</Text>
+                                        </View>
+                                        <View style={styles.info}>
+                                            <Text style={{ fontSize: 20 }}>{e.totalPoint}</Text>
+                                        </View>
+                                    </View>
+                            )
+                        })
+                    }
                 </View>
-
-                {/* map형식으로 계속 부름 
-                {
-                    data && data.map((e,idx)=>{
-                        return (
-                        <Pressable onPress={() => {
-                            navigate("AnimalDetail", {
-                                info: [ e.aname, e.asex, e.abirth, e.abreed, e.aneut, ],
-                                title: e.aName,
-                            })
-                            // navigation.navigate({name : "AnimalDetail", key :{e}})
-                            // <AnimalDetail name={e}/>
-                            //console.log(e)
-                        }}>
-                            <View style={{ padding: 10, backgroundColor: "red" }} onPress={() => Alert.alert('ModifyAnimalInfo 페이지로 전환')}>
-                                <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
-                                    <View style={styles.infoNum}>
-                                        <Text style={{ fontSize: 20 }}>{idx+1}</Text>
-                                    </View>
-                                    <View style={styles.infoName}>
-                                        <Text style={{ fontSize: 20 }}>이름</Text>
-                                    </View>
-                                    <View style={styles.info}>
-                                        <Text style={{ fontSize: 20 }}>{e.aname}</Text>
-                                    </View>
-                                </View>
-                            </View>
-                        </Pressable>);
-                    })
-                }*/}
-
-
-                <View>
-                    <Button title="추가" onPress={() => {
-                        navigate("AddAnimal")
-                    }} />
-                </View>
-
-
-
+                </ScrollView>
             </View>
         </View>
-
     )
 }
 
@@ -172,12 +135,12 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         padding: 10,
         alignItems: 'center',
-        width: "20%"
+        width: "40%"
     },
     info: {
         backgroundColor: "blue",
         padding: 10,
-        width: "50%",
+        width: "20%",
         alignItems: 'center',
     },
     checkbox: {

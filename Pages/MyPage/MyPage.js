@@ -24,17 +24,32 @@ export default function MyPage({navigation}) {
     const [check, setCheck] = React.useState(true); //스피너 위치기반 서비스 허용 여부
     const [point, setPoint] = React.useState();
     const [profile, setProFile] =React.useState();
+
+  // 로그인 유지
+  const getId = async () =>{
+    try {
+        const value = await AsyncStorage.getItem('id');
+        if (value !== null) {
+            console.log("id---: ", value);
+            return value;
+        }
+    } catch (e) {
+        console.log("not session... ", e);
+    }
+  }
     
     React.useEffect(() => {
+        (async () => {
+            const id = await getId();
 
         // 서버에 요청
-        
         axios.post("http://192.168.2.94:5000/member/info", null, {
             params : {
-                id: "user" //sessionStorage에 있는 id값
+                id: id //sessionStorage에 있는 id값
             }
         })
         .then(function (res){
+            console.log(getId());
             console.log(res.data);
 
             setId(res.data.id);
@@ -45,14 +60,12 @@ export default function MyPage({navigation}) {
             setAddress(res.data.address);
             setDetailAddress(res.data.detail_Address);
             onChangeLocationNum(res.data.location_Num);
-            //setCheck(res.data.check);
             setPoint(res.data.accurePoint);
-            setPoint(12345)
         })
         .catch(function (error){
             console.log(error)
         })
-
+    })();
     }, []);
 
     // AsyncStorage.setItem("check", "cccc", () => {
@@ -96,7 +109,12 @@ export default function MyPage({navigation}) {
                     {/* 포인트 현황, 닉네임 */}
                     <View style={{ flexDirection: 'row', backgroundColor:'red', height : '30%'}}>
                         <View style={{ backgroundColor:'lightgreen', width:'65%'}}>
-                            <Button title='포인트 현황보기' ></Button>
+                            <Button title='포인트 현황보기' onPress={() =>{
+                            navigation.navigate("MyPoint", {
+                                point: point,
+                                id: id
+                            })
+                        }}></Button>
                         </View>
                         <View style={{padding:10, backgroundColor:'blue', width:'35%', alignContent:'center', }}>
                             <Text >{nickname}</Text>
@@ -124,10 +142,16 @@ export default function MyPage({navigation}) {
                         <Button title="알람설정 - no!!!" ></Button>
                     </View>
                     <View style={{padding:10, width:'100%', backgroundColor:'red'}}>
-                        <Button title="켈린더" ></Button>
+                        <Button title="켈린더" onPress={() => {
+                            navigation.navigate("CalenderMain")
+                        }}
+                        ></Button>
                     </View>
                     <View style={{padding:10, width:'100%', backgroundColor:'red'}}>
-                        <Button title="놀아주기" ></Button>
+                        <Button title="놀아주기" onPress={() => {
+                            navigation.navigate("Play")
+                        }}
+                         ></Button>
                     </View>
                 </View>
             </View>

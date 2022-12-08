@@ -39,6 +39,7 @@ import Write from '../Pages/Boards/Write';
 import Login from '../Pages/SignUp/Login';
 import Join from '../Pages/SignUp/Join';
 import MyInfo from '../Pages/MyPage/MyInfo';
+import MyPoint from "../Pages/MyPage/MyPoint";
 import MyPageModify from '../Pages/MyPage/MyPageModify';
 import AnimalDetail from '../Pages/MyPage/AnimalDetail';
 import FreeView from './FreeView';
@@ -134,6 +135,7 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="ModifyAnimal" component={ModifyAnimal}/>
       {/* 놀기 */}
       <MainStack.Screen name="Play" component={Play}/> 
+      <MainStack.Screen name="MyPoint" component={MyPoint}/>
 
       <MainStack.Screen name="Food" component={Food} />
       <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail}/>
