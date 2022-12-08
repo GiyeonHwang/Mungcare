@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, StyleSheet, Button, Alert, Image, ScrollView, } from 'react-native';
+import { Text, View, StyleSheet, Alert, Image, ScrollView, } from 'react-native';
 import Constants from 'expo-constants';
 
 //navigation사용할 때 필요
@@ -9,6 +9,9 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// 버튼 스타일
+import { Button } from '@rneui/themed';
 
 const Stack = createStackNavigator();
 
@@ -27,131 +30,198 @@ export default function MyPage({ navigation, route }) {
 
 
     return (
-        <>
-            <View style={styles.container}>
-                <ScrollView>
-                    
-                    <View style={styles.title}>
-                        <View style={{ padding: 10, }}>
-                            <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
-                                <View style={styles.infoName}>
-                                    <Text style={{ fontSize: 20 }}>닉네임</Text>
-                                </View>
-                                <View style={styles.info}>
-                                    <Text style={{ fontSize: 15 }}>{nickname}</Text>
-                                </View>
+        <View style={styles.container}>
+                <View style={styles.title}>
+                    <View style={styles.box1}>
+                        <View style={styles.infobox}>
+                            <View style={styles.infoName}>
+                                <Text style={styles.infotext}>닉네임</Text>
                             </View>
-                        </View>
-                        <View style={{ padding: 10, }}>
-                            <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
-                                <View style={styles.infoName}>
-                                    <Text style={{ fontSize: 20 }}>이메일</Text>
-                                </View>
-                                <View style={styles.info}>
-                                    <Text style={{ fontSize: 15 }}>{id}</Text>
-                                </View>
+                            <View style={styles.info}>
+                                <Text style={styles.infotextsize}>{nickname}</Text>
                             </View>
-                        </View>
-                        <View style={{ padding: 10, }}>
-                            <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
-                                <View style={styles.infoName}>
-                                    <Text style={{ fontSize: 20 }}>이름</Text>
-                                </View>
-                                <View style={styles.info}>
-                                    <Text style={{ fontSize: 15 }}>{name}</Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={{ padding: 10, }}>
-                            <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
-                                <View style={styles.infoName}>
-                                    <Text style={{ fontSize: 20 }}>전화번호</Text>
-                                </View>
-                                <View style={styles.info}>
-                                    <Text style={{ fontSize: 15 }}>{phone}</Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={{ padding: 10, }}>
-                            <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
-                                <View style={styles.infoName}>
-                                    <Text style={{ fontSize: 20 }}>주소</Text>
-                                </View>
-                                <View style={styles.info}>
-                                    <Text style={{ fontSize: 15 }}>{address}</Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={{ padding: 10, }}>
-                            <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
-                                <View style={styles.infoName}>
-                                    <Text style={{ fontSize: 20 }}>상세주소</Text>
-                                </View>
-                                <View style={styles.info}>
-                                    <Text style={{ fontSize: 15 }}>{detailaddress}</Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={{ padding: 10, }}>
-                            <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
-                                <View style={styles.infoName}>
-                                    <Text style={{ fontSize: 20 }}>우편번호</Text>
-                                </View>
-                                <View style={styles.info}>
-                                    <Text style={{ fontSize: 15 }}>{location_Num}</Text>
-                                </View>
-                            </View>
-                        </View>
-                        {/* 스피너 */}
-                        {
-                            check ? <Button title="cTrue">dfdf</Button> : <Button title="cFalse">dfdf</Button>
-                        }
-                        <View>
-                            <Button title="수정" onPress={() => {
-                                Alert.alert('MypageModify 페이지로 변환')
-                                navigation.navigate("MyPageModify",{
-                                    info : [id, pw, name, nickname, phone, address, detailaddress, location_Num, check, point],
-                                    title : "user Info"
-                                });
-                            }} />
                         </View>
                     </View>
-                </ScrollView>
+                    <View style={styles.box1}>
+                        <View style={styles.infobox}>
+                            <View style={styles.infoName}>
+                                <Text style={styles.infotext}>이메일</Text>
+                            </View>
+                            <View style={styles.info}>
+                                <Text style={styles.infotextsize}>{id}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.box1}>
+                        <View style={styles.infobox}>
+                            <View style={styles.infoName}>
+                                <Text style={styles.infotext}>이름</Text>
+                            </View>
+                            <View style={styles.info}>
+                                <Text style={styles.infotextsize}>{name}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.box1}>
+                        <View style={styles.infobox}>
+                            <View style={styles.infoName}>
+                                <Text style={styles.infotext}>전화번호</Text>
+                            </View>
+                            <View style={styles.info}>
+                                <Text style={styles.infotextsize}>{phone}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.box1}>
+                        <View style={styles.infobox}>
+                            <View style={styles.infoName}>
+                                <Text style={styles.infotext}>주소</Text>
+                            </View>
+                            <View style={styles.info}>
+                                <Text style={styles.infotextsize}>{address}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.box1}>
+                        <View style={styles.infobox}>
+                            <View style={styles.infoName}>
+                                <Text style={styles.infotext}>상세주소</Text>
+                            </View>
+                            <View style={styles.info}>
+                                <Text style={styles.infotextsize}>{detailaddress}</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View style={styles.box1}>
+                        <View style={styles.infobox}>
+                            <View style={styles.infoName}>
+                                <Text style={styles.infotext}>우편번호</Text>
+                            </View>
+                            <View style={styles.info}>
+                                <Text style={styles.infotextsize}>{location_Num}</Text>
+                            </View>
+                        </View>
+                         {/* 스피너 */}
+                         <View style={styles.box2}>
+                         {
+                        check ? 
+                        <Button title="cTrue"  
+                        buttonStyle={{
+                            marginLeft:"10%",
+                            marginTop:"25%",
+
+                            // borderColor: '#ffffff', 
+                            borderColor:"black"
+                        }}
+                        type="outline"
+                        titleStyle={{ color: '#F7931D',fontWeight: "bold", fontSize:18 }}
+                        containerStyle={{
+                            // width: 200,
+                            // marginHorizontal: 50,
+                            // marginVertical: 15,
+                        }}>
+                            dfdf</Button> 
+                            : <Button title="cFalse"  
+                            buttonStyle={{
+                                marginLeft:"10%",
+                                marginTop:"25%",
+                                // borderColor: '#ffffff', 
+                                borderColor:"black"
+                            }}
+                            type="outline"
+                            titleStyle={{ color: '#F7931D',fontWeight: "bold", fontSize:18 }}
+                            containerStyle={{
+                                // width: 200,
+                                // marginHorizontal: 50,
+                                marginVertical: 15,
+                            }}>
+                                dfdf</Button>
+                    }
+                    <View>
+                        <Button title="수정하러 가기"
+                                buttonStyle={{
+                                    marginLeft:"30%",
+                                    marginTop:"10%",
+                                    // borderColor: '#ffffff', 
+                                    borderColor:"black"
+
+                                }}
+                                type="outline"
+                                titleStyle={{ color: '#F7931D',fontWeight: "bold", fontSize:18 }}
+                                containerStyle={{
+                                    // width: 200,
+                                    // marginHorizontal: 50,
+                                    // marginVertical: 15,
+                                }}
+                                onPress={() => {
+                                    Alert.alert('MypageModify 페이지로 변환')
+                                    navigation.navigate("MyPageModify",{
+                                        info : [id, pw, name, nickname, phone, address, detailaddress, location_Num, check, point],
+                                        title : "user Info"
+                                    });
+                                }}/>
+                    </View>
+                            
+                         </View>
+                    
+                </View>
             </View>
-        </>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 24,
+        // padding: 24,
         // backgroundColor: '#eaeaea',
-        backgroundColor: "#c9fffe"
+        backgroundColor: "#EBE3D7"
     },
     title: {
-        marginTop: 16,
-        paddingVertical: 8,
-        borderWidth: 4,
-        borderColor: '#20232a',
-        borderRadius: 6,
-        backgroundColor: '#61dafb',
-        color: '#20232a',
-        textAlign: 'center',
-        fontSize: 30,
-        fontWeight: 'bold',
+        flex:1,
+        margin:"2%",
+        // marginTop: 16,
+        // paddingVertical: 8,
+        // borderWidth: 1,
+        // borderColor: '#20232a',
+        // borderRadius: 6,
+        // backgroundColor: '#61dafb',
+        // color: '#20232a',
+        // textAlign: 'center',
+        // fontSize: 30,
+        // fontWeight: 'bold',
+    },
+    box1:{
+        // padding: 10,
+        margin:"5%",
+        // borderWidth:1
+    },
+    infobox:{
+        borderBottomWidth: 1,
+        flexDirection: 'row',
+        marginTop:"0.5%"
+        // width: '100%'
+    },
+    infotext:{
+        fontSize: 20
     },
     infoName: {
-        backgroundColor: "red",
-        padding: 10,
+        // backgroundColor: "red",
+        // padding: 10,
         alignItems: 'center',
         width: 130,
     },
     info: {
-        backgroundColor: "blue",
-        padding: 10,
+        // backgroundColor: "blue",
+        padding: 9,
         width: 184,
         alignItems: 'center',
     },
+    infotextsize:{
+        fontSize: 15
+    },
+    box2:{
+        flexDirection: 'row',
+    }
 
 });
