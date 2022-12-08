@@ -1,7 +1,6 @@
 package com.example.mungcare.controller;
 
 import com.example.mungcare.dto.AnimalDTO;
-import com.example.mungcare.entity.Animal;
 import com.example.mungcare.service.AnimalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,6 +23,14 @@ public class AnimalController {
         return aName;
     }
 
+    @PostMapping("/check") //반려동물 이름 중복 체크
+    public boolean animalCheck(@RequestParam("id")String id, @RequestParam("aName")String aName) {
+        log.info("check...");
+        boolean result = animalService.checkAnimalName(id, aName);
+        System.out.println("check---- "+result);
+        return result;
+    }
+
     @PostMapping("/list") //반려동물 목록
     public List<AnimalDTO> animalList1(@RequestParam("id")String id) {
         log.info("animalList");
@@ -35,9 +42,9 @@ public class AnimalController {
     }
 
     @PostMapping("/detailView") //반려동물 상세보기
-    public Animal animalDetail(@RequestParam("id")String id, @RequestParam("aName")String aName) {
+    public AnimalDTO animalDetail(@RequestParam("id")String id, @RequestParam("aName")String aName) {
         log.info("detailView...");
-        Animal detail = animalService.animalInfo(id, aName);
+        AnimalDTO detail = animalService.animalInfo(id, aName);
         return detail;
     }
 

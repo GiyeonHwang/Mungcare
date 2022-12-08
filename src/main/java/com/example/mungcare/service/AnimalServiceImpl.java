@@ -38,6 +38,15 @@ public class AnimalServiceImpl implements AnimalService{
     }
 
     @Override
+    public boolean checkAnimalName(String id, String aName) { //반려동물 이름 중복 체크
+        AnimalId ld = new AnimalId(id, aName); //복합키
+        Optional<Animal> result = animalRepository.findById(ld);
+        //null일 경우, 이름이 중복되지 않기 때문에 true
+        //null이 아닐 경우, 이름이 중복되기 때문에 false
+        return result.isPresent() ? false : true;//isPresent(): null이 아닐 경우
+    }
+
+    @Override
     public List<AnimalDTO> animalList(String id) { //반려동물 목록
         try{
             log.info("animalList-------------------");
@@ -62,11 +71,11 @@ public class AnimalServiceImpl implements AnimalService{
 
     @Override
     @Transactional //Lazy loading(지연 로딩)을 했기 때문
-    public Animal animalInfo(String id, String aName) { //반려동물 정보 보기
+    public AnimalDTO animalInfo(String id, String aName) { //반려동물 정보 보기
         AnimalId ld = new AnimalId(id, aName); //복합키
         Optional<Animal> result = animalRepository.findById(ld);
 
-        return result.isPresent() ? result.get() : null;//isPresent(): null이 아닐 경우
+        return result.isPresent() ? entityToDTO(result.get()) : null;//isPresent(): null이 아닐 경우
     }
 
     @Transactional

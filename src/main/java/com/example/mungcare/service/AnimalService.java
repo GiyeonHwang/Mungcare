@@ -12,9 +12,10 @@ import java.util.List;
 public interface AnimalService {
     String animalInput(AnimalDTO dto); //반려견 등록
     List<AnimalDTO> animalList(String id); //반려동물 목록
-    Animal animalInfo(String id, String aName); //반려동물 정보 보기
+    AnimalDTO animalInfo(String id, String aName); //반려동물 정보 보기
     String animalModify(AnimalDTO dto); //반려동물 정보 수정
     boolean animalRemove(String id, String aName); //반려동물 정보 삭제
+    boolean checkAnimalName(String id, String aName); //반려동물 이름 중복 체크
 
     default Animal dtoToEntity(AnimalDTO dto) {
         Member member = Member.builder().id(dto.getId()).build();
