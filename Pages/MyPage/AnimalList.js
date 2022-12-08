@@ -35,6 +35,8 @@ export default function AnimalDetail({ navigation: { navigate } }) {
             // 오류 예외 처리
         }
     }
+    
+
 
     React.useEffect(() => {
         //선택한 애완동물의 정보를 가져오려면 props사용해야함
@@ -59,6 +61,8 @@ export default function AnimalDetail({ navigation: { navigate } }) {
 
 
     }, []);
+
+    
 
 
     return (
