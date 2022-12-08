@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, StyleSheet, Button, Alert } from 'react-native';
+import { Text, View, StyleSheet, Button, Alert, TouchableOpacity } from 'react-native';
 import Checkbox from 'expo-checkbox';
 //npm install expo-checkbox
 
@@ -50,11 +50,11 @@ export default function AddFood(navigation) {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}> 봡 체크 </Text>
+            <Text style={styles.title}> 밥 체크 </Text>
             <View style={styles.title}>
-                <View style={{ padding: 10, backgroundColor: "red" }}>
-                    <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
-                        <Text style={{ fontSize: 30 }}>
+                <View style={{ padding: 10, backgroundColor: "#F7931D" , alignItems : 'center'}}>
+                    <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%'}}>
+                        <Text style={{ fontSize: 30 , alignItems:'center'}}>
                             우리 {aName}의 밥먹는 시간
                         </Text>
                     </View>
@@ -65,7 +65,7 @@ export default function AddFood(navigation) {
                         <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%', backgroundColor:"white"}}>
                             <View style={styles.num}>
                                 {/*맵 인덱스 */}
-                                <Text style={{ fontSize: 20 }}>d</Text> 
+                                <Text style={{ fontSize: 20 , alignItems : "center"}}>d</Text> 
                             </View>
                             <View style={styles.infoName}>
                                 <Text style={{ fontSize: 20 }}>시간</Text>
@@ -78,9 +78,9 @@ export default function AddFood(navigation) {
                     </View>
                 </View>
 
-                <View>
-                    <Button title="수정" onPress={() => Alert.alert('Food 페이지로 전환')} />
-                </View>
+                <TouchableOpacity activeOpacity={0.8} style = {styles.button}>  
+                <Text>수정</Text>  
+                </TouchableOpacity>
             </View>
         </View>
     )
@@ -89,8 +89,8 @@ export default function AddFood(navigation) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 24,
-        backgroundColor: '#eaeaea',
+        padding: "5%",
+        backgroundColor: '#EBE3D7',
     },
     title: {
         marginTop: 16,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
         borderWidth: 4,
         borderColor: '#20232a',
         borderRadius: 6,
-        backgroundColor: '#61dafb',
+        backgroundColor: '#3AB5A9',
         color: '#20232a',
         textAlign: 'center',
         fontSize: 30,
@@ -129,4 +129,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    button : {
+        paddingVertical: 8,
+        width:"100%",
+        height: "20%",
+        borderWidth: 1,
+        alignItems : 'center',
+        backgroundColor : 'yellow'
+    }
 });
