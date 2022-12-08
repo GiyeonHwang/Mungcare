@@ -121,7 +121,9 @@ export default function MyPage({navigation}) {
                         }} ></Button>
                     </View>
                     <View style={{padding:10, width:'100%', backgroundColor:'red'}}>
-                        <Button title="알람설정 - no!!!" ></Button>
+                        <Button title="밥 알람"  onPress={() =>{
+                            navigation.navigate("Food")
+                        }} ></Button>
                     </View>
                     <View style={{padding:10, width:'100%', backgroundColor:'red'}}>
                         <Button title="켈린더" ></Button>
