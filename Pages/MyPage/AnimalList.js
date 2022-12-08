@@ -18,7 +18,7 @@ const Stack = createStackNavigator();
 
 //동물 info가져오기
 export default function AnimalDetail({ navigation: { navigate } }) {
-
+    const [id, setId] = React.useState(""); //세션에 저장된 아이디
     const [data, setData] = React.useState();
     // 모달
     const [modalVisible, setModalVisible] = React.useState(false);
@@ -36,28 +36,44 @@ export default function AnimalDetail({ navigation: { navigate } }) {
         }
     }
 
+    // 로그인 유지
+    const getId = async () =>{
+        try {
+            const value = await AsyncStorage.getItem('id');
+            if (value !== null) {
+                console.log("id---: ", value);
+                return value;
+            }
+        } catch (e) {
+            console.log("not session... ", e);
+        }
+    }
+
     React.useEffect(() => {
         //선택한 애완동물의 정보를 가져오려면 props사용해야함
         //아직 미완
         save();
-        // 서버에 요청
-        // 애완동물 목록 불러오기
-        axios.post("http://192.168.2.94:5000/animal/list", null, {
-            params: {
-                id: "user" //sessionStorage에 있는 id값
-            }
-        })
+
+        (async () => {
+            const id = await getId(); //세션 id값 가져옴
+            // 서버에 요청
+            // 애완동물 목록 불러오기
+            axios.post("http://192.168.2.94:5000/animal/list", null, {
+                params: {
+                    id: id //sessionStorage에 있는 id값
+                }
+            })
             .then(function (res) {
                 console.log(res);
                 console.log(res.data);
                 setData(res.data);
+                setId(id);
 
             })
             .catch(function (error) {
                 console.log(error)
             })
-
-
+        })();
     }, []);
 
 
@@ -146,8 +162,7 @@ export default function AnimalDetail({ navigation: { navigate } }) {
                 {
                     data && data.map((e, idx) => {
                         return (<>
-
-                            <Pressable onPress={() => {
+                            <Pressable key={idx+1} onPress={() => {
                                 console.log(e)
                                 setModalData(e);
                                 setMImg(e.aphoto)
@@ -161,7 +176,7 @@ export default function AnimalDetail({ navigation: { navigate } }) {
                                 // })
                             }}>
                                 <View style={{ padding: 10, backgroundColor: "red" }} key={e} onPress={() => Alert.alert('ModifyAnimalInfo 페이지로 전환')}>
-                                    <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
+                                    <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }} key={idx+1}>
                                         <View style={styles.infoNum}>
                                             <Text style={{ fontSize: 20 }}>{idx + 1}</Text>
                                         </View>
@@ -180,7 +195,9 @@ export default function AnimalDetail({ navigation: { navigate } }) {
 
                 <View>
                     <Button title="추가" onPress={() => {
-                        navigate("AddAnimal")
+                        navigate("AddAnimal", {
+                            id: id
+                        })
                     }} />
                 </View>
 
