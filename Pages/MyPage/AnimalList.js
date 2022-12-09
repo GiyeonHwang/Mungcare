@@ -5,7 +5,7 @@ import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image } from '
 import Checkbox from 'expo-checkbox';
 //npm install expo-checkbox
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import ServerPort from '../../Components/ServerPort';
 
 
 //navigation사용할 때 필요
@@ -15,6 +15,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 //import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 
 const Stack = createStackNavigator();
+const IP = ServerPort();
 
 //동물 info가져오기
 export default function AnimalDetail({ navigation: { navigate } }) {
@@ -49,30 +50,46 @@ export default function AnimalDetail({ navigation: { navigate } }) {
         }
     }
 
-    React.useEffect(() => {
-        //선택한 애완동물의 정보를 가져오려면 props사용해야함
-        //아직 미완
-        save();
+    const removeAnimal = (id, aName) => //반려동물 삭제
+    {
+        console.log("removeAnimal--------------------",id,", aname----------",aName);
+        axios.post(`${IP}/animal/remove`, null, {
+        params: {
+            id: id,
+            aName: aName
+        }
+        })
+        .then(function(res) {
+        console.log("removeAnimal--",res.data);
+        animalList(id);
+        })
+        .catch(function(error) {
+        console.log("반려동물 삭제 실패- ", error)
+        })
+    }
 
+    const animalList = (id) => {
+        axios.post(`${IP}/animal/list`, null, {
+            params: {
+                id: id //sessionStorage에 있는 id값
+            }
+        })
+        .then(function (res) {
+            console.log(res);
+            console.log("animalList--",res.data);
+            setData(res.data);
+            setId(id);
+
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
+
+    React.useEffect(() => {
         (async () => {
             const id = await getId(); //세션 id값 가져옴
-            // 서버에 요청
-            // 애완동물 목록 불러오기
-            axios.post("http://192.168.2.94:5000/animal/list", null, {
-                params: {
-                    id: id //sessionStorage에 있는 id값
-                }
-            })
-            .then(function (res) {
-                console.log(res);
-                console.log(res.data);
-                setData(res.data);
-                setId(id);
-
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
+            animalList(id);
         })();
     }, []);
 
@@ -139,11 +156,17 @@ export default function AnimalDetail({ navigation: { navigate } }) {
                                     onPress={() => {
                                         setModalVisible(!modalVisible)
                                         navigate("ModifyAnimal", {
-                                            info: [modalData.aname, modalData.asex, modalData.abirth, modalData.abreed, modalData.aneut, modalData.aphoto],
+                                            info: [modalData.aname, modalData.asex, modalData.abirth, modalData.abreed, modalData.aneut, modalData.aphoto, id],
                                             title: modalData.aName,
                                         })
                                     }}>
                                     <Text style={styles.textStyle}>Modify</Text>
+                                </Pressable>
+                                <Text>     </Text>
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => {setModalVisible(!modalVisible); removeAnimal(id, modalData.aname);}}>
+                                    <Text style={styles.textStyle}>Remove</Text>
                                 </Pressable>
                                 <Text>     </Text>
                                 <Pressable
@@ -196,7 +219,8 @@ export default function AnimalDetail({ navigation: { navigate } }) {
                 <View>
                     <Button title="추가" onPress={() => {
                         navigate("AddAnimal", {
-                            id: id
+                            id: id,
+                            animalList: animalList
                         })
                     }} />
                 </View>

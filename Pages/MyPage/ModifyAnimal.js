@@ -4,6 +4,7 @@ import React from "react";
 import { Text, View, StyleSheet, Button, Alert, Image } from 'react-native';
 import Checkbox from 'expo-checkbox';
 //npm install expo-checkbox
+import ServerPort from '../../Components/ServerPort';
 
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
@@ -12,6 +13,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
+const IP = ServerPort();
 
 //동물 info가져오기
 export default function AnimalDetail({ navigation, route }) {
@@ -122,15 +124,14 @@ export default function AnimalDetail({ navigation, route }) {
     }
 
     const insert = () => {
-        console.log(checkbool);
+        console.log("checkbool---",checkbool);
         if (checkbool) {
             console.log("check is true")
 
-            /*
-            axios.post("http://192.168.2.94:5000/animal/modify", null, {
+            axios.post(`${IP}/animal/modify`, null, {
                 params: {
                     aName: aName,
-                    id: "user",
+                    id: id,
                     aBirth: aBirth,
                     aBreed: aBreed,
                     aNeat: aNeat,
@@ -138,6 +139,7 @@ export default function AnimalDetail({ navigation, route }) {
                 }
             })
                 .then(function (res) {
+                    console.log("수정 완료---")
                     console.log(res);
                     console.log(res.data);
                     if (res.data === route.params.info[0]){
@@ -147,9 +149,8 @@ export default function AnimalDetail({ navigation, route }) {
                     }
                 })
                 .catch(function (error) {
-                    console.log(error)
+                    console.log("수정 실패---",error)
                 })
-                */
         }
     }
 

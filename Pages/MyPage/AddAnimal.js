@@ -67,19 +67,17 @@ export default function AddAnimal({ navigation, route}) {
         })
         .then(function(res) {
             setCheck(res.data);
-            // check =res.data;
+            console.log("id: ",route.params.id);
+            console.log("aName: ",aName);
             console.log("------res: ",res.data);
+            console.log("-----check: ",check);
+            // check =res.data;
+            
             // return res.data;
             // if(res.data===true)
             //     return true
             // return res.data;
         })
-        .then((res) => {
-            console.log("id: ",route.params.id);
-            console.log("aName: ",aName);
-            console.log("-----check: ",check);
-        }
-        )
         .catch(function(error) {
             console.log("반려동물 이름 중복체크 실패- ",error);
         })
@@ -233,7 +231,8 @@ export default function AddAnimal({ navigation, route}) {
                 console.log(res.data);
 
                 Alert.alert("등록 완료!")
-                navigation.navigate("MyPage");
+                route.params.animalList(route.params.id)
+                navigation.navigate("AnimalList");
             })
             .catch(function (error) {
                 console.log(error)
