@@ -36,7 +36,7 @@ public class Animal {
     private Date aBirth; //생일
 
     @Column(length = 100, nullable = false)
-    private String aBreed; //종류
+    private String aBreed; //견종
 
     @Column(nullable = false)
     private boolean aNeut; //중성화 여부
@@ -49,11 +49,19 @@ public class Animal {
         this.aBirth = aBirth;
     } //생일 수정
 
-    public void changeBreed(String aBreed) { //종류 수정
+    public void changeBreed(String aBreed) { //견종 수정
         this.aBreed = aBreed;
-    } //종류 수정
+    }
 
     public void changeNeut(boolean aNeut) { //중성화 여부 수정
         this.aNeut = aNeut;
-    } //중성화 여부 수정
+    }
+
+    public void changeSex(String aSex) { //성별 수정
+        this.aSex = aSex;
+    }
+
+    public void changeName(String aName) { //이름 수정
+        this.aName = aName;
+    }
 }

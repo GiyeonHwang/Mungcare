@@ -94,19 +94,16 @@ public class AnimalServiceImpl implements AnimalService{
 
     @Override
     public String animalModify(AnimalDTO dto) { //반려동물 정보 수정
-        Member member = memberRepository.findById(dto.getId()).get();
-
         AnimalId ld = new AnimalId(dto.getId(), dto.getAName()); //복합키
         Optional<Animal> result = animalRepository.findById(ld);
         //수정 하는 항목: '제목', '내용'
         if(result.isPresent()) {
             Animal animal = result.get();
-//            animal.setABirth(java.sql.Date.valueOf(dto.getABirth()));
-//            animal.setABreed(dto.getABreed());
-//            animal.setANeut(dto.isANeut());
+
             animal.changeBirth(java.sql.Date.valueOf(dto.getABirth()));
             animal.changeBreed(dto.getABreed());
             animal.changeNeut(dto.isANeut());
+            animal.changeSex(dto.getASex());
 
             animalRepository.save(animal);
             return animal.getAName();

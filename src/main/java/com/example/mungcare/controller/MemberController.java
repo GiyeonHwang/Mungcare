@@ -37,21 +37,21 @@ public class MemberController {
     }
 
     @PostMapping("/info") //회원정보
-    public Member memberInfo(@RequestParam("id")String id) {
+    public MemberDTO memberInfo(@RequestParam("id")String id) {
         log.info("memberInfo...");
         //log.info(memberDTO.toString());
         log.info("id..."+id);
-        Member info = memberService.memberInfo(id);
+        MemberDTO info = memberService.memberInfo(id);
         System.out.println("info: " + info);
 
         return info;
     }
 
     @PostMapping("/modify") //회원정보 수정
-    public Member memberModify(MemberDTO memberDTO) {
+    public boolean memberModify(MemberDTO memberDTO) {
         log.info("memberModify...");
         log.info(memberDTO.toString());
-        Member result = memberService.memberModify(memberDTO);
+        boolean result = memberService.memberModify(memberDTO);
 
         log.info("--------------"+result);
         return result;

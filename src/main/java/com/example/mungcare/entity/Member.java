@@ -59,7 +59,7 @@ public class Member {
     }
 
     public void changeAddress(String address) { //주소 수정
-        this.phone = address;
+        this.address = address;
     }
 
     public void changeDetail_Address(String detail_Address) { //상세주소 수정

@@ -24,11 +24,11 @@ public class AnimalServiceTests {
         System.out.println(a);
     }
 
-    @Test
-    public void testModify() {
-        AnimalDTO dto = AnimalDTO.builder()
-                .aBreed("푸들")
-                .build();
-        animalService.animalModify(dto);
-    }
+//    @Test
+//    public void testModify() {
+//        AnimalDTO dto = AnimalDTO.builder()
+//                .aBreed("푸들")
+//                .build();
+//        animalService.animalModify(dto);
+//    }
 }

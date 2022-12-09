@@ -50,17 +50,17 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public Member memberInfo(String id) { //회원정보 불러오기
+    public MemberDTO memberInfo(String id) { //회원정보 불러오기
         log.info("memberInfo-------------------");
         Optional<Member> result = memberRepository.findById(id);
         if(!result.isPresent())
             return null;
         result.get().changeAccurePoint(pointService.totalMyPoint(id));
-        return result.get();
+        return entityToDTO(result.get());
     }
 
     @Override
-    public Member memberModify(MemberDTO dto) { //회원정보 수정하기
+    public boolean memberModify(MemberDTO dto) { //회원정보 수정하기
         log.info("memberModify");
         Optional<Member> result = memberRepository.findById(dto.getId());
         if(result.isPresent()) {
@@ -72,18 +72,11 @@ public class MemberServiceImpl implements MemberService{
             member.changeAddress(dto.getAddress());
             member.changeDetail_Address(dto.getDetail_Address());
             member.changeLocation_Num(dto.getLocation_Num());
-//            member.setPw(dto.getPw());
-//            member.setName(dto.getName());
-//            member.setNickname(dto.getNickname());
-//            member.setPhone(dto.getPhone());
-//            member.setAddress(dto.getAddress());
-//            member.setDetail_Address(dto.getDetail_Address());
-//            member.setLocation_Num(dto.getLocation_Num());
 
             memberRepository.save(member);
-            return member;
+            return true;
         }
-        return null;
+        return false;
     }
 
     @Override

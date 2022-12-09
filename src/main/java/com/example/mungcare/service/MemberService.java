@@ -6,8 +6,8 @@ import com.example.mungcare.entity.Member;
 public interface MemberService {
     String memberInput(MemberDTO dto); //회원가입
     String memberCheck(String id, String pw); //로그인
-    Member memberInfo(String id); //회원 정보
-    Member memberModify(MemberDTO dto); //회원 수정
+    MemberDTO memberInfo(String id); //회원 정보
+    boolean memberModify(MemberDTO dto); //회원 수정
     boolean memberRemove(String id); //회원 삭제
 
     //MemberDTO를 Member 엔티티 타입으로 변환할 필요가 있는데,
@@ -23,8 +23,24 @@ public interface MemberService {
                 .address(dto.getAddress())
                 .detail_Address(dto.getDetail_Address())
                 .location_Num(dto.getLocation_Num())
+                .accurePoint(dto.getAccurePoint())
                 .build();
 
         return member;
+    }
+
+    default MemberDTO entityToDTO(Member member) {
+        MemberDTO dto = MemberDTO.builder()
+                .id(member.getId())
+                .pw(member.getPw())
+                .name(member.getName())
+                .nickname(member.getNickname())
+                .phone(member.getPhone())
+                .address(member.getAddress())
+                .detail_Address(member.getDetail_Address())
+                .location_Num(member.getLocation_Num())
+                .accurePoint(member.getAccurePoint())
+                .build();
+        return dto;
     }
 }
