@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     width: GAP,
   },
   container: {
-    borderWidth: 1,
+    borderWidth: 0,
     alignSelf: 'center',
     flexDirection: 'row',
   },
@@ -263,6 +263,7 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     fontWeight: 'bold',
+    fontSize:30
   },
   overlay: {
     alignItems: 'center',
