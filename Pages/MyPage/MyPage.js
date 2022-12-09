@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from "react";
 import { Text, View, StyleSheet, Button, Alert, Image } from 'react-native';
 import Constants from 'expo-constants';
+import ServerPort from '../../Components/ServerPort';
 
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
@@ -11,6 +12,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
+const IP = ServerPort();
 
 export default function MyPage({navigation}) {
     const [id, setId] = React.useState(""); // 아이디
@@ -38,12 +40,9 @@ export default function MyPage({navigation}) {
     }
   }
     
-    React.useEffect(() => {
-        (async () => {
-            const id = await getId();
-
+    const mypageInfo = (id) => {
         // 서버에 요청
-        axios.post("http://192.168.2.94:5000/member/info", null, {
+        axios.post(`${IP}/member/info`, null, {
             params : {
                 id: id //sessionStorage에 있는 id값
             }
@@ -65,7 +64,13 @@ export default function MyPage({navigation}) {
         .catch(function (error){
             console.log(error)
         })
-    })();
+    }
+
+    React.useEffect(() => {
+        (async () => {
+            const id = await getId(); //세션 id값 가져옴
+            mypageInfo(id);
+        })();
     }, []);
 
     // AsyncStorage.setItem("check", "cccc", () => {
@@ -129,7 +134,8 @@ export default function MyPage({navigation}) {
                         <Button title="상세 정보 페이지" onPress={() => {
                             navigation.navigate("MyInfo", {
                                 info : [id, pw, name, nickname, phone, address, detailaddress, location_Num, check, point],
-                                title : "user Info"
+                                title : "user Info",
+                                mypageInfo: mypageInfo
                             })
                         }}></Button>
                     </View>

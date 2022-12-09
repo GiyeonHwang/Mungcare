@@ -2,8 +2,11 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image } from 'react-native';
 import { Camera } from 'expo-camera';
+import ServerPort from '../../Components/ServerPort';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Play({ navigation }) {
+    const [id, setId] = React.useState(""); // 아이디
 
     const [modalVisible, setModalVisible] = React.useState(true); //산책 전 안내사항
     const [finalModal, setFinalModal] = React.useState(false); // 산책 완료 모달
@@ -15,12 +18,27 @@ export default function Play({ navigation }) {
 
     //아마존에 올린 사진 링크
     const [imgUri, setImgUri] = React.useState();
+    const IP = ServerPort();
+
+    // 로그인 유지
+    const getId = async () =>{
+        try {
+            const value = await AsyncStorage.getItem('id');
+            if (value !== null) {
+                console.log("id---: ", value);
+                return value;
+            }
+        } catch (e) {
+            console.log("not session... ", e);
+        }
+    }
 
 
     useEffect(() => {
         (async () => {
             const cameraStatus = await Camera.requestCameraPermissionsAsync();
             setHasCameraPermission(cameraStatus.status === 'granted');
+            await setId(getId())
         })();
     }, []);
 
@@ -63,7 +81,7 @@ export default function Play({ navigation }) {
           data: formData
         })
           .then((res) => {
-            console.log(res.data);
+            console.log("res.data-------------",res.data);
             setFinalModal(true)
             setImgUri(res.data[0]); // 링크
           })
@@ -75,11 +93,9 @@ export default function Play({ navigation }) {
         const date = new Date();
         const day = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
         const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-    
-        // axios.post("http://192.168.2.94:5000/calendar/end", null, {
-        axios.post("http://192.168.2.94:5000/calendar/start", null, {
+        axios.post(`${IP}/calendar/start`, null, {
           params: {
-            id: "user",
+            id: id,
             cDate: day,
             cType:"play",
             cPhoto: imgUri

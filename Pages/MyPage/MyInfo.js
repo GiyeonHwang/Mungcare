@@ -21,9 +21,7 @@ export default function MyPage({ navigation, route }) {
     const [address, setAddress] = React.useState(route.params.info[5]); // 주소
     const [detailaddress, setDetailAddress] = React.useState(route.params.info[6]);//상세주소
     const [location_Num, onChangeLocationNum] = React.useState(route.params.info[7]); // 우편번호
-    const [check, setCheck] = React.useState(route.params.info[8]); //스피너 위치기반 서비스 허용 여부
     const [point, setPoint] = React.useState(route.params.info[9]); // 포인트
-
 
 
     return (
@@ -102,16 +100,12 @@ export default function MyPage({ navigation, route }) {
                                 </View>
                             </View>
                         </View>
-                        {/* 스피너 */}
-                        {
-                            check ? <Button title="cTrue">dfdf</Button> : <Button title="cFalse">dfdf</Button>
-                        }
                         <View>
                             <Button title="수정" onPress={() => {
-                                Alert.alert('MypageModify 페이지로 변환')
                                 navigation.navigate("MyPageModify",{
-                                    info : [id, pw, name, nickname, phone, address, detailaddress, location_Num, check, point],
-                                    title : "user Info"
+                                    info : [id, pw, name, nickname, phone, address, detailaddress, location_Num, point],
+                                    title : "user Info",
+                                    mypageInfo: route.params.mypageInfo
                                 });
                             }} />
                         </View>

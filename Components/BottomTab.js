@@ -41,7 +41,6 @@ import Join from '../Pages/SignUp/Join';
 import MyInfo from '../Pages/MyPage/MyInfo';
 import MyPoint from "../Pages/MyPage/MyPoint";
 import MyPageModify from '../Pages/MyPage/MyPageModify';
-import AnimalDetail from '../Pages/MyPage/AnimalDetail';
 import FreeView from './FreeView';
 import ModifyBoard from './ModifyBoard';
 import MapInfo from '../Pages/Map/MapInfo';

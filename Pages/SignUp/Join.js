@@ -84,7 +84,7 @@ export default function Join(navigation) {
 
   //닉네임 정규식
   const validateNickname = nickname => {
-    const regex = /^[가-힣a-zA-Z]{2,20}$/;
+    const regex = /^[가-힣a-zA-Z0-9]{2,20}$/;
     return regex.test(nickname);
   }
 

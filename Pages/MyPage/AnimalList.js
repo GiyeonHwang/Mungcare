@@ -158,6 +158,8 @@ export default function AnimalDetail({ navigation: { navigate } }) {
                                         navigate("ModifyAnimal", {
                                             info: [modalData.aname, modalData.asex, modalData.abirth, modalData.abreed, modalData.aneut, modalData.aphoto, id],
                                             title: modalData.aName,
+                                            id: id,
+                                            animalList: animalList
                                         })
                                     }}>
                                     <Text style={styles.textStyle}>Modify</Text>

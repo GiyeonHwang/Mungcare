@@ -102,43 +102,31 @@ export default function AnimalDetail({ navigation, route }) {
         setOkBreed(validateBreed(changeBreed));
     };
 
-    const check = () => {
-        if (aName != route.params.info[0] || aSex != route.params.info[1] || aBirth != route.params.info[2] || aBreed != route.params.info[3] || aNeat != route.params.info[4]) {
-            console.log("check")
-            setCheckBool(true);
-            insert();
-        }
-    }
+    function update() {
+        console.log("check is true")
 
-    const insert = () => {
-        console.log("checkbool---",checkbool);
-        if (checkbool) {
-            console.log("check is true")
-
-            axios.post(`${IP}/animal/modify`, null, {
-                params: {
-                    aName: aName,
-                    id: id,
-                    aBirth: aBirth,
-                    aBreed: aBreed,
-                    aNeat: aNeat,
-                    aSex: aSex,
-                }
-            })
-                .then(function (res) {
-                    console.log("수정 완료---")
-                    console.log(res);
-                    console.log(res.data);
-                    if (res.data === route.params.info[0]){
-                        Alert.alert("수정 완료!")
-                        setChange(true);
-                        navigation.navigate("AnimalList")
-                    }
-                })
-                .catch(function (error) {
-                    console.log("수정 실패---",error)
-                })
-        }
+        axios.post(`${IP}/animal/modify`, null, {
+            params: {
+                aName: aName,
+                id: route.params.id,
+                aBirth: aBirth,
+                aBreed: aBreed,
+                aNeat: aNeat,
+                aSex: aSex,
+            }
+        })
+        .then(function (res) {
+            console.log("수정 완료---")
+            console.log(res.data);
+            if (res.data === route.params.info[0]){
+                Alert.alert("수정 완료!")
+                route.params.animalList(route.params.id)
+                navigation.navigate("AnimalList")
+            }
+        })
+        .catch(function (error) {
+            console.log("수정 실패---",error)
+        })
     }
 
 
@@ -261,7 +249,7 @@ export default function AnimalDetail({ navigation, route }) {
                     <Button 
                         disabled={regiButton()}
                         color="#CCCCFF"
-                        onPress={() => insert()}
+                        onPress={() => update()}
                         title="저장"  />
                 </View>
             </View>

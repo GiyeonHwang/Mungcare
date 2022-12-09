@@ -5,7 +5,7 @@ import { Text, View, StyleSheet, Button, Alert, ScrollView, TouchableOpacity } f
 import Constants from 'expo-constants';
 import Modal from "react-native-modal";
 import Postcode from '@actbase/react-daum-postcode';
-
+import ServerPort from '../../Components/ServerPort';
 
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
@@ -13,7 +13,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { TextInput } from 'react-native-gesture-handler';
 const Stack = createStackNavigator();
-
+const IP = ServerPort();
 
 
 export default function MyPage({ navigation, route }) {
@@ -26,8 +26,6 @@ export default function MyPage({ navigation, route }) {
     const [address, onChangeAddress] = React.useState(route.params.info[5]); // 도로명 주소
     const [detail_Address, setDetailAddress] = React.useState(route.params.info[6]); // 상세 주소
     const [location_Num, onChangeLocationNum] = React.useState(route.params.info[7]); // 우편번호
-    const [check, setCheck] = React.useState(route.params.info[8]); //스피너 위치기반 서비스 허용 여부
-    const [point, setPoint] = React.useState(route.params.info[9]); // 포인트
 
     //해당 페이지 on , off
     const [isModal, setModal] = React.useState(false); // 도로명 주소 찾기 api 모달창 on,off
@@ -42,10 +40,18 @@ export default function MyPage({ navigation, route }) {
     const [okPhone, setOkPhone] = React.useState(false);
     const [okDetail, setOkDetail] = React.useState(false);
 
+    //정규식 메시지 check
+    const [errorMessage, setErrorMessage] = React.useState(""); //id
+    const [errorMessagePw, setErrorMessagePw] = React.useState(""); // pw
+    const [errorMessagePwEq, setErrorMessageEq] = React.useState(""); // pwEq
+    const [errorMessageName, setErrorMessageName] = React.useState(""); // name
+    const [errorMessageNickname, setErrorMessageNickname] = React.useState(""); // nickname 
+    const [errorMessagePhone, setErrorMessagePhone] = React.useState(""); // phone
+    const [errorMessageDetail, setErrorMessageDetail] = React.useState("");
 
 
     const regiButton = () => {
-        if (okId & okPw & okPwEq & okName & okNickname & okPhone & okDetail & detailEditable == true) {
+        if (okPw & okPwEq & okNickname & okName & okPhone & okDetail & detailEditable) {
           return false;
         }
         return true;
@@ -77,7 +83,7 @@ export default function MyPage({ navigation, route }) {
     
       //닉네임 정규식
       const validateNickname = nickname => {
-        const regex = /^[가-힣a-zA-Z]{2,20}$/;
+        const regex = /^[가-힣a-zA-Z0-9]{2,20}$/;
         return regex.test(nickname);
       }
     
@@ -174,41 +180,48 @@ export default function MyPage({ navigation, route }) {
     function update() {
         console.log("update");
         //update하기
-        /*
-        axios.post("http://192.168.2.94:5000/member/mypage", null, {
+        axios.post(`${IP}/member/modify`, null, {
             params : {
-                id : "user3", //sessionStorage에 있는 id값
+                id : id, //sessionStorage에 있는 id값
                 pw : pw,
+                name: name,
                 nickname : nickname,
                 phone : phone,
                 address : address,
-                
+                detail_Address : detail_Address,
+                location_Num: location_Num
             }
         })
         .then(function (res){
+            console.log("수정 완료---")
             console.log(res.data);
+            if(res.data) {
+                Alert.alert("수정 완료!")
+                route.params.mypageInfo(id)
+                navigation.navigate("MyPage")
+            }
 
-            setId(res.data.id);
-            setPw(res.data.pw);
-            setName(res.data.name);
-            setNickname(res.data.nickname);
-            setPhone(res.data.phone);
-            setAddress(res.data.address);
-            setDetailAddress(res.data.detail_Address);
-            //setCheck(res.data.check);
         })
         .catch(function (error){
-            console.log(error)
-        })*/
-
+            console.log("수정 실패---", error)
+        })
     }
-
-
 
     return (
         <View style={styles.container}>
             <ScrollView>
                 <View style={styles.title}>
+                <View style={{ padding: 10, }}>
+                        <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
+                            <View style={styles.infoName}>
+                                <Text style={{ fontSize: 20 }}>이메일(아이디)</Text>
+                            </View>
+                            <View style={styles.info}>
+                                {/* 이메일은 수정X */}
+                                <Text>{id}</Text>
+                            </View>
+                        </View>
+                    </View>
                     <View style={{ padding: 10, }}>
                         <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
                             <View style={styles.infoName}>
@@ -221,17 +234,7 @@ export default function MyPage({ navigation, route }) {
                                     onChangeText={handleNicknameChange}
                                     placeholder="useless placeholder"
                                 />
-                            </View>
-                        </View>
-                    </View>
-                    <View style={{ padding: 10, }}>
-                        <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
-                            <View style={styles.infoName}>
-                                <Text style={{ fontSize: 20 }}>이메일</Text>
-                            </View>
-                            <View style={styles.info}>
-                                {/* 이메일은 수정X */}
-                                <Text>{id}</Text>
+                                <Text style={styles.text}>{errorMessageNickname}</Text>
                             </View>
                         </View>
                     </View>
@@ -241,8 +244,13 @@ export default function MyPage({ navigation, route }) {
                                 <Text style={{ fontSize: 20 }}>이름</Text>
                             </View>
                             <View style={styles.info}>
-                                {/* 이름 수정X? */}
-                                <Text>{name}</Text>
+                                <TextInput
+                                    style={styles.input}
+                                    value={name}
+                                    onChangeText={handleNameChange}
+                                    placeholder="useless placeholder"
+                                />
+                                <Text style={styles.text}>{errorMessageName}</Text>
                             </View>
                         </View>
                     </View>
@@ -258,6 +266,7 @@ export default function MyPage({ navigation, route }) {
                                     value={pw}
                                     placeholder="useless placeholder"
                                 />
+                                <Text style={styles.text}>{errorMessagePw}</Text>
                             </View>
                         </View>
                     </View>
@@ -273,6 +282,7 @@ export default function MyPage({ navigation, route }) {
                                     value={pwEq}
                                     placeholder="useless placeholder"
                                 />
+                                <Text style={styles.text}>{errorMessagePwEq}</Text>
                             </View>
                         </View>
                     </View>
@@ -288,6 +298,7 @@ export default function MyPage({ navigation, route }) {
                                     value={phone}
                                     placeholder="useless placeholder"
                                 />
+                                <Text style={styles.text}>{errorMessagePhone}</Text>
                             </View>
                         </View>
                     </View>
@@ -331,31 +342,20 @@ export default function MyPage({ navigation, route }) {
                         <Text style={styles.text}>세부주소</Text>
                         <TextInput
                             editable={detailEditable}
-                            onChangeText={setDetailAddress}
+                            onChangeText={handleDetailChange}
                             style={styles.input}
                             value={detail_Address}
                             placeholder="세부 주소"
                         />
+                        <Text style={styles.text}>{errorMessageDetail}</Text>
                     </View>
-
-                    {/* 스피너 
-                    {
-                        check ? <Button title="cTrue">dfdf</Button> : <Button title="cFalse">dfdf</Button>
-                    }*/}
-
                     <View>
                          {/* <Button title="수정" onPress={() => Alert.alert('ModifyInfo 페이지로 변환')} /> */}
                          <Button
-                            disabled={regiButton}
+                            disabled={regiButton()}
                             color="#CCCCFF"
-                            title="수정"
-                            onPress={() => {
-                                // update()
-                                navigation.navigate("MyInfo",{
-                                    info : [id, pw, name, nickname, phone, address, detail_Address, location_Num, check, point],
-                                    title : "user Info"
-                                })
-                            }}
+                            title="저장"
+                            onPress={() => update()}
                         />
                     </View>
                 </View>

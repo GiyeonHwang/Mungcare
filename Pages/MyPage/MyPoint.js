@@ -5,6 +5,8 @@ import { Text, View, StyleSheet, Button, Alert } from 'react-native';
 import { ScrollView} from 'react-native-gesture-handler';
 import Checkbox from 'expo-checkbox';
 //npm install expo-checkboxdfdfdd
+import ServerPort from '../../Components/ServerPort';
+
 
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
@@ -12,6 +14,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 const Stack = createStackNavigator();
+const IP = ServerPort();
 
 //동물 info가져오기
 export default function AnimalDetail({ navigation, route }) {
@@ -20,7 +23,7 @@ export default function AnimalDetail({ navigation, route }) {
 
     React.useEffect(() => {
         //포인트 내역 확인하기
-        axios.post("http://192.168.2.94:5000/point/weekPoint", null, {
+        axios.post(`${IP}/point/weekPoint`, null, {
             params: {
                 id: route.params.id //sessionStorage에 있는 id값
             }

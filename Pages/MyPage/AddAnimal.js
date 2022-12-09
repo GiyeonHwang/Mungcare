@@ -88,6 +88,10 @@ export default function AddAnimal({ navigation, route}) {
                 Alert.alert("중복확인 되었습니다.");
                 setOkName(true); // 버튼 활성화
             }
+            else {
+                Alert.alert("중복된 이름입니다.");
+                setOkName(false); //버튼 비활성화
+            }
         })
         .catch(function(error) {
             console.log("반려동물 이름 중복체크 실패- ",error);
@@ -189,7 +193,7 @@ export default function AddAnimal({ navigation, route}) {
 
         axios.post(`${IP}/animal/write`, null, {
             params: {
-                id: "user",
+                id: route.params.id,
                 aName: aName,
                 aSex: aSex,
                 aBirth: aBirth,
