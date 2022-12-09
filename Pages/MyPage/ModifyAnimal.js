@@ -1,45 +1,64 @@
 import axios from 'axios';
-import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, StyleSheet, Button, Alert, Image } from 'react-native';
+import { Text, View, StyleSheet, Button, Alert, Image , ScrollView} from 'react-native';
 import Checkbox from 'expo-checkbox';
 //npm install expo-checkbox
+import { RadioButton } from 'react-native-paper';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+import moment from 'moment/moment';
 import ServerPort from '../../Components/ServerPort';
 
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import { TextInput } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 
 const Stack = createStackNavigator();
 const IP = ServerPort();
 
 //동물 info가져오기
 export default function AnimalDetail({ navigation, route }) {
+
     const [aName, setAnimalName] = React.useState(""); //애완동물 이름
-    const [aSex, setAnimalSex] = React.useState(""); //성별
+    const [aSex, setAnimalSex] = React.useState(route.params.info[1]); //성별
     const [aBirth, setAnimalBirth] = React.useState(""); //생일
     const [aBreed, setAnimalBreed] = React.useState(""); //종류
     const [aNeat, setAnimalNeat] = React.useState(""); //중성화 여부
     const [img, setImg] = React.useState(route.params.info[5]); // 이미지
 
-
     const [checkbool, setCheckBool] = React.useState(false);
     const [change, setChange] = React.useState(false);
 
     const [errorMessage, setErrorMessage] = React.useState(""); //이름
-    const [errorMessageSex, setErrorMessageSex] = React.useState(""); //성별
-    const [errorMessageBirth, setErrorMessageBirth] = React.useState(""); // 생일
     const [errorMessageBreed, setErrorMessageBreed] = React.useState(""); // 종류
 
     const [okName, setOkName] = React.useState(false);
-    const [okSex, setOkSex] = React.useState(false);
     const [okBirth, setOkBirth] = React.useState(false);
     const [okBreed, setOkBreed] = React.useState(false);
 
+    //데이트 피커
+    const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
+    
+    const showDatePicker = () => {
+        setDatePickerVisibility(true);
+      };
+    
+      const hideDatePicker = () => {
+        setDatePickerVisibility(false);
+      };
+    
+      const handleConfirm = (date) => {
+        console.log("A date has been picked: ", date);
+        setAnimalBirth(moment(date).format('YYYY-MM-DD'));
+        setOkBirth(true);
+
+        hideDatePicker();
+      };
+
     const regiButton = () => {
-        if (okName & okSex & okBirth & okBirth & okBreed) {
+        if (okName  & okBirth & okBreed) {
             return false;
         }
         return true;
@@ -47,23 +66,12 @@ export default function AnimalDetail({ navigation, route }) {
 
     //애완동물 이름 정규식
     const validateName = aName => {
-        const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-15|]{1,20}$/;
+        const regex = /^[|가-힣|a-z|A-Z|0-15|]{1,20}$/;
         return regex.test(aName);
-    }
-    //성별
-    const validateSex = aSex => {
-        const regex = /^[가-힣|0-2|]$/;
-        return regex.test(aSex);
-    }
-    //생일
-    const validateBirth = aBirth => {
-        const regex = /^([0-9]{4})-?([0-9]{2})-?([0-9]{2})$/;
-
-        return regex.test(aBirth);
     }
     //종류
     const validateBreed = aBreed => {
-        const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|1-15|]{1,20}$/;
+        const regex = /^[|가-힣|a-z|A-Z|1-15|]{1,20}$/;
         return regex.test(aBreed);
     }
 
@@ -71,10 +79,6 @@ export default function AnimalDetail({ navigation, route }) {
     const removespace = text => {
         const regex = /\s/g;
         return text.replace(regex, '');
-    }
-    //자동 하이픈 생성
-    const autoHyphen = (target) => {
-        return target.replace(/[^0-9]/g, '').replace(/^(\d{0,4})(\d{0,2})(\d{0,2})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
     }
 
 
@@ -87,24 +91,7 @@ export default function AnimalDetail({ navigation, route }) {
         );
         setOkName(validateName(changeName));
     };
-    //애완동물 성별 핸들러
-    const handleSexChange = (aSex) => {
-        const changeSex = removespace(aSex);
-        setAnimalSex(changeSex);
-        setErrorMessageSex(
-            validateSex(changeSex) ? "올바른 형식입니다" : "남, 여로만 가능합니다"
-        );
-        setOkSex(validateSex(changeSex));
-    };
-    //애완동물 생일 핸들러
-    const handleBirthChange = (aBirth) => {
-        const changeBirth = autoHyphen(aBirth);
-        setAnimalBirth(changeBirth);
-        setErrorMessageBirth(
-            validateBirth(changeBirth) ? "올바른 형식입니다" : "생일을 올바르게 입력해주세요"
-        );
-        setOkBirth(validateBirth(changeBirth));
-    };
+
     //애완동물 종류 핸들러
     const handleBreedChange = (aBreed) => {
         const changeBreed = removespace(aBreed);
@@ -202,42 +189,52 @@ export default function AnimalDetail({ navigation, route }) {
                             {/* <Text style={{ fontSize: 15 }}>dfdfdf{aName}</Text> 
                                 placeholder수정해줘야 함
                             */}
-                            <TextInput
-                                style={styles.input}
-                                onChangeText={handleSexChange}
-                                placeholder={route.params.info[1]}
+                        <View style={styles.sexContainer}>
+                            <Text>남</Text>
+                            <RadioButton
+                                value="남"
+                                status={ aSex === '남' ? 'checked' : 'unchecked' }
+                                onPress={() => setAnimalSex('남')}
                             />
-                            <Text style={styles.text}>{errorMessageSex}</Text>
+                            <Text>여</Text>
+                            <RadioButton
+                                value="여"
+                                status={ aSex === '여' ? 'checked' : 'unchecked' }
+                                onPress={() => setAnimalSex('여')}
+                            />
+                        </View>
                         </View>
                     </View>
                 </View>
+                <TouchableOpacity onPress = {showDatePicker}>
                 <View style={{ padding: 10, }}>
                     <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
                         <View style={styles.infoName}>
                             <Text style={{ fontSize: 20 }}>생일</Text>
                         </View>
                         <View style={styles.info}>
-                            {/* <Text style={{ fontSize: 15 }}>dfdfdf{aName}</Text> 
-                                placeholder수정해줘야 함
-                            */}
-                            <TextInput
+                                <DateTimePicker
+                                    isVisible={isDatePickerVisible}
+                                    mode="date"
+                                    onConfirm={handleConfirm}
+                                    onCancel={hideDatePicker}
+                                />
+                                <TextInput
                                 style={styles.input}
-                                onChangeText={handleBirthChange}
-                                placeholder={route.params.info[2]}
-                            />
-                            <Text style={styles.text}>{errorMessageBirth}</Text>
+                                editable={false}
+                                value={aBirth}
+                                placeholder="생일"
+                                />
                         </View>
                     </View>
                 </View>
+                </TouchableOpacity>
                 <View style={{ padding: 10, }}>
                     <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
                         <View style={styles.infoName}>
                             <Text style={{ fontSize: 20 }}>견종</Text>
                         </View>
                         <View style={styles.info}>
-                            {/* <Text style={{ fontSize: 15 }}>dfdfdf{aName}</Text> 
-                                placeholder수정해줘야 함
-                            */}
                             <TextInput
                                 style={styles.input}
                                 onChangeText={handleBreedChange}
@@ -269,27 +266,24 @@ export default function AnimalDetail({ navigation, route }) {
                 </View>
             </View>
         </View>
-        </ScrollView>
+    </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 24,
-        backgroundColor: '#eaeaea',
+        backgroundColor:"#EBE3D7"
     },
     title: {
         marginTop: 16,
         paddingVertical: 8,
-        borderWidth: 4,
-        borderColor: '#20232a',
-        borderRadius: 6,
-        backgroundColor: '#61dafb',
+        backgroundColor: '#EBE3D7',
         color: '#20232a',
         textAlign: 'center',
         fontSize: 30,
         fontWeight: 'bold',
+        borderBottomWidth:1
     },
     infoName: {
         padding: 10,
@@ -313,5 +307,10 @@ const styles = StyleSheet.create({
     },
     input: {
         fontSize: 20
+    },
+    sexContainer : {
+        flexDirection:'row',
+        justifyContent:'flex-start',
+        marginLeft : '5%'
     },
 });
