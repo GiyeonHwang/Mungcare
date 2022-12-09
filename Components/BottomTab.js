@@ -40,7 +40,6 @@ import Login from '../Pages/SignUp/Login';
 import Join from '../Pages/SignUp/Join';
 import MyInfo from '../Pages/MyPage/MyInfo';
 import MyPageModify from '../Pages/MyPage/MyPageModify';
-import AnimalDetail from '../Pages/MyPage/AnimalDetail';
 import FreeView from './FreeView';
 import ModifyBoard from './ModifyBoard';
 import MapInfo from '../Pages/Map/MapInfo';

@@ -97,11 +97,7 @@ export default function Write() {
     const formData = new FormData();
     formData.append('multipartFileList' , {uri: localUri, name: filename, type});
 
-   
-      
-
     console.log(formData);
-
 
     await axios({
       method : 'post',
@@ -158,15 +154,6 @@ export default function Write() {
             <ScrollView usecontainer = {true} 
             >
                 <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}   style={{ flex: 1 }}>
-                      {/* <RichEditor
-                        ref={richText} // from useRef()
-                        onChange={richTextHandle}
-                        placeholder="Write your cool content here :)"
-                        androidHardwareAccelerationDisabled={true}
-                        style={styles.richTextEditorStyle}
-                        onHeightChange={handleHeightChange}
-                        initialHeight={600}
-                      /> */}
 
                     <RichEditor  
                         containerStyle={{ minHeight: height }}

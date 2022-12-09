@@ -1,24 +1,23 @@
 import axios from 'axios';
-import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image } from 'react-native';
+import { Text, View, StyleSheet, Alert, Modal, Pressable, Image } from 'react-native';
 import Checkbox from 'expo-checkbox';
-//npm install expo-checkbox
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
-
+import AnimalListCard from '../../Components/AnimalListCard';
 
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
-import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-//import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+
+// 버튼 스타일 적용
+import { Button } from '@rneui/themed';
 
 const Stack = createStackNavigator();
 
 //동물 info가져오기
-export default function AnimalDetail({ navigation: { navigate } }) {
-    const [id, setId] = React.useState(""); //세션에 저장된 아이디
+export default function AnimalList({ navigation: { navigate } }) {
+
+    const [id,setId] = React.useState("");
     const [data, setData] = React.useState();
     // 모달
     const [modalVisible, setModalVisible] = React.useState(false);
@@ -29,58 +28,46 @@ export default function AnimalDetail({ navigation: { navigate } }) {
 
     const save = async () => {
         try {
-            await AsyncStorage.setItem('key', 'value');
-            await AsyncStorage.setItem('info', JSON.stringify(info)); // 객체 형태 저장
+            setId(await AsyncStorage.getItem('id'));
         } catch (e) {
-            // 오류 예외 처리
+            console.log("유저 세션 안불러와짐");
         }
     }
+    
 
-    // 로그인 유지
-    const getId = async () =>{
-        try {
-            const value = await AsyncStorage.getItem('id');
-            if (value !== null) {
-                console.log("id---: ", value);
-                return value;
-            }
-        } catch (e) {
-            console.log("not session... ", e);
-        }
-    }
 
     React.useEffect(() => {
-        //선택한 애완동물의 정보를 가져오려면 props사용해야함
-        //아직 미완
-        save();
-
-        (async () => {
-            const id = await getId(); //세션 id값 가져옴
+        const info = async () => {
+            await save();
             // 서버에 요청
             // 애완동물 목록 불러오기
-            axios.post("http://192.168.2.94:5000/animal/list", null, {
+            console.log("axios하기전: ",id);
+            await axios.post("http://192.168.2.94:5000/animal/list", null, {
                 params: {
-                    id: id //sessionStorage에 있는 id값
+                    id: "user" //sessionStorage에 있는 id값
                 }
             })
-            .then(function (res) {
-                console.log(res);
-                console.log(res.data);
-                setData(res.data);
-                setId(id);
+                .then(function (res) {
+                    console.log(res);
+                    console.log("AnimallList 값이지롱: ",res.data);
+                    setData(res.data);
+    
+                })
+                .catch(function (error) {
+                    console.log("AnimallList DB연동 실패,,,,",error);
+                })
+        }
+        info();
 
-            })
-            .catch(function (error) {
-                console.log(error)
-            })
-        })();
     }, []);
+
+    
 
 
     return (
 
         <View style={styles.container}>
-            <View style={{ alignContent: 'center', justifyContent: 'center' }}>
+            <View style={styles.box1}>
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -91,19 +78,8 @@ export default function AnimalDetail({ navigation: { navigate } }) {
                     }}>
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <View sytle={{ alignContent: 'center', width: '100%', padding: 10, alignItems: 'center', }}>
+                            <View>
                                 <View style={{ alignContent: 'center', flexDirection: 'row' }}>
-                                    <View style={{ width: '50%', backgroundColor: 'yellow', alignItems: 'center', }}>
-                                        {
-                                            mImg === null ? <Image style={{ resizeMode: "cover", width: 100, height: 100, borderRadius: 50, borderWidth: 3 }} source={{ uri: "https://3.bp.blogspot.com/-ZKBbW7TmQD4/U6P_DTbE2MI/AAAAAAAADjg/wdhBRyLv5e8/s1600/noimg.gif" }} />:
-                                            <Image style={{ resizeMode: "cover", width: 100, height: 100, borderRadius: 50, borderWidth: 3 }} source={{ uri: mImg }} />
-                                        }
-                                    </View>
-
-                                    <View style={{ backgroundColor: 'red', width: '50%', justifyContent: 'center', alignItems: 'center' }}>
-                                        <Text style={{ fontSize: 30, padding: 10 }}>{modalData.aname}</Text>
-                                        <Text style={{ fontSize: 20, padding: 10 }}>{modalData.abreed}</Text>
-                                    </View>
                                 </View>
                                 <View style={{ flexDirection: 'row', backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
                                     <View style={{ borderRightWidth: 1, padding: 10, alignItems: 'center', width: "40%", backgroundColor: 'yellow' }}>
@@ -156,52 +132,51 @@ export default function AnimalDetail({ navigation: { navigate } }) {
                     </View>
                 </Modal>
             </View>
-            <Text style={styles.title}> 애완동물 목록 </Text>
-            <View style={styles.title}>
+
+
+
+            <View style={styles.animalbox}>
+                <Text style={styles.introtext}> 애완동물 목록 </Text>
+            </View>
+            <View style={styles.animalinfobox}>
                 {/* map형식으로 계속 부름 */}
                 {
-                    data && data.map((e, idx) => {
-                        return (<>
-                            <Pressable key={idx+1} onPress={() => {
-                                console.log(e)
-                                setModalData(e);
-                                setMImg(e.aphoto)
-                                //모달창으로 값 보여줌
-                                setModalVisible(true)
-
-                                //네비게이트로 화면 전환
-                                // navigate("AnimalDetail", {
-                                //     info: [e.aname, e.asex, e.abirth, e.abreed, e.aneut, e.aphoto],
-                                //     title: e.aName,
-                                // })
-                            }}>
-                                <View style={{ padding: 10, backgroundColor: "red" }} key={e} onPress={() => Alert.alert('ModifyAnimalInfo 페이지로 전환')}>
-                                    <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }} key={idx+1}>
-                                        <View style={styles.infoNum}>
-                                            <Text style={{ fontSize: 20 }}>{idx + 1}</Text>
-                                        </View>
-                                        <View style={styles.infoName}>
-                                            <Text style={{ fontSize: 20 }}>이름</Text>
-                                        </View>
-                                        <View style={styles.info}>
-                                            <Text style={{ fontSize: 20 }}>{e.aname}</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </Pressable></>);
+                    data && data.map((e, index) => {
+                        return (
+                            <AnimalListCard
+                            key = {index}
+                            img = {e.aphoto}
+                            aname = {e.aname}
+                            setModalVisible = {setModalVisible}
+                            />
+                        )
                     })
                 }
 
 
-                <View>
+            </View>
+            
+                <View style={styles.addanimal}>
                     <Button title="추가" onPress={() => {
-                        navigate("AddAnimal", {
-                            id: id
-                        })
-                    }} />
+                        navigate("AddAnimal")
+                    }} 
+                    buttonStyle={{
+                        borderColor: 'rgba(78, 116, 289, 1)',
+                    }}
+                    type="outline"
+                    titleStyle={{ color: '#F7931D', fontSize:20 }}
+                    containerStyle={{
+                        // width: 200,
+                        // marginHorizontal: 50,
+                        // marginVertical: 10,
+                        marginTop:"0.5%",
+                        
+                    }}
+                    />
+                    
                 </View>
 
-
+            <View >
 
             </View>
         </View>
@@ -212,8 +187,25 @@ export default function AnimalDetail({ navigation: { navigate } }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 24,
-        backgroundColor: '#eaeaea',
+        // padding: 24,
+        backgroundColor: '#EBE3D7',
+    },
+    red:{
+        padding: 10,
+         backgroundColor: "red"
+    },
+    redbox:{
+        borderBottomWidth: 1,
+         flexDirection: 'row',
+          width: '100%'
+    },
+    textsize:{
+        fontSize: 20
+    },
+
+    box1:{
+        alignContent: 'center',
+        justifyContent: 'center'
     },
     title: {
         marginTop: 16,
@@ -295,4 +287,59 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         textAlign: 'center',
     },
+
+
+
+
+  
+
+
+
+    animalbox:{
+        flex:1,
+        borderWidth:1,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    introtext:{
+        fontSize:20
+    },
+    animalinfobox:{
+        flex:10,
+        borderWidth:1
+    },
+    listbox:{
+        // flex:1,
+        flexDirection: 'row', 
+    },
+    listimg:{
+        borderWidth:1,
+        height:100,
+        width:100,
+        // margin:'2%',
+        marginLeft:'5%',
+        marginTop:"3%"
+    },
+    listtext:{
+        borderWidth:1,
+        height:80,
+        width:200,
+        margin:'2%',
+        // marginRight:"100%",
+        marginTop:"4%"
+    },
+
+    addanimal:{
+        flex:1,
+        height:100,
+        borderWidth:1
+    }
+
+
+
+
+
+
+
+
 });

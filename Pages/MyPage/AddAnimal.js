@@ -6,7 +6,7 @@ import ServerPort from '../../Components/ServerPort';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment/moment';
 import { RadioButton } from 'react-native-paper';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //이미지 업로드
 import * as ImagePicker from 'expo-image-picker';
 
@@ -37,6 +37,13 @@ export default function AddAnimal({ navigation, route}) {
     //데이트 피커
     const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
     
+    React.useEffect(() => {
+        async function getId(){
+            setId(await AsyncStorage.getItem('id'));
+        }
+        getId();
+    })
+
     const showDatePicker = () => {
         setDatePickerVisibility(true);
       };
