@@ -2,10 +2,11 @@ import axios from 'axios';
 import React from "react";
 import { Text, View, StyleSheet, Button, Alert, Image , ScrollView} from 'react-native';
 import Checkbox from 'expo-checkbox';
+//npm install expo-checkbox
 import { RadioButton } from 'react-native-paper';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment/moment';
-//npm install expo-checkbox
+import ServerPort from '../../Components/ServerPort';
 
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
@@ -15,6 +16,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import { TouchableOpacity } from 'react-native';
 
 const Stack = createStackNavigator();
+const IP = ServerPort();
 
 //동물 info가져오기
 export default function AnimalDetail({ navigation, route }) {
@@ -100,44 +102,31 @@ export default function AnimalDetail({ navigation, route }) {
         setOkBreed(validateBreed(changeBreed));
     };
 
-    const check = () => {
-        if (aName != route.params.info[0] || aSex != route.params.info[1] || aBirth != route.params.info[2] || aBreed != route.params.info[3] || aNeat != route.params.info[4]) {
-            console.log("check")
-            setCheckBool(true);
-            insert();
-        }
-    }
+    function update() {
+        console.log("check is true")
 
-    const insert = () => {
-        console.log(checkbool);
-        if (checkbool) {
-            console.log("check is true")
-
-            /*
-            axios.post("http://192.168.2.94:5000/animal/modify", null, {
-                params: {
-                    aName: aName,
-                    id: "user",
-                    aBirth: aBirth,
-                    aBreed: aBreed,
-                    aNeat: aNeat,
-                    aSex: aSex,
-                }
-            })
-                .then(function (res) {
-                    console.log(res);
-                    console.log(res.data);
-                    if (res.data === route.params.info[0]){
-                        Alert.alert("수정 완료!")
-                        setChange(true);
-                        navigation.navigate("AnimalList")
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error)
-                })
-                */
-        }
+        axios.post(`${IP}/animal/modify`, null, {
+            params: {
+                aName: aName,
+                id: route.params.id,
+                aBirth: aBirth,
+                aBreed: aBreed,
+                aNeat: aNeat,
+                aSex: aSex,
+            }
+        })
+        .then(function (res) {
+            console.log("수정 완료---")
+            console.log(res.data);
+            if (res.data === route.params.info[0]){
+                Alert.alert("수정 완료!")
+                route.params.animalList(route.params.id)
+                navigation.navigate("AnimalList")
+            }
+        })
+        .catch(function (error) {
+            console.log("수정 실패---",error)
+        })
     }
 
 
@@ -256,12 +245,11 @@ export default function AnimalDetail({ navigation, route }) {
                         </View>
                     </View>
                 </View>
-
                 <View>
                     <Button 
                         disabled={regiButton()}
                         color="#CCCCFF"
-                        onPress={() => insert()}
+                        onPress={() => update()}
                         title="저장"  />
                 </View>
             </View>

@@ -3,6 +3,7 @@ import React from "react";
 import { Text, View, StyleSheet, Alert, Modal, Pressable, Image } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import ServerPort from '../../Components/ServerPort';
 import AnimalListCard from '../../Components/AnimalListCard';
 
 //navigation사용할 때 필요
@@ -13,6 +14,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Button } from '@rneui/themed';
 
 const Stack = createStackNavigator();
+const IP = ServerPort();
 
 //동물 info가져오기
 export default function AnimalList({ navigation: { navigate } }) {
@@ -33,8 +35,55 @@ export default function AnimalList({ navigation: { navigate } }) {
             console.log("유저 세션 안불러와짐");
         }
     }
-    
 
+    // 로그인 유지
+    const getId = async () =>{
+        try {
+            const value = await AsyncStorage.getItem('id');
+            if (value !== null) {
+                console.log("id---: ", value);
+                return value;
+            }
+        } catch (e) {
+            console.log("not session... ", e);
+        }
+    }
+
+    const removeAnimal = (id, aName) => //반려동물 삭제
+    {
+        console.log("removeAnimal--------------------",id,", aname----------",aName);
+        axios.post(`${IP}/animal/remove`, null, {
+        params: {
+            id: id,
+            aName: aName
+        }
+        })
+        .then(function(res) {
+        console.log("removeAnimal--",res.data);
+        animalList(id);
+        })
+        .catch(function(error) {
+        console.log("반려동물 삭제 실패- ", error)
+        })
+    }
+
+    const animalList = (id) => {
+        axios.post(`${IP}/animal/list`, null, {
+            params: {
+                id: id //sessionStorage에 있는 id값
+            }
+        })
+        .then(function (res) {
+            console.log(res);
+            console.log("animalList--",res.data);
+            setData(res.data);
+            setId(id);
+
+        })
+        .catch(function (error) {
+            console.log(error)
+        })
+    }
 
     React.useEffect(() => {
         const info = async () => {
@@ -115,11 +164,19 @@ export default function AnimalList({ navigation: { navigate } }) {
                                     onPress={() => {
                                         setModalVisible(!modalVisible)
                                         navigate("ModifyAnimal", {
-                                            info: [modalData.aname, modalData.asex, modalData.abirth, modalData.abreed, modalData.aneut, modalData.aphoto],
+                                            info: [modalData.aname, modalData.asex, modalData.abirth, modalData.abreed, modalData.aneut, modalData.aphoto, id],
                                             title: modalData.aName,
+                                            id: id,
+                                            animalList: animalList
                                         })
                                     }}>
                                     <Text style={styles.textStyle}>Modify</Text>
+                                </Pressable>
+                                <Text>     </Text>
+                                <Pressable
+                                    style={[styles.button, styles.buttonClose]}
+                                    onPress={() => {setModalVisible(!modalVisible); removeAnimal(id, modalData.aname);}}>
+                                    <Text style={styles.textStyle}>Remove</Text>
                                 </Pressable>
                                 <Text>     </Text>
                                 <Pressable
@@ -158,22 +215,10 @@ export default function AnimalList({ navigation: { navigate } }) {
             
                 <View style={styles.addanimal}>
                     <Button title="추가" onPress={() => {
-                        navigate("AddAnimal")
-                    }} 
-                    buttonStyle={{
-                        borderColor: 'rgba(78, 116, 289, 1)',
-                    }}
-                    type="outline"
-                    titleStyle={{ color: '#F7931D', fontSize:20 }}
-                    containerStyle={{
-                        // width: 200,
-                        // marginHorizontal: 50,
-                        // marginVertical: 10,
-                        marginTop:"0.5%",
-                        
-                    }}
-                    />
-                    
+                        navigate("AddAnimal", {
+                            id: id
+                        })
+                    }} />
                 </View>
 
             <View >

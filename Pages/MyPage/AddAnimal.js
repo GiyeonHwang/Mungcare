@@ -10,6 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //이미지 업로드
 import * as ImagePicker from 'expo-image-picker';
 
+
+
 //navigation 사용할 때 필요
 import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
@@ -60,7 +62,6 @@ export default function AddAnimal({ navigation, route}) {
         hideDatePicker();
       };
 
-
     //갤러리 권한 요청이 되어있는지 확인
     const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
     const [imguri, setImgUri] = React.useState("https://3.bp.blogspot.com/-ZKBbW7TmQD4/U6P_DTbE2MI/AAAAAAAADjg/wdhBRyLv5e8/s1600/noimg.gif");
@@ -93,6 +94,10 @@ export default function AddAnimal({ navigation, route}) {
             {
                 Alert.alert("중복확인 되었습니다.");
                 setOkName(true); // 버튼 활성화
+            }
+            else {
+                Alert.alert("중복된 이름입니다.");
+                setOkName(false); //버튼 비활성화
             }
         })
         .catch(function(error) {
@@ -195,7 +200,7 @@ export default function AddAnimal({ navigation, route}) {
 
         axios.post(`${IP}/animal/write`, null, {
             params: {
-                id: "user",
+                id: route.params.id,
                 aName: aName,
                 aSex: aSex,
                 aBirth: aBirth,
@@ -209,7 +214,8 @@ export default function AddAnimal({ navigation, route}) {
                 console.log(res.data);
 
                 Alert.alert("등록 완료!")
-                navigation.navigate("MyPage");
+                route.params.animalList(route.params.id)
+                navigation.navigate("AnimalList");
             })
             .catch(function (error) {
                 console.log(error)

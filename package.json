@@ -51,7 +51,7 @@
     "react-native-select-dropdown": "^3.0.3",
     "react-native-splash-screen": "^3.3.0",
     "react-native-vector-icons": "^9.2.0",
-    "react-native-webview": "^11.24.0",
+    "react-native-webview": "^11.26.0",
     "react-stomp": "^5.1.0",
     "react-useinterval": "^1.0.2",
     "sockjs-client": "^1.6.1"
