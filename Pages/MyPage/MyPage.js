@@ -103,7 +103,7 @@ export default function MyPage({navigation}) {
             {/* 포인트 현황 */}
                 <View style={styles.infobox}>
                     <View style={styles.infoimg}>
-                        <Image source={coin} style={{width:100, height:100, marginTop:"10%"}}/>
+                        <Image source={coin} style={{width:80, height:80, marginTop:"10%"}}/>
                     </View>
                     <View style={styles.infotext}>
                         <Button
@@ -126,7 +126,8 @@ export default function MyPage({navigation}) {
             <View style={styles.box2}>
                 <View style={styles.mypointbox}>
                     {/*db에서 값 꺼내오고 넣어주기*/}
-                    <Text style={styles.mypointtext}>내 포인트: {'50point'}</Text> 
+                    <Image source={coin} style={{width:35, height:35, marginTop:'6%'}}/>
+                    <Text style={styles.mypointtext}>{'50point'}</Text> 
                 </View>
                 <View style={styles.androidbox}>
                     <View style={styles.example}>
@@ -254,11 +255,14 @@ const styles = StyleSheet.create({
         flex:1
     },
     mypointbox:{
+        flexDirection: 'row',
         marginHorizontal:"3%",
         marginTop:"3%",
+     
     },
     mypointtext:{
-        marginTop:"6%"
+        marginTop:"6%",
+        fontSize:18
         // borderWidth:1
     },
     androidbox:{
