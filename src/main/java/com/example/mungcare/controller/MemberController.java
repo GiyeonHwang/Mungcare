@@ -2,6 +2,7 @@ package com.example.mungcare.controller;
 
 import com.example.mungcare.dto.MemberDTO;
 import com.example.mungcare.entity.Member;
+import com.example.mungcare.service.KaKaoAPI;
 import com.example.mungcare.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -63,6 +64,14 @@ public class MemberController {
         boolean result = memberService.memberRemove(id);
         System.out.println("result: " + result);
 
+        return result;
+    }
+
+    @PostMapping("/kakao") //카카오 토큰
+    public String kakaoToken(@RequestParam("token") String token) {
+        log.info("kakao...");
+        log.info("token..."+token);
+        String result = KaKaoAPI.getAccessToken(token);
         return result;
     }
 }
