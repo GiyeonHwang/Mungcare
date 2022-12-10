@@ -32,22 +32,22 @@ export default function MyPage({navigation}) {
     const [address, setAddress] = React.useState(""); // 주소
     const [detailaddress, setDetailAddress] = React.useState("");//상세주소
     const [location_Num, onChangeLocationNum] = React.useState(""); // 우편번호
-    const [check, setCheck] = React.useState(true); //스피너 위치기반 서비스 허용 여부
     const [point, setPoint] = React.useState();
+    const [boardCount, setBoardCount] = React.useState(); //게시글 작성 수
     const [profile, setProFile] =React.useState();
 
-  // 로그인 유지
-  const getId = async () =>{
-    try {
-        const value = await AsyncStorage.getItem('id');
-        if (value !== null) {
-            console.log("id---: ", value);
-            return value;
+    // 로그인 유지
+    const getId = async () =>{
+        try {
+            const value = await AsyncStorage.getItem('id');
+            if (value !== null) {
+                console.log("id---: ", value);
+                return value;
+            }
+        } catch (e) {
+            console.log("not session... ", e);
         }
-    } catch (e) {
-        console.log("not session... ", e);
     }
-  }
     
     const mypageInfo = (id) => {
         // 서버에 요청
@@ -75,10 +75,29 @@ export default function MyPage({navigation}) {
         })
     }
 
+    const boardcount = (id) => {
+        // 서버에 요청
+        axios.post(`${IP}/board/count`, null, {
+            params : {
+                id: id //sessionStorage에 있는 id값
+            }
+        })
+        .then(function (res){
+            console.log(res.data);
+
+            setBoardCount(res.data);
+        })
+        .catch(function (error){
+            console.log("게시글 수 가져오기 실패",error)
+        })
+    }
+
     React.useEffect(() => {
         (async () => {
             const id = await getId(); //세션 id값 가져옴
             mypageInfo(id);
+            console.log("===========================================================================")
+            boardcount(id);
         })();
     }, []);
 
@@ -110,10 +129,10 @@ export default function MyPage({navigation}) {
             {/* 게시글 수 */}
                 <View style={styles.infobox}>
                     <View style={styles.infoimg}>
-                        <Text style={styles.infodbnum}>5{/*db에서 불러온 게시글 수 숫자 들어갈 자리*/}</Text>
+                        <Text style={styles.infodbnum}>{boardCount}{/*db에서 불러온 게시글 수 숫자 들어갈 자리*/}</Text>
                     </View>
                     <View style={styles.infotext}>
-                        <Text style={styles.infotextstyle}>게시글 수(고치기)</Text>
+                        <Text style={styles.infotextstyle}>게시글 수</Text>
                     </View>
                 </View>
 
@@ -176,7 +195,7 @@ export default function MyPage({navigation}) {
                         <Text style={styles.buttontext}  
                             onPress={() => {
                                 navigation.navigate("MyInfo", {
-                                    info : [id, pw, name, nickname, phone, address, detailaddress, location_Num, check, point],
+                                    info : [id, pw, name, nickname, phone, address, detailaddress, location_Num, point],
                                     title : "user Info",
                                     mypageInfo: mypageInfo
                                 })
