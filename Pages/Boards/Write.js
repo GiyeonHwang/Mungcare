@@ -1,22 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {View, 
-        Text, 
-        SafeAreaView, 
-        StyleSheet, 
-        ScrollView, 
-        TextInput , 
-        Platform , 
-        KeyboardAvoidingView,
-        Alert,
-        ImageStore,
-        height,
-        richTextHandle,TouchableOpacity,
-      Button} from 'react-native';
-import {actions, RichEditor, RichToolbar} from "react-native-pell-rich-editor";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  Platform,
+  KeyboardAvoidingView,
+  Alert,
+  ImageStore,
+  height,
+  richTextHandle,
+  Button, Dimensions, BackHandler
+} from 'react-native';
+import { actions, RichEditor, RichToolbar } from "react-native-pell-rich-editor";
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FormData from 'form-data';
+import { CommonActions } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // 세션
+import ServerPort from '../../Components/ServerPort';
 
 //사진 업로드
 import * as ImagePicker from 'expo-image-picker';
@@ -27,9 +33,29 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 export default function App() {
 
   //bType
-  const [bType,setbType] = useState('');
-  const [bTitle,setBTitle] = useState('');
-  const [bContent,setBContent] = useState('');
+  const [bType, setbType] = React.useState('자유게시판');
+  const [bTitle, setBTitle] = React.useState('');
+  const [bContent, setBContent] = React.useState('');
+
+  React.useEffect(() => {
+    setBTitle('');
+    setBContent('');
+    richText.current.setContentHTML("");
+  }, [])
+
+  // 세션 아이디 값 받아오기
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('id')
+      if (value !== null) {
+        return value;
+      }
+    } catch (e) {
+      console.log("not session");
+    }
+  }
+
+
   // select 관련임
   const countries = ["자유게시판", "찾아줘게시판", "자랑게시판", "기부게시판"];
 
@@ -40,36 +66,45 @@ export default function App() {
 
   const write = async () => {
 
-    axios.post('http://192.168.2.94:5000/board/write',null,{
-      params:{
-        bContent : bContent,
-        bTitle : bTitle,
-        bType : bType,
-        id:"user"
+    const id = await getData();
+
+    axios.post(`${IP}/board/write`, null, {
+      params: {
+        bContent: bContent,
+        bTitle: bTitle,
+        bType: bType,
+        id: id
       }
     })
-    .then((res) => {
-        console.log(res.data);
-    })
+      .then((res) => {
+        console.log("수정서버에서 온 데이터:", res.data);
+        if (res) {
+          Alert.alert("작성완료");
+          setBTitle('');
+          setBContent('');
+          richText.current.setContentHTML("");
+          navigation.navigate("Main");
+        }
+      })
   }
 
   const uploadImage = async () => {
 
-    if(!status.granted){ // status로 권한이 있는지 확인
+    if (!status.granted) { // status로 권한이 있는지 확인
       const permission = await requestPermission();
-      if(!permission.granted){
+      if (!permission.granted) {
         return null;
       }
     }
-    
+
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes : ImagePicker.MediaTypeOptions.Images,
-      allowsEditing : false,
-      quality : 1,
-      aspect : [1,1]
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      quality: 1,
+      aspect: [1, 1]
     });
 
-    if(result.canceled){
+    if (result.canceled) {
       return null;
     }
 
@@ -79,206 +114,224 @@ export default function App() {
     const match = /\.(\w+)$/.exec(filename ?? '');
     const type = match ? `image/${match[1]}` : `image`;
     const formData = new FormData();
-    formData.append('multipartFileList' , {uri: localUri, name: filename, type});
+    formData.append('multipartFileList', { uri: localUri, name: filename, type });
 
-   
-      
+
+
 
     console.log(formData);
 
 
     await axios({
-      method : 'post',
-      url : 'http://192.168.2.77:5000/upload',
-      headers:{
-        'content-type' : 'multipart/form-data',
+      method: 'post',
+      url: `http://192.168.2.77:5000/upload`,
+      headers: {
+        'content-type': 'multipart/form-data',
       },
-      data : formData
+      data: formData
     })
-    .then((res) => {
+      .then((res) => {
         richText.current.insertImage(res.data);
-    })
+      })
 
-    
- }
-   // Callback after height change
-   function handleHeightChange(height) {
-    // console.log("editor height change:", height);
   }
 
+  const CancleAction = () => {
+
+    setBTitle('');
+    setBContent('');
+    richText.current.setContentHTML("");
+    navigation.navigate("Main")
+  }
+
+
+
+  React.useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button title="글 작성" color='black' onPress={() =>
+          Alert.alert("잠깐만요!", "작성하실껀가요?", [
+            {
+              text: "취소",
+              onPress: () => null,
+            },
+            {
+              text: "작성", onPress: () => {
+                write();
+              }
+            }
+          ])
+        } />
+      ),
+    });
+  })
+
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const backAction = () => {
+        Alert.alert("잠깐만요!", "글작성을 취소하시겠어요?\n모든 작성내용이 사라집니다!", [
+          {
+            text: "계속 작성하기",
+            onPress: () => null,
+          },
+          {
+            text: "작성 취소하기", onPress: () => { CancleAction() }
+          }
+        ]);
+        return true;
+      };
+
+
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+      );
+
+      return () => backHandler.remove();
+
+    }))
+
+  console.log("현재 제목내용", bTitle);
+  console.log("현재 내용", bContent);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.box}>
-        <View style={styles.dropbutton} >
-          {/* 게시판 선택하는 곳 */}
-          <SelectDropdown
-            data={countries}
-            onSelect={(selectedItem, index) => {
-              console.log(selectedItem, index);
-              setbType(selectedItem);
-            }}
-            defaultValue = {countries[0]}
-            buttonStyle={styles.dropdown1BtnStyle}
-            buttonTextStyle={styles.dropdown1BtnTxtStyle}
-            renderDropdownIcon={isOpened => {
-              return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-            }}
-            dropdownIconPosition={'right'}
-            dropdownStyle={styles.dropdown1DropdownStyle}
-            rowStyle={styles.dropdown1RowStyle}
-            rowTextStyle={styles.dropdown1RowTxtStyle}
-          />
-          <View style={styles.Button2}>
-            <Button title="등록" mode="contained" onPress={write} color={'#3AB5A9'}/>
-          </View>
-        </View>
+    <ScrollView boxStyles={{ borderRadius: 0 }}>
+      <SelectDropdown
+        data={countries}
+        onSelect={(selectedItem, index) => {
+          if (selectedItem == '자유게시판') {
+            setbType('자유게시판');
+          }
+          else if (selectedItem == '찾아줘게시판') {
+            setbType('찾아줘게시판');
+          }
+          else if (selectedItem == '자랑게시판') {
+            setbType('자랑게시판');
+          }
+          else if (selectedItem == '기부게시판') {
+            setbType('기부게시판');
+          }
+        }}
+        defaultValue={countries[0]}
+        buttonStyle={styles.dropdown1BtnStyle}
+        buttonTextStyle={styles.dropdown1BtnTxtStyle}
+        renderDropdownIcon={isOpened => {
+          return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+        }}
+        dropdownIconPosition={'right'}
+        dropdownStyle={styles.dropdown1DropdownStyle}
+        rowStyle={styles.dropdown1RowStyle}
+        rowTextStyle={styles.dropdown1RowTxtStyle}
+      />
+      <TextInput
+        style={{ width: Dimensions.get('window').width * 1, height: Dimensions.get('window').height * 0.06, borderWidth: 0, borderBottomWidth: 1, padding: 15 }}
+        placeholder="제목을 입력해주세요."
+        value={bTitle}
+        onChangeText={text => setBTitle(text)}
+      />
+      <RichToolbar
+        editor={richText}
+        selectedIconTint="#873c1e"
+        iconTint="#312921"
+        onPressAddImage={uploadImage}
+        actions={[
+          actions.insertImage,
+          actions.setBold,
+          actions.setItalic,
+          actions.insertBulletsList,
+          actions.insertOrderedList,
+          actions.insertLink,
+          actions.setStrikethrough,
+          actions.setUnderline,
+        ]}
+        style={{ height: Dimensions.get('window').height * 0.06 }}
+      />
+      <RichEditor
+        ref={richText} // from useRef()
+        onChange={text => setBContent(text)}
+        placeholder="내용을 적어주세요"
+        androidHardwareAccelerationDisabled={true}
+        style={{ height: Dimensions.get('window').height * 0.65 }}
+        initialHeight={Dimensions.get('window').height * 0.65}
+      />
+    </ScrollView>
 
-        <SafeAreaView style = {{marginTop : "3%" , backgroundColor : "#EBE3D7", flex:1}}> 
-
-          
-
-            {/* 제목입력 */}
-          <TextInput
-          style={styles.inputtitle}
-          placeholder="제목을 입력해주세요."
-          onChangeText={text => setBTitle(text)}
-          />    
-
-          {/* 하단에 버튼 누르면 바뀌는 것들 */}
-          {/* <RichToolbar 
-              
-              editor={richText}
-              onPressAddImage = {uploadImage}
-              actions={[  actions.setBold
-                        , actions.setItalic
-                        , actions.setUnderline
-                        , actions.heading1
-                        , actions.insertBulletsList
-                        , actions.insertOrderedList
-                        , actions.insertImage ]}
-              iconMap={{ [actions.heading1]: ({tintColor}) => (<Text style={[{color: tintColor}]}>H1</Text>), }}  
-            />  */}
-          
-
-            {/* 에디터를 사용해서 글쓰기를 해보야요 ^^ */}
-              {/* <ScrollView style={styles.container} > */}
-                  
-          <ScrollView>
-          <RichEditor
-                
-            ref={richText} // from useRef()
-            onChange={richTextHandle}
-            placeholder="Write your cool content here :)"
-            androidHardwareAccelerationDisabled={true}
-            // style={{flex: 1 }}
-            onHeightChange={handleHeightChange}
-            initialHeight={495}
-            // editorInitializedCallback={() => this.scrollRef.current.scrollTo({y: scrollY - 30, animated: true})}
-          />
-
-          </ScrollView>
-                      
-
-                  
-            {/* <TouchableOpacity style={styles.button}> */}
-            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}   style={{ flex: 1 }}>
-              {/* 하단에 버튼 누르면 바뀌는 것들 */}
-              <RichToolbar 
-                    
-                    editor={richText}
-                    onPressAddImage = {uploadImage}
-                    actions={[  actions.setBold
-                              , actions.setItalic
-                              , actions.setUnderline
-                              , actions.heading1
-                              , actions.insertBulletsList
-                              , actions.insertOrderedList
-                              , actions.insertImage ]}
-                    iconMap={{ [actions.heading1]: ({tintColor}) => (<Text style={[{color: tintColor}]}>H1</Text>), }}  
-                  /> 
-
-            {/* </TouchableOpacity> */}
-                
-
-                {/* <Button title="Press Me" mode="contained" style={{flex:1}} onPress={write}/> */}
-            </KeyboardAvoidingView>
-              
-            {/* </ScrollView> */}
-
-        </SafeAreaView>
-
-      </View>
-
-    </View>
-    
-    
   );
 }
 
 const styles = StyleSheet.create({
-  container:{
-    flex:1,
-  },
-  innerContainer:{
-    flex:1,
-  },
-  box:{
-    flex: 1,
-    backgroundColor : '#EBE3D7', //아이보리
-  },
-  dropbutton:{
-    flexDirection: 'row',//react native에서 사용되는 가로 정렬
-    alignItems: 'center',
-    //  marginTop: "10%"
-  },
-  Button2:{
-    maring:'5%',
-    right:'5%'
-  },
-    drop:{
-    margin:"10%",
-    backgroundColor: '#171717',
-    alignItems: 'center',
-    justifyContent: 'center', //세로로 가운데 갈 수 있게 해줌
-    paddingHorizontal: 15
-    },
-    inputtitle: {
-      // flex:1, //flex있으면 글자 입력할 때 키보드에 밀려서 안 보인다
-      height: 40,
-      // margin: 12,
-      borderWidth: 1,
-      borderLeftWidth:0,
-      borderRightWidth:0,
-      padding: 10,
-      
-    },
-    inputtext: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
-      
-    },
- 
+
+
   dropdown1BtnStyle: {
-    width: '80%',
-    height: 50,
+    width: Dimensions.get('window').width * 1,
+    height: Dimensions.get('window').height * 0.06,
     backgroundColor: '#FFF',
-    borderRadius: 12,
+    borderRadius: 0,
     borderWidth: 1,
     borderColor: '#444',
     justifyContent: 'center',
-    margin:'3%'
-    
   },
-  scrollViewContainer:{
-    height:'100%',
-    borderColor:'green',
-    borderWidth:2,
+  dropdown1BtnTxtStyle: { color: '#444', textAlign: 'left' },
+  dropdown1DropdownStyle: { backgroundColor: '#EFEFEF' },
+  dropdown1RowStyle: { backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5' },
+  dropdown1RowTxtStyle: { color: '#444', textAlign: 'left' },
+
+  container: {
+    alignItems: "center",
+    width: Dimensions.get('window').width * 0.45,
+    height: Dimensions.get('window').height * 0.35,
+    marginBottom: 20,
+    marginTop: 5,
+    padding: 5,
 
   },
-  dropdown1BtnTxtStyle: {color: '#444', textAlign: 'left'},
-  dropdown1DropdownStyle: {backgroundColor: '#EFEFEF'},
-  dropdown1RowStyle: {backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5'},
-  dropdown1RowTxtStyle: {color: '#444', textAlign: 'left'},
-  });;
+  imageView: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    borderWidth: 3,
+    borderBottomWidth: 0,
+    height: "70%",
+    borderColor: "black"
+  },
+  image: {
+    width: "100%",
+    height: "100%"
+  },
+  contentBox: {
+    alignItems: "center",
+    width: "100%",
+    height: "40%",
+    borderWidth: 2,
+    borderTopWidth: 0,
+    borderColor: "black",
+    backgroundColor: "#F1E7DD",
+    padding: 10
+  },
+  title: {
+    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: "center",
+    width: "100%",
+    height: "30%",
+    backgroundColor: "#F1E7DD"
+  },
+  titleText: {
+    fontWeight: "bold",
+    fontSize: 10
+  },
+  content: {
+    width: "100%",
+    height: "50%",
+    backgroundColor: "#F1E7DD"
+  },
+  bottomContent: {
+    flexDirection: "row",
+    justifyContent: 'space-between',
+    alignItems: "center",
+    width: "100%",
+    height: "20%",
+    backgroundColor: "#F1E7DD"
+  },
+})

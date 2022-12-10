@@ -214,12 +214,10 @@ export default function MyPage({navigation}) {
                         </Text>
                     </View>
 
-                    <View style={styles.buttonback}>
-                        <Text style={styles.buttontext}onPress={() =>{
-                            // navigation.navigate("AnimalList") -> 알람 페이지 넣어주기
-                         }}>
-                            알람설정 - no!!!
-                        </Text>
+                    <View style={{padding:10, width:'100%', backgroundColor:'red'}}>
+                        <Button title="밥 알람"  onPress={() =>{
+                            navigation.navigate("Food")
+                        }} ></Button>
                     </View>
 
                     <View style={styles.buttonback}>
