@@ -8,6 +8,7 @@ import com.example.mungcare.repository.AnimalRepository;
 import com.example.mungcare.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.util.Optional;
 public class AnimalServiceImpl implements AnimalService{
     private final AnimalRepository animalRepository;
     private final MemberRepository memberRepository;
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public String animalInput(AnimalDTO dto) { //반려동물 등록
@@ -93,22 +95,18 @@ public class AnimalServiceImpl implements AnimalService{
     }
 
     @Override
-    public String animalModify(AnimalDTO dto) { //반려동물 정보 수정
-        AnimalId ld = new AnimalId(dto.getId(), dto.getAName()); //복합키
-        Optional<Animal> result = animalRepository.findById(ld);
-        //수정 하는 항목: '제목', '내용'
-        if(result.isPresent()) {
-            Animal animal = result.get();
-
-            animal.changeBirth(java.sql.Date.valueOf(dto.getABirth()));
-            animal.changeBreed(dto.getABreed());
-            animal.changeNeut(dto.isANeut());
-            animal.changeSex(dto.getASex());
-
-            animalRepository.save(animal);
-            return animal.getAName();
+    public boolean animalModify(String name, AnimalDTO dto) { //반려동물 정보 수정
+        //기본키 값을 수정하기 위해 jdbcTemplate 사용
+        //jpa는 기본키 값을 수정할 수 없다.
+        try {
+            String sql = "update mung.animal set a_name = ?, a_birth = ?, a_neut = ?, a_sex = ?"
+                    + " where id= ? and a_name= ?";
+            jdbcTemplate.update(sql, dto.getAName(), dto.getABirth(), dto.isANeut(), dto.getASex(), dto.getId(), name);
+            return true;
+        } catch(Exception e) {
+            log.info(e.getMessage());
+            return false;
         }
-        return null;
     }
 
     private void validate(final Animal animal) {

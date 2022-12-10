@@ -56,11 +56,11 @@ public class AnimalController {
     }
 
     @PostMapping("/modify") //글 수정하기
-    public String animalModify(AnimalDTO dto) {
+    public boolean animalModify(@RequestParam("name")String name, AnimalDTO dto) {
         log.info("modify...");
         log.info("dto: "+dto);
 
-        String result = animalService.animalModify(dto);
+        boolean result = animalService.animalModify(name, dto);
 
         return result;
     }
