@@ -9,7 +9,7 @@ import Checkbox from 'expo-checkbox';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { TextInput } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
@@ -155,7 +155,8 @@ export default function AnimalDetail({ navigation, route }) {
 
 
     return (
-        <View style={styles.container}>
+        <ScrollView>
+            <View style={styles.container}>
             <Text style={styles.title}> 애완동물 정보 수정</Text>
             <View style={styles.title}>
                 <View style={{ padding: 10, }}>
@@ -268,6 +269,9 @@ export default function AnimalDetail({ navigation, route }) {
                 </View>
             </View>
         </View>
+
+        </ScrollView>
+        
     )
 }
 
