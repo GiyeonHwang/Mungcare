@@ -79,7 +79,7 @@ const MapInfo = (navigation) => {
   const myLocation = () => //내 주변 병원 목록 가져오기
   {
     console.log("myLocation--------------------",mapRegion);
-    axios.post("http://192.168.2.94:5000/hospital/surrounnding", null, {
+    axios.post("http://192.168.2.94:5000/hospital/surrounding", null, {
       params: {
         latitude: mapRegion.latitude,
         longitude: mapRegion.longitude

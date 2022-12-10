@@ -107,6 +107,7 @@ export default function AnimalDetail({ navigation, route }) {
 
         axios.post(`${IP}/animal/modify`, null, {
             params: {
+                name: route.params.info[0],
                 aName: aName,
                 id: route.params.id,
                 aBirth: aBirth,
