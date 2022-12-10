@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, StyleSheet, Button, Alert, Image } from 'react-native';
+import { Text, View, StyleSheet,  Alert, Image, ProgressBarAndroid } from 'react-native';
 import Constants from 'expo-constants';
 import ServerPort from '../../Components/ServerPort';
 
@@ -10,6 +10,15 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// 버튼 스타일npm install @rneui/themed <- 필요
+import { Button } from '@rneui/themed';
+
+// 사진 import해줌
+import coin from '../../assets/images/coin.png';
+
+// 아이콘 import해줌
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const Stack = createStackNavigator();
 const IP = ServerPort();
@@ -84,117 +93,249 @@ export default function MyPage({navigation}) {
     // AsyncStorage.removeItem("check")
 
     return (
-        <>
-            <View style={{ width: '100%', height: '25%', padding: 10,  alignItems: 'center', }}>
-                <View style={{ padding: 10, width:'80%', height:'100%'}}>
-                    {/* 포인트, 프로필 */}
-                    <View style={{ flexDirection: 'row', backgroundColor:'red', height : '65%' , borderBottomWidth: 1,}}>
-                        <View style={{ backgroundColor: 'blue', width: '65%', padding: 10 }}>
-                            <View style={{ backgroundColor: 'white', height: '25%'}}>
-                                <Text style={{fontSize:13, }}>내 포인트</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', height: '75%', }}>
-                                <View style={{ width: '30%', height: '100%', backgroundColor: 'red', }}>
-                                    <View style={{ alignItems: 'center'}}>
-                                        <Image source={require('../../assets/images/coin.png')} style={{width:'100%',height:'100%'}} />
-                                    </View>
-                                </View>
-                                <View style={{ width: '70%', height: '100%', backgroundColor: 'yellow' }}>
-                                    <Text>{point}</Text>
-                                </View>
-                            </View>
-                        </View>
-                        <View style={{ backgroundColor: 'red', width: '35%', padding: 10 }}>
-                            {/* 프로필 */}
-                            <View style={{ alignItems: 'center'}}>
-                                <Image source={require('../../assets/images/coin.png')} style={{ width: '100%', height: '100%' }} />
-                            </View>
-                        </View>
+        <View style={styles.container}>
+           <View style={styles.pointbox}>
+
+            {/* username */}
+                <View style={styles.infobox}>
+                    <View style={styles.infoimg}>
+                        <Icon name="user" size={70} color="#F7931D" style={{marginTop:"15%", marginRight:"5%"}} />
                     </View>
-                    {/* 포인트 현황, 닉네임 */}
-                    <View style={{ flexDirection: 'row', backgroundColor:'red', height : '30%'}}>
-                        <View style={{ backgroundColor:'lightgreen', width:'65%'}}>
-                            <Button title='포인트 현황보기' onPress={() =>{
-                            navigation.navigate("MyPoint", {
-                                point: point,
-                                id: id
-                            })
-                        }}></Button>
-                        </View>
-                        <View style={{padding:10, backgroundColor:'blue', width:'35%', alignContent:'center', }}>
-                            <Text >{nickname}</Text>
-                        </View>
-                        
+                    <View style={styles.infotext}>
+                        <Text style={styles.infotextstyle}>{nickname}</Text>
+                    </View>
+                </View>
+
+
+            {/* 게시글 수 */}
+                <View style={styles.infobox}>
+                    <View style={styles.infoimg}>
+                        <Text style={styles.infodbnum}>5{/*db에서 불러온 게시글 수 숫자 들어갈 자리*/}</Text>
+                    </View>
+                    <View style={styles.infotext}>
+                        <Text style={styles.infotextstyle}>게시글 수(고치기)</Text>
+                    </View>
+                </View>
+
+
+            {/* 포인트 현황 */}
+                <View style={styles.infobox}>
+                    <View style={styles.infoimg}>
+                        <Image source={coin} style={{width:80, height:80, marginTop:"10%"}}/>
+                    </View>
+                    <View style={styles.infotext}>
+                        <Button
+                            containerStyle={{
+                                bottom:"3.5%"
+                            }}
+                            title="포인트 현황"
+                            type="clear"
+                            titleStyle={{ color: 'black' }}
+                            onPress={() =>{
+                                navigation.navigate("MyPoint", {
+                                    point: point,
+                                    id: id
+                                })
+                            }} 
+                        />
                     </View>
                 </View>
             </View>
-            <View style={{ width: '100%', height: '75%', backgroundColor: 'lightgreen' }}>
-                <View style={{ padding: 30 }}>
-                    <View style={{ padding: 10, width: '100%', backgroundColor: 'red', }}>
-                        <Button title="상세 정보 페이지" onPress={() => {
-                            navigation.navigate("MyInfo", {
-                                info : [id, pw, name, nickname, phone, address, detailaddress, location_Num, check, point],
-                                title : "user Info",
-                                mypageInfo: mypageInfo
-                            })
-                        }}></Button>
+
+
+            {/* 포인트 보이기 */}
+            <View style={styles.box2}>
+                <View style={styles.mypointbox}>
+                    <Image source={coin} style={{width:35, height:35, marginTop:'6%'}}/>
+                    <Text style={styles.mypointtext}>{point}</Text> 
+                </View>
+                <View style={styles.androidbox}>
+                    <View style={styles.example}>
+                        <ProgressBarAndroid
+                        styleAttr="Horizontal"
+                        indeterminate={false}
+                        progress={0.5} //1등%만 보이니까 0으로 고정 / 실제 코드 밑에있는 주석으로 바꿔야 됌.
+
+                        //   progress={rdata.length !=0?rdata[0].totalPoint/100:null} //1등%만 보이니까 0으로 고정
+                        />
                     </View>
-                    <View style={{padding:10, width:'100%', backgroundColor:'red'}}>
-                        <Button title="애완동물정보" onPress={() =>{
+                </View>
+            </View>
+
+
+            {/* 정보 더보기 */}
+            <View style={styles.box3}>
+                <View style={styles.nextinfo}>
+                    <Text>
+                        정보 더보기
+                    </Text>
+                </View>
+                <View style={styles.buttonbox}>
+
+                    <View style={styles.buttonback}>
+                        <Text style={styles.buttontext}  
+                            onPress={() => {
+                                navigation.navigate("MyInfo", {
+                                    info : [id, pw, name, nickname, phone, address, detailaddress, location_Num, check, point],
+                                    title : "user Info",
+                                    mypageInfo: mypageInfo
+                                })
+                            }}>
+                            상세 정보 페이지
+                        </Text>
+                       
+                    </View>
+
+                    <View style={styles.buttonback}>
+                        <Text style={styles.buttontext}  
+                           onPress={() =>{
                             navigation.navigate("AnimalList")
-                        }} ></Button>
+                         }} >
+                            애완동물정보
+                        </Text>
                     </View>
-                    <View style={{padding:10, width:'100%', backgroundColor:'red'}}>
-                        <Button title="알람설정 - no!!!" ></Button>
+
+                    <View style={styles.buttonback}>
+                        <Text style={styles.buttontext}onPress={() =>{
+                            // navigation.navigate("AnimalList") -> 알람 페이지 넣어주기
+                         }}>
+                            알람설정 - no!!!
+                        </Text>
                     </View>
-                    <View style={{padding:10, width:'100%', backgroundColor:'red'}}>
-                        <Button title="켈린더" onPress={() => {
+
+                    <View style={styles.buttonback}>
+                        <Text style={styles.buttontext}
+                        onPress={() =>{
                             navigation.navigate("CalenderMain")
-                        }}
-                        ></Button>
+                         }}>
+                            캘린더
+                        </Text>
                     </View>
-                    <View style={{padding:10, width:'100%', backgroundColor:'red'}}>
-                        <Button title="놀아주기" onPress={() => {
-                            navigation.navigate("Play")
-                        }}
-                         ></Button>
+
+                    <View style={styles.buttonback}>
+                        <Text style={styles.buttontext}
+                            onPress={() => {
+                                navigation.navigate("Play")
+                            }}
+                        >
+                            놀아주기
+                        </Text>
                     </View>
                 </View>
             </View>
-        </>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 24,
-        // backgroundColor: '#eaeaea',
-        backgroundColor:"#c9fffe"
+        backgroundColor:"#EBE3D7"
     },
-    title: {
-        marginTop: 16,
-        paddingVertical: 8,
-        borderWidth: 4,
-        borderColor: '#20232a',
-        borderRadius: 6,
-        backgroundColor: '#61dafb',
-        color: '#20232a',
-        textAlign: 'center',
-        fontSize: 30,
-        fontWeight: 'bold',
+    pointbox:{
+        flex: 2,
+        // borderWidth:1,
+        flexDirection: 'row',
+        marginHorizontal:"3%",
+        marginTop:"6%",
+        borderWidth:3,
+        borderColor:"#b8997c",
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        backgroundColor:"white"
     },
-    infoName: {
-        backgroundColor :"red",
-        padding: 10,
-        alignItems: 'center',
-        width: 130,
+    infobox:{
+        flex:1,
+        flexDirection: 'column',
+        // borderWidth:1,
+        
     },
-    info: {
-        backgroundColor :"blue",
-        padding: 10,
-        width: 184,
-        alignItems: 'center',
+    infoimg:{
+        flex:2,
+        // borderWidth:1,
+        // borderColor:'blue',
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    infotext:{
+        flex:1,
+        // borderWidth:1,
+        borderColor:'green',
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom:"10%"
+        
+    },
+    infodbnum:{
+        fontSize:50,
+        marginTop:"5%"
+
+    },
+    infotextstyle:{
+        fontSize:17
+    },
+    box2:{
+        flex:1
+    },
+    mypointbox:{
+        flexDirection: 'row',
+        marginHorizontal:"3%",
+        marginTop:"3%",
+     
+    },
+    mypointtext:{
+        marginTop:"6%",
+        fontSize:18
+        // borderWidth:1
+    },
+    androidbox:{
+        marginHorizontal:"3%",
+        // borderTopWidth:3,
+        // borderBottomWidth:3,
+        // borderColor:'#EFEFEF',
+    },
+    example: {
+        marginVertical: 10,
     },
 
+    box3:{
+        // borderWidth:1,
+        flex:5, 
+        width: '100%', 
+        height: '70%', 
+        marginTop:"2%"
+        // backgroundColor:'lightgreen'
+    },
+    nextinfo:{
+        marginHorizontal:"2%",
+        marginTop:"6%",
+        // borderWidth:1,
+        width:"38%",
+        // borderRadius: 50,
+        // borderTopLeftRadius:50,
+        // borderTopRightRadius:50,
+
+    },
+    buttonbox:{
+        // backgroundColor:'#ffffff'
+    },
+    buttonback:{
+        // padding: 10, 
+        width: '100%', 
+        // backgroundColor: 'red',
+    },
+    buttontext:{
+        fontSize:20,
+        // marginVertical:"10%",
+        borderBottomWidth:1,
+        margin:"3%",
+        marginTop:"5%",
+        color: '#F7931D',
+        fontWeight: "bold",
+        fontSize:18,
+        borderColor:"#b8997c",
+
+    }
 });

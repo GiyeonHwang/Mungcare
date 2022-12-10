@@ -36,6 +36,8 @@ export default function AnimalDetail({ navigation: { navigate } }) {
             // 오류 예외 처리
         }
     }
+    
+
 
     // 로그인 유지
     const getId = async () =>{
@@ -92,6 +94,8 @@ export default function AnimalDetail({ navigation: { navigate } }) {
             animalList(id);
         })();
     }, []);
+
+    
 
 
     return (
