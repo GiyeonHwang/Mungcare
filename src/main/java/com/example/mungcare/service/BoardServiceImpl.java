@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -174,6 +175,25 @@ public class BoardServiceImpl implements BoardService{
             log.info(e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public Integer boardCount(String id) { //내가 작성한 게시글 수
+        try {
+            List<Board> entity = boardRepository.findAll();
+            Integer count = 0;
+
+            for(Board board : entity) {
+                if(id.equals(board.getId().getId()))
+                    count += 1;
+            }
+            return count;
+        } catch(Exception e) {
+            log.info(e.getMessage());
+            return null;
+        }
+
+
     }
 
 

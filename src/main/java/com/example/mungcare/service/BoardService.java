@@ -21,6 +21,7 @@ public interface BoardService {
     boolean remove(Integer bNo); //글 삭제하기
     Integer modify(BoardDTO dto); //글 수정하기
     void updateView(Integer bNo); //조회수
+    Integer boardCount(String id); //내가 작성한 게시글 수
 
 
     //서비스 계층에서는 파라미터를 DTO 타입으로 받기 때문에 이를 JPA로 처리하기 위해서 엔티티 타입의 객체로 변환

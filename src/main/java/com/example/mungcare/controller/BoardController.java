@@ -75,4 +75,11 @@ public class BoardController {
 
         return result;
     }
+
+    @PostMapping("/count") //내가 작성한 게시글 수 확인하기
+    public Integer boardCount(@RequestParam("id") String id) {
+        log.info("count...");
+        Integer count = boardService.boardCount(id);
+        return count;
+    }
 }
