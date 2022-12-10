@@ -25,9 +25,9 @@ public class HospitalController {
         return hList;
     }
 
-    @PostMapping("/surrounnding") //내 위치 기준(반경 2km) 주변 병원 가져오기
+    @PostMapping("/surrounding") //내 위치 기준(반경 2km) 주변 병원 가져오기
     public List<HospitalDTO> hospitalRadius(@RequestParam("latitude")Double latitude, @RequestParam("longitude")Double longitude) {
-        log.info("surrounnding...");
+        log.info("surrounding...");
         List<HospitalDTO> hList = hospitalService.hospitalRadius(latitude, longitude);
         System.out.println("result---------------------------"+hList);
         return hList;

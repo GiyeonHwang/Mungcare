@@ -38,7 +38,7 @@ public class ReplyServiceImpl implements ReplyService{
         }
     }
 
-    public void updateReply(Integer bNo) { //조회수
+    public void updateReply(Integer bNo) { //댓글 수
         Board board = boardRepository.findById(bNo).get();
         board.updateReplyCount(board.getBReply());
         boardRepository.save(board);

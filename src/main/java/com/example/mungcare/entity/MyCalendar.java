@@ -25,6 +25,7 @@ public class MyCalendar {
 
     private Time cStartTime; //시작시간
     private Time cEndTime; //끝나는 시간
+
     @Column(nullable = false)
     private Date cDate; //날짜
     @Column(length = 1500)

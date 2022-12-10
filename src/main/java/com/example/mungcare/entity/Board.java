@@ -21,7 +21,7 @@ public class Board{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer bNo; //게시글 번호
 
-    @Column(length = 1500, nullable = false)
+    @Column(length = 3000, nullable = false)
     private String bContent; //게시글 내용
 
     @Column(length = 100, nullable = false)
@@ -79,7 +79,7 @@ public class Board{
         return this;
     }
 
-    public void updateReplyCount(Integer bReply) { //게시물 조회수 증가
+    public void updateReplyCount(Integer bReply) { //게시물 댓글 수 증가
         this.bReply = bReply + 1;
     }
 
