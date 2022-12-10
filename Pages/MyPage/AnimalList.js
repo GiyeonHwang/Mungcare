@@ -35,6 +35,8 @@ export default function AnimalList({ navigation: { navigate } }) {
             console.log("유저 세션 안불러와짐");
         }
     }
+    
+
 
     // 로그인 유지
     const getId = async () =>{

@@ -20,6 +20,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 // 사진 import
 import mung from '../../assets/images/mung.jpg';
 
+//로그인 유지
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Ranking({ navigation }){
@@ -28,7 +30,6 @@ export default function Ranking({ navigation }){
 
     React.useEffect(()=>{
       const setData = async () => {
-        console.log("여기까지 들어오나요?");
         await axios.post("http://192.168.2.94:5000/point/ranking", null, {
           
       })

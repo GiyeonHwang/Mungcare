@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, StyleSheet, Button, Alert, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import Constants from 'expo-constants';
 import Modal from "react-native-modal";
 import Postcode from '@actbase/react-daum-postcode';
@@ -14,6 +14,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { TextInput } from 'react-native-gesture-handler';
 const Stack = createStackNavigator();
 const IP = ServerPort();
+// 버튼 스타일npm install @rneui/themed <- 필요
+import { Button } from '@rneui/themed';
+
 
 
 export default function MyPage({ navigation, route }) {
@@ -211,10 +214,10 @@ export default function MyPage({ navigation, route }) {
         <View style={styles.container}>
             <ScrollView>
                 <View style={styles.title}>
-                <View style={{ padding: 10, }}>
-                        <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
+                    <View style={styles.box}>
+                        <View style={styles.infobox}>
                             <View style={styles.infoName}>
-                                <Text style={{ fontSize: 20 }}>이메일(아이디)</Text>
+                                <Text style={styles.infotext}>이메일(아이디)</Text>
                             </View>
                             <View style={styles.info}>
                                 {/* 이메일은 수정X */}
@@ -222,10 +225,10 @@ export default function MyPage({ navigation, route }) {
                             </View>
                         </View>
                     </View>
-                    <View style={{ padding: 10, }}>
-                        <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
+                    <View style={styles.box}>
+                        <View style={styles.infobox}>
                             <View style={styles.infoName}>
-                                <Text style={{ fontSize: 20 }}>닉네임</Text>
+                                <Text style={styles.infotext}>닉네임</Text>
                             </View>
                             <View style={styles.info}>
                                 <TextInput
@@ -238,10 +241,10 @@ export default function MyPage({ navigation, route }) {
                             </View>
                         </View>
                     </View>
-                    <View style={{ padding: 10, }}>
-                        <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
+                    <View style={styles.box}>
+                        <View style={styles.infobox}>
                             <View style={styles.infoName}>
-                                <Text style={{ fontSize: 20 }}>이름</Text>
+                                <Text style={styles.infotext}>이름</Text>
                             </View>
                             <View style={styles.info}>
                                 <TextInput
@@ -254,10 +257,10 @@ export default function MyPage({ navigation, route }) {
                             </View>
                         </View>
                     </View>
-                    <View style={{ padding: 10, }}>
+                    <View style={styles.box}>
                         <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
                             <View style={styles.infoName}>
-                                <Text style={{ fontSize: 20 }}>비밀번호</Text>
+                                <Text style={styles.infotext}>비밀번호</Text>
                             </View>
                             <View style={styles.info}>
                                 <TextInput
@@ -270,10 +273,10 @@ export default function MyPage({ navigation, route }) {
                             </View>
                         </View>
                     </View>
-                    <View style={{ padding: 10, }}>
+                    <View style={styles.box}>
                         <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
                             <View style={styles.infoName}>
-                                <Text style={{ fontSize: 20 }}>비밀번호 확인</Text>
+                                <Text style={styles.infotext}>비밀번호 확인</Text>
                             </View>
                             <View style={styles.info}>
                                 <TextInput
@@ -286,10 +289,10 @@ export default function MyPage({ navigation, route }) {
                             </View>
                         </View>
                     </View>
-                    <View style={{ padding: 10, }}>
+                    <View style={styles.box}>
                         <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>
                             <View style={styles.infoName}>
-                                <Text style={{ fontSize: 20 }}>전화번호</Text>
+                                <Text style={styles.infotext}>전화번호</Text>
                             </View>
                             <View style={styles.info}>
                                 <TextInput
@@ -303,16 +306,16 @@ export default function MyPage({ navigation, route }) {
                         </View>
                     </View>
 
-                    <View style={{ padding: 10, }}>
+                    <View style={styles.addressbox}>
                         <TouchableOpacity onPress={() => setModal(true)}>
-                            <Text style={styles.text}>우편번호</Text>
+                            <Text style={styles.addressinfo}>우편번호</Text>
                             <TextInput
                                 editable={false}
                                 style={styles.input}
                                 value={location_Num}
                                 placeholder="우편번호"
                             />
-                            <Text style={styles.text}>주소지</Text>
+                            <Text style={styles.addressinfo}>주소지</Text>
                             <TextInput
                                 editable={false}
                                 style={styles.input}
@@ -334,12 +337,12 @@ export default function MyPage({ navigation, route }) {
                                 />
                                 <Button
                                     title="닫기"
-                                    color="#CCCCFF"
+                                    color="#3AB5A9"
                                     onPress={() => setModal(false)} // 도로명 주소찾기 강제 종료
                                 />
                             </Modal>
                         </TouchableOpacity>
-                        <Text style={styles.text}>세부주소</Text>
+                        <Text style={styles.addressinfo}>세부주소</Text>
                         <TextInput
                             editable={detailEditable}
                             onChangeText={handleDetailChange}
@@ -353,10 +356,13 @@ export default function MyPage({ navigation, route }) {
                          {/* <Button title="수정" onPress={() => Alert.alert('ModifyInfo 페이지로 변환')} /> */}
                          <Button
                             disabled={regiButton()}
+                            type="outline"
+                            
                             color="#CCCCFF"
                             title="저장"
                             onPress={() => update()}
                         />
+                     
                     </View>
                 </View>
             </ScrollView>
@@ -367,35 +373,75 @@ export default function MyPage({ navigation, route }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 24,
-        backgroundColor: '#eaeaea',
+        // padding: 24,
+        backgroundColor: '#EBE3D7',
     },
-    title: {
-        marginTop: 16,
-        paddingVertical: 8,
-        borderWidth: 4,
-        borderColor: '#20232a',
-        borderRadius: 6,
-        backgroundColor: '#61dafb',
-        color: '#20232a',
-        textAlign: 'center',
-        fontSize: 30,
-        fontWeight: 'bold',
-    },
-    infoName: {
-        backgroundColor: "red",
+    box:{
         padding: 10,
+    },
+    infobox:{
+        borderBottomWidth: 1,
+        flexDirection: 'row',
+        marginTop:"0.5%"
+        // width: '100%'
+    },
+    infotext:{
+        fontSize: 20
+    },
+    infoName:{
+        // backgroundColor: "red",
+        // padding: 10,
         alignItems: 'center',
         width: 130,
     },
-    info: {
+    info:{
+        // backgroundColor: "blue",
+        padding: 9,
         width: 184,
         alignItems: 'center',
     },
-    input: {
-        width: '100%',
-        borderWidth: 1,
-        padding: 10,
-        backgroundColor: "blue"
+    title: {
+        marginTop: "5%",
+        margin:"3%"
+        // paddingVertical: 8,
+        // borderWidth: 4,
+        // borderColor: '#20232a',
+        // borderRadius: 6,
+        // backgroundColor: '#61dafb',
+        // color: '#20232a',
+        // textAlign: 'center',
+        // fontSize: 30,
+        // fontWeight: 'bold',
+        
     },
+    // infoName: {
+    //     backgroundColor: "red",
+    //     padding: 10,
+    //     alignItems: 'center',
+    //     width: 130,
+    // },
+    // info: {
+    //     // width: 184,
+    //     // alignItems: 'center',
+    //     // backgroundColor: "blue",
+    //     padding: 9,
+    //     width: 184,
+    //     alignItems: 'center',
+    // },
+    input: {
+        // width: '100%',
+        // borderWidth: 1,
+        // padding: 10,
+        // backgroundColor: "blue"
+        fontSize: 15
+    },
+    inputinfo:{
+        width:"100%"
+    },
+    addressbox:{
+        marginHorizontal:'6%'
+    },
+    addressinfo:{
+        marginTop:"3%",
+    }
 });
