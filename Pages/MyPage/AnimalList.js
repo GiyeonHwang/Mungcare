@@ -85,7 +85,7 @@ export default function AnimalDetail({ navigation: { navigate } }) {
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
                             {/* <View sytle={{ alignContent: 'center', width: '100%', padding: 10, alignItems: 'center'}}> */}
-                            <View>
+                            <View style={styles.modalback}>
                                 <View style={{ alignContent: 'center', flexDirection: 'row' }}>
                                 {/* <View> */}
                                     <View style={{ width: '50%', backgroundColor: 'yellow', alignItems: 'center', }}>
@@ -295,6 +295,9 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
+    },
+    modalback:{
+        backgroundColor:'#EBE3D7'
     },
     button: {
         borderRadius: 20,
