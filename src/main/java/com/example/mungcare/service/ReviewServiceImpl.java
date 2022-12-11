@@ -1,13 +1,23 @@
 package com.example.mungcare.service;
 
-import com.example.mungcare.dto.HospitalDTO;
 import com.example.mungcare.dto.ReviewDTO;
 import com.example.mungcare.entity.Review;
 import com.example.mungcare.repository.ReviewRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.net.http.HttpHeaders;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +26,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Log4j2
 public class ReviewServiceImpl implements ReviewService{
+    private static String GEOCODE_URL="https://dapi.kakao.com/v2/local/geo/coord2address.json?"; //카카오 api
+    private static String GEOCODE_USER_INFO="KakaoAK {rest api}"; //rest api
+
     private final ReviewRepository reviewRepository;
 
     @Override
@@ -25,6 +38,8 @@ public class ReviewServiceImpl implements ReviewService{
             log.info("register...");
             log.info(reviewDTO);
             Review review = dtoToEntity(reviewDTO);
+            //위도, 경도를 주소로 변환하여 저장
+            review.changeAddress(getAddress(reviewDTO.getLatitude(), reviewDTO.getLongitude()));
             reviewRepository.save(review);
             return review.getVNo();
         } catch(Exception e) {
@@ -59,6 +74,8 @@ public class ReviewServiceImpl implements ReviewService{
                 review.changeContent(reviewDTO.getVContent());
                 review.changeLatitude(reviewDTO.getLatitude());
                 review.changeLongitude(reviewDTO.getLongitude());
+                //위도, 경도를 주소로 변환하여 저장
+                review.changeAddress(getAddress(reviewDTO.getLatitude(), reviewDTO.getLongitude()));
                 review.changeStar(reviewDTO.getStar());
                 review.changePhoto(reviewDTO.getVPhoto());
                 reviewRepository.save(review);
@@ -107,6 +124,49 @@ public class ReviewServiceImpl implements ReviewService{
     //radian(라디안)을 10진수로 변환
     private double rad2deg(double rad){
         return (rad * 180 / Math.PI);
+    }
+
+    private String getAddress(Double latitude, Double longitude) {
+        URL obj;
+        try {
+            String x = longitude.toString(); //경도
+            String y = latitude.toString(); //위도
+            String coordinatesystem = "WGS84"; //x, y로 입력되는 값에 대한 좌표계
+
+            obj = new URL(GEOCODE_URL + "x=" + x + "&y=" + y + "&input_coord=" + coordinatesystem);
+
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("Authorization", GEOCODE_USER_INFO);
+            con.setRequestProperty("content-type", "application/json");
+            con.setDoOutput(true);
+            con.setUseCaches(false);
+
+            Charset charset = Charset.forName("UTF-8");
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), charset));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in .readLine()) != null) {
+                response.append(inputLine);
+            }
+
+            String result = response.toString();
+            String str1 = "\"address_name\":\"";
+            String str2 = "\",";
+
+            String address = "";
+            if(result.contains(str1))
+                address = result.split(str1)[1].split(str2)[0];
+
+            System.out.println(address);
+            return address;
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
     }
 }
 

@@ -29,7 +29,10 @@ public class Review {
 
     private Double longitude; //경도
 
-    private Integer star; //별점
+    @Column(length = 150)
+    private String address; //주소
+
+    private Double star; //별점
 
     @Column(length = 1500)
     private String vPhoto; //리뷰 사진
@@ -48,7 +51,11 @@ public class Review {
         this.longitude = longitude;
     }
 
-    public void changeStar(Integer star) { //별점 수정
+    public void changeAddress(String address) { //주소 수정
+        this.address = address;
+    }
+
+    public void changeStar(Double star) { //별점 수정
         this.star = star;
     }
 

@@ -17,7 +17,8 @@ public class ReviewDTO {
     private String vContent; //리뷰 내용
     private Double latitude; //위도
     private Double longitude; //경도
-    private Integer star; //별점
+    private String address; //주소
+    private Double star; //별점
     private String vPhoto; //리뷰 사진
     private Date vDate; //날짜
 }
