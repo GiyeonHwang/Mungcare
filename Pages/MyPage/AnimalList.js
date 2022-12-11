@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from "react";
-import { Text, View, StyleSheet, Alert, Modal, Pressable, Image } from 'react-native';
+import { Text, View, StyleSheet, Alert, Modal, Pressable, Image, ScrollView } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import AnimalListCard from '../../Components/AnimalListCard';
@@ -11,6 +11,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 // 버튼 스타일 적용
 import { Button } from '@rneui/themed';
+
+// icon 적용
+import { IconName } from "react-icons/io5";
+
+// 아이콘 import해줌
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const Stack = createStackNavigator();
 
@@ -148,29 +154,32 @@ export default function AnimalDetail({ navigation: { navigate } }) {
 
 
 
-            <View style={styles.animalbox}>
+            {/* <View style={styles.animalbox}>
                 <Text style={styles.introtext}> 애완동물 목록 </Text>
-            </View>
-            <View style={styles.animalinfobox}>
-                {/* map형식으로 계속 부름 */}
-                {
-                    data && data.map((e, index) => {
-                        return (
-                            <AnimalListCard
-                            key = {index}
-                            img = {e.aphoto}
-                            aname = {e.aname}
-                            setModalVisible = {setModalVisible}
-                            />
-                        )
-                    })
-                }
+            </View> */}
+            <ScrollView>
+                <View style={styles.animalinfobox}>
+                    {/* map형식으로 계속 부름 */}
+                    {
+                        data && data.map((e, index) => {
+                            return (
+                                <AnimalListCard
+                                key = {index}
+                                img = {e.aphoto}
+                                aname = {e.aname}
+                                setModalVisible = {setModalVisible}
+                                />
+                            )
+                        })
+                    }
 
 
-            </View>
-            
-                <View style={styles.addanimal}>
-                    <Button title="추가" onPress={() => {
+                </View>
+                
+
+            </ScrollView>
+            <View style={styles.addanimal}>
+                    {/* <Button title="추가" onPress={() => {
                         navigate("AddAnimal")
                     }} 
                     buttonStyle={{
@@ -179,15 +188,22 @@ export default function AnimalDetail({ navigation: { navigate } }) {
                     type="outline"
                     titleStyle={{ color: '#F7931D', fontSize:20 }}
                     containerStyle={{
-                        // width: 200,
+                        width: 200,
+                        marginLeft:"28%",
                         // marginHorizontal: 50,
                         // marginVertical: 10,
                         marginTop:"0.5%",
                         
                     }}
-                    />
+                    
+                    /> */}
+                    <Icon name="pluscircle" size={70} color="#F7931D" style={{padding:"5%", borderWidth:1, borderColor:'#EBE3D7'}}  onPress={() => {
+                        navigate("AddAnimal")
+                    }} />
                     
                 </View>
+            
+                
 
             <View >
 
@@ -308,19 +324,21 @@ const styles = StyleSheet.create({
 
 
 
-    animalbox:{
-        flex:1,
-        borderWidth:1,
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    introtext:{
-        fontSize:20
-    },
-    animalinfobox:{
-        flex:10,
-        borderWidth:1
-    },
+    // animalbox:{
+    //     flex:1,
+    //     // borderWidth:1,
+    //     // borderColor:'#b8997c',
+    //     justifyContent: "center",
+    //     alignItems: "center",
+        
+    // },
+    // introtext:{
+    //     fontSize:20
+    // },
+    // animalinfobox:{
+    //     flex:10,
+    //     // borderWidth:1
+    // },
     listbox:{
         // flex:1,
         flexDirection: 'row', 
@@ -344,7 +362,19 @@ const styles = StyleSheet.create({
 
     addanimal:{
         flex:1,
+        position: 'absolute',
+        // borderWidth:1,
         height:100,
-        borderWidth:1
+        width:100,
+        // marginTop:"3%",
+        marginLeft:"70%",
+        // marginTop:"75%",
+        bottom:0,
+        alignSelf:'flex-end',
+        alignItems: 'center',
+        
+        
+        // flexDirection: 'row', 
+        // borderWidth:1
     }
 });
