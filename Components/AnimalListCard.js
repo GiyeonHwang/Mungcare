@@ -16,9 +16,10 @@ export default function AnimalListCard({img , aname , setModalVisible}){
                         <Image style={styles.imgBox} source={{ uri: img }} />
                     }
                     </View>
-                    <Text style={styles.listtext}>
-                        {aname}
-                    </Text>
+                    <View style={styles.listtext}>
+                        <Text style={styles.puppyname}>{aname}</Text>
+                        <Text style={styles.puppytext}>자세한 정보를 보려면 눌러주세요.</Text>
+                    </View>
 
                 </View>
             </Pressable>
@@ -36,22 +37,34 @@ const styles = StyleSheet.create({
     },
     listbox:{
         flexDirection: 'row', 
-        
+        margin:"3%", 
+        marginTop:"5%",
+        // backgroundColor:"blue" 
     },
     listimg:{
-        borderWidth:1,
-        height:100,
-        width:100,
-        marginLeft:'5%',
+        // borderWidth:1,
+        height:110,
+        width:110,
+        marginLeft:'10%',
         marginTop:"3%",
         borderRadius:50
     },
     listtext:{
-        borderWidth:1,
-        height:80,
+        // borderWidth:1,
+        padding:"2%",
         width:200,
         margin:'2%',
-        marginTop:"4%"
+        marginTop:"6%",
+        // marginLeft:"5%"
     },
+    puppyname:{
+        fontSize:18,
+        marginBottom:"5%",
+        // backgroundColor:"red"
+    },
+    puppytext:{
+        fontSize:10,
+        bottom:"2%"
+    }
 
 })
