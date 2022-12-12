@@ -26,9 +26,10 @@ export default function AnimalListCard({ animalData }){
                         <Image style={styles.imgBox} source={{ uri: animalData.aphoto }} />
                     }
                     </View>
-                    <Text style={styles.listtext}>
-                        {animalData.aname}
-                    </Text>
+                    <View style={styles.listtext}>
+                        <Text style={styles.puppyname}>{animalData.aname}</Text>
+                        <Text style={styles.puppytext}>자세한 정보를 보려면 눌러주세요.</Text>
+                    </View>
 
                 </View>
             </TouchableOpacity>
