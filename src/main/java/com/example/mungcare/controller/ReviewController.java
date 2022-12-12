@@ -26,6 +26,14 @@ public class ReviewController {
         return vNo;
     }
 
+    @PostMapping("/list") //산책 장소 리뷰 작성
+    public List<ReviewDTO> reviewList() {
+        log.info("list...");
+        List<ReviewDTO> vList = reviewService.reviewList();
+        System.out.println("vList--------------"+vList);
+        return vList;
+    }
+
     @PostMapping("/surrounding") //내 위치 기준(반경 3km) 주변 리뷰 목록 가져오기
     public List<ReviewDTO> reviewRadius(@RequestParam("latitude")Double latitude, @RequestParam("longitude")Double longitude) {
         log.info("surrounding...");
@@ -46,6 +54,14 @@ public class ReviewController {
         log.info("remove...");
         boolean result = reviewService.remove(vNo);
         return result;
+    }
+
+    @PostMapping("/search") //리뷰 검색
+    public List<ReviewDTO> reviewSearch(@RequestParam("search") String search) {
+        log.info("search...");
+        List<ReviewDTO> vList = reviewService.reviewSearch(search);
+        System.out.println("vList--------------"+vList);
+        return vList;
     }
 
 }

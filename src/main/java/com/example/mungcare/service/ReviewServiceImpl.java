@@ -3,20 +3,14 @@ package com.example.mungcare.service;
 import com.example.mungcare.dto.ReviewDTO;
 import com.example.mungcare.entity.Review;
 import com.example.mungcare.repository.ReviewRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.net.http.HttpHeaders;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +21,7 @@ import java.util.Optional;
 @Log4j2
 public class ReviewServiceImpl implements ReviewService{
     private static String GEOCODE_URL="https://dapi.kakao.com/v2/local/geo/coord2address.json?"; //카카오 api
-    private static String GEOCODE_USER_INFO="KakaoAK {rest api}"; //rest api
+    private static String GEOCODE_USER_INFO="KakaoAK {rest api key}"; //rest api
 
     private final ReviewRepository reviewRepository;
 
@@ -44,6 +38,24 @@ public class ReviewServiceImpl implements ReviewService{
             return review.getVNo();
         } catch(Exception e) {
             log.info(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
+    public List<ReviewDTO> reviewList() { //산책 리뷰 전체 목록
+        try{
+            log.info("reviewList-------------------");
+            List<Review> entity = reviewRepository.findAll();
+            List<ReviewDTO> rList = new ArrayList<>();
+
+            for(Review review : entity) {
+                ReviewDTO dto = entityToDTO(review);
+                rList.add(dto);
+            }
+            return rList;
+        } catch(Exception e) {
+            log.info("오류");
             return null;
         }
     }
@@ -97,6 +109,26 @@ public class ReviewServiceImpl implements ReviewService{
             log.info(e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public List<ReviewDTO> reviewSearch(String search) { //산책 리뷰 장소 검색
+        try {
+            List<Review> entity = reviewRepository.findAll();
+            List<ReviewDTO> vList = new ArrayList<>();
+
+            for(Review review : entity) {
+                if(review.getAddress() != null && review.getAddress().contains(search)) {
+                    ReviewDTO dto = entityToDTO(review);
+                    vList.add(dto);
+                }
+            }
+            return vList.isEmpty() ? null : vList;
+        } catch(Exception e) {
+            log.info(e.getMessage());
+            return null;
+        }
+
     }
 
     private void validate(final Review review) {

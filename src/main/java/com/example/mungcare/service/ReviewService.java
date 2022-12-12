@@ -8,9 +8,11 @@ import java.util.List;
 
 public interface ReviewService {
     Integer register(ReviewDTO reviewDTO); //리뷰 등록
+    List<ReviewDTO> reviewList(); //산책 리뷰 전체 목록
     List<ReviewDTO> reviewRadius(Double latitude, Double longitude); //내 위치 가까운 리뷰 목록
     boolean modify(ReviewDTO reviewDTO); //리뷰 수정
     boolean remove(Integer vNo); //리뷰 삭제
+    List<ReviewDTO> reviewSearch(String search); //산책 리뷰 장소 검색
 
     default Review dtoToEntity(ReviewDTO dto) {
         Member member = Member.builder().id(dto.getId()).build();
