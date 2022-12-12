@@ -10,8 +10,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //이미지 업로드
 import * as ImagePicker from 'expo-image-picker';
 
-import AsyncStorage from '@react-native-async-storage/async-storage'
-
 // 버튼 스타일npm install @rneui/themed <- 필요
 import { Button } from '@rneui/themed';
 
