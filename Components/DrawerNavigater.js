@@ -103,7 +103,7 @@ const CustomDrawer = ({ navigation }) => {
             onPress: () => null,
           },
           { text: "예", onPress: () => {
-            AsyncStorage.clear().then(navigation.navigate('SplashScreen'));
+            AsyncStorage.removeItem('id').then(navigation.navigate('SplashScreen'));
           }}
         ])
        }/>

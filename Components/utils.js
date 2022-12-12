@@ -18,7 +18,7 @@ export const fillEmpty = (visibleCount, [...values]) => {
   return values;
 };
 
-export const asPickerFormat = (date ) => {
+export const asPickerFormat = (date) => {
   const _date = new Date(date.getTime());
   const hour = _date.getHours();
   const min = _date.getMinutes();

@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, StyleSheet, Button, Alert, Dimensions, TouchableOpacity } from 'react-native';
 import Checkbox from 'expo-checkbox';
 //npm install expo-checkbox
 
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -14,9 +15,33 @@ import ListAlrams from '../../Components/ListAlrams';
 
 const Stack = createStackNavigator();
 
-//동물 info가져오기
-export default function Food({navigation}) {
+export default function Food({ navigation }) {
 
+    const [storageDataList, setStorageDataList] = useState([]);
+
+    React.useEffect(() => {
+        async function tempFunction() {
+            await getItemList();
+        }
+
+        tempFunction();
+
+        return () => { };
+    }, []);
+
+    const getItemList = async () => {
+        try {
+            const data = await AsyncStorage.getItem('itemList');
+
+            const output = JSON.parse(data);
+
+            setStorageDataList(output);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    // console.log("현재 알람들 : ", storageDataList[0].Time);
 
 
 
@@ -32,7 +57,13 @@ export default function Food({navigation}) {
                 </TouchableOpacity>
             </View>
 
-            <ListAlrams></ListAlrams>
+            <View>
+                {storageDataList.map((e,idx) => (
+                    <ListAlrams key={idx} {...e} />
+                )
+                )
+                }
+            </View>
         </View>
 
 
