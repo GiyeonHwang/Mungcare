@@ -1,12 +1,8 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image } from 'react-native';
+import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image, Dimensions } from 'react-native';
 import { Camera } from 'expo-camera';
-import ServerPort from '../../Components/ServerPort';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Play({ navigation }) {
-    const [id, setId] = React.useState(""); // 아이디
 
     const [modalVisible, setModalVisible] = React.useState(true); //산책 전 안내사항
     const [finalModal, setFinalModal] = React.useState(false); // 산책 완료 모달
@@ -18,48 +14,37 @@ export default function Play({ navigation }) {
 
     //아마존에 올린 사진 링크
     const [imgUri, setImgUri] = React.useState();
-    const IP = ServerPort();
 
-    // 로그인 유지
-    const getId = async () =>{
-        try {
-            const value = await AsyncStorage.getItem('id');
-            if (value !== null) {
-                console.log("id---: ", value);
-                return value;
-            }
-        } catch (e) {
-            console.log("not session... ", e);
-        }
-    }
-
+    const [id, setId] = React.useState();
 
     useEffect(() => {
         (async () => {
-            const cameraStatus = await Camera.requestCameraPermissionsAsync();
+            const cameraStatus = await Camera.requestPermissionsAsync();
             setHasCameraPermission(cameraStatus.status === 'granted');
-            await setId(getId())
+
+            // // id 가져오기
+            // const value = await AsyncStorage.getItem("id");
+            // setId(value)
+
         })();
     }, []);
 
     const takePicture = async () => {
         if (camera) {
-          const data = await camera.takePictureAsync(null)
-          setImage(data.uri);
-          console.log('data', data.uri);
-        //   setPhotoModal(false)
-    
-          //이미지 아마존 웹서버에 올리기
-          uploadImage(data.uri);
+            const data = await camera.takePictureAsync(null)
+            setImage(data.uri);
+            console.log('data', data.uri);
+            setPhotoModal(false)
+
+            //이미지 아마존 웹서버에 올리기
+            uploadImage(data.uri);
         }
-      }
-    
+    }
+
 
     if (hasCameraPermission === false) {
         return <Text>No access to camera</Text>;
     }
-
-
 
     const uploadImage = async (img) => {
 
@@ -68,49 +53,51 @@ export default function Play({ navigation }) {
         const type = match ? `image/${match[1]}` : `image`;
         const formData = new FormData();
         formData.append('multipartFileList', { uri: img, name: filename, type });
-    
+
         console.log('formData', formData)
-    
+
         //아마존 스토레이지에 저장
         await axios({
-          method: 'post',
-          url: 'http://192.168.2.77:5000/upload',
-          headers: {
-            'content-type': 'multipart/form-data',
-          },
-          data: formData
+            method: 'post',
+            url: 'http://192.168.2.77:5000/upload',
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+            data: formData
         })
-          .then((res) => {
-            console.log("res.data-------------",res.data);
-            setFinalModal(true)
-            setImgUri(res.data[0]); // 링크
-          })
-      }
-    
-      const sendServer = () => {
+            .then((res) => {
+                console.log(res.data);
+                setFinalModal(true)
+                setImgUri(res.data[0]); // 링크
+            })
+    }
+
+    const sendServer = () => {
         console.log("sendServer")
         console.log('imgUri', imgUri);
         const date = new Date();
-        const day = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+        const day = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
         const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-        axios.post(`${IP}/calendar/start`, null, {
-          params: {
-            id: id,
-            cDate: day,
-            cType:"play",
-            cPhoto: imgUri
-          }
+
+        // axios.post("http://192.168.2.94:5000/calendar/end", null, {
+        axios.post("http://192.168.2.94:5000/calendar/start", null, {
+            params: {
+                id: "user",
+                cDate: day,
+                cStartTime: time,
+                cPhoto: imgUri
+            }
         })
-          .then(function (res) {
-            console.log(res.data);
-            Alert.alert("등록 완료!")
-            navigation.navigate("Main") //메인으로 돌아가기
-          })
-          .catch(function (error) {
-            console.log(error)
-            Alert.alert("저장에 실패하였습니다")
-          })
-      }
+            .then(function (res) {
+                console.log(res.data);
+                Alert.alert("등록 완료!")
+                navigation.navigate("Main") //메인으로 돌아가기
+            })
+            .catch(function (error) {
+                console.log(error)
+                Alert.alert("저장에 실패하였습니다")
+            })
+    }
 
     return (
         <View style={styles.container}>
@@ -134,19 +121,19 @@ export default function Play({ navigation }) {
                                 </View>
                             </View>
                             <View >
-                                <View style={{padding:5}}>
+                                <View style={{ padding: 5 }}>
                                     <Text style={{ fontSize: 18 }}>애완동물과 놀때 사진을 찍어주세요!</Text>
                                 </View>
-                                <View style={{padding:5}}>
+                                <View style={{ padding: 5 }}>
                                     <Text style={{ fontSize: 18 }}>놀기는 회당 5Point입니다</Text>
                                 </View>
-                                <View style={{padding:5}}>
-                                    <Text style={{ fontSize: 18 }}>놀때 사진을 꼭 찍어야 포인트가 인정됩니다</Text>                 
+                                <View style={{ padding: 5 }}>
+                                    <Text style={{ fontSize: 18 }}>놀때 사진을 꼭 찍어야 포인트가 인정됩니다</Text>
                                 </View>
-                                <View style={{padding:5}}>
+                                <View style={{ padding: 5 }}>
                                     <Text style={{ fontSize: 18 }}>사진은 갤러리에서 가져올 수 없으며 카메라를 허용해줘야지 인증할 수 있습니다</Text>
                                 </View>
-                                <View style={{padding:5}}>
+                                <View style={{ padding: 5 }}>
                                     <Text style={{ fontSize: 18 }}>사진이 없다면 데이터베이스에 저장되지 않습니다.. </Text>
                                 </View>
                             </View>
@@ -217,53 +204,48 @@ export default function Play({ navigation }) {
 
 
 
-            <View style={styles.centeredView}>
-                <View style={styles.cameraContainer}>
-                    <View style={{ padding: 10, backgroundColor: '#F7931D', height: '90%' }}>
-                        <View style={{ padding: 10, backgroundColor: 'white' }}>
-                            <Camera
-                                ref={ref => setCamera(ref)}
-                                style={{
-                                    height: 400,
-                                    width: 300,
-                                }}
-                                // style={styles.fixedRatio}
-                                type={type}
-                            />
-                        </View>
-                        <Text></Text>
-                        <View style={{ backgroundColor: 'white', padding: 10, width: '100%', height: '22%' }}>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                                <View style={{ width: 50, }}></View>
-                                <Pressable
-                                    onPress={() => {
-                                        console.log("찰칵")
-                                        takePicture()
-                                    }} >
-                                    <View style={styles.takeButton} ></View>
-                                </Pressable>
-                                <Pressable
-                                    style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'center', }}
-                                    onPress={() => {
-                                        setType(
-                                            type === Camera.Constants.Type.back
-                                                ? Camera.Constants.Type.front
-                                                : Camera.Constants.Type.back
-                                        )
-                                    }} >
-                                    <View style={{
-                                        borderColor: "white",
-                                        justifyContent: 'center',
-                                        width: 40,
-                                        height: 40,
-                                        borderRadius: 100
-                                    }} >
-                                        <Image style={{ resizeMode: "cover", width: '100%', height: '100%', borderRadius: 50, }}
-                                            source={require('../../assets/images/ch.png')}></Image>
-                                    </View>
-                                </Pressable>
+
+
+            <View style={styles.cameraContainer}>
+                <Camera
+                    ref={ref => setCamera(ref)}
+                    style={{
+                        width: '100%',
+                        height: '100%',
+                    }}
+                    type={type}
+                />
+                <View >
+                    <Text></Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
+                        <View style={{ width: 50, }}></View>
+                        <Pressable
+                            onPress={() => {
+                                console.log("찰칵")
+                                takePicture()
+                            }} >
+                            <View style={styles.takeButton} ></View>
+                        </Pressable>
+                        <Pressable
+                            style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'center', }}
+                            onPress={() => {
+                                setType(
+                                    type === Camera.Constants.Type.back
+                                        ? Camera.Constants.Type.front
+                                        : Camera.Constants.Type.back
+                                )
+                            }} >
+                            <View style={{
+                                borderColor: "white",
+                                justifyContent: 'center',
+                                width: 40,
+                                height: 40,
+                                borderRadius: 100
+                            }} >
+                                <Image style={{ resizeMode: "cover", width: '100%', height: '100%', borderRadius: 50, }}
+                                    source={require('../../assets/images/ch.png')}></Image>
                             </View>
-                        </View>
+                        </Pressable>
                     </View>
                 </View>
             </View>
@@ -275,21 +257,16 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-
+        justifyContent: 'center'
     },
     cameraContainer: {
-        flex: 1,
-        flexDirection: 'row'
+        width: Dimensions.get('window').width * 0.9,
+        height: Dimensions.get('window').height * 0.7,
+        justifyContent: 'center',
     },
     fixedRatio: {
         flex: 1,
         aspectRatio: 1
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
     },
     centeredView: {
         flex: 1,
