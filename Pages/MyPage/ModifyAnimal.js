@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from "react";
-import { Text, View, StyleSheet, Button, Alert, Image , ScrollView , TouchableOpacity} from 'react-native';
+import { Text, View, StyleSheet, Button, Alert, Image , TouchableOpacity} from 'react-native';
 import Checkbox from 'expo-checkbox';
 //npm install expo-checkbox
 import { RadioButton } from 'react-native-paper';
