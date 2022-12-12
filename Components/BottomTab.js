@@ -41,6 +41,8 @@ import MyPageModify from '../Pages/MyPage/MyPageModify';
 import AnimalDetail from '../Pages/MyPage/AnimalDetail';
 import FreeView from './FreeView';
 import ModifyBoard from './ModifyBoard';
+import MyPoint from '../Pages/MyPage/MyPoint';
+
 const Tab = createBottomTabNavigator();
 
 const MainStack = createStackNavigator();
@@ -122,6 +124,7 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="FindMeDetail" component={FindMeDetail} />
       <MainStack.Screen name="ModifyBoard" component={ModifyBoard} options={{}}/>
       {/* <MainStack.Screen name="Login" component={Login}  options={{headerShown: false ,tabBarStyle: {display: 'none'}}}/> */}
+      <MainStack.Screen name="MyPoint" component={MyPoint} />
     </MainStack.Navigator>
   );
 }
