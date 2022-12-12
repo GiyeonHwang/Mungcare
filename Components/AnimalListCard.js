@@ -1,25 +1,36 @@
-import React from "react";
-import { Image , Pressable , StyleSheet , View , Text} from "react-native";
+import { Image , StyleSheet , View , Text,TouchableOpacity} from "react-native";
+import AnimalModal from "./AnimalModal";
+import React,{useState} from "react";
 
-export default function AnimalListCard({img , aname , setModalVisible}){
+export default function AnimalListCard({ animalData }){
+
+
+    const [modalVisible,setModalVisible] = useState(false);
 
     return (
         
-        <View>
-            <Pressable onPress={() => setModalVisible(true)}>
+        <View> 
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+                { 
+                //true false 여부에 따라 모달을 띄워준다.
+                modalVisible && 
+                <AnimalModal 
+                animalData={animalData}
+                setModalVisible={setModalVisible}/>
+                }
                 <View style={styles.listbox}>
                     <View style={styles.listimg}>
                     {
-                        img === null ? <Image style={styles.imgBox} />:
-                        <Image style={styles.imgBox} source={{ uri: img }} />
+                        animalData.aphoto === null ? <Image style={styles.imgBox} />:
+                        <Image style={styles.imgBox} source={{ uri: animalData.aphoto }} />
                     }
                     </View>
                     <Text style={styles.listtext}>
-                        {aname}
+                        {animalData.aname}
                     </Text>
 
                 </View>
-            </Pressable>
+            </TouchableOpacity>
         </View>
     )
 }

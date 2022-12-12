@@ -17,6 +17,7 @@ import {actions, RichEditor, RichToolbar} from "react-native-pell-rich-editor";
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FormData from 'form-data';
+import ServerPort from '../../Components/ServerPort';
 
 //사진 업로드
 import * as ImagePicker from 'expo-image-picker';
@@ -32,6 +33,7 @@ export default function App() {
   const [bContent,setBContent] = useState('');
   // select 관련임
   const countries = ["자유게시판", "찾아줘게시판", "자랑게시판", "기부게시판"];
+  const IP = ServerPort();
 
   //에디터 관련
   const richText = React.useRef();
@@ -40,7 +42,7 @@ export default function App() {
 
   const write = async () => {
 
-    axios.post('http://192.168.2.94:5000/board/write',null,{
+    axios.post(`${IP}/board/write`,null,{
       params:{
         bContent : bContent,
         bTitle : bTitle,
@@ -85,7 +87,7 @@ export default function App() {
 
     await axios({
       method : 'post',
-      url : 'http://192.168.2.77:5000/upload',
+      url : `${IP}/upload`,
       headers:{
         'content-type' : 'multipart/form-data',
       },
@@ -138,27 +140,7 @@ export default function App() {
           style={styles.inputtitle}
           placeholder="제목을 입력해주세요."
           onChangeText={text => setBTitle(text)}
-          />    
-
-          {/* 하단에 버튼 누르면 바뀌는 것들 */}
-          {/* <RichToolbar 
-              
-              editor={richText}
-              onPressAddImage = {uploadImage}
-              actions={[  actions.setBold
-                        , actions.setItalic
-                        , actions.setUnderline
-                        , actions.heading1
-                        , actions.insertBulletsList
-                        , actions.insertOrderedList
-                        , actions.insertImage ]}
-              iconMap={{ [actions.heading1]: ({tintColor}) => (<Text style={[{color: tintColor}]}>H1</Text>), }}  
-            />  */}
-          
-
-            {/* 에디터를 사용해서 글쓰기를 해보야요 ^^ */}
-              {/* <ScrollView style={styles.container} > */}
-                  
+          />      
           <ScrollView>
           <RichEditor
                 
@@ -166,17 +148,12 @@ export default function App() {
             onChange={richTextHandle}
             placeholder="Write your cool content here :)"
             androidHardwareAccelerationDisabled={true}
-            // style={{flex: 1 }}
             onHeightChange={handleHeightChange}
             initialHeight={495}
-            // editorInitializedCallback={() => this.scrollRef.current.scrollTo({y: scrollY - 30, animated: true})}
           />
 
           </ScrollView>
                       
-
-                  
-            {/* <TouchableOpacity style={styles.button}> */}
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}   style={{ flex: 1 }}>
               {/* 하단에 버튼 누르면 바뀌는 것들 */}
               <RichToolbar 
@@ -192,14 +169,8 @@ export default function App() {
                               , actions.insertImage ]}
                     iconMap={{ [actions.heading1]: ({tintColor}) => (<Text style={[{color: tintColor}]}>H1</Text>), }}  
                   /> 
-
-            {/* </TouchableOpacity> */}
-                
-
-                {/* <Button title="Press Me" mode="contained" style={{flex:1}} onPress={write}/> */}
             </KeyboardAvoidingView>
               
-            {/* </ScrollView> */}
 
         </SafeAreaView>
 
