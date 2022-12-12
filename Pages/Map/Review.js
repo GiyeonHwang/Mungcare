@@ -502,7 +502,7 @@ const WalkReview = ({ navigation, route }) => {
                             <Pressable
                                 style={[styles.listbutton, { backgroundColor: 'white', marginRight:5 }]}
                                 onPress={() => {
-                                    navigation.navigate("Write")
+                                    navigation.navigate("WriteReview")
                                 }}>
                                 <View style={styles.listarea}>
                                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>

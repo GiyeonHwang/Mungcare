@@ -2,14 +2,12 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker, Circle, Callout, AnimatedRegion, Polyline, MarkerAnimated } from 'react-native-maps';
 // npm i react-native-maps
-import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image, Dimensions, TextInput } from 'react-native';
+import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image, Dimensions, TextInput, useRef, Touchable } from 'react-native';
 import * as Location from 'expo-location';
 // npm i expo-location
 import { Camera, Constants } from 'expo-camera';
 //npm install react-native-popup-confirm-toast
 
-//이미지 업로드
-import * as ImagePicker from 'expo-image-picker';
 
 //로딩
 import LottieView from 'lottie-react-native';
@@ -25,28 +23,41 @@ const Stack = createStackNavigator();
 
 import SockJS from 'sockjs-client';
 // npm i sockjs-client
-import {over} from 'stompjs';
+import { over } from 'stompjs';
 // npm i sockjs-client
 var stompClient = null; // stompClient 로 연결하는거 같다.
+
+
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+
 
 export default function WalkTogether({ navigation, route }) {
 
   const [mapRegion, setmapRegion] = React.useState("");
+  // const [mapRegion, setmapRegion] = React.useState({ // 현재 위치
+  //   latitude: 36.798781055508954,
+  //   longitude: 127.07550035142081,
+  //   latitudeDelta: 0.005, //확대되는 범위
+  //   longitudeDelta: 0.005, //확대되는 범위
+  // });
+
   const [latit, setLatit] = React.useState(route.params.info[0]);
   const [long, setLong] = React.useState(route.params.info[1]);
-  // 무한 루프 서버에 계속 보내기
-  const [number, setNumber] = React.useState(0);
 
   //함께 산책할 사람 리스트
   const [people, setPeople] = React.useState();
 
+  //애완동물 이름
+  const [data, setData] = React.useState(route.params.info[2]);
   //모달
   const [modalVisible, setModalVisible] = React.useState(false); //같이해용 모달창
   const [inputModal, setInputModal] = React.useState(false); // 공지
-  const [endModal, setEndModal] = React.useState(false); // 산책종료
   const [photoModal, setPhotoModal] = React.useState(false); // 산책 종료 후 사진찍는 모달
   const [finalModal, setFinalModal] = React.useState(false); // 산책 완료 모달
-  const [dragModal , setDragModal] = React.useState(false); // 드래그하라는 모달
+  const [dragModal, setDragModal] = React.useState(false); // 드래그하라는 모달
+  const [noticeModal, setNoticeModal] = React.useState(false); // 소켓을 받은 공지내용 모달
+  const [showModal, setShowModal] = React.useState(false); // 시간 스피너
   //메세지
   const [message, setMessage] = React.useState();
 
@@ -64,23 +75,24 @@ export default function WalkTogether({ navigation, route }) {
   const [content, setContent] = React.useState(); //내용
   const [firnum, setFir] = React.useState();
   const [secnum, setSec] = React.useState();
-  const [timeErrM, setErrTimeM] = React.useState(); // 메세지
-
-  //값 확인
-  const [firValue, setFirValue] = React.useState();
-  const [secValue, setSecValue] = React.useState();
-  const [okValue, setOkValue] = React.useState();
 
   //소켓
   const [publicChats, setPublicChats] = React.useState([]); // 채팅을 저장
-  const [userData, setUserData] = React.useState({ 
+  const [userData, setUserData] = React.useState({
     username: '',
     receivername: '',
     connected: false, // 처음 상태는 false
     message: ''
   });
   //소켓을 받았는지 확인하는 코드
-  const [check, setCheck] = React.useState(false);
+  const [check, setCheck] = React.useState(false); // 마커
+  const [socketModal, setSocketModal] = React.useState(false); // 모달창
+  const [joinWalk, setJoinWalk] = React.useState([]);
+
+  //에니메이션으로 이동
+  const mapRef = React.useRef(null);
+
+  const [id, setId] = React.useState();
 
 
   // 현재 위치를 가져와야함
@@ -95,8 +107,13 @@ export default function WalkTogether({ navigation, route }) {
         return;
       }
 
+      // // id 가져오기
+      // const value = await AsyncStorage.getItem("id");
+      // setId(value)
+
       let location = await Location.getCurrentPositionAsync({});
       console.log(location);
+
       setLatit(location.coords.latitude)
       setLong(location.coords.longitude)
 
@@ -109,7 +126,7 @@ export default function WalkTogether({ navigation, route }) {
     })();
 
 
-    //connect()
+   //connect()
 
 
   }, []);
@@ -117,16 +134,13 @@ export default function WalkTogether({ navigation, route }) {
 
   useEffect(() => {
     reqAxios()
-    //setInterval(() => reqAxios(), 15000);
+
+    setInterval(() => reqAxios(), 15000);
 
   }, []);
 
 
   const reqAxios = () => {
-
-    console.log('reqAxios lat--------------------', latit)
-    console.log('reqAxios long--------------------', long)
-
     //서버에 같이 산책하기를 누름을 보냄
     axios.post("http://192.168.2.94:5000/walk/register", null, {
       params: {
@@ -157,82 +171,57 @@ export default function WalkTogether({ navigation, route }) {
       .catch(function (error) {
         console.log(error)
       })
+
   }
 
-  const regiButton = () => {
-    if (firValue && secValue == true) {
-      return false;
-    }
-    return true;
-  }
-
-  const valueTime = (t) => {
-    const regex = /^([01][0-9]|2[0-3])$/;
-    return regex.test(t)
-  }
-  const valueSecTime = (t) => {
-    const regex = /^([0-9][0-9]|[0-5][0-9])$/;
-    return regex.test(t)
-  }
-  const handleFirTimeChange = (time) => {
-    console.log("firTime")
-    setFir(time);
-    setErrTimeM(
-      valueTime(time) ? "올바른 형식입니다." : "00:00~24:00까지 가능합니다"
-    )
-    setFirValue(valueTime(time))
-  }
-  const handleSecTimeChange = (time) => {
-    console.log("secTime")
-    setSec(time);
-    setErrTimeM(
-      valueSecTime(time) ? "올바른 형식입니다." : "00:00~24:00까지 가능합니다"
-    )
-    setSecValue(valueTime(time))
-  }
 
 
 
 
   const sendInput = () => {
-    console.log("hi")
     const time = firnum + ":" + secnum
     console.log(time)
 
     //id만 보내기
     const idList = []
     const len = people.length;
-    console.log(people[0].id)
-    for (var i =0; i<len; i++){
+    
+    for (var i = 0; i < len; i++) {
       idList[i] = people[i].id
     }
-    console.log('idList',idList)
-    
+    console.log('idList', idList)
+
     //공지내용
     console.log(message)
-    console.log(regiButton())
 
-    const input = time+"에 "+message+"에서 같이 산책할래요?"
+    const input = time + "에 " + message + "에서 같이 산책할래요?"
+
+
 
     if (stompClient) { // if문을 왜하는거지? <= 이해가 된다면 알려줘
       var chatMessage = { // JSON 형태로 만들어야하니 변수선언
         senderName: "user", // 보내는 사람의 이름은 현재 소켓의 username
         message: input, // 메시지는 userData의 메시지.
-        receiverName : idList,
-        status:"MESSAGE" // 상태는 MESSAGE
+        receiverName: idList,
+        status: "MESSAGE", // 상태는 MESSAGE
+        latitude: region.latitude,
+        longitude: region.longitude
       };
       console.log(chatMessage); // 변수를 console.log에 찍는다.
       stompClient.send("/app/message", {}, JSON.stringify(chatMessage)); // 소켓 서버에 현재 변수를 보내준다.
-      setUserData({...userData,"message": ""}); // userData의 메시지를 초기화 해준다.
+      setUserData({ ...userData, "message": "" }); // userData의 메시지를 초기화 해준다.
     }
   }
 
 
   //소켓 받는 코드
+  const [who, setWho] = React.useState();
+  const [mes, setMes] = React.useState();
+
   const connect = () => {
     console.log("connect 실행");
     let Sock = new SockJS('http://192.168.2.94:5000/ws'); //일단 급하게 로컬 호스트로 줬음 /ws를 무조건 붙여주어야 Stomp의 메서드가 인식한다. 
-    stompClient = over(Sock); // over로 소켓의 주소를 넣는다. 
+    stompClient = over(Sock); // over로 소켓의 주소를 넣는다.
     stompClient.connect({}, onConnected, onError);
   }
   const onConnected = () => {
@@ -241,32 +230,59 @@ export default function WalkTogether({ navigation, route }) {
   }
   const onMessageReceived = async (payload) => { // /chatroom/public으로부터 받는 메시지를 처리하는 함수.
     var payloadData = JSON.parse(payload.body); // payloadData가 해당 JSON을 파싱받아 저장된다.
-    console.log("payloadData------------------", payloadData.receiverName);
+    // console.log("payloadData------------------", payloadData.receiverName);
     const list = payloadData.receiverName;
-    // const loadedData = await AsyncStorage.getItem('id');
-    for (var i =0 ; i<list.length; i++){
-      if(list[i]==="user"){
-        setCheck(true)
-        publicChats.push(payloadData); //message라면
-        setPublicChats([...publicChats]); // 배열에 채팅을 저장.
+    // const id = await AsyncStorage.getItem('id');
+    // if(payloadData.senderName!=id){
+
+    // }
+    for (var i = 0; i < list.length; i++) {
+      if (list[i] === "user") {
+        
+        
+        setWho(data)
+        setMes(payloadData.message)
+
+
+        setSocketModal(true) // 모달창 띄우기
+        setClick(true) // 마커찍기
+
+
+        
+        joinWalk.push(payloadData); //message라면
+        setJoinWalk([...joinWalk]); // 배열에 채팅을 저장.
+
       }
     }
   }
-
   const onError = (err) => {
     console.log(err); // 접속이 이상하면 콘솔에러를 띄워준다.
   }
 
 
+  //
   const [region, setRegion] = React.useState();
   // 드래그 해서 위치의 위도경도 가져오기
   const mapRegionChangehandle = (region) => {
-    console.log(region)
-    if(check){ 
+    if (!check) {
       setRegion(region)
     }
   };
-
+  //이동하기
+  const onDetail = (lat, lon) => { //병원 리스트 중 하나 클릭하면 해당 위도, 경도 가져옴....
+    setmapRegion({ //현재 위치
+      latitude: lat,
+      longitude: lon,
+      latitudeDelta: 0.005,
+      longitudeDelta: 0.005
+    })
+    mapRef.current.animateToRegion({ //해당 위치로 지도 이동
+      latitude: lat,
+      longitude: lon,
+      latitudeDelta: 0.005,
+      longitudeDelta: 0.005
+    }, 3 * 1000);
+  }
 
 
   //산책종료 
@@ -373,13 +389,44 @@ export default function WalkTogether({ navigation, route }) {
       })
   }
 
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate ;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+    const time = currentDate+""
+    console.log(time.split(" ")[4].split(":")[0])
+    console.log(time.split(" ")[4].split(":")[1])
+    setFir(time.split(" ")[4].split(":")[0])
+    setSec(time.split(" ")[4].split(":")[1])
+  };
+
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showTimepicker = () => {
+    setInputModal(false)
+    setShowModal(true)
+    showMode('time');
+  };
+
+
+
+
 
   return (
     <View style={styles.container}>
+      
       <View style={{ alignContent: 'center', justifyContent: 'center' }}>
 
 
-        {/* 같이산책 할 사람 리스트 모달 */}
+        {/* 같이 산책 할 사람 리스트 모달 */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -392,28 +439,30 @@ export default function WalkTogether({ navigation, route }) {
             <View style={styles.modalViewScroll}>
               <View style={{ padding: 10, justifyContent: 'center' }}>
                 <View style={{ borderBottomWidth: 1, width: '100%', }}>
-                  <Text style={{ fontSize: 30 }}>같이 산책할 사람</Text>
+                  <Text style={{ fontSize: 30 }}>List</Text>
                 </View>
               </View>
-              <View style={{ height: '100%', flex: 1, padding: 5, width: "90%" }}>
-                <ScrollView style={{ width: '100%', padding: 5 }}>
+              <View style={{ height: '100%', flex: 1, padding: 2, width: "90%" }}>
+                <ScrollView style={{ width: '100%', padding: 5 , backgroundColor:'#EBE3D7'}}>
                   {
                     people && people.map((e, idx) => {
                       return (
-                        <View style={{ padding: 8, backgroundColor: 'orange', flex: 1, height: 100, flexDirection: 'row' }}>
-                          <View style={{ width: '40%', height: '100%', backgroundColor: 'white', }}>
-                            {
-                              e.animalList[0].aphoto === null ?
-                                <Image style={{ resizeMode: "cover", width: '100%', height: '100%', borderWidth: 3 }} source={{ uri: "https://3.bp.blogspot.com/-ZKBbW7TmQD4/U6P_DTbE2MI/AAAAAAAADjg/wdhBRyLv5e8/s1600/noimg.gif" }} />
-                                : <Image style={{ resizeMode: "cover", width: '100%', height: '100%', borderWidth: 3 }} source={{ uri: e.animalList[0].aphoto }} />
-                            }
-                          </View>
-                          <View style={{ width: '60%' }}>
-                            <View style={{ backgroundColor: 'blue', height: '55%', marginLeft: 8, justifyContent: 'center', padding: 10 }}>
-                              <Text style={{ fontSize: 20 }}>{e.animalList[0].aname}</Text>
+                        <View key={idx} style={{ padding: 2, backgroundColor: 'orange', flex: 1, height: 100, flexDirection: 'row', marginBottom: 2 }}>
+                          <View style={{ flexDirection: 'row', backgroundColor:'white', padding:2, flex: 1,}}>
+                            <View style={{ width: '40%', height: '100%', }}>
+                              {
+                                e.animalList[0].aphoto === null ?
+                                  <Image style={{ resizeMode: "cover", width: '100%', height: '100%', borderWidth: 2, borderColor: '#EBE3D7' }} source={{ uri: "https://3.bp.blogspot.com/-ZKBbW7TmQD4/U6P_DTbE2MI/AAAAAAAADjg/wdhBRyLv5e8/s1600/noimg.gif" }} />
+                                  : <Image style={{ resizeMode: "cover", width: '100%', height: '100%', borderWidth: 2, borderColor: '#EBE3D7' }} source={{ uri: e.animalList[0].aphoto }} />
+                              }
                             </View>
-                            <View style={{ backgroundColor: 'yellow', height: '45%', marginLeft: 8, justifyContent: 'center', padding: 10 }}>
-                              <Text style={{ fontSize: 15 }}>{e.animalList[0].abreed}</Text>
+                            <View style={{ width: '60%' }}>
+                              <View style={{  height: '55%', marginLeft: 8, justifyContent: 'center', padding: 10 }}>
+                                <Text style={{ fontSize: 20 }}>{e.animalList[0].aname}</Text>
+                              </View>
+                              <View style={{ height: '45%', marginLeft: 8, justifyContent: 'center', padding: 10 }}>
+                                <Text style={{ fontSize: 15 }}>{e.animalList[0].abreed}</Text>
+                              </View>
                             </View>
                           </View>
                         </View>
@@ -423,19 +472,19 @@ export default function WalkTogether({ navigation, route }) {
                 </ScrollView>
                 <Text></Text>
                 <Pressable
-                  style={[styles.button, styles.buttonClose]}
+                  style={[styles.button]}
                   onPress={() => {
                     setModalVisible(!modalVisible)
-
                   }}>
-                  <Text style={styles.textStyle}>확인</Text>
+                  <Text style={styles.textStyle}>닫기</Text>
                 </Pressable>
               </View>
             </View>
           </View>
         </Modal>
 
-        
+
+
         {/* 드래그모달 */}
         <Modal
           animationType="slide"
@@ -446,45 +495,42 @@ export default function WalkTogether({ navigation, route }) {
             setDragModal(!dragModal);
           }}>
           <View style={styles.centeredView}>
-            <View style={styles.modalViewScroll}>
+            <View style={styles.modalView}>
               <View style={{ padding: 10, justifyContent: 'center' }}>
                 <View style={{ borderBottomWidth: 1, width: '100%', }}>
                   <Text style={{ fontSize: 30 }}>같이 산책하기</Text>
                 </View>
               </View>
-              <View style={{ height: '100%', flex: 1, padding: 5, width: "90%" }}>
+              <View style={{ padding: 5, alignItems:'center'}}>
+                <Text>*메세지를 보내면 수정할 수 없습니다*</Text>
                 <Text>만날 장소를 드래그하여 위치를 정해주세요</Text>
                 <Text></Text>
                 <View style={{ flexDirection: 'row' }}>
-                <Pressable
-                  disabled={message == ""}
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => {
-                    setDragModal(!dragModal)
-                    setClick(true)
-                  }}>
-                  <Text style={{fontWeight: 'bold',textAlign: 'center', 
-                  color:'black' }}>취소</Text>
-                </Pressable>
-                <Text>    </Text>
-                <Pressable
-                  disabled={message == ""}
-                  style={styles.buttonOpen}
-                  onPress={() => {
-                    setDragModal(!inputModal)
-                    sendInput()
-                    setClick(true)
-                  }}>
-                  <Text style={styles.textStyle}>전송</Text>
-                </Pressable>
-              </View>
+                  <Pressable
+                    disabled={message == ""}
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => {
+                      setDragModal(!dragModal)
+                      setClick(true)
+                    }}>
+                    <Text style={{ fontWeight: 'bold', textAlign: 'center', color: 'gray' }}>취소</Text>
+                  </Pressable>
+                  <Text>      </Text>
+                  <Pressable
+                    disabled={message == ""}
+                    style={[styles.buttonOpen, {backgroundColor:'#fe561d'}]}
+                    onPress={() => {
+                      setDragModal(!dragModal)
+                      setClick(false)
+                    }}>
+                    <Text style={styles.textStyle}>확인</Text>
+                  </Pressable>
+                </View>
               </View>
             </View>
           </View>
-
-
-          
         </Modal>
+
 
 
 
@@ -505,28 +551,33 @@ export default function WalkTogether({ navigation, route }) {
                 </View>
               </View>
 
-              <View style={{ padding: 8, backgroundColor: 'yellow', width: '100%' }}>
+              <View style={{ padding: 8, backgroundColor: '#EBE3D7', width: '100%' }}>
                 <View style={{ backgroundColor: 'white', width: '100%', padding: 10, justifyContent: 'center', alignItems: 'center' }}>
                   <Text style={{ fontSize: 18, padding: 5 }}>산책할 사람들을 모집해보세요!</Text>
                   <Text style={{ fontSize: 15 }}>*OO시에 OOO에서 만나요*</Text>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'yellow' }}>
-                    <TextInput
-                      style={{ width: "30%", height: 40, margin: 12, borderWidth: 1, padding: 5, }}
-                      onChangeText={handleFirTimeChange}
-                      keyboardType="number-pad"
-                      maxLength={2}
-                      value={firnum}
-                    />
-                    <Text>  :  </Text>
-                    <TextInput
-                      style={{ width: "30%", height: 40, margin: 12, borderWidth: 1, padding: 5, }}
-                      onChangeText={handleSecTimeChange}
-                      keyboardType="number-pad"
-                      maxLength={2}
-                      value={secnum}
-                    />
-                  </View>
-                  <Text sytle={{ fontSize: 10 }}>{timeErrM}</Text>
+                  <Pressable
+                    onPress={() => {
+                      showTimepicker()
+                    }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: '#EBE3D7' }} >
+
+                      <TextInput
+                        style={{ width: "30%", height: 40, margin: 12, borderWidth: 1, padding: 5, }}
+                        keyboardType="number-pad"
+                        maxLength={2}
+                        value={firnum}
+                      />
+                      <Text>  :  </Text>
+                      <TextInput
+                        style={{ width: "30%", height: 40, margin: 12, borderWidth: 1, padding: 5, }}
+                        keyboardType="number-pad"
+                        maxLength={2}
+                        value={secnum}
+                      />
+                    </View>
+                  </Pressable>
+                  
+                  <View><Text>장소를 입력해주세요</Text></View>
                   <TextInput
                     style={styles.input}
                     onChangeText={setMessage}
@@ -545,25 +596,89 @@ export default function WalkTogether({ navigation, route }) {
                     setInputModal(!inputModal)
                     setClick(true)
                   }}>
-                  <Text style={{fontWeight: 'bold',textAlign: 'center', color:'black' }}>취소</Text>
+                  <Text style={{ fontWeight: 'bold', textAlign: 'center', color: 'gray' }}>취소</Text>
                 </Pressable>
                 <Text>    </Text>
                 <Pressable
                   disabled={message == ""}
-                  style={styles.buttonOpen}
+                  style={[styles.buttonOpen, {backgroundColor:'#EBE3D7'}]}
                   onPress={() => {
                     setInputModal(!inputModal)
                     sendInput()
-                    setClick(true)
+                    setClick(false)
                   }}>
-                  <Text style={styles.textStyle}>전송</Text>
+                  <Text style={[styles.textStyle, {color:'black'}]}>전송</Text>
                 </Pressable>
               </View>
             </View>
           </View>
         </Modal>
 
+        
+        {/* 시간 스피너코드 */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showModal}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setShowModal(!showModal);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View>
+                {show && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    mode={mode}
+                    date={date}
+                    is24Hour={true}
+                    display="spinner"
+                    onChange={onChange}
+                    textColor='black'
+                    value={date}
+                  />
+                )}
+              </View>
+              <Button title='확인' onPress={() => {setShowModal(!showModal)
+                 setInputModal(!inputModal)}}></Button>
+            </View>
+          </View>
+        </Modal>
 
+        {/* 소켓 받으면 보이는 모달 */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={socketModal}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setSocketModal(!socketModal);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={{ padding: 10, justifyContent: 'center' }}>
+                <View style={{ borderBottomWidth: 1, width: '100%', }}>
+                  <Text style={{ fontSize: 30 }}>같이 산책해요!</Text>
+                </View>
+              </View>
+              <View style={{ padding: 5, }}>
+                <Text>[{who}네] {mes} </Text>
+                <Text></Text>
+                <Pressable
+                  disabled={message == ""}
+                  style={styles.buttonOpen}
+                  onPress={() => {
+                    setSocketModal(!socketModal)
+                    setClick(true)
+                    console.log("joinWalk", joinWalk)
+                  }}>
+                  <Text style={styles.textStyle}>확인</Text>
+                </Pressable>
+              </View>
+            </View>
+          </View>
+        </Modal>
 
 
         {/* 사진 찍기 모달 */}
@@ -612,9 +727,8 @@ export default function WalkTogether({ navigation, route }) {
                       justifyContent: 'center',
                       width: 40,
                       height: 40,
-                      borderRadius: 100
                     }} >
-                      <Image style={{ resizeMode: "cover", width: '100%', height: '100%', borderRadius: 50, }}
+                      <Image style={{ resizeMode: "cover", width: '100%', height: '100%', }}
                         source={require('../../assets/images/ch.png')}></Image>
                     </View>
                   </Pressable>
@@ -627,7 +741,7 @@ export default function WalkTogether({ navigation, route }) {
 
 
 
-        {/* 사진찍은 후 모달 */}
+        {/* 사진 찍은 후 확인 모달 */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -647,50 +761,143 @@ export default function WalkTogether({ navigation, route }) {
               </View>
               <View style={{ padding: 10 }}>
                 <View style={{ backgroundColor: 'yellow', alignItems: 'center', justifyContent: 'center', height: 350, width: 250 }}>
-                  <Image source={{ uri: image }} style={{ resizeMode: "cover", height: '100%', width: '100%', borderWidth: 3 }} />
+                  <Image source={{ uri: image }} style={{ resizeMode: "cover", height: '100%', width: '100%', borderWidth: 2 ,borderColor:'#EBE3D7'}} />
                 </View>
               </View>
               <View style={{ padding: 10, alignContent: 'center', justifyContent: 'center' }}>
-                <Text style={{ fontSize: 20 }}>10Point적립 완료!</Text>
+                <Text style={{ fontSize: 20 }}></Text>
+                <View style={{ flexDirection: 'row', marginBottom:5 }}>
+                  <View style={{ justifyContent:'center'}}>
+                    <Image style={{ resizeMode: "cover", width: 30, height: 30, }} 
+                    source={{uri:'https://cdn-icons-png.flaticon.com/512/2583/2583179.png'}} />
+                  </View>
+                  <View style={{ justifyContent:'center' ,flexShrink: 1,}}>
+                    <Text style={{fontSize:17}}> 10Point적립 완료!</Text>
+                  </View>
+                </View>
               </View>
               <View>
-                <Text style={{ fontSize: 15 }}>하루에 최대 50Point까지 적립가능합니다</Text>
+                <Text style={{ fontSize: 15, }}>*하루에 최대 50Point까지 적립가능합니다</Text>
               </View>
-              <Text>  </Text>
+              <View>
+                <Text></Text>
+                <Text style={{ fontSize: 15, fontStyle:'italic', textDecorationLine: 'underline', }}>산책 장소의 리뷰를 작성해주세요!</Text>
+              </View>
+              <Text></Text>
               <View style={{ flexDirection: 'row', padding: 10 }}>
+                
                 <Pressable
-                  style={styles.buttonClose}
+                  disabled={message == ""}
+                  style={[styles.buttonOpen, {backgroundColor:'#FE7474'}]}
+                  onPress={() => {
+                    setFinalModal(!finalModal)
+                    sendServer()
+
+                    navigation.navigate("WriteReview",{
+                      info: [region.latitude, region.longitude, image],
+                      title: "title",
+                    })
+
+                  }}>
+                  <Text style={styles.textStyle}>리뷰작성하기</Text>
+                </Pressable>
+                <Text>    </Text>
+                <Pressable
+                  style={styles.button}
                   onPress={() => {
 
                     setFinalModal(!finalModal)
                     // 이미지 업로드 및 서버에 전송
                     sendServer()
                   }}>
-                  <Text style={styles.textStyle}>확인</Text>
+                  <Text style={styles.textStyle}>완료</Text>
                 </Pressable>
+                
               </View>
             </View>
           </View>
         </Modal>
 
-
-        
+        {/* 소켓으로 받은 공지 내용 모달 */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={noticeModal}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setNoticeModal(!noticeModal);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={{ alignItems: 'flex-end' , width:'100%'}}>
+                <Pressable style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 4,
+                  elevation: 3,
+                  margin: 3,
+                }} onPress={() => {
+                  setNoticeModal(!noticeModal)
+                }}>
+                  <View>
+                    <Text style={{fontSize:25}}> X </Text>
+                  </View>
+                </Pressable>
+              </View>
+              <View style={{  justifyContent: 'center' }}>
+                <View style={{ borderBottomWidth: 1, width: '100%', }}>
+                  <Text style={{ fontSize: 30 }}>같이 산책해요!</Text>
+                </View>
+              </View>
+              <View style={{ padding: 10, }}>
+              {
+                  joinWalk && joinWalk.map((e, idx) => {
+                    return (
+                      <Pressable 
+                        key={idx}  
+                        onPress={()=>{
+                        setNoticeModal(!noticeModal)
+                        onDetail( e.latitude, e.longitude )
+                      }}>
+                        <View style={{ padding: 10 }}>
+                          <Text style={{ fontSize: 20 }}>{e.message}</Text>
+                        </View>
+                      </Pressable>
+                    )
+                  })
+                }
+                {
+                  joinWalk.length === 0 ?
+                    <View style={{padding:10, alignItems:'center'}}>
+                      <Text></Text>
+                      <Image style={{resizeMode: "cover", width: 50, height: 50,}}
+                        source={require('../../assets/images/empty.png')} />
+                      <Text></Text>
+                      <Text style={{ fontSize: 20 }}>내용이 없습니다</Text>
+                    </View> : null
+                }
+                <Text></Text>
+              </View>
+            </View>
+          </View>
+        </Modal>
 
       </View>
 
 
+      
 
-
-
+      <View style={styles.containerMap}>
       {
         mapRegion != "" ?
-
-          <View style={styles.map}>
+          <>
             <MapView
-              style={{ alignSelf: 'stretch', height: '100%' }}
+              style={styles.map}
               region={mapRegion}
               // initialRegion={mapRegion}
 
+              //에니메이션으로 이동
+              ref={mapRef}
 
               // region={region}
               onRegionChange={mapRegionChangehandle}
@@ -701,7 +908,7 @@ export default function WalkTogether({ navigation, route }) {
               // userLocationUpdateInterval = 
               onUserLocationChange={(e) => {
                 //사용자가 이동하면 위치를 저장함
-        
+
                 setLatit(e.nativeEvent.coordinate.latitude)
                 setLong(e.nativeEvent.coordinate.longitude)
               }}
@@ -714,10 +921,6 @@ export default function WalkTogether({ navigation, route }) {
                       longitude: parseFloat(region.longitude),
                     }}
                   >
-                    {/* 어떤 애완동물인지 정보 보여주기 */}
-                    <Callout>
-                      <Text>{e.id}</Text>
-                    </Callout>
                   </Marker> : null
               }
 
@@ -733,10 +936,20 @@ export default function WalkTogether({ navigation, route }) {
                         latitude: parseFloat(e.latitude),
                         longitude: parseFloat(e.longitude),
                       }}
+                      onPress={() =>{
+                        onDetail(e.latitude, e.longitude)
+                      } }
                     >
                       {/* 어떤 애완동물인지 정보 보여주기 */}
-                      <Callout>
-                        <Text>{e.id}</Text>
+                      <Callout style={{ justifyContent: 'center', alignItems: 'center', }}>
+                        <View style={{  alignItems: 'center', padding:10 }}>
+                          {
+                            e.animalList[0].aphoto===null?<Image style={{ resizeMode: "cover", width: 50, height: 50, borderRadius: 50, borderWidth: 1, borderColor:"#EBE3D7" }} source={{ uri: "https://3.bp.blogspot.com/-ZKBbW7TmQD4/U6P_DTbE2MI/AAAAAAAADjg/wdhBRyLv5e8/s1600/noimg.gif" }} />:
+                            <Image style={{ resizeMode: "cover", width: 50, height: 50, borderRadius: 50, borderWidth: 1, borderColor:"#EBE3D7",}} source={{ uri: e.animalList[0].aphoto }} />
+                          }
+                          <Text></Text>
+                          <Text style={{fontSize:15}}>{e.animalList[0].aname}</Text>
+                        </View>
                       </Callout>
                     </Marker>
                     // </Pressable>
@@ -747,14 +960,70 @@ export default function WalkTogether({ navigation, route }) {
               {/* 반경 */}
               <Circle center={mapRegion} radius={1000} />
 
+              {/* 같이 산책할 위치 선정하기 */}
+              {
+                !click ?
+                  <Marker
+                    coordinate={{
+                      latitude: parseFloat(region.latitude),
+                      longitude: parseFloat(region.longitude),
+                    }}
+                    
+                    pinColor={'#0080ff'}
+                  >
+                    {/* 장소 마커 */}
+                  </Marker>
+                  : null
+                }
 
 
+                {
+                  click && joinWalk && joinWalk.map((e, idx) => {
+                    return (
+                      <Marker
+                        key={idx}
+                        coordinate={{
+                          latitude: parseFloat(e.latitude),
+                          longitude: parseFloat(e.longitude),
+                        }}
+                        onPress={() =>{
+                          onDetail(e.latitude, e.longitude)
+                        } }
+                        pinColor={'#0080ff'}
+                      >
+                        <Callout>
+                          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                            <Text>{e.message}</Text>
+                          </View>
+                        </Callout>
+                      </Marker>
+                    )
+                  })
+                }
 
 
+              </MapView>
+            
 
-            </MapView>
 
-
+              
+              <View style={{ width: '100%', alignItems: 'flex-end', padding: 10, }}>
+                <Pressable style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: 4,
+                  elevation: 3,
+                  width: '20%',
+                  margin: 3,
+                  backgroundColor:'#EBE3D7',
+                }} onPress={() =>{
+                  setNoticeModal(!noticeModal)
+                }}>
+                  <View>
+                    <Image style={{ resizeMode: "cover", width: 40, height: 40, }} source={{uri:'https://kcoupet.com/assets/img/sideMenu/index_hambg_icon09.png'}}></Image>
+                  </View>
+                </Pressable>
+              </View>
 
             <View style={styles.buttons}>
               <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', }}>
@@ -764,21 +1033,22 @@ export default function WalkTogether({ navigation, route }) {
                   borderRadius: 4,
                   elevation: 3,
                   width: '20%',
-                  margin: 3
+                  margin: 3,
+                  backgroundColor:'#EBE3D7',
                 }} onPress={() => {
                   setModalVisible(true)
                 }}>
-                  <View style={{ backgroundColor: 'red' }}>
+                  <View>
                     <Image style={{ resizeMode: "cover", width: 40, height: 40, }} source={require('../../assets/images/list.png')}></Image>
                   </View>
                 </Pressable>
                 {
-                  check ? <Pressable style={{
+                  !click ? <Pressable style={{
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 4,
                     elevation: 3,
-                    backgroundColor: '#F7931D',
+                    backgroundColor: '#fe561d',
                     width: '30%',
                     margin: 3
                   }} onPress={() => {
@@ -787,7 +1057,7 @@ export default function WalkTogether({ navigation, route }) {
                     setInputModal(true)
                   }}>
                     <Text>위치확정</Text>
-                  </Pressable> : 
+                  </Pressable> :
                     <Pressable style={{
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -801,11 +1071,11 @@ export default function WalkTogether({ navigation, route }) {
                       setModalVisible(false)
                       // 드래그해서 위치를 선정해주세요 모달
                       setDragModal(true)
-                  
+
                     }}>
-                      <Text>산책하쉴</Text>
-                    </Pressable> 
-                    
+                      <Text>메세지 보내기</Text>
+                    </Pressable>
+
                 }
 
                 <Pressable style={{
@@ -817,30 +1087,27 @@ export default function WalkTogether({ navigation, route }) {
                   width: '26%',
                   margin: 3
                 }} onPress={() => {
-                  // setInputModal(false)
-                  // setEndModal(true);
                   stopWalk()
                   setClick(true)
                 }}>
-                  <Text >산책 끝</Text>
+                  <Text >산책 끝내기</Text>
                 </Pressable>
 
 
               </View>
             </View>
-          </View>
 
-
-
-
-
+          </>
           :
           <LottieView
             source={require('../../assets/dog.json') /** 움직이는 LottieView */
             }
             autoPlay loop
           />
+        
       }
+      
+      </View>
 
 
 
@@ -854,19 +1121,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-
+  },
+  containerMap:{
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    ...StyleSheet.absoluteFillObject,
   },
   map: {
-    width: "100%",
-    height: "85%",
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    ...StyleSheet.absoluteFillObject,
   },
   buttons: {
     padding: 15,
-    height: "15%",
+    height: "13%",
     flexDirection: 'row',
     widh: "100%",
-    justifyContent: 'center',
-    backgroundColor: 'yellow'
   },
   button: {
     alignItems: 'center',
@@ -964,7 +1236,7 @@ const styles = StyleSheet.create({
     height: 40,
     margin: 12,
     borderWidth: 1,
-    padding: 10,
+    padding: 5,
   },
 
 });

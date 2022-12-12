@@ -140,8 +140,6 @@ import CalenderDetail from './Pages/Calender/CalenderDetail';
 import CalenderMain from './Pages/Calender/CalenderMain';
 import Main from './Pages/Main/Main';
 import MainMenu from './Pages/Main/MainMenu';
-import EndWalk from './Pages/Map/EndWalk';
-import StartWalk from './Pages/Map/StartWalk';
 import Walk from './Pages/Map/Walk';
 import WalkTogether from './Pages/Map/WalkTogether';
 import MyPage from './Pages/MyPage/MyPage';
