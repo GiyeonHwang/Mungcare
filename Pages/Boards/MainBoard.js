@@ -65,7 +65,10 @@ export default function MainBoard({ navigation }) {
           }
           else if(selectedItem == '자랑게시판'){
             setSwitchBoard('AffectMain');
-            }
+          }
+          else if(selectedItem == '기부게시판'){
+            setSwitchBoard('DonateMain');
+          }
           // setbType(selectedItem);
         }}
         defaultValue={boards[0]}
@@ -83,6 +86,8 @@ export default function MainBoard({ navigation }) {
       <View>
         {SwitchBoard==="FreeBoardMain"&&<FreeBoardMain/>}
         {SwitchBoard==="FindMeMain"&&<FindMeMain/>}
+        {SwitchBoard==="AffectMain"&&<AffectMain/>}
+        {SwitchBoard==="DonateMain"&&<DonateMain/>}
       </View>
       
     </ScrollView>

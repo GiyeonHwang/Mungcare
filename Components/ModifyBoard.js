@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect,useState } from 'react';
 import axios from 'axios';
 import {
     View,
@@ -104,14 +104,22 @@ export default function ModifyBoard({navigation,route}) {
                 richText.current.insertImage(res.data);
             })
     }
-
+    console.log("제목 내용:",bTitle)
+    console.log("수정 게시글번호 :",bNo)
+    console.log("작성중 내용 :",bContent)
+    console.log("이전페이지 제목 :",route.params.btitle)
+    console.log("이전페이지 내용 :",route.params.bcontent)
 
     const ModifyAction=()=>{ //수정한 내용 서버로 전송
-        axios.post(`${IP}/board/modify`,null,{
+        console.log("보낼때 파람스로 받은 bno는",route.params.bno);
+        console.log("보내기직전에 bno는",bTitle);
+        console.log("보내기전에 bType는",bContent);
+        axios.post(`http://192.168.2.94:5000/board/modify`,null,{
+            
             params:{
-              bContent : bContent,
-              bTitle : bTitle,
-              bNo : bNo,
+              bContent :bContent,
+              bTitle :bTitle,
+              bNo :route.params.bno,
               bType:bType
             }
           })
@@ -125,11 +133,7 @@ export default function ModifyBoard({navigation,route}) {
     }
 
 
-    console.log("제목 내용:",bTitle)
-    console.log("수정 게시글번호 :",bNo)
-    console.log("작성중 내용 :",bContent)
-    console.log("이전페이지 제목 :",route.params.btitle)
-    console.log("이전페이지 내용 :",route.params.bcontent)
+
     return (
         <ScrollView boxStyles={{ borderRadius: 0 }}>
             <SelectDropdown

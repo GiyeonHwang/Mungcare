@@ -93,7 +93,7 @@ const CustomDrawer = ({ navigation }) => {
           borderColor: "#ccc",
         }}
       />
-      <DrawerItem label="자유게시판" onPress={() => goToStack("FreeBoardMain")} />
+      <DrawerItem label="게시판들!" onPress={() => goToStack("MainBoard")} />
       <DrawerItem label="글쓰기" onPress={() => goToStack("글쓰기")} />
       <DrawerItem label="Mypage"onPress={() => goToStack("마이페이지")}/>
       <DrawerItem label="로그아웃" onPress={() => 
@@ -119,6 +119,11 @@ const DrawerNavigater = () => {
 
   return (
     <Drawer.Navigator 
+      screenOptions={{
+      drawerStyle: {
+        backgroundColor: '#F2F2F2',
+      },
+      }}
       drawerContent={({ navigation }) => (
       <CustomDrawer navigation={navigation} />
     )}>

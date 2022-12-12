@@ -3,6 +3,7 @@ import React from "react";
 import { Text, View, StyleSheet, Alert, Modal, Pressable, Image, ScrollView } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import ServerPort from '../../Components/ServerPort';
 import AnimalListCard from '../../Components/AnimalListCard';
 
 //navigation사용할 때 필요
@@ -19,195 +20,99 @@ import { IconName } from "react-icons/io5";
 import Icon from 'react-native-vector-icons/AntDesign';
 
 const Stack = createStackNavigator();
+const IP = ServerPort();
 
 //동물 info가져오기
-export default function AnimalDetail({ navigation: { navigate } }) {
+export default function AnimalList({ navigation: { navigate } }) {
 
-    const [id,setId] = React.useState("");
-    const [data, setData] = React.useState();
-    // 모달
-    const [modalVisible, setModalVisible] = React.useState(false);
-    // 모달에 보이는 데이터 값
-    const [modalData, setModalData] = React.useState("");
-    const [mImg, setMImg] = React.useState("");
+    const [id,setId] = React.useState(""); //접속중인 유저의 아이디
+    const [data, setData] = React.useState(); // 유저의 AnimalList
+
+    const removeAnimal = (id, aName) => //반려동물 삭제
+    {
+        console.log("removeAnimal--------------------",id,", aname----------",aName);
+        axios.post(`${IP}/animal/remove`, null, {
+        params: {
+            id: id,
+            aName: aName
+        }
+        })
+        .then(function(res) {
+        console.log("removeAnimal--",res.data);
+        })
+        .catch(function(error) {
+        console.log("반려동물 삭제 실패- ", error)
+        })
+    }
+
+    const info = async () => {
+
+        const ID = await load();
+        // 서버에 요청
+        // 애완동물 목록 불러오기
+        console.log("ID : " , ID);
+        axios.post(`${IP}/animal/list`, null, {
+            params: {
+                id: ID //sessionStorage에 있는 id값
+            }
+        })
+            .then(res => {
+                console.log("AnimallList 값이지롱: ",res.data);
+                setData(res.data);
+
+            })
+            .catch(function (error) {
+                console.log("AnimallList DB연동 실패,,,,",error);
+            })
+    }
 
 
-    const save = async () => {
-        try {
-            setId(await AsyncStorage.getItem('id'));
-        } catch (e) {
-            console.log("유저 세션 안불러와짐");
+    const load = async () => {
+        try{
+            const id = await AsyncStorage.getItem('id');
+            console.log(id);
+            setId(id);
+            return id;
+        }
+        catch(e)
+        {
+            console.log("로드 에러" , e);
         }
     }
-    
-
 
     React.useEffect(() => {
-        const info = async () => {
-            await save();
-            // 서버에 요청
-            // 애완동물 목록 불러오기
-            console.log("axios하기전: ",id);
-            await axios.post("http://192.168.2.94:5000/animal/list", null, {
-                params: {
-                    id: "user" //sessionStorage에 있는 id값
-                }
-            })
-                .then(function (res) {
-                    console.log(res);
-                    console.log("AnimallList 값이지롱: ",res.data);
-                    setData(res.data);
-    
-                })
-                .catch(function (error) {
-                    console.log("AnimallList DB연동 실패,,,,",error)
-                })
-        }
         info();
-
     }, []);
-
-    
-
 
     return (
 
         <View style={styles.container}>
-            <View style={styles.box1}>
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                        setModalVisible(!modalVisible);
-                    }}>
-                    <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
-                            {/* <View sytle={{ alignContent: 'center', width: '100%', padding: 10, alignItems: 'center'}}> */}
-                            <View style={styles.modalback}>
-                                <View style={{ alignContent: 'center', flexDirection: 'row' }}>
-                                {/* <View> */}
-                                    <View style={{ width: '50%', alignItems: 'center', }}>
-                                        {
-                                            mImg === null ? <Image style={{ resizeMode: "cover", width: 100, height: 100, borderRadius: 50, borderWidth: 3 }} source={{ uri: "https://3.bp.blogspot.com/-ZKBbW7TmQD4/U6P_DTbE2MI/AAAAAAAADjg/wdhBRyLv5e8/s1600/noimg.gif" }} />:
-                                            <Image style={{ resizeMode: "cover", width: 100, height: 100, borderRadius: 50, borderWidth: 3 }} source={{ uri: mImg }} />
-                                        }
-                                    </View>
-
-                                    <View style={{ backgroundColor: 'red', width: '50%', justifyContent: 'center', alignItems: 'center' }}>
-                                        <Text style={{ fontSize: 30, padding: 10 }}>hi{modalData.aname}</Text>
-                                        <Text style={{ fontSize: 20, padding: 10 }}>{modalData.abreed}</Text>
-                                    </View>
-                                </View>
-                                <View style={{ flexDirection: 'row', backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
-                                    <View style={{ borderRightWidth: 1, padding: 10, alignItems: 'center', width: "40%", backgroundColor: 'yellow' }}>
-                                        <Text style={{ fontSize: 15 }}>생일</Text>
-                                    </View>
-                                    <View style={{ padding: 10, alignItems: 'center', width: "60%", backgroundColor: 'lightgreen' }}>
-                                        <Text style={{ fontSize: 15 }}>{modalData.abirth}</Text>
-                                    </View>
-                                </View>
-                                <View style={{ flexDirection: 'row', backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
-                                    <View style={{ borderRightWidth: 1, padding: 10, alignItems: 'center', width: "40%", backgroundColor: 'yellow' }}>
-                                        <Text style={{ fontSize: 15 }}>성별</Text>
-                                    </View>
-                                    <View style={{ padding: 10, alignItems: 'center', width: "60%", backgroundColor: 'lightgreen' }}>
-                                        <Text style={{ fontSize: 15 }}>{modalData.abreed}</Text>
-                                    </View>
-                                </View>
-                                <View style={{ flexDirection: 'row', backgroundColor: 'red', justifyContent: 'center', alignItems: 'center' }}>
-                                    <View style={{ borderRightWidth: 1, padding: 10, alignItems: 'center', width: "40%", backgroundColor: 'yellow' }}>
-                                        <Text style={{ fontSize: 15 }}>중성화</Text>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', width: "60%", alignItems: 'center', }}>
-                                        <View style={{ flexDirection: 'row', alignItems: 'center', width: "100%", backgroundColor: 'lightgreen', justifyContent:'center' }}>
-                                            <Checkbox style={styles.checkbox} value={modalData.aneut} />
-                                            <Text style={styles.paragraph}>중성화 여부</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </View>
-                            <View style={{ flexDirection: 'row', padding: 10 }}>
-                                <Pressable
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => {
-                                        setModalVisible(!modalVisible)
-                                        navigate("ModifyAnimal", {
-                                            info: [modalData.aname, modalData.asex, modalData.abirth, modalData.abreed, modalData.aneut, modalData.aphoto],
-                                            title: modalData.aName,
-                                        })
-                                    }}>
-                                    <Text style={styles.textStyle}>Modify</Text>
-                                </Pressable>
-                                <Text>     </Text>
-                                <Pressable
-                                    style={[styles.button, styles.buttonClose]}
-                                    onPress={() => setModalVisible(!modalVisible)}>
-                                    <Text style={styles.textStyle}>Close</Text>
-                                </Pressable>
-                            </View>
-                        </View>
-                    </View>
-                </Modal>
-            </View>
-
-
-
-            {/* <View style={styles.animalbox}>
+            <View style={styles.animalbox}>
                 <Text style={styles.introtext}> 애완동물 목록 </Text>
-            </View> */}
-            <ScrollView>
-                <View style={styles.animalinfobox}>
-                    {/* map형식으로 계속 부름 */}
-                    {
-                        data && data.map((e, index) => {
-                            return (
-                                <AnimalListCard
-                                key = {index}
-                                img = {e.aphoto}
-                                aname = {e.aname}
-                                setModalVisible = {setModalVisible}
-                                />
-                            )
+            </View>
+            <View style={styles.animalinfobox}>
+                {/* map형식으로 계속 부름 */}
+                {
+                    data && data.map((e, index) => {
+                        console.log(`${index}번째 e 데이터 : ` ,JSON.stringify(e, null, "\t"));
+                        return (
+                            <AnimalListCard
+                            key = {index}
+                            animalData = {e}
+                            />
+                        )
+                    })
+                }
+            </View>
+            
+                <View style={styles.addanimal}>
+                    <Button title="추가" onPress={() => {
+                        navigate("AddAnimal", {
+                            id: id
                         })
-                    }
-
-
-                </View>
-                
-
-            </ScrollView>
-            <View style={styles.addanimal}>
-                    {/* <Button title="추가" onPress={() => {
-                        navigate("AddAnimal")
-                    }} 
-                    buttonStyle={{
-                        borderColor: 'rgba(78, 116, 289, 1)',
-                    }}
-                    type="outline"
-                    titleStyle={{ color: '#F7931D', fontSize:20 }}
-                    containerStyle={{
-                        width: 200,
-                        marginLeft:"28%",
-                        // marginHorizontal: 50,
-                        // marginVertical: 10,
-                        marginTop:"0.5%",
-                        
-                    }}
-                    
-                    /> */}
-                    <Icon name="pluscircle" size={70} color="#F7931D" style={{padding:"5%", borderWidth:1, borderColor:'#EBE3D7'}}  onPress={() => {
-                        navigate("AddAnimal")
                     }} />
                     
                 </View>
-            
-                
-
-            <View >
-
-            </View>
         </View>
 
     )

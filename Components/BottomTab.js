@@ -8,6 +8,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from "react-native-vector-icons/Ionicons";
+
 import Main from '../Pages/Main/Main';
 import MainBoard from '../Pages/Boards/MainBoard';
 import AffectMain from '../Pages/Boards/Affect/AffectMain';
@@ -37,12 +39,12 @@ import Write from '../Pages/Boards/Write';
 import Login from '../Pages/SignUp/Login';
 import Join from '../Pages/SignUp/Join';
 import MyInfo from '../Pages/MyPage/MyInfo';
+import MyPoint from "../Pages/MyPage/MyPoint";
 import MyPageModify from '../Pages/MyPage/MyPageModify';
-import AnimalDetail from '../Pages/MyPage/AnimalDetail';
 import FreeView from './FreeView';
 import ModifyBoard from './ModifyBoard';
 import MyPoint from '../Pages/MyPage/MyPoint';
-
+import MapInfo from '../Pages/Map/MapInfo';
 const Tab = createBottomTabNavigator();
 
 const MainStack = createStackNavigator();
@@ -97,6 +99,18 @@ const MainStackScreen = ({ navigation }) => {
 
       <MainStack.Screen name="Main" component={Main} options={{
         headerLeft: () => <MenuButton />,
+        headerTitle:"멍케어!",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
       }} />
       <MainStack.Screen name="MainBoard" component={MainBoard} />
       <MainStack.Screen name="AffectMain" component={AffectMain} />
@@ -104,9 +118,12 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="FindMeMain" component={FindMeMain} />
       <MainStack.Screen name="CalenderMain" component={CalenderMain} />
       <MainStack.Screen name="FreeBoardMain" component={FreeBoardMain} />
+      {/*MAP 병원 위치*/}
+      <MainStack.Screen name="MapInfo" component={MapInfo}/>
       {/*-->  디테일 페이지들도 임포트하고 넣어줘야함 <--*/}
       {/*--> 함께하는 공간 자리<--*/}
       <MainStack.Screen name="Walk" component={Walk} />
+      <MainStack.Screen name="WalkTogether" component={WalkTogether}/>
       <MainStack.Screen name="Ranking" component={Ranking} />
       <MainStack.Screen name="SkinMain" component={SkinMain} />
       <MainStack.Screen name="MyPage" component={MyPage} />
@@ -118,6 +135,7 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="ModifyAnimal" component={ModifyAnimal}/>
       {/* 놀기 */}
       <MainStack.Screen name="Play" component={Play}/> 
+      <MainStack.Screen name="MyPoint" component={MyPoint}/>
 
       <MainStack.Screen name="Food" component={Food} />
       <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail}/>
@@ -181,21 +199,38 @@ const BottomTab = (route) => {
 
   // tabBarStyle: { display: getRoute(route) }, 
   return (
-    <Tab.Navigator initialRouteName="Main">
+    <Tab.Navigator initialRouteName="Main"
+   
+    screenOptions={{
+      tabBarShowLabel: false,
+      tabBarStyle:{backgroundColor:'#F2F2F2'}
+    }}
+    >
       <Tab.Screen name="메인" component={MainStackScreen}
-        options={({ route }) => ({headerShown: false, headerBackVisible: true, })
-        } />
+      
+        options={{headerShown:false,
+          tabBarIcon: () => (
+            <Icon name="ios-home"size={26} />
+          ),
+        }}
+       />
       <Tab.Screen name="글쓰기" component={WriteStackScreen}
-        options={({ route }) => ({ headerShown: false })} />
-      {/* <Tab.Screen name="자유게시판" component={FreeStackScreen}
-        options={({ route }) => ({ headerShown: false })} /> */}
+        options={{headerShown:false,
+          tabBarIcon: () => (
+            <Icon name="create"size={26} />
+          ),
+        }} />
+      
       <Tab.Screen name="마이페이지" component={MyPageStackScreen}
-        options={({ route }) => ({ headerShown: false })} />
+       options={{headerShown:false,
+        tabBarIcon: () => (
+          <Icon name="person"size={26} />
+        ),
+      }}/>
     </Tab.Navigator>
   );
 };
 export default BottomTab;
-
 
 
 

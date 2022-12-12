@@ -1,28 +1,37 @@
-import React from "react";
-import { Image , Pressable , StyleSheet , View , Text} from "react-native";
-import no from '../assets/images/no.png'
 
-export default function AnimalListCard({img , aname , setModalVisible}){
+import { Image , StyleSheet , View , Text,TouchableOpacity} from "react-native";
+import AnimalModal from "./AnimalModal";
+import React,{useState} from "react";
+
+export default function AnimalListCard({ animalData }){
+
+
+    const [modalVisible,setModalVisible] = useState(false);
 
     return (
         
-        <View>
-            {console.log("img : ",img, "aname : ",aname)}
-            <Pressable onPress={() => setModalVisible(true)}>
+        <View> 
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+                { 
+                //true false 여부에 따라 모달을 띄워준다.
+                modalVisible && 
+                <AnimalModal 
+                animalData={animalData}
+                setModalVisible={setModalVisible}/>
+                }
                 <View style={styles.listbox}>
                     <View style={styles.listimg}>
                     {
-                        img === null ? <Image source={no} style={styles.imgBox} />:
-                        <Image style={styles.imgBox} source={{ uri: img }} />
+                        animalData.aphoto === null ? <Image style={styles.imgBox} />:
+                        <Image style={styles.imgBox} source={{ uri: animalData.aphoto }} />
                     }
                     </View>
-                    <View style={styles.listtext}>
-                        <Text style={styles.puppyname}>{aname}</Text>
-                        <Text style={styles.puppytext}>자세한 정보를 보려면 눌러주세요.</Text>
-                    </View>
+                    <Text style={styles.listtext}>
+                        {animalData.aname}
+                    </Text>
 
                 </View>
-            </Pressable>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -66,5 +75,6 @@ const styles = StyleSheet.create({
         fontSize:10,
         bottom:"2%"
     }
+
 
 })

@@ -23,29 +23,13 @@ import mung from '../../assets/images/mung.jpg';
 //로그인 유지
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const saveid = async () =>{
-  try{
-    const value = await AsyncStorage.getItem('id');
-    if(value != null){
-      console.log("유저 아이디 가져오기", value);
-    }
-  }catch(error){
-    console.log("캘린더 로그인 유지 실패,,,", error)
-  }
-}
 
-
-
-
-export default function Ranking(){
-  saveid()
-
+export default function Ranking({ navigation }){
   // ranking정보 가져오기
     const [rdata, setRdata] = React.useState([]);
 
     React.useEffect(()=>{
       const setData = async () => {
-        console.log("여기까지 들어오나요?");
         await axios.post("http://192.168.2.94:5000/point/ranking", null, {
           
       })

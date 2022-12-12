@@ -2,14 +2,16 @@ import axios from 'axios';
 import React from "react";
 import { Text, View, ScrollView, SafeAreaView, Image, StyleSheet, Dimensions, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
 import FreeView from '../../../Components/FreeView';
+import ServerPort from '../../../Components/ServerPort';
 
 
 export default function FreeBoardMain({ navigation }) {
 
   const [frData, setFrData] = React.useState([]);
+  const IP = ServerPort();
 
   React.useEffect(() => {
-    axios.post("http://192.168.2.94:5000/board/search", null, {
+    axios.post(`${IP}/board/search`, null, {
       params: {
         page: 1,
         size: 10,
@@ -34,18 +36,24 @@ export default function FreeBoardMain({ navigation }) {
   return (
 
     <ScrollView>
-      <View style={{ padding: 10 }}>
-        <View style={[
-          { marginLeft: Dimensions.get('window').width * 0.025, },
-          { flexDirection: "row" },
-          { flexWrap: "wrap" },
-          { alignContent: "space-around" },
-        ]}>
-          {frData.map((e) => (
+      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        <View style={{ padding: 10, marginTop: 10 }}>
+
+          {frData.filter((_, i) => i % 2 === 0).map((e) => (
             <FreeView key={e.id} {...e} />
           )
           )
           }
+
+        </View>
+        <View style={{ padding: 10, marginTop: 10 }}>
+
+          {frData.filter((_, i) => i % 2 !== 0).map((e) => (
+            <FreeView key={e.id} {...e} />
+          )
+          )
+          }
+
         </View>
       </View>
 
