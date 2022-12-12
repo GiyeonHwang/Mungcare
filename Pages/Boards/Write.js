@@ -26,8 +26,6 @@ import ServerPort from '../../Components/ServerPort';
 
 //사진 업로드
 import * as ImagePicker from 'expo-image-picker';
-// keyboardAvoidingView
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 
 export default function Write({ navigation }) {
   const IP = ServerPort();
@@ -115,9 +113,6 @@ export default function Write({ navigation }) {
     const formData = new FormData();
     formData.append('multipartFileList', { uri: localUri, name: filename, type });
 
-
-
-
     console.log(formData);
 
     await axios({
@@ -132,6 +127,11 @@ export default function Write({ navigation }) {
         richText.current.insertImage(res.data);
       })
 
+  }
+
+  // Callback after height change
+  function handleHeightChange(height) {
+    // console.log("editor height change:", height);
   }
 
   const CancleAction = () => {
@@ -272,77 +272,69 @@ export default function Write({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-
-
+  container:{
+    flex:1,
+  },
+  innerContainer:{
+    flex:1,
+  },
+  box:{
+    flex: 1,
+    backgroundColor : '#EBE3D7', //아이보리
+  },
+  dropbutton:{
+    flexDirection: 'row',//react native에서 사용되는 가로 정렬
+    alignItems: 'center',
+    //  marginTop: "10%"
+  },
+  Button2:{
+    maring:'5%',
+    right:'5%'
+  },
+    drop:{
+    margin:"10%",
+    backgroundColor: '#171717',
+    alignItems: 'center',
+    justifyContent: 'center', //세로로 가운데 갈 수 있게 해줌
+    paddingHorizontal: 15
+    },
+    inputtitle: {
+      // flex:1, //flex있으면 글자 입력할 때 키보드에 밀려서 안 보인다
+      height: 40,
+      // margin: 12,
+      borderWidth: 1,
+      borderLeftWidth:0,
+      borderRightWidth:0,
+      padding: 10,
+      
+    },
+    inputtext: {
+      height: 40,
+      margin: 12,
+      borderWidth: 1,
+      padding: 10,
+      
+    },
+ 
   dropdown1BtnStyle: {
-    width: Dimensions.get('window').width * 1,
-    height: Dimensions.get('window').height * 0.06,
+    width: '80%',
+    height: 50,
     backgroundColor: '#FFF',
-    borderRadius: 0,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: '#444',
     justifyContent: 'center',
+    margin:'3%'
+    
   },
-  dropdown1BtnTxtStyle: { color: '#444', textAlign: 'left' },
-  dropdown1DropdownStyle: { backgroundColor: '#EFEFEF' },
-  dropdown1RowStyle: { backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5' },
-  dropdown1RowTxtStyle: { color: '#444', textAlign: 'left' },
-
-  container: {
-    alignItems: "center",
-    width: Dimensions.get('window').width * 0.45,
-    height: Dimensions.get('window').height * 0.35,
-    marginBottom: 20,
-    marginTop: 5,
-    padding: 5,
+  scrollViewContainer:{
+    height:'100%',
+    borderColor:'green',
+    borderWidth:2,
 
   },
-  imageView: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    borderWidth: 3,
-    borderBottomWidth: 0,
-    height: "70%",
-    borderColor: "black"
-  },
-  image: {
-    width: "100%",
-    height: "100%"
-  },
-  contentBox: {
-    alignItems: "center",
-    width: "100%",
-    height: "40%",
-    borderWidth: 2,
-    borderTopWidth: 0,
-    borderColor: "black",
-    backgroundColor: "#F1E7DD",
-    padding: 10
-  },
-  title: {
-    flexDirection: "row",
-    justifyContent: 'space-between',
-    alignItems: "center",
-    width: "100%",
-    height: "30%",
-    backgroundColor: "#F1E7DD"
-  },
-  titleText: {
-    fontWeight: "bold",
-    fontSize: 10
-  },
-  content: {
-    width: "100%",
-    height: "50%",
-    backgroundColor: "#F1E7DD"
-  },
-  bottomContent: {
-    flexDirection: "row",
-    justifyContent: 'space-between',
-    alignItems: "center",
-    width: "100%",
-    height: "20%",
-    backgroundColor: "#F1E7DD"
-  },
-})
+  dropdown1BtnTxtStyle: {color: '#444', textAlign: 'left'},
+  dropdown1DropdownStyle: {backgroundColor: '#EFEFEF'},
+  dropdown1RowStyle: {backgroundColor: '#EFEFEF', borderBottomColor: '#C5C5C5'},
+  dropdown1RowTxtStyle: {color: '#444', textAlign: 'left'},
+  });;

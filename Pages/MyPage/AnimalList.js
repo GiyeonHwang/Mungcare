@@ -99,7 +99,7 @@ export default function AnimalList({ navigation: { navigate } }) {
                     <Icon name="pluscircle" size={70} color="#F7931D" style={{padding:"5%", borderWidth:1, borderColor:'#EBE3D7'}}  onPress={() => {
                         navigate("AddAnimal", {
                             id: id,
-                            animalList: animalList
+                            info: info
                         })
                     }} />
                     

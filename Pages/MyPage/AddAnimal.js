@@ -216,7 +216,7 @@ export default function AddAnimal({ navigation, route}) {
                 console.log(res.data);
 
                 Alert.alert("등록 완료!")
-                route.params.animalList(route.params.id)
+                route.params.info(route.params.id)
                 navigation.navigate("AnimalList");
             })
             .catch(function (error) {

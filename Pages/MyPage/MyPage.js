@@ -42,6 +42,7 @@ export default function MyPage({navigation}) {
             const value = await AsyncStorage.getItem('id');
             if (value !== null) {
                 console.log("id---: ", value);
+                setId(value);
                 return value;
             }
         } catch (e) {
@@ -49,11 +50,13 @@ export default function MyPage({navigation}) {
         }
     }
     
-    const mypageInfo = (id) => {
+    const mypageInfo = async () => {
+        const ID = await getId();
+        console.log("ID : " , ID);
         // 서버에 요청
         axios.post(`${IP}/member/info`, null, {
             params : {
-                id: id //sessionStorage에 있는 id값
+                id: ID //sessionStorage에 있는 id값
             }
         })
         .then(function (res){
@@ -75,11 +78,13 @@ export default function MyPage({navigation}) {
         })
     }
 
-    const boardcount = (id) => {
+    const boardcount = async () => {
+        const ID = await getId();
+        console.log("ID : " , ID);
         // 서버에 요청
         axios.post(`${IP}/board/count`, null, {
             params : {
-                id: id //sessionStorage에 있는 id값
+                id: ID //sessionStorage에 있는 id값
             }
         })
         .then(function (res){
@@ -93,12 +98,9 @@ export default function MyPage({navigation}) {
     }
 
     React.useEffect(() => {
-        (async () => {
-            const id = await getId(); //세션 id값 가져옴
-            mypageInfo(id);
+        mypageInfo();
             console.log("===========================================================================")
-            boardcount(id);
-        })();
+            boardcount();
     }, []);
 
     // AsyncStorage.setItem("check", "cccc", () => {
