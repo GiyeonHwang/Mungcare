@@ -43,7 +43,6 @@ import MyPoint from "../Pages/MyPage/MyPoint";
 import MyPageModify from '../Pages/MyPage/MyPageModify';
 import FreeView from './FreeView';
 import ModifyBoard from './ModifyBoard';
-import MyPoint from '../Pages/MyPage/MyPoint';
 import MapInfo from '../Pages/Map/MapInfo';
 const Tab = createBottomTabNavigator();
 
@@ -142,7 +141,7 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="FindMeDetail" component={FindMeDetail} />
       <MainStack.Screen name="ModifyBoard" component={ModifyBoard} options={{}}/>
       {/* <MainStack.Screen name="Login" component={Login}  options={{headerShown: false ,tabBarStyle: {display: 'none'}}}/> */}
-      <MainStack.Screen name="MyPoint" component={MyPoint} />
+      {/* <MainStack.Screen name="MyPoint" component={MyPoint} /> */}
     </MainStack.Navigator>
   );
 }
