@@ -238,7 +238,10 @@ export default function AnimalDetail({ navigation: { navigate } }) {
                     
                     /> */}
                     <Icon name="pluscircle" size={70} color="#F7931D" style={{padding:"5%", borderWidth:1, borderColor:'#EBE3D7'}}  onPress={() => {
-                        navigate("AddAnimal")
+                        navigate("AddAnimal", {
+                            id: id,
+                            animalList: animalList
+                        })
                     }} />
                     
                 </View>

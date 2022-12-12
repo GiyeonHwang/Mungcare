@@ -92,6 +92,9 @@ export default function AddAnimal({ navigation, route}) {
             {
                 Alert.alert("중복확인 되었습니다.");
                 setOkName(true); // 버튼 활성화
+            } else {
+                Alert.alert("중복되는 이름입니다. 다시 설정해주세요!");
+                setOkName(false); //버튼 비활성화
             }
         })
         .catch(function(error) {
@@ -171,7 +174,7 @@ export default function AddAnimal({ navigation, route}) {
 
         await axios({
             method: 'post',
-            url: `${IP}/upload`,
+            url: 'http://192.168.2.77:5000/upload',
             headers: {
                 'content-type': 'multipart/form-data',
             },

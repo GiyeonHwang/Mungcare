@@ -20,8 +20,13 @@ import FreeBoardMain from '../Pages/Boards/FreeBoard/FreeBoardMain';
 import FreeBoardDetail from '../Pages/Boards/FreeBoard/FreeBoardDetail';
 import CalenderMain from '../Pages/Calender/CalenderMain';
 import CalenderDetail from '../Pages/Calender/CalenderDetail';
+
 import Walk from '../Pages/Map/Walk';
 import WalkTogether from '../Pages/Map/WalkTogether';
+import ReviewWrite from '../Pages/Map/ReviewWrite';
+import Review from '../Pages/Map/Review';
+import ModifyReview from '../Pages/Map/ModifyReview';
+
 import MyPage from '../Pages/MyPage/MyPage';
 import Food from '../Pages/MyPage/Food';
 import AddAnimal from '../Pages/MyPage/AddAnimal';
@@ -44,6 +49,7 @@ import MyPageModify from '../Pages/MyPage/MyPageModify';
 import FreeView from './FreeView';
 import ModifyBoard from './ModifyBoard';
 import MapInfo from '../Pages/Map/MapInfo';
+
 const Tab = createBottomTabNavigator();
 
 const MainStack = createStackNavigator();
@@ -87,9 +93,6 @@ const LoginStack = createStackNavigator();
 
 
 const MainStackScreen = ({ navigation }) => {
-
-
-
   return (
     <MainStack.Navigator>
       {/* <MainStack.Screen name="Login" component={Login} options={{
@@ -136,8 +139,12 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="MapInfo" component={MapInfo}/>
       {/*-->  디테일 페이지들도 임포트하고 넣어줘야함 <--*/}
       {/*--> 함께하는 공간 자리<--*/}
-      <MainStack.Screen name="Walk" component={Walk} />
+      <MainStack.Screen name="Walk" component={Walk}/>
       <MainStack.Screen name="WalkTogether" component={WalkTogether}/>
+      <MainStack.Screen name="ReviewWrite" component={ReviewWrite}/>
+      <MainStack.Screen name="Review" component={Review}/>
+      <MainStack.Screen name="ModifyReview" component={ModifyReview}/>
+
       <MainStack.Screen name="Ranking" component={Ranking} />
       <MainStack.Screen name="SkinMain" component={SkinMain} />
       <MainStack.Screen name="MyPage" component={MyPage} />
