@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from "react";
 import { Text, View, StyleSheet,  Alert, Image, ProgressBarAndroid } from 'react-native';
 import Constants from 'expo-constants';
+import ServerPort from '../../Components/ServerPort';
 
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
@@ -20,6 +21,7 @@ import coin from '../../assets/images/coin.png';
 import Icon from 'react-native-vector-icons/AntDesign';
 
 const Stack = createStackNavigator();
+const IP = ServerPort();
 
 export default function MyPage({navigation}) {
     const [id, setId] = React.useState(""); // 아이디
@@ -30,20 +32,32 @@ export default function MyPage({navigation}) {
     const [address, setAddress] = React.useState(""); // 주소
     const [detailaddress, setDetailAddress] = React.useState("");//상세주소
     const [location_Num, onChangeLocationNum] = React.useState(""); // 우편번호
-    const [check, setCheck] = React.useState(true); //스피너 위치기반 서비스 허용 여부
     const [point, setPoint] = React.useState();
+    const [boardCount, setBoardCount] = React.useState(); //게시글 작성 수
     const [profile, setProFile] =React.useState();
-    
-    React.useEffect(() => {
 
+    // 로그인 유지
+    const getId = async () =>{
+        try {
+            const value = await AsyncStorage.getItem('id');
+            if (value !== null) {
+                console.log("id---: ", value);
+                return value;
+            }
+        } catch (e) {
+            console.log("not session... ", e);
+        }
+    }
+    
+    const mypageInfo = (id) => {
         // 서버에 요청
-        
-        axios.post("http://192.168.2.94:5000/member/info", null, {
+        axios.post(`${IP}/member/info`, null, {
             params : {
-                id: "user" //sessionStorage에 있는 id값
+                id: id //sessionStorage에 있는 id값
             }
         })
         .then(function (res){
+            console.log(getId());
             console.log(res.data);
 
             setId(res.data.id);
@@ -54,14 +68,37 @@ export default function MyPage({navigation}) {
             setAddress(res.data.address);
             setDetailAddress(res.data.detail_Address);
             onChangeLocationNum(res.data.location_Num);
-            //setCheck(res.data.check);
             setPoint(res.data.accurePoint);
-            setPoint(12345)
         })
         .catch(function (error){
             console.log(error)
         })
+    }
 
+    const boardcount = (id) => {
+        // 서버에 요청
+        axios.post(`${IP}/board/count`, null, {
+            params : {
+                id: id //sessionStorage에 있는 id값
+            }
+        })
+        .then(function (res){
+            console.log(res.data);
+
+            setBoardCount(res.data);
+        })
+        .catch(function (error){
+            console.log("게시글 수 가져오기 실패",error)
+        })
+    }
+
+    React.useEffect(() => {
+        (async () => {
+            const id = await getId(); //세션 id값 가져옴
+            mypageInfo(id);
+            console.log("===========================================================================")
+            boardcount(id);
+        })();
     }, []);
 
     // AsyncStorage.setItem("check", "cccc", () => {
@@ -84,7 +121,7 @@ export default function MyPage({navigation}) {
                         <Icon name="user" size={70} color="#F7931D" style={{marginTop:"15%", marginRight:"5%"}} />
                     </View>
                     <View style={styles.infotext}>
-                        <Text style={styles.infotextstyle}>User name</Text>
+                        <Text style={styles.infotextstyle}>{nickname}</Text>
                     </View>
                 </View>
 
@@ -92,7 +129,7 @@ export default function MyPage({navigation}) {
             {/* 게시글 수 */}
                 <View style={styles.infobox}>
                     <View style={styles.infoimg}>
-                        <Text style={styles.infodbnum}>5{/*db에서 불러온 게시글 수 숫자 들어갈 자리*/}</Text>
+                        <Text style={styles.infodbnum}>{boardCount}{/*db에서 불러온 게시글 수 숫자 들어갈 자리*/}</Text>
                     </View>
                     <View style={styles.infotext}>
                         <Text style={styles.infotextstyle}>게시글 수</Text>
@@ -114,20 +151,22 @@ export default function MyPage({navigation}) {
                             type="clear"
                             titleStyle={{ color: 'black' }}
                             onPress={() =>{
-                                // navigation.navigate("AnimalList") -> 포인트 현황 보러가는 곳으로 바꿔줘야 함
-                                }} 
-                            />
+                                navigation.navigate("MyPoint", {
+                                    point: point,
+                                    id: id
+                                })
+                            }} 
+                        />
                     </View>
                 </View>
             </View>
 
 
             {/* 포인트 보이기 */}
-            <View style={styles.box2}>
+            {/* <View style={styles.box2}>
                 <View style={styles.mypointbox}>
-                    {/*db에서 값 꺼내오고 넣어주기*/}
                     <Image source={coin} style={{width:35, height:35, marginTop:'6%'}}/>
-                    <Text style={styles.mypointtext}>{'50point'}</Text> 
+                    <Text style={styles.mypointtext}>{point}</Text> 
                 </View>
                 <View style={styles.androidbox}>
                     <View style={styles.example}>
@@ -140,7 +179,7 @@ export default function MyPage({navigation}) {
                         />
                     </View>
                 </View>
-            </View>
+            </View> */}
 
 
             {/* 정보 더보기 */}
@@ -156,8 +195,9 @@ export default function MyPage({navigation}) {
                         <Text style={styles.buttontext}  
                             onPress={() => {
                                 navigation.navigate("MyInfo", {
-                                    info : [id, pw, name, nickname, phone, address, detailaddress, location_Num, check, point],
-                                    title : "user Info"
+                                    info : [id, pw, name, nickname, phone, address, detailaddress, location_Num, point],
+                                    title : "user Info",
+                                    mypageInfo: mypageInfo
                                 })
                             }}>
                             상세 정보 페이지
@@ -175,11 +215,15 @@ export default function MyPage({navigation}) {
                     </View>
 
                     <View style={styles.buttonback}>
-                        <Text style={styles.buttontext}onPress={() =>{
-                            // navigation.navigate("AnimalList") -> 알람 페이지 넣어주기
-                         }}>
-                            알람설정 - no!!!
+                        <Text style={styles.buttontext}
+                            onPress={() =>{
+                                navigation.navigate("Food")
+                            }}>
+                                밥 알람
                         </Text>
+                        {/* <Button title="밥 알람"  onPress={() =>{
+                            navigation.navigate("Food")
+                        }} ></Button> */}
                     </View>
 
                     <View style={styles.buttonback}>
@@ -192,7 +236,11 @@ export default function MyPage({navigation}) {
                     </View>
 
                     <View style={styles.buttonback}>
-                        <Text style={styles.buttontext}>
+                        <Text style={styles.buttontext}
+                            onPress={() => {
+                                navigation.navigate("Play")
+                            }}
+                        >
                             놀아주기
                         </Text>
                     </View>
@@ -213,8 +261,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginHorizontal:"3%",
         marginTop:"6%",
-        // borderWidth:3,
-        // borderColor:"#b8997c",
+        borderWidth:3,
+        borderColor:"#b8997c",
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         borderBottomLeftRadius: 20,
@@ -280,12 +328,14 @@ const styles = StyleSheet.create({
         flex:5, 
         width: '100%', 
         height: '70%', 
-        marginTop:"2%"
+        marginTop:"2%",
+        padding:"2%"
         // backgroundColor:'lightgreen'
     },
     nextinfo:{
         marginHorizontal:"2%",
-        marginTop:"8%",
+        marginTop:"5%",
+        // padding:"2%",
         // borderWidth:1,
         width:"38%",
         // borderRadius: 50,
@@ -302,15 +352,16 @@ const styles = StyleSheet.create({
         // backgroundColor: 'red',
     },
     buttontext:{
-        fontSize:20,
+        fontSize:30,
         // marginVertical:"10%",
-        // borderBottomWidth:1,
+        borderBottomWidth:1,
+        borderColor:"#b8997c",
         margin:"3%",
-        marginTop:"5%",
+        marginTop:"8%",
         color: '#F7931D',
         fontWeight: "bold",
         fontSize:18,
-        borderColor:"#b8997c",
+        
 
     }
 });
