@@ -88,7 +88,7 @@ export default function AnimalDetail({ navigation: { navigate } }) {
                             <View style={styles.modalback}>
                                 <View style={{ alignContent: 'center', flexDirection: 'row' }}>
                                 {/* <View> */}
-                                    <View style={{ width: '50%', backgroundColor: 'yellow', alignItems: 'center', }}>
+                                    <View style={{ width: '50%', alignItems: 'center', }}>
                                         {
                                             mImg === null ? <Image style={{ resizeMode: "cover", width: 100, height: 100, borderRadius: 50, borderWidth: 3 }} source={{ uri: "https://3.bp.blogspot.com/-ZKBbW7TmQD4/U6P_DTbE2MI/AAAAAAAADjg/wdhBRyLv5e8/s1600/noimg.gif" }} />:
                                             <Image style={{ resizeMode: "cover", width: 100, height: 100, borderRadius: 50, borderWidth: 3 }} source={{ uri: mImg }} />
@@ -96,7 +96,7 @@ export default function AnimalDetail({ navigation: { navigate } }) {
                                     </View>
 
                                     <View style={{ backgroundColor: 'red', width: '50%', justifyContent: 'center', alignItems: 'center' }}>
-                                        <Text style={{ fontSize: 30, padding: 10 }}>{modalData.aname}</Text>
+                                        <Text style={{ fontSize: 30, padding: 10 }}>hi{modalData.aname}</Text>
                                         <Text style={{ fontSize: 20, padding: 10 }}>{modalData.abreed}</Text>
                                     </View>
                                 </View>
