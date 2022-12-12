@@ -110,6 +110,18 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
             >
                 <Text style={styles.forgotButton}>회원가입</Text>
             </TouchableOpacity>
+            <View style={{flexDirection:"row"}}>
+                <TouchableOpacity
+                >
+                    <Text style={styles.forgotButton}>아이디 찾기</Text>
+                </TouchableOpacity>
+                <Text>   |   </Text>
+                <TouchableOpacity
+                >
+                    <Text style={styles.forgotButton}>비밀번호 찾기</Text>
+                </TouchableOpacity>
+            </View>
+            
             <TouchableOpacity
                 style={styles.loginBtn}
                 onPress={() => login()}

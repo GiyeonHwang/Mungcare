@@ -27,11 +27,8 @@ import ServerPort from '../../Components/ServerPort';
 //사진 업로드
 import * as ImagePicker from 'expo-image-picker';
 
-// keyboardAvoidingView
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
-
-export default function App() {
-
+export default function Write({ navigation }) {
+  const IP = ServerPort();
   //bType
   const [bType, setbType] = React.useState('자유게시판');
   const [bTitle, setBTitle] = React.useState('');
