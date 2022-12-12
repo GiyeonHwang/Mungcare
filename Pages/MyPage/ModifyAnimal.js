@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from "react";
-import { Text, View, StyleSheet, Button, Alert, Image} from 'react-native';
+import { Text, View, StyleSheet, Button, Alert, Image , TouchableOpacity} from 'react-native';
 import Checkbox from 'expo-checkbox';
 //npm install expo-checkbox
 import { RadioButton } from 'react-native-paper';
@@ -13,23 +13,19 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
-import { TouchableOpacity } from 'react-native';
 
 const Stack = createStackNavigator();
 const IP = ServerPort();
 
 //동물 info가져오기
-export default function AnimalDetail({ navigation, route }) {
+export default function ModifyAnimal({ navigation, route }) {
 
-    const [aName, setAnimalName] = React.useState(""); //애완동물 이름
-    const [aSex, setAnimalSex] = React.useState(route.params.info[1]); //성별
+    const [aName, setAnimalName] = React.useState(route.params.animalData.aname); //애완동물 이름
+    const [aSex, setAnimalSex] = React.useState(""); //성별
     const [aBirth, setAnimalBirth] = React.useState(""); //생일
     const [aBreed, setAnimalBreed] = React.useState(""); //종류
     const [aNeat, setAnimalNeat] = React.useState(""); //중성화 여부
-    const [img, setImg] = React.useState(route.params.info[5]); // 이미지
-
-    const [checkbool, setCheckBool] = React.useState(false);
-    const [change, setChange] = React.useState(false);
+    const [img, setImg] = React.useState(route.params.animalData.aphoto); // 이미지
 
     const [errorMessage, setErrorMessage] = React.useState(""); //이름
     const [errorMessageBreed, setErrorMessageBreed] = React.useState(""); // 종류
@@ -109,21 +105,18 @@ export default function AnimalDetail({ navigation, route }) {
             params: {
                 name: route.params.info[0],
                 aName: aName,
-                id: route.params.id,
+                id: route.params.animalData.id ,
                 aBirth: aBirth,
                 aBreed: aBreed,
                 aNeat: aNeat,
                 aSex: aSex,
             }
         })
-        .then(function (res) {
-            console.log("수정 완료---")
+        .then(res => {
             console.log(res.data);
-            if (res.data === route.params.info[0]){
                 Alert.alert("수정 완료!")
                 route.params.animalList(route.params.id)
                 navigation.navigate("AnimalList")
-            }
         })
         .catch(function (error) {
             console.log("수정 실패---",error)
@@ -133,7 +126,7 @@ export default function AnimalDetail({ navigation, route }) {
 
     return (
         <ScrollView>
-            <View style={styles.container}>
+        <View style={styles.container}>
             <Text style={styles.title}> 애완동물 정보 수정</Text>
             <View style={styles.title}>
                 <View style={{ padding: 10, }}>
@@ -157,13 +150,10 @@ export default function AnimalDetail({ navigation, route }) {
                             <Text style={{ fontSize: 20 }}>이름</Text>
                         </View>
                         <View style={styles.info}>
-                            {/* <Text style={{ fontSize: 15 }}>dfdfdf{aName}</Text> 
-                                placeholder수정해줘야 함
-                            */}
                             <TextInput
                                 style={styles.input}
                                 onChangeText={handleNameChange}
-                                placeholder={route.params.info[0]}
+                                placeholder={route.params.animalData.aname}
                             />
                             <Text style={styles.text}>{errorMessage}</Text>
                         </View>
@@ -175,9 +165,6 @@ export default function AnimalDetail({ navigation, route }) {
                             <Text style={{ fontSize: 20 }}>성별</Text>
                         </View>
                         <View style={styles.info}>
-                            {/* <Text style={{ fontSize: 15 }}>dfdfdf{aName}</Text> 
-                                placeholder수정해줘야 함
-                            */}
                         <View style={styles.sexContainer}>
                             <Text>남</Text>
                             <RadioButton
@@ -212,7 +199,7 @@ export default function AnimalDetail({ navigation, route }) {
                                 style={styles.input}
                                 editable={false}
                                 value={aBirth}
-                                placeholder="생일"
+                                placeholder={route.params.animalData.abirth}
                                 />
                         </View>
                     </View>
@@ -227,7 +214,7 @@ export default function AnimalDetail({ navigation, route }) {
                             <TextInput
                                 style={styles.input}
                                 onChangeText={handleBreedChange}
-                                placeholder={route.params.info[3]}
+                                placeholder={route.params.animalData.abreed}
                             />
                             <Text style={styles.text}>{errorMessageBreed}</Text>
                         </View>
@@ -240,7 +227,7 @@ export default function AnimalDetail({ navigation, route }) {
                         </View>
                         <View style={{ flexDirection: 'row', padding: 10, width: "55%", alignItems: 'center', }}>
                             <View style={styles.section}>
-                                <Checkbox style={styles.checkbox} value={route.params.info[4]} onValueChange={setAnimalNeat} />
+                                <Checkbox style={styles.checkbox} value={route.params.animalData.aneut} onValueChange={setAnimalNeat} />
                                 <Text style={styles.paragraph}>중성화 여부</Text>
                             </View>
                         </View>
@@ -255,9 +242,7 @@ export default function AnimalDetail({ navigation, route }) {
                 </View>
             </View>
         </View>
-
-        </ScrollView>
-        
+    </ScrollView>
     )
 }
 

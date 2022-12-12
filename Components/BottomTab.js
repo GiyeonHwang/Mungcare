@@ -184,6 +184,7 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="Write" component={Write}/>
       <MainStack.Screen name="AddFood" component={AddFood}/>
       {/* <MainStack.Screen name="Login" component={Login}  options={{headerShown: false ,tabBarStyle: {display: 'none'}}}/> */}
+      {/* <MainStack.Screen name="MyPoint" component={MyPoint} /> */}
     </MainStack.Navigator>
   );
 }

@@ -6,11 +6,9 @@ import ServerPort from '../../Components/ServerPort';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment/moment';
 import { RadioButton } from 'react-native-paper';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //이미지 업로드
 import * as ImagePicker from 'expo-image-picker';
-
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 // 버튼 스타일npm install @rneui/themed <- 필요
 import { Button } from '@rneui/themed';
@@ -43,6 +41,13 @@ export default function AddAnimal({ navigation, route}) {
     //데이트 피커
     const [isDatePickerVisible, setDatePickerVisibility] = React.useState(false);
     
+    React.useEffect(() => {
+        async function getId(){
+            setId(await AsyncStorage.getItem('id'));
+        }
+        getId();
+    })
+
     const showDatePicker = () => {
         setDatePickerVisibility(true);
       };
@@ -58,7 +63,6 @@ export default function AddAnimal({ navigation, route}) {
 
         hideDatePicker();
       };
-
 
     //갤러리 권한 요청이 되어있는지 확인
     const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -92,8 +96,9 @@ export default function AddAnimal({ navigation, route}) {
             {
                 Alert.alert("중복확인 되었습니다.");
                 setOkName(true); // 버튼 활성화
-            } else {
-                Alert.alert("중복되는 이름입니다. 다시 설정해주세요!");
+            }
+            else {
+                Alert.alert("중복된 이름입니다.");
                 setOkName(false); //버튼 비활성화
             }
         })

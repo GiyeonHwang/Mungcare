@@ -10,7 +10,7 @@ import FreeView from '../../Components/FreeView';
 import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useIsFocused } from '@react-navigation/native';
-
+import ServerPort from '../../Components/ServerPort';
 
 
 
@@ -33,9 +33,9 @@ export default function Main({ navigation }) {
 
   const [frData, setFrData] = React.useState([]);
   const isFocused = useIsFocused(); // isFoucesd Define
-
+  const IP = ServerPort();
   const selectList = () => {
-    axios.post("http://192.168.2.94:5000/board/search", null, {
+    axios.post(`${IP}/board/search`, null, {
       params: {
         page: 1,
         size: 10,

@@ -36,6 +36,7 @@
     "react-icons": "^4.7.1",
     "react-native": "0.70.5",
     "react-native-alarm-manager": "^1.2.1",
+    "react-native-animated-progress": "^1.0.2",
     "react-native-calendars": "^1.1291.1",
     "react-native-gesture-handler": "~2.8.0",
     "react-native-htmlview": "^0.16.0",

@@ -26,6 +26,8 @@ import ServerPort from '../../Components/ServerPort';
 
 //사진 업로드
 import * as ImagePicker from 'expo-image-picker';
+// keyboardAvoidingView
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
 
 export default function Write({ navigation }) {
   const IP = ServerPort();
@@ -118,7 +120,6 @@ export default function Write({ navigation }) {
 
     console.log(formData);
 
-
     await axios({
       method: 'post',
       url: `http://192.168.2.77:5000/upload`,
@@ -193,67 +194,80 @@ export default function Write({ navigation }) {
   console.log("현재 내용", bContent);
 
   return (
-    <ScrollView boxStyles={{ borderRadius: 0 }}>
-      <SelectDropdown
-        data={countries}
-        onSelect={(selectedItem, index) => {
-          if (selectedItem == '자유게시판') {
-            setbType('자유게시판');
-          }
-          else if (selectedItem == '찾아줘게시판') {
-            setbType('찾아줘게시판');
-          }
-          else if (selectedItem == '자랑게시판') {
-            setbType('자랑게시판');
-          }
-          else if (selectedItem == '기부게시판') {
-            setbType('기부게시판');
-          }
-        }}
-        defaultValue={countries[0]}
-        buttonStyle={styles.dropdown1BtnStyle}
-        buttonTextStyle={styles.dropdown1BtnTxtStyle}
-        renderDropdownIcon={isOpened => {
-          return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
-        }}
-        dropdownIconPosition={'right'}
-        dropdownStyle={styles.dropdown1DropdownStyle}
-        rowStyle={styles.dropdown1RowStyle}
-        rowTextStyle={styles.dropdown1RowTxtStyle}
-      />
-      <TextInput
-        style={{ width: Dimensions.get('window').width * 1, height: Dimensions.get('window').height * 0.06, borderWidth: 0, borderBottomWidth: 1, padding: 15 }}
-        placeholder="제목을 입력해주세요."
-        value={bTitle}
-        onChangeText={text => setBTitle(text)}
-      />
-      <RichToolbar
-        editor={richText}
-        selectedIconTint="#873c1e"
-        iconTint="#312921"
-        onPressAddImage={uploadImage}
-        actions={[
-          actions.insertImage,
-          actions.setBold,
-          actions.setItalic,
-          actions.insertBulletsList,
-          actions.insertOrderedList,
-          actions.insertLink,
-          actions.setStrikethrough,
-          actions.setUnderline,
-        ]}
-        style={{ height: Dimensions.get('window').height * 0.06 }}
-      />
-      <RichEditor
-        ref={richText} // from useRef()
-        onChange={text => setBContent(text)}
-        placeholder="내용을 적어주세요"
-        androidHardwareAccelerationDisabled={true}
-        style={{ height: Dimensions.get('window').height * 0.65 }}
-        initialHeight={Dimensions.get('window').height * 0.65}
-      />
-    </ScrollView>
+    <View style={styles.container}>
+      <View style={styles.box}>
+        <View style={styles.dropbutton} >
+          {/* 게시판 선택하는 곳 */}
+          <SelectDropdown
+            data={countries}
+            onSelect={(selectedItem, index) => {
+              console.log(selectedItem, index);
+              setbType(selectedItem);
+            }}
+            defaultValue = {countries[0]}
+            buttonStyle={styles.dropdown1BtnStyle}
+            buttonTextStyle={styles.dropdown1BtnTxtStyle}
+            renderDropdownIcon={isOpened => {
+              return <FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#444'} size={18} />;
+            }}
+            dropdownIconPosition={'right'}
+            dropdownStyle={styles.dropdown1DropdownStyle}
+            rowStyle={styles.dropdown1RowStyle}
+            rowTextStyle={styles.dropdown1RowTxtStyle}
+          />
+          <View style={styles.Button2}>
+            <Button title="등록" mode="contained" onPress={write} color={'#3AB5A9'}/>
+          </View>
+        </View>
 
+        <SafeAreaView style = {{marginTop : "3%" , backgroundColor : "#EBE3D7", flex:1}}> 
+
+          
+
+            {/* 제목입력 */}
+          <TextInput
+          style={styles.inputtitle}
+          placeholder="제목을 입력해주세요."
+          onChangeText={text => setBTitle(text)}
+          />      
+          <ScrollView>
+          <RichEditor
+                
+            ref={richText} // from useRef()
+            onChange={richTextHandle}
+            placeholder="Write your cool content here :)"
+            androidHardwareAccelerationDisabled={true}
+            onHeightChange={handleHeightChange}
+            initialHeight={495}
+          />
+
+          </ScrollView>
+                      
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}   style={{ flex: 1 }}>
+              {/* 하단에 버튼 누르면 바뀌는 것들 */}
+              <RichToolbar 
+                    
+                    editor={richText}
+                    onPressAddImage = {uploadImage}
+                    actions={[  actions.setBold
+                              , actions.setItalic
+                              , actions.setUnderline
+                              , actions.heading1
+                              , actions.insertBulletsList
+                              , actions.insertOrderedList
+                              , actions.insertImage ]}
+                    iconMap={{ [actions.heading1]: ({tintColor}) => (<Text style={[{color: tintColor}]}>H1</Text>), }}  
+                  /> 
+            </KeyboardAvoidingView>
+              
+
+        </SafeAreaView>
+
+      </View>
+
+    </View>
+    
+    
   );
 }
 
