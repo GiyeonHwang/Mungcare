@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React from "react";
-import { Text, View, SafeAreaView, StyleSheet, TextInput, Button, Alert, TouchableOpacity, ScrollView, Image } from 'react-native';
+import { Text, View, SafeAreaView, StyleSheet, TextInput, Alert, TouchableOpacity, ScrollView, Image } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import ServerPort from '../../Components/ServerPort';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -10,6 +10,10 @@ import { RadioButton } from 'react-native-paper';
 //이미지 업로드
 import * as ImagePicker from 'expo-image-picker';
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+// 버튼 스타일npm install @rneui/themed <- 필요
+import { Button } from '@rneui/themed';
 
 
 //navigation 사용할 때 필요
@@ -55,6 +59,7 @@ export default function AddAnimal({ navigation, route}) {
         hideDatePicker();
       };
 
+
     //갤러리 권한 요청이 되어있는지 확인
     const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
     const [imguri, setImgUri] = React.useState("https://3.bp.blogspot.com/-ZKBbW7TmQD4/U6P_DTbE2MI/AAAAAAAADjg/wdhBRyLv5e8/s1600/noimg.gif");
@@ -87,10 +92,6 @@ export default function AddAnimal({ navigation, route}) {
             {
                 Alert.alert("중복확인 되었습니다.");
                 setOkName(true); // 버튼 활성화
-            }
-            else {
-                Alert.alert("중복된 이름입니다.");
-                setOkName(false); //버튼 비활성화
             }
         })
         .catch(function(error) {
@@ -222,15 +223,29 @@ export default function AddAnimal({ navigation, route}) {
             <ScrollView >
 
 
-                <View sytle={{ alignContent: 'center', width: '100%', padding: 10, alignItems: 'center', }}>
-                    <View style={{ padding: 20, alignContent: 'center', flexDirection: 'row' }}>
-                        <View style={{ width: '50%', backgroundColor: 'yellow', alignItems: 'center', }}>
-                            <Image style={{ resizeMode: "cover", width: 100, height: 100, borderRadius: 50, borderWidth: 3 }} source={{ uri: imguri }} />
+                <View sytle={styles.imgbox}>
+                    <View style={styles.inputimgbox}>
+                        <View style={styles.inputimg}>
+                            <Image style={styles.img} source={{ uri: imguri }} />
                         </View>
 
-                        <View style={{ backgroundColor: 'red', width: '50%', justifyContent: 'center' }}>
-                            <Button title='이미지 넣기' onPress={uploadImage}></Button>
-                            <Text style={{ fontSize: 15 }}>* 사진은 수정할 수 없습니다.</Text>
+                        <View style={styles.imgtext}>
+                        <Button
+                            title='이미지 넣기 클릭'
+                            buttonStyle={{
+                                borderColor: 'rgba(78, 116, 289, 1)',
+                            }}
+                            type="clear"
+                            titleStyle={{ color: 'rgba(78, 116, 289, 1)' }}
+                            containerStyle={{
+                                // width: 200,
+                                // marginHorizontal: 50,
+                                // marginVertical: 10,
+                            }}
+                            onPress={uploadImage}
+                            />
+                            {/* <Button title='이미지 넣기' onPress={uploadImage}></Button> */}
+                            <Text style={styles.redtext}>* 사진은 수정할 수 없습니다.</Text>
                         </View>
                     </View>
                 </View>
@@ -318,9 +333,42 @@ export default function AddAnimal({ navigation, route}) {
 const styles = StyleSheet.create({
     box: {
         flex: 1,
-        alignContent: 'center',
-        justifyContent: 'center'
+        backgroundColor:'#EBE3D7'
+        // alignContent: 'center',
+        // justifyContent: 'center'
         // marginHorizontal: 61,
+    },
+    imgbox:{
+        // alignContent: 'center',
+        // width: '100%',
+        // padding: 10,
+        // alignItems: 'center',
+    },
+    inputimgbox:{
+        padding: 20,
+        alignContent: 'center',
+        flexDirection: 'row',
+        marginTop:'5%'
+    },
+    inputimg:{
+        width: '50%',
+        // backgroundColor: 'yellow',
+        alignItems: 'center',
+    },
+    img:{
+        resizeMode: "cover",
+        width: 100, height: 100,
+        borderRadius: 50,
+        borderWidth: 3,
+        marginBottom:"2%"
+    },
+    imgtext:{
+        // backgroundColor: 'red',
+        width: '42%',
+        justifyContent: 'center'
+    },
+    redtext:{
+        fontSize: 10
     },
     input: {
         borderRadius: 8,
@@ -328,15 +376,17 @@ const styles = StyleSheet.create({
         marginHorizontal: "5%",
         borderWidth: 1,
         padding: 10,
+        marginTop:"2%",
+        marginBottom:"5%"
     },
     text: {
-        marginTop: 12,
-        marginLeft: "5%"
+        // marginTop: 12,
+        marginLeft: "5%",
     },
     button: {
         marginTop: "5%",
         marginHorizontal: "5%",
-        marginBottom: "5%"
+        marginBottom: "5%",
     },
     checkbox: {
         margin: 8,
@@ -347,6 +397,7 @@ const styles = StyleSheet.create({
     section: {
         flexDirection: 'row',
         alignItems: 'center',
+        bottom:15
     },
     overlapContainer : {
         flexDirection: 'row' ,
@@ -357,13 +408,13 @@ const styles = StyleSheet.create({
         height : "100%",
         width : "15%",
         borderRadius : 15,
-        backgroundColor : "#3AB5A9",
+        // backgroundColor : "#F7931D",
         alignItems : 'center',
         justifyContent : 'center',
         marginLeft : "3%"
     },
     overlapButtonText : {
-        color : '#fff',
+        color : '#F7931D',
         fontWeight : 'bold',
         textAlign: 'center',
     },

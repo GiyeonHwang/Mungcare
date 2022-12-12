@@ -255,8 +255,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginHorizontal:"3%",
         marginTop:"6%",
-        borderWidth:3,
-        borderColor:"#b8997c",
+        // borderWidth:3,
+        // borderColor:"#b8997c",
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         borderBottomLeftRadius: 20,
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     },
     nextinfo:{
         marginHorizontal:"2%",
-        marginTop:"6%",
+        marginTop:"8%",
         // borderWidth:1,
         width:"38%",
         // borderRadius: 50,
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     buttontext:{
         fontSize:20,
         // marginVertical:"10%",
-        borderBottomWidth:1,
+        // borderBottomWidth:1,
         margin:"3%",
         marginTop:"5%",
         color: '#F7931D',

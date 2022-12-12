@@ -12,7 +12,7 @@ import ServerPort from '../../Components/ServerPort';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { TextInput } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import { TouchableOpacity } from 'react-native';
 
 const Stack = createStackNavigator();
@@ -133,7 +133,7 @@ export default function AnimalDetail({ navigation, route }) {
 
     return (
         <ScrollView>
-        <View style={styles.container}>
+            <View style={styles.container}>
             <Text style={styles.title}> 애완동물 정보 수정</Text>
             <View style={styles.title}>
                 <View style={{ padding: 10, }}>
@@ -255,7 +255,9 @@ export default function AnimalDetail({ navigation, route }) {
                 </View>
             </View>
         </View>
-    </ScrollView>
+
+        </ScrollView>
+        
     )
 }
 
