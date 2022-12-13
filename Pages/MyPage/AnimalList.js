@@ -33,6 +33,7 @@ export default function AnimalList({ navigation: { navigate } }) {
         })
         .then(function(res) {
         console.log("removeAnimal--",res.data);
+        info()
         })
         .catch(function(error) {
         console.log("반려동물 삭제 실패- ", error)
@@ -88,6 +89,8 @@ export default function AnimalList({ navigation: { navigate } }) {
                                 <AnimalListCard
                                 key = {index}
                                 animalData = {e}
+                                info = {info}
+                                removeAnimal = {removeAnimal}
                                 />
                             )
                         })

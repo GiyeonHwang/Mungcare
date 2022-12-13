@@ -7,10 +7,11 @@ import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
 
-export default function AnimalModal({animalData,setModalVisible})
+export default function AnimalModal({animalData,setModalVisible, info, removeAnimal})
 {
     const navigation = useNavigation();
     console.log("뭐가 있을까요?",animalData)
+
     return (
         <View style={styles.box1}>
                 <Modal
@@ -73,7 +74,8 @@ export default function AnimalModal({animalData,setModalVisible})
                                         setModalVisible(false)
                                         console.log(animalData)
                                         navigation.navigate("ModifyAnimal", {
-                                            animalData : animalData
+                                            animalData : animalData,
+                                            info : info
                                         })
                                     }}>
                                     
