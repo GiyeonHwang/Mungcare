@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, Alert, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import Modal from "react-native-modal";
 import Postcode from '@actbase/react-daum-postcode';
@@ -373,6 +373,8 @@ export default function MyPage({ navigation, route }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: Dimensions.get('window').width * 1,
+        height: Dimensions.get('window').height * 0.06,
         // padding: 24,
         backgroundColor: '#EBE3D7',
     },
@@ -396,7 +398,7 @@ const styles = StyleSheet.create({
     },
     info:{
         // backgroundColor: "blue",
-        padding: 9,
+        // pa     dding:4,
         width: 184,
         alignItems: 'center',
     },

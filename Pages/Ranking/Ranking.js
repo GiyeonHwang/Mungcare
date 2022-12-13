@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View , SafeAreaView, StyleSheet, TextInput , Button, Alert, Image, ProgressBarAndroid } from 'react-native';
+import { Text, View , SafeAreaView, StyleSheet, TextInput , Button, Alert, Image, ProgressBar, ProgressBarAndroid, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 
 // import { Text, View, Button } from "react-native";
@@ -17,6 +17,12 @@ const Stack = createStackNavigator();
 // import Icon from 'react-native-vector-icons/Ionicons';
 import Icon from 'react-native-vector-icons/Ionicons';
 
+// 아이콘 import해줌
+import Icon2 from 'react-native-vector-icons/Foundation';
+import Icon3 from 'react-native-vector-icons/FontAwesome';
+import Icon4 from 'react-native-vector-icons/FontAwesome5';
+import Icon5 from 'react-native-vector-icons/Entypo';
+
 // 사진 import
 import mung from '../../assets/images/mung.jpg';
 
@@ -27,6 +33,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Ranking({ navigation }){
   // ranking정보 가져오기
     const [rdata, setRdata] = React.useState([]);
+    const aneut = rdata.length !=0?rdata[0].animalList[0].aneut:null
 
     React.useEffect(()=>{
       const setData = async () => {
@@ -76,7 +83,7 @@ export default function Ranking({ navigation }){
                 }
               </View>
             <View style={{flexDirection:'row', justifyContent: 'center'}}>
-              <Text >작성자: </Text>
+              {/* <Text >작성자: </Text> */}
               <Text >{rdata.length !=0
                       ?rdata[1].id
                       :null
@@ -88,6 +95,7 @@ export default function Ranking({ navigation }){
           <View style={{alignItems: 'center',}}>
             <Image source={ require('../../assets/images/king.png')} style={styles.kingimg} />
             <Text></Text>
+            {/* 1등 */}
           </View>
             <View style={styles.first}>
               <View>
@@ -97,7 +105,7 @@ export default function Ranking({ navigation }){
                 (
                   rdata[0].animalList[0].aphoto != null
                   ?
-                  <Image source={{uri : rdata[0].animalList[0].aphoto}} style = {{width: 163 , height: 163}}/>
+                  <Image source={{uri : rdata[0].animalList[0].aphoto}} style = {{width: 163 , height: 157}}/>
                   :
                   <Image source={mung} style = {{width: 163 , height: 163}}/>
                 )
@@ -107,12 +115,14 @@ export default function Ranking({ navigation }){
               </View>
             </View>
             
-            <View style={{flexDirection:'row', justifyContent: 'center', bottom:40}}>
-              <Text >작성자: </Text>
-              <Text >{rdata.length !=0
-                      ?rdata[0].id
+            <View style={{flexDirection:'row', justifyContent: 'center', bottom:25, marginTop:"5%"}}>
+              {/* <Text >작성자: </Text> */}
+              <Text>
+                {rdata.length !=0
+                      ?rdata[0].nickname
                       :null
-                    }</Text>
+                    }
+                    </Text>
             </View>
            
         </View>
@@ -141,8 +151,8 @@ export default function Ranking({ navigation }){
 
           
             <View style={{flexDirection:'row', justifyContent: 'center'}}>
-              <Text >작성자: </Text>
-              <Text >{rdata.length !=0
+              {/* <Text >작성자: </Text> */}
+              <Text style={{marginTop:"2%"}}>{rdata.length !=0
                       ?rdata[2].id
                       :null
                     }</Text>
@@ -152,60 +162,64 @@ export default function Ranking({ navigation }){
         
       </View>
 
+      <View style={{flex:0.5, marginBottom:"2%", marginLeft:"5%", bottom:30}}>
+        <Text> <Icon2 name="crown" size={20} color="#F7931D" /> 상세 정보 <Icon2 name="crown" size={20} color="#F7931D" /></Text> 
+      </View>
 
+      
+     
       {/* 1등 상세 보여주기 */}
       <View style={styles.DtailView}>
         {/* 1등 사진 */}
        <View style={styles.firstView}>
-       <View>
-              {
+          <View>
+            {
+              
                 rdata.length !=0
+              ?
+              (
+                rdata[0].animalList[0].aphoto != null
                 ?
-                (
-                  rdata[0].animalList[0].aphoto != null
-                  ?
-                  <Image source={{uri : rdata[0].animalList[0].aphoto}} style = {{width: 163 , height: 163}}/>
-                  :
-                  <Image source={mung} style = {{width: 163 , height: 163}}/>
-                )
+                <Image source={{uri : rdata[0].animalList[0].aphoto}} style = {{width: 163 , height: 163}}/>
                 :
                 <Image source={mung} style = {{width: 163 , height: 163}}/>
-              }
-              </View>
+              )
+              :
+              <Image source={mung} style = {{width: 163 , height: 163}}/>
+
+              
+              
+            }
+          </View>
        </View>
        {/* 1등 텍스트 */}
         <View style={styles.firstText}>
-          <View style={{ top:"15%"}}>
-          <Text style={{borderBottomWidth:0.5}}>
-            {rdata.length !=0
-              ?"동물 이름:"+ rdata[0].animalList[0].aname
-              :null
-            }</Text>
-            <Text>
-              1등 point: {rdata.length !=0? rdata[0].totalPoint:null}
-            </Text>
-            <Text style={{borderBottomWidth:0.5}}>
-              {/* 무슨바인지 모르겠는데 일단 만들어둠 */}
-              <View style={styles.example}>
-                <ProgressBarAndroid
-                  styleAttr="Horizontal"
-                  indeterminate={false}
-                  progress={rdata.length !=0?rdata[0].totalPoint/100:null} //1등%만 보이니까 0으로 고정
-                />
-              </View>
-            </Text>
-            <Text>강아지 정보</Text>
-            <Text>성별: {rdata.length !=0?rdata[0].animalList[0].asex:null}</Text>
-            <Text>생일: {rdata.length !=0?rdata[0].animalList[0].abirth:null}</Text>
-            <Text>중성화: {rdata.length !=0?rdata[0].animalList[0].aneut:null}</Text>
-            <Text>종: {rdata.length !=0?rdata[0].animalList[0].abreed:null}</Text>
+          <View style={{ top:"5%"}}>
+            <View style={{flexDirection: 'row',}}>
+              <Text style={{ fontSize:20,  marginTop:"2%",marginBottom:'5%'}}>
+                {/* 1등 상세 강아지 이름 */}
+                {rdata.length !=0
+                  ?rdata[0].animalList[0].aname
+                  :null
+                }
+              </Text>
+              <Text style={{left:55, marginTop:"2%"}}>
+              <Icon2 name="bitcoin-circle" size={20} color="#F7931D" style={{padding:"5%",marginTop:"5%"}}/> : {rdata.length !=0? rdata[0].totalPoint:null}
+              </Text>
+            </View>
+            
+            <View style={styles.doginfo}>
+              <Text style={styles.doginfotext}><Icon3 name="venus-mars" size={20} color="#F7931D" style={{padding:"5%", }}/> : {rdata.length !=0?rdata[0].animalList[0].asex:null}</Text>
+              <Text style={styles.doginfotext}><Icon4 name="birthday-cake" size={20} color="#F7931D" style={{padding:"5%", }}/>  : {rdata.length !=0?rdata[0].animalList[0].abirth:null}</Text>
+              <Text style={styles.doginfotext}><Icon4 name="clipboard-check" size={20} color="#F7931D" style={{padding:"5%", }}/>  : {aneut === false ? <Text>X</Text> : <Text>O</Text>}</Text>
+              <Text style={styles.doginfotext}><Icon5 name="bell" size={20} color="#F7931D" style={{padding:"5%",}}/>: {rdata.length !=0?rdata[0].animalList[0].abreed:null}</Text>
+            </View>
+            
           </View>
 
         </View>
       </View>
-      {/* <View style={styles.Bottom}>
-        <Text>하단바 들어갈 자리</Text>
-      </View> */}
+
       
     </View>
     )
@@ -214,15 +228,18 @@ export default function Ranking({ navigation }){
 const styles = StyleSheet.create({
   Box:{
     flex: 1,
+    width: Dimensions.get('window').width * 1,
+    height: Dimensions.get('window').height * 0.06,
     backgroundColor:'#EBE3D7'
     
   },
   TextBox:{
     flex: 0.5,
-    borderWidth: 1,
+    // borderWidth: 1,
     alignItems: 'center', //세로로 가운데 갈 수 있게 해줌
     justifyContent: 'center', //가로로 가운데 갈 수 있게 해줌
-    backgroundColor:'#ffffff'
+    backgroundColor:'#ffffff',
+    marginBottom:"5%"
   },
   kingimg:{
     position:'absolute',
@@ -243,17 +260,17 @@ const styles = StyleSheet.create({
     // width:150,
     // height:150,
     // marginTop: '30%',
-    marginBottom: '25%',
+    marginBottom: '30%',
     backgroundColor: '#ffffff',
-    borderWidth:0.5
+    // borderWidth:0.5
   },
   second:{
-    flex:3,
+    flex:5,
     // width:50,
     // height:'150%',
     // marginTop: '10%',
     backgroundColor: '#ffffff',
-    borderWidth:0.5
+    // borderWidth:0.5
 
   },
   third:{
@@ -262,7 +279,7 @@ const styles = StyleSheet.create({
     // height:150,
     // marginTop: '10%',
     backgroundColor: '#ffffff',
-    borderWidth:0.5
+    // borderWidth:0.5
 
   },
   DtailView:{
@@ -270,7 +287,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row', //가로정렬
     backgroundColor: '#EBE3D7',
     alignItems: 'center', //세로로 가운데 갈 수 있게 해줌
-    justifyContent: 'center', //가로로 가운데 갈 수 있게 해줌 
+    justifyContent: 'center', //가로로 가운데 갈 수 있게 해줌 ,
+    bottom:20
   },
 
   firstView:{
@@ -278,18 +296,30 @@ const styles = StyleSheet.create({
     width:"100%",
     height:"100%",
     backgroundColor:"#ffffff",
-    borderWidth:0.5,
-    bottom:20
+    borderRightWidth:0.5,
+    borderBottomWidth:3,
+    borderLeftWidth:3,
+    borderTopWidth:3,
+    borderColor:"#ffffff",
+    bottom:20,
+    alignItems : 'center',
+    justifyContent : 'center',
+    borderTopLeftRadius:20,
+    borderBottomLeftRadius:20
   },
   firstText:{
-    flex:3,
+    flex:2,
     // borderWidth: 1 ,
     // bordercolor: 'black',
     width:"100%",
     height:"100%",
     backgroundColor:'#EBE3D7',
+    borderColor:"#ffffff",
     borderWidth:0.5,
-    bottom:20
+    bottom:20,
+    backgroundColor: "white",
+    borderTopRightRadius:20,
+    borderBottomRightRadius:20
 
   },
   Bottom:{
@@ -300,9 +330,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    
   },
   example: {
     marginVertical: 24,
   },
+  doginfo:{
+    // borderTopWidth:1,
+
+  },
+  doginfotext:{
+    marginBottom:"5%"
+  }
   
 })

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, useWindowDimensions,Dimensions, Button, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import HTML from 'react-native-render-html';
-export default function FreeView({ bno, btitle, bcontent, id,btext ,bphoto,bviewCount }) {
+export default function FreeView({ bno, btitle, bcontent, id,btext ,bphoto,bviewCount, nickname }) {
   // export default function FreeView({ item }) {
   const contentWidth = useWindowDimensions().width;
   // const [cardInfo,setCardInfo] = useState(props.items);
@@ -32,7 +32,7 @@ export default function FreeView({ bno, btitle, bcontent, id,btext ,bphoto,bview
           <View style={styles.contentBox}>
             <View style={styles.title}>
               <Text style={styles.titleText}>{btitle}</Text>
-              <Text style={{ fontSize: 10,fontWeight:"bold" }}> {id}</Text>
+              <Text style={{ fontSize: 10,fontWeight:"bold" }}> {nickname}</Text>
             </View>
 
             <View style={styles.content}>
@@ -51,7 +51,7 @@ export default function FreeView({ bno, btitle, bcontent, id,btext ,bphoto,bview
           <View style={styles.contentBox2}>
             <View style={styles.title2}>
               <Text style={styles.titleText} numberOfLines={1}>{btitle}</Text>
-              <Text style={{ fontSize: 10,fontWeight:"bold" }}> {id}</Text>
+              <Text style={{ fontSize: 10,fontWeight:"bold" }}> {nickname}</Text>
             </View>
             <View style={styles.content2}>
            

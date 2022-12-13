@@ -26,7 +26,8 @@ export default function Play({ navigation }) {
             const value = await AsyncStorage.getItem('id');
             if (value !== null) {
                 console.log("id---: ", value);
-                return value;
+                setId(value);
+                console.log("id---------------: ", id);
             }
         } catch (e) {
             console.log("not session... ", e);
@@ -38,7 +39,8 @@ export default function Play({ navigation }) {
         (async () => {
             const cameraStatus = await Camera.requestCameraPermissionsAsync();
             setHasCameraPermission(cameraStatus.status === 'granted');
-            await setId(getId())
+            await getId();
+            console.log("----------id: ",id);
         })();
     }, []);
 
@@ -93,6 +95,7 @@ export default function Play({ navigation }) {
         const date = new Date();
         const day = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
         const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+        console.log("id...",id);
         axios.post(`${IP}/calendar/start`, null, {
           params: {
             id: id,

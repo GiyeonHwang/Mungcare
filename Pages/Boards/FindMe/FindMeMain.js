@@ -52,7 +52,7 @@ export default function FindMeMain({ navigation }) {
         <View style={{ padding: 10, marginTop: 10 }}>
 
           {frData.filter((_, i) => i % 2 === 0).map((e) => (
-            <FreeView key={e.id} {...e} />
+            <FreeView key={e.bno} {...e} />
           )
           )
           }
@@ -61,7 +61,7 @@ export default function FindMeMain({ navigation }) {
         <View style={{ padding: 10, marginTop: 10 }}>
 
           {frData.filter((_, i) => i % 2 !== 0).map((e) => (
-            <FreeView key={e.id} {...e} />
+            <FreeView key={e.bno} {...e} />
           )
           )
           }

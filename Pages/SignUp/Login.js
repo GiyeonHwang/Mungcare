@@ -105,16 +105,17 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
             </View>
 
             {/* TouchableOpacity == Anchor */}
+            {/* <TouchableOpacity
+                onPress={() => navigation.navigate("Join")}
+            >
+                <Text style={styles.forgotButton}>회원가입</Text>
+            </TouchableOpacity> */}
+            <View style={{flexDirection:"row", marginTop:"2%"}}>
             <TouchableOpacity
                 onPress={() => navigation.navigate("Join")}
             >
                 <Text style={styles.forgotButton}>회원가입</Text>
             </TouchableOpacity>
-            <View style={{flexDirection:"row"}}>
-                <TouchableOpacity
-                >
-                    <Text style={styles.forgotButton}>아이디 찾기</Text>
-                </TouchableOpacity>
                 <Text>   |   </Text>
                 <TouchableOpacity
                 onPress={() => navigation.navigate("ReissuancePw")}
@@ -136,7 +137,7 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#e9e9e9",
+        backgroundColor: "#EBE3D7",
         alignItems: "center",
         justifyContent: "center",
     },
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
         height: 50,
         flex: 1,
         padding: 10,
-        marginLeft: 20
+        // marginLeft: 20
     },
     forgotButton: {
         height: 30,
