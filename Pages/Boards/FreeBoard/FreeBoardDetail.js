@@ -1,3 +1,5 @@
+
+
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useEffect } from "react";
@@ -213,16 +215,20 @@ export default function FreeBoardDetail({ navigation, route }) {
                         {
                             likeCheck
                                 ?
-                                <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/beanheart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
-                                :
                                 <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/heart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
+                                :
+                                <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/beanheart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
+
+                                // <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/beanheart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
+                                // :
+                                // <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/heart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
                         }
                     </View>
                 </View>
                 <View style={{ width: "100%", height: Dimensions.get('window').height * 0.05, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
 
                     <View style={{ flexDirection: "row", width: "15%", alignItems: "center" }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{id}</Text>
+                        <Text style={{ fontWeight: "bold", fontSize: 15, textAlignVertical: "center" }}>{id}</Text>
                         <View style={{ height: "100%", borderLeftWidth: 0.5, borderColor: "grey", alignItems: "center", marginLeft: 5, flexDirection: "row" }}>
                             <Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>조회수 </Text>
                             <Text style={{ fontSize: 12, color: "gray" }}>{bviewCount}</Text>
