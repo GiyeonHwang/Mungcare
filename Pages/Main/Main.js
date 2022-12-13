@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, SafeAreaView, StyleSheet, FlatList, TextInput, Button, RefreshControl,Dimensions, Alert, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, SafeAreaView, StyleSheet, FlatList, TextInput, Button, RefreshControl, Dimensions, Alert, ScrollView, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -10,9 +10,10 @@ import FreeView from '../../Components/FreeView';
 import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useIsFocused } from '@react-navigation/native';
-import ServerPort from '../../Components/ServerPort';
+import * as Location from 'expo-location';
 
-
+//날씨 api키
+const API_KEY = "204756a8614d5d5f3d4e6544f1cd8c7d"
 
 const wait = (timeout) => {
   return new Promise(resolve => setTimeout(resolve, timeout));
@@ -22,20 +23,23 @@ const wait = (timeout) => {
 export default function Main({ navigation }) {
 
 
-//새로고침 함수
+  //새로고침 함수
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
-//여기까지 새로고침
+  //여기까지 새로고침
 
   const [frData, setFrData] = React.useState([]);
   const isFocused = useIsFocused(); // isFoucesd Define
-  const IP = ServerPort();
+
+  //날씨
+  const [weather,setWeather] = React.useState("");
+  const [address, setAddress] = React.useState("");
   const selectList = () => {
-    axios.post(`${IP}/board/search`, null, {
+    axios.post("http://192.168.2.94:5000/board/search", null, {
       params: {
         page: 1,
         size: 10,
@@ -45,7 +49,7 @@ export default function Main({ navigation }) {
     })
       .then(function (res) {
         setFrData(res.data.dtoList);
-        console.log("리스폰스데이터:", res.data.dtoList[0].bno);
+       
       })
       .catch(function (error) {
         console.log("게시판 전체 데이터 가져오기 실패: ", error)
@@ -59,8 +63,28 @@ export default function Main({ navigation }) {
     navigation.navigate("FreeBoardDetail", { no: frData.bno });
   }
 
+  useEffect(()=>{
+    (async () => {
 
+      //위치 수집 허용하는지 물어보기
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+      
+      let location = await Location.getCurrentPositionAsync({});
+      let addresscheck = await Location.reverseGeocodeAsync(location.coords);
+      console.log(addresscheck)
+      setAddress(addresscheck)
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${location.coords.latitude.toFixed(5)}&lon=${location.coords.longitude.toFixed(5)}&appid=${API_KEY}&units=metric`);
+      const res = await response.json()
+      console.log(res)
+      setWeather(res)
+    })();
+  },[])
 
+  
 
   useFocusEffect(
     React.useCallback(() => {
@@ -87,92 +111,132 @@ export default function Main({ navigation }) {
   return (
     <SafeAreaView>
       <ScrollView
-       refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}/>}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh} />}
       >
-        <View style={{ width: "100%" }}>
-          <View style={{ width: "100%", height: Dimensions.get('window').height * 0.4 }}>
-            <View style={{ width: "100%", height: "30%", flexDirection: "row", justifyContent: "center", marginBottom: 5 }}>
-              <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, alignItems: "center", justifyContent: "center", margin: 7 }}
+        <View style={{ width: Dimensions.get('window').width * 1 }}>
+          <View style={{ width: "100%", height: Dimensions.get('window').height * 0.6 , alignItems:'center'}}>
+            <View style={styles.weathertab}>
+              {
+                weather != "" ?
+                  <>
+                    <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+                      <Text style={{ color: 'gray' }}>     {address[0].district} </Text>
+                      <Text style={{ fontSize: 20, fontStyle: 'bold', }}> {weather.main.temp.toFixed(0)}°C       </Text>
+                    </View>
+                    <Image style={{ width: '20%', height: '100%' }} source={{ uri: `http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png` }} />
+                    <Text>{weather.weather[0].main}</Text>
+                  </>
+                  :
+                  <ActivityIndicator />
+              }
+            </View>
+
+            {/* 상단바 */}
+            <View style={styles.topicon}>
+              <TouchableOpacity
+                style={styles.icons}
                 onPress={() => navigation.navigate('MainBoard')}
               >
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>게시판들!</Text>
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>Board</Text>
+                <View style={{ width: '100%', height: '100%', }}>
+                  <Image style={styles.icon} source={require('../../assets/images/main/icon1.png')}></Image>
+                </View>
+                <Text>게시판</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, borderColor: "white", alignItems: "center", justifyContent: "center", marginTop: 7, marginBottom: 7 }}
+              <TouchableOpacity
+                style={styles.icons}
                 onPress={() => navigation.navigate('CalenderMain')}
               >
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>캘린더</Text>
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>Calender</Text>
+                <View style={{ width: '100%', height: '100%', }}>
+                  <Image style={styles.icon} source={require('../../assets/images/main/icon2.png')}></Image>
+                </View>
+                <Text>캘린더</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, alignItems: "center", justifyContent: "center", margin: 7 }}
-              onPress={() => navigation.navigate('MapInfo')}
-              >
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>함께하는공간</Text>
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>Map</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{ width: "100%", height: "30%", flexDirection: "row", justifyContent: "center", marginBottom: 5 }}>
-              <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, borderColor: "white", alignItems: "center", justifyContent: "center", margin: 7 }}
-                onPress={() => navigation.navigate('Walk')}
-              >
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>산책해요</Text>
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>Walk</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, alignItems: "center", justifyContent: "center", marginTop: 7 }}
-                onPress={() => navigation.navigate('News')}
-              >
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>애완뉴스</Text>
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>News</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, alignItems: "center", justifyContent: "center", margin: 7 }}
-                onPress={() => navigation.navigate('Ranking')}
-              >
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>최고의 견주</Text>
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>Ranking</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{ width: "100%", height: "30%", flexDirection: "row", justifyContent: "center", marginBottom: 5 }}>
-              <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, borderColor: "white", alignItems: "center", justifyContent: "center", margin: 7 }}
+              <TouchableOpacity
+                style={styles.icons}
                 onPress={() => navigation.navigate('SkinMain')}
               >
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>피부검사</Text>
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>Skin</Text>
+                <View style={{ width: '100%', height: '100%', }}>
+                  <Image style={styles.icon} source={require('../../assets/images/main/icon3.png')}></Image>
+                </View>
+                <Text>피부진단</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, alignItems: "center", justifyContent: "center", marginTop: 7 }}
-                onPress={() => navigation.navigate('Food')}
+              <TouchableOpacity
+                style={styles.icons}
+                onPress={() => navigation.navigate('MapInfo')}
               >
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>밥챙겨주기</Text>
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>Food</Text>
+                <View style={{ width: '100%', height: '100%', }}>
+                  <Image style={styles.icon} source={require('../../assets/images/main/icon4.png')}></Image>
+                </View>
+                <Text>주변뭐뭐머</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={{ width: "30%", height: "100%", borderWidth: 2.5, alignItems: "center", justifyContent: "center", margin: 7 }}
+            </View>
+
+            {/* 산책하기 */}
+            <TouchableOpacity 
+                style={styles.walkview}
+                onPress={() => navigation.navigate('Walk')}
+              >
+              <View style={{ width: '100%', height: '100%', }}>
+                <Image style={styles.icon} source={require('../../assets/images/main/Walk.png')}></Image>
+              </View>
+            </TouchableOpacity>
+
+            {/* 하단클릭바 */}
+            <View style={styles.secondview}>
+              <TouchableOpacity
+                style={{ height: '100%', width: '30%', alignItems:'center' }}
+                onPress={() => navigation.navigate('Review')}
+              >
+                <View style={{ width: '100%', height: '100%', }}>
+                  <Image style={styles.icon} source={require('../../assets/images/main/review.png')}></Image>
+                </View>
+                <Text>리뷰보기</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ height: '100%', width: '30%', alignItems:'center' }}
                 onPress={() => navigation.navigate('Play')}
               >
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>놀아주세요</Text>
-                <Text style={{ fontWeight: "bold", fontSize: 20 }}>Play</Text>
+                <View style={{ width: '100%', height: '100%', }}>
+                  <Image style={styles.icon} source={require('../../assets/images/main/play.png')}></Image>
+                </View>
+                <Text>놀아주기</Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                style={{ height: '100%', width: '30%', alignItems:'center' }}
+                onPress={() => navigation.navigate('Ranking')}
+              >
+                <View style={{ width: '100%', height: '100%', }}>
+                  <Image style={styles.icon} source={require('../../assets/images/main/rangking.png')}></Image>
+                </View>
+                <Text>최고의견주</Text>
+              </TouchableOpacity>
+            </View>
+            {/* 하단선 */}
+            <View style={{borderBottomColor:'gray', borderBottomWidth :2, width:'85%', height:'5%', marginBottom:15}}>
+
             </View>
           </View>
 
           {/* 맵을 2개 돌려서 id가 짝수는 왼쪽 홀수는 오른쪽에 렌더링해주기 */}
-          <View style={{flexDirection:"row",justifyContent:"center"}}>
-          <View style={{ padding: 10, marginTop: 10 }}>
-            {frData.filter((_, i) => i % 2 === 0).map((e) => (
-              <FreeView key={e.bno} {...e} />
-            )
-            )
-            }
-          </View>
-          <View style={{ padding: 10, marginTop: 10}}>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <View style={{ padding: 10, marginTop: 10 }}>
+              {frData.filter((_, i) => i % 2 === 0).map((e) => (
+                <FreeView key={e.bno} {...e} />
+              )
+              )
+              }
+            </View>
+            <View style={{ padding: 10, marginTop: 10 }}>
 
-            {frData.filter((_, i) => i % 2 !== 0).map((e) => (
-              <FreeView key={e.bno} {...e} />
-            )
-            )
-            }
-          </View>
+              {frData.filter((_, i) => i % 2 !== 0).map((e) => (
+                <FreeView key={e.bno} {...e} />
+              )
+              )
+              }
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -189,4 +253,47 @@ const styles = StyleSheet.create({
     backgroundColor: "aliceblue",
     maxHeight: 400,
   },
+  weathertab : {
+    width:'100%', 
+    height:Dimensions.get('window').height * 0.08, 
+    backgroundColor:'white',
+    marginBottom:15,
+    justifyContent:'center',
+    alignItems:'center',
+    flexDirection:'row'
+  },
+  topicon:{
+    width: '90%', 
+    height:'20%', 
+    flexDirection:'row', 
+    justifyContent: 'space-between', 
+    padding:10, 
+    borderWidth:3, 
+    borderColor:'#FFAF9B',
+    marginBottom:15,
+  },
+  icons : {
+    width:'20%', 
+    height:'90%', 
+    alignItems:'center', 
+  },
+  icon : {
+    resizeMode: "cover", 
+    width: '100%', 
+    height: '100%', 
+    borderRadius: 15,
+  },
+  walkview :{
+    width:'90%', 
+    height:'25%',
+    marginBottom :15,
+  },
+  secondview:{
+    width: '90%', 
+    height: '20%', 
+    marginBottom: 15, 
+    flexDirection: 'row', 
+    justifyContent: 'space-between',
+  },
+
 })

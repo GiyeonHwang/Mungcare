@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image, Dimensions } from 'react-native';
 import { Camera } from 'expo-camera';
 
+import ServerPort from '../../Components/ServerPort';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function Play({ navigation }) {
 
     const [modalVisible, setModalVisible] = React.useState(true); //산책 전 안내사항

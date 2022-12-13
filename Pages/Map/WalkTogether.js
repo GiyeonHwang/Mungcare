@@ -2,12 +2,13 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker, Circle, Callout, AnimatedRegion, Polyline, MarkerAnimated } from 'react-native-maps';
 // npm i react-native-maps
-import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image, Dimensions, TextInput, useRef, Touchable } from 'react-native';
+import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image, Dimensions, TextInput, useRef, Touchable, Keyboard, KeyboardAvoidingView } from 'react-native';
 import * as Location from 'expo-location';
 // npm i expo-location
 import { Camera, Constants } from 'expo-camera';
 //npm install react-native-popup-confirm-toast
 
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import ServerPort from '../../Components/ServerPort';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -55,7 +56,7 @@ export default function WalkTogether({ navigation, route }) {
   const [modalVisible, setModalVisible] = React.useState(false); //같이해용 모달창
   const [inputModal, setInputModal] = React.useState(false); // 공지
   const [photoModal, setPhotoModal] = React.useState(false); // 산책 종료 후 사진찍는 모달
-  const [finalModal, setFinalModal] = React.useState(false); // 산책 완료 모달
+  const [finalModal, setFinalModal] = React.useState(true); // 산책 완료 모달
   const [dragModal, setDragModal] = React.useState(false); // 드래그하라는 모달
   const [noticeModal, setNoticeModal] = React.useState(false); // 소켓을 받은 공지내용 모달
   const [showModal, setShowModal] = React.useState(false); // 시간 스피너
@@ -72,7 +73,7 @@ export default function WalkTogether({ navigation, route }) {
   const [imgUri, setImgUri] = React.useState();
 
   //공지
-  const [click, setClick] = React.useState(true);
+  const [click, setClick] = React.useState(false);
   const [content, setContent] = React.useState(); //내용
   const [firnum, setFir] = React.useState();
   const [secnum, setSec] = React.useState();
@@ -90,6 +91,9 @@ export default function WalkTogether({ navigation, route }) {
   const [check, setCheck] = React.useState(false); // 마커
   const [socketModal, setSocketModal] = React.useState(false); // 모달창
   const [joinWalk, setJoinWalk] = React.useState([]);
+
+  //끝나고 인풋내용
+  const [memo, setMemo] = React.useState(null);
 
   //에니메이션으로 이동
   const mapRef = React.useRef(null);
@@ -128,7 +132,7 @@ export default function WalkTogether({ navigation, route }) {
       })
     })();
 
-    //connect()
+    connect()
 
 
   }, []);
@@ -233,6 +237,7 @@ export default function WalkTogether({ navigation, route }) {
     // if(payloadData.senderName!=id){
 
     // }
+    console.log(list)
     for (var i = 0; i < list.length; i++) {
 
       if (list[i] === id) {
@@ -357,13 +362,15 @@ export default function WalkTogether({ navigation, route }) {
     const day = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
     const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
 
+
     axios.post(`${IP}/calendar/end`, null, {
 
       params: {
         id: id,
         cEndTime: time,
         cDate: day,
-        cPhoto: imgUri
+        cPhoto: imgUri,
+        memo:memo,
       }
     })
       .then(function (res) {
@@ -408,6 +415,13 @@ export default function WalkTogether({ navigation, route }) {
     setShowModal(true)
     showMode('time');
   };
+
+  const handleMemo = (text) => {
+    setMemo(text)
+  }
+
+
+
 
   return (
     <View style={styles.container}>
@@ -555,6 +569,7 @@ export default function WalkTogether({ navigation, route }) {
                         keyboardType="number-pad"
                         maxLength={2}
                         value={firnum}
+                        disabled
                       />
                       <Text>  :  </Text>
                       <TextInput
@@ -743,70 +758,75 @@ export default function WalkTogether({ navigation, route }) {
           }}>
 
           <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-
-              <View style={{ padding: 10, justifyContent: 'center' }}>
-                <View style={{ borderBottomWidth: 1, width: '100%', }}>
-                  <Text style={{ fontSize: 30 }}>산책 완료!</Text>
-                </View>
-              </View>
-              <View style={{ padding: 10 }}>
-                <View style={{ backgroundColor: 'yellow', alignItems: 'center', justifyContent: 'center', height: 350, width: 250 }}>
-                  <Image source={{ uri: image }} style={{ resizeMode: "cover", height: '100%', width: '100%', borderWidth: 2, borderColor: '#EBE3D7' }} />
-                </View>
-              </View>
-              <View style={{ padding: 10, alignContent: 'center', justifyContent: 'center' }}>
-                <Text style={{ fontSize: 20 }}></Text>
-                <View style={{ flexDirection: 'row', marginBottom: 5 }}>
-                  <View style={{ justifyContent: 'center' }}>
-                    <Image style={{ resizeMode: "cover", width: 30, height: 30, }}
-                      source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2583/2583179.png' }} />
-                  </View>
-                  <View style={{ justifyContent: 'center', flexShrink: 1, }}>
-                    <Text style={{ fontSize: 17 }}> 10Point적립 완료!</Text>
+            
+              <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.modalView}>
+                <View style={{ justifyContent: 'center' }}>
+                  <View style={{ borderBottomWidth: 1, width: '100%', }}>
+                    <Text style={{ fontSize: 30 }}>산책 완료!</Text>
                   </View>
                 </View>
-              </View>
-              <View>
+                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                  <View style={{ padding: 10 }}>
+                    <View style={{ backgroundColor: 'yellow', alignItems: 'center', justifyContent: 'center', height: 320, width: 280 }}>
+                      <Image source={{ uri: image }} style={{ resizeMode: "cover", height: '100%', width: '100%', borderWidth: 2, borderColor: '#EBE3D7' }} />
+                    </View>
+                  </View>
+                  <View style={{ alignContent: 'center', justifyContent: 'center', flexDirection: 'row', marginBottom: 5 }}>
+                    <View style={{ justifyContent: 'center' }}>
+                      <Image style={{ resizeMode: "cover", width: 30, height: 30, }}
+                        source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2583/2583179.png' }} />
+                    </View>
+                    <View style={{ justifyContent: 'center', flexShrink: 1, }}>
+                      <Text style={{ fontSize: 17 }}> 10Point적립 완료!</Text>
+                    </View>
+                  </View>
+                </TouchableWithoutFeedback>
+                <TextInput
+                  style={[styles.textinput, { backgroundColor: 'white', width: '100%', color: 'black' }]}
+                  maxLength={50}
+                  numberOfLines={4}
+                  onChangeText={handleMemo}
+                  value={memo}
+                  placeholder="메모 내용을 입력해주세요"
+                ></TextInput>
                 <Text style={{ fontSize: 15, }}>*하루에 최대 50Point까지 적립가능합니다</Text>
-              </View>
-              <View>
-                <Text></Text>
-                <Text style={{ fontSize: 15, fontStyle: 'italic', textDecorationLine: 'underline', }}>산책 장소의 리뷰를 작성해주세요!</Text>
-              </View>
-              <Text></Text>
-              <View style={{ flexDirection: 'row', padding: 10 }}>
 
-                <Pressable
-                  disabled={message == ""}
-                  style={[styles.buttonOpen, { backgroundColor: '#FE7474' }]}
-                  onPress={() => {
-                    setFinalModal(!finalModal)
-                    sendServer()
 
-                    navigation.navigate("ReviewWrite", {
-                      info: [region.latitude, region.longitude, image],
-                      title: "title",
-                    })
+                <Text style={{ fontSize: 15, fontStyle: 'italic', textDecorationLine: 'underline', marginTop: 5 }}>산책 장소의 리뷰를 작성해주세요!</Text>
 
-                  }}>
-                  <Text style={styles.textStyle}>리뷰작성하기</Text>
-                </Pressable>
-                <Text>    </Text>
-                <Pressable
-                  style={styles.button}
-                  onPress={() => {
 
-                    setFinalModal(!finalModal)
-                    // 이미지 업로드 및 서버에 전송
-                    sendServer()
-                  }}>
-                  <Text style={styles.textStyle}>완료</Text>
-                </Pressable>
+                <View style={{ flexDirection: 'row', padding: 10 }}>
 
-              </View>
+                  <Pressable
+                    disabled={message == ""}
+                    style={[styles.buttonOpen, { backgroundColor: '#FE7474' }]}
+                    onPress={() => {
+                      setFinalModal(!finalModal)
+                      sendServer()
+
+                      navigation.navigate("ReviewWrite", {
+                        info: [region.latitude, region.longitude, image],
+                        title: "title",
+                      })
+
+                    }}>
+                    <Text style={styles.textStyle}>리뷰작성하기</Text>
+                  </Pressable>
+                  <Text>    </Text>
+                  <Pressable
+                    style={styles.button}
+                    onPress={() => {
+
+                      setFinalModal(!finalModal)
+                      // 이미지 업로드 및 서버에 전송
+                      sendServer()
+                    }}>
+                    <Text style={styles.textStyle}>완료</Text>
+                  </Pressable>
+
+                </View>
+              </KeyboardAvoidingView>
             </View>
-          </View>
         </Modal>
 
         {/* 소켓으로 받은 공지 내용 모달 */}
@@ -1230,5 +1250,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 5,
   },
-
+  textinput: {
+    padding: 10,
+    borderWidth: 2,
+    borderColor: '#FE7474',
+    borderRadius: 8,
+},
 });

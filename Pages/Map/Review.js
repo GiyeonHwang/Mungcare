@@ -48,7 +48,7 @@ const WalkReview = ({ navigation, route }) => {
     const [tiplist, setTipList] = React.useState();
     const [check, setcheck] = React.useState(false);
 
-    const [showTip, setTip] = React.useState(false);
+
 
     //검색
     const [search, setSearch] = React.useState();
@@ -194,14 +194,14 @@ const WalkReview = ({ navigation, route }) => {
         setmapRegion({ // 현재 위치
             latitude: lat,
             longitude: lon,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005
+            latitudeDelta: 0.007,
+            longitudeDelta: 0.007
         })
         mapRef.current.animateToRegion({ // 해당 위치로 지도 이동
             latitude: lat,
             longitude: lon,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005
+            latitudeDelta: 0.007,
+            longitudeDelta: 0.007
         }, 3 * 1000);
 
         request(lat, lon)
