@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, StyleSheet,  Alert, Image, ProgressBarAndroid } from 'react-native';
+import { Text, View, StyleSheet,  Alert, Image, ProgressBarAndroid, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import ServerPort from '../../Components/ServerPort';
 
@@ -253,6 +253,8 @@ export default function MyPage({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: Dimensions.get('window').width * 1,
+        height: Dimensions.get('window').height * 0.06,
         backgroundColor:"#EBE3D7"
     },
     pointbox:{
