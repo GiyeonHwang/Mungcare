@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View , SafeAreaView, StyleSheet, TextInput , Button, Alert, Image, ProgressBarAndroid } from 'react-native';
+import { Text, View , SafeAreaView, StyleSheet, TextInput , Button, Alert, Image, ProgressBar, ProgressBarAndroid } from 'react-native';
 import Constants from 'expo-constants';
 import ServerPort from '../../Components/ServerPort';
 
@@ -78,7 +78,7 @@ export default function Ranking({ navigation }){
                 }
               </View>
             <View style={{flexDirection:'row', justifyContent: 'center'}}>
-              <Text >작성자: </Text>
+              {/* <Text >작성자: </Text> */}
               <Text >{rdata.length !=0
                       ?rdata[1].nickname
                       :null
@@ -110,7 +110,7 @@ export default function Ranking({ navigation }){
             </View>
             
             <View style={{flexDirection:'row', justifyContent: 'center', bottom:40}}>
-              <Text >작성자: </Text>
+              {/* <Text >작성자: </Text> */}
               <Text >{rdata.length !=0
                       ?rdata[0].nickname
                       :null
@@ -143,8 +143,8 @@ export default function Ranking({ navigation }){
 
           
             <View style={{flexDirection:'row', justifyContent: 'center'}}>
-              <Text >작성자: </Text>
-              <Text >{rdata.length !=0
+              {/* <Text >작성자: </Text> */}
+              <Text style={{marginTop:"2%"}}>{rdata.length !=0
                       ?rdata[2].nickname
                       :null
                     }</Text>
@@ -159,28 +159,32 @@ export default function Ranking({ navigation }){
       <View style={styles.DtailView}>
         {/* 1등 사진 */}
        <View style={styles.firstView}>
-       <View>
-              {
+          <View>
+            {
+              
                 rdata.length !=0
+              ?
+              (
+                rdata[0].animalList[0].aphoto != null
                 ?
-                (
-                  rdata[0].animalList[0].aphoto != null
-                  ?
-                  <Image source={{uri : rdata[0].animalList[0].aphoto}} style = {{width: 163 , height: 163}}/>
-                  :
-                  <Image source={mung} style = {{width: 163 , height: 163}}/>
-                )
+                <Image source={{uri : rdata[0].animalList[0].aphoto}} style = {{width: 163 , height: 163}}/>
                 :
                 <Image source={mung} style = {{width: 163 , height: 163}}/>
-              }
-              </View>
+              )
+              :
+              <Image source={mung} style = {{width: 163 , height: 163}}/>
+
+              
+              
+            }
+          </View>
        </View>
        {/* 1등 텍스트 */}
         <View style={styles.firstText}>
           <View style={{ top:"15%"}}>
           <Text style={{borderBottomWidth:0.5}}>
             {rdata.length !=0
-              ?"동물 이름:"+ rdata[0].animalList[0].aname
+              ?rdata[0].animalList[0].aname
               :null
             }</Text>
             <Text>
@@ -189,6 +193,7 @@ export default function Ranking({ navigation }){
             <Text style={{borderBottomWidth:0.5}}>
               {/* 무슨바인지 모르겠는데 일단 만들어둠 */}
               <View style={styles.example}>
+                {/* <ProgressBar progress={rdata.length !=0?rdata[0].totalPoint/10:null} height={20} backgroundColor="#3AB5A9" /> */}
                 <ProgressBarAndroid
                   styleAttr="Horizontal"
                   indeterminate={false}
@@ -196,7 +201,7 @@ export default function Ranking({ navigation }){
                 />
               </View>
             </Text>
-            <Text>강아지 정보</Text>
+            <Text style={styles.doginfo}>강아지 정보</Text>
             <Text>성별: {rdata.length !=0?rdata[0].animalList[0].asex:null}</Text>
             <Text>생일: {rdata.length !=0?rdata[0].animalList[0].abirth:null}</Text>
             <Text>중성화: {rdata.length !=0?rdata[0].animalList[0].aneut:null}</Text>
@@ -279,9 +284,11 @@ const styles = StyleSheet.create({
     flex:2,
     width:"100%",
     height:"100%",
-    backgroundColor:"#ffffff",
+    // backgroundColor:"#ffffff",
     borderWidth:0.5,
-    bottom:20
+    bottom:20,
+    alignItems : 'center',
+    justifyContent : 'center'
   },
   firstText:{
     flex:3,
@@ -306,5 +313,8 @@ const styles = StyleSheet.create({
   example: {
     marginVertical: 24,
   },
+  doginfo:{
+
+  }
   
 })

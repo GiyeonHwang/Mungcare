@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, StyleSheet, Button, Alert, ProgressBarAndroid, Image } from 'react-native';
+import { Text, View, StyleSheet, Button, Alert, ProgressBarAndroid, Image, Dimensions } from 'react-native';
 import { ScrollView} from 'react-native-gesture-handler';
 import Checkbox from 'expo-checkbox';
 //npm install expo-checkboxdfdfdd
@@ -67,6 +67,7 @@ export default function AnimalDetail({ navigation, route }) {
                 
             </View>
             
+            {/* ProgressBar */}
             <View style={styles.androidbox}>
                 <View style={styles.example}> 
                     <ProgressBar progress={point/10} height={20} backgroundColor="#3AB5A9" />
@@ -106,6 +107,8 @@ export default function AnimalDetail({ navigation, route }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: Dimensions.get('window').width * 1,
+        height: Dimensions.get('window').height * 0.06,
         // padding: 24,
         backgroundColor: '#EBE3D7',
     },

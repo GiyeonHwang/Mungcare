@@ -1,3 +1,5 @@
+
+
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useEffect } from "react";
@@ -215,9 +217,13 @@ export default function FreeBoardDetail({ navigation, route }) {
                         {
                             likeCheck
                                 ?
-                                <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/beanheart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
-                                :
                                 <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/heart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
+                                :
+                                <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/beanheart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
+
+                                // <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/beanheart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
+                                // :
+                                // <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/heart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
                         }
                     </View>
                 </View>
