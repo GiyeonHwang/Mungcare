@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, StyleSheet,  Alert, Image, ProgressBarAndroid } from 'react-native';
+import { Text, View, StyleSheet,  Alert, Image, ProgressBarAndroid, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 import ServerPort from '../../Components/ServerPort';
 
@@ -42,6 +42,7 @@ export default function MyPage({navigation}) {
             const value = await AsyncStorage.getItem('id');
             if (value !== null) {
                 console.log("id---: ", value);
+                setId(value);
                 return value;
             }
         } catch (e) {
@@ -49,11 +50,13 @@ export default function MyPage({navigation}) {
         }
     }
     
-    const mypageInfo = (id) => {
+    const mypageInfo = async () => {
+        const ID = await getId();
+        console.log("ID : " , ID);
         // 서버에 요청
         axios.post(`${IP}/member/info`, null, {
             params : {
-                id: id //sessionStorage에 있는 id값
+                id: ID //sessionStorage에 있는 id값
             }
         })
         .then(function (res){
@@ -75,11 +78,13 @@ export default function MyPage({navigation}) {
         })
     }
 
-    const boardcount = (id) => {
+    const boardcount = async () => {
+        const ID = await getId();
+        console.log("ID : " , ID);
         // 서버에 요청
         axios.post(`${IP}/board/count`, null, {
             params : {
-                id: id //sessionStorage에 있는 id값
+                id: ID //sessionStorage에 있는 id값
             }
         })
         .then(function (res){
@@ -93,12 +98,9 @@ export default function MyPage({navigation}) {
     }
 
     React.useEffect(() => {
-        (async () => {
-            const id = await getId(); //세션 id값 가져옴
-            mypageInfo(id);
+        mypageInfo();
             console.log("===========================================================================")
-            boardcount(id);
-        })();
+            boardcount();
     }, []);
 
     // AsyncStorage.setItem("check", "cccc", () => {
@@ -163,7 +165,7 @@ export default function MyPage({navigation}) {
 
 
             {/* 포인트 보이기 */}
-            <View style={styles.box2}>
+            {/* <View style={styles.box2}>
                 <View style={styles.mypointbox}>
                     <Image source={coin} style={{width:35, height:35, marginTop:'6%'}}/>
                     <Text style={styles.mypointtext}>{point}</Text> 
@@ -179,16 +181,11 @@ export default function MyPage({navigation}) {
                         />
                     </View>
                 </View>
-            </View>
+            </View> */}
 
 
             {/* 정보 더보기 */}
             <View style={styles.box3}>
-                <View style={styles.nextinfo}>
-                    <Text>
-                        정보 더보기
-                    </Text>
-                </View>
                 <View style={styles.buttonbox}>
 
                     <View style={styles.buttonback}>
@@ -215,11 +212,15 @@ export default function MyPage({navigation}) {
                     </View>
 
                     <View style={styles.buttonback}>
-                        <Text style={styles.buttontext}onPress={() =>{
-                            // navigation.navigate("AnimalList") -> 알람 페이지 넣어주기
-                         }}>
-                            알람설정 - no!!!
+                        <Text style={styles.buttontext}
+                            onPress={() =>{
+                                navigation.navigate("Food")
+                            }}>
+                                밥 알람
                         </Text>
+                        {/* <Button title="밥 알람"  onPress={() =>{
+                            navigation.navigate("Food")
+                        }} ></Button> */}
                     </View>
 
                     <View style={styles.buttonback}>
@@ -240,6 +241,16 @@ export default function MyPage({navigation}) {
                             놀아주기
                         </Text>
                     </View>
+
+                    <View style={styles.buttonback}>
+                        <Text style={styles.buttontext}
+                            onPress={() => {
+                                navigation.navigate("ChangePw")
+                            }}
+                        >
+                            비밀번호 변경
+                        </Text>
+                    </View>
                 </View>
             </View>
         </View>
@@ -249,6 +260,8 @@ export default function MyPage({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: Dimensions.get('window').width * 1,
+        height: Dimensions.get('window').height * 0.06,
         backgroundColor:"#EBE3D7"
     },
     pointbox:{
@@ -324,12 +337,14 @@ const styles = StyleSheet.create({
         flex:5, 
         width: '100%', 
         height: '70%', 
-        marginTop:"2%"
+        marginTop:"2%",
+        padding:"2%"
         // backgroundColor:'lightgreen'
     },
     nextinfo:{
         marginHorizontal:"2%",
-        marginTop:"6%",
+        marginTop:"5%",
+        // padding:"2%",
         // borderWidth:1,
         width:"38%",
         // borderRadius: 50,
@@ -346,15 +361,16 @@ const styles = StyleSheet.create({
         // backgroundColor: 'red',
     },
     buttontext:{
-        fontSize:20,
+        fontSize:30,
         // marginVertical:"10%",
         borderBottomWidth:1,
+        borderColor:"#b8997c",
         margin:"3%",
-        marginTop:"5%",
+        marginTop:"8%",
         color: '#F7931D',
         fontWeight: "bold",
         fontSize:18,
-        borderColor:"#b8997c",
+        
 
     }
 });

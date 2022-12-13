@@ -44,6 +44,8 @@ import MyPageModify from '../Pages/MyPage/MyPageModify';
 import FreeView from './FreeView';
 import ModifyBoard from './ModifyBoard';
 import MapInfo from '../Pages/Map/MapInfo';
+import ChangePw from '../Pages/MyPage/ChangePw';
+
 const Tab = createBottomTabNavigator();
 
 const MainStack = createStackNavigator();
@@ -135,7 +137,6 @@ const MainStackScreen = ({ navigation }) => {
       {/* 놀기 */}
       <MainStack.Screen name="Play" component={Play}/> 
       <MainStack.Screen name="MyPoint" component={MyPoint}/>
-
       <MainStack.Screen name="Food" component={Food} />
       <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail}/>
       <MainStack.Screen name="FindMeDetail" component={FindMeDetail} />
@@ -171,6 +172,7 @@ const MyPageStackScreen = ({ navigation }) => {
       }} />
       <MyPageStack.Screen name="MyPageModify" component={MyPageModify} />
       <MyPageStack.Screen name="MyInfo" component={MyInfo}/>
+      <MyPageStack.Screen name="ChangePw" component={ChangePw}/>
     </MyPageStack.Navigator>
   );
 }

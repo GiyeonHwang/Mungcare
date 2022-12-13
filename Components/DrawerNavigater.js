@@ -50,7 +50,9 @@ const CustomDrawer = ({ navigation }) => {
             onPress: () => null,
           },
           { text: "예", onPress: () => {
-            AsyncStorage.clear().then(navigation.navigate('SplashScreen'));
+            
+            // AsyncStorage.clear().then(navigation.navigate('SplashScreen'));
+            AsyncStorage.clear().then( navigation.reset({routes: [{name: 'SplashScreen'}]}));
           }}
         ])
        }/>
