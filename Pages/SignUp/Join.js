@@ -195,7 +195,8 @@ export default function Join(navigation) {
       }
     })
       .then((res) => {
-        Alert.alert("id: " + res.data);
+        Alert.alert("회원가입 완료");
+        navigation.navigate("Login");
       })
   }
 

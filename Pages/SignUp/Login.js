@@ -117,6 +117,7 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
                 </TouchableOpacity>
                 <Text>   |   </Text>
                 <TouchableOpacity
+                onPress={() => navigation.navigate("ReissuancePw")}
                 >
                     <Text style={styles.forgotButton}>비밀번호 찾기</Text>
                 </TouchableOpacity>
@@ -175,4 +176,3 @@ const styles = StyleSheet.create({
 });
 
 export default Login;
-
