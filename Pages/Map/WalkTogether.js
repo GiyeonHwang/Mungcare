@@ -224,8 +224,9 @@ export default function WalkTogether({ navigation, route }) {
 
     // }
     for (var i = 0; i < list.length; i++) {
+      console.log("===================",list[i]);
       if (list[i] == id) {
-                
+        console.log("************************************************************"+list[i]);
         setWho(data)
         setMes(payloadData.message)
 
@@ -360,6 +361,35 @@ export default function WalkTogether({ navigation, route }) {
         console.log(res.data);
         if (res.data) {
           Alert.alert("등록 완료!")
+          route.params.setStart(true)
+          navigation.navigate("Walk")
+        } else {
+          Alert.alert("다시 시도해주세요")
+          setFinalModal(true)
+        }
+      })
+      .catch(function (error) {
+        console.log(error)
+        Alert.alert("저장에 실패하였습니다")
+      })
+  }
+
+  const walkEnd = () => {
+    console.log("walkEnd")
+    axios.post(`${IP}/walk/end`, null, {
+
+      params: {
+        id: id,
+        cEndTime: time,
+        cDate: day,
+        cPhoto: imgUri
+      }
+    })
+      .then(function (res) {
+        console.log(res.data);
+        if (res.data) {
+          Alert.alert("등록 완료!")
+          route.params.setStart(true)
           navigation.navigate("Walk")
         } else {
           Alert.alert("다시 시도해주세요")
@@ -773,7 +803,6 @@ export default function WalkTogether({ navigation, route }) {
                   onPress={() => {
                     setFinalModal(!finalModal)
                     sendServer()
-
                     navigation.navigate("ReviewWrite",{
                       info: [region.latitude, region.longitude, image],
                       title: "title",

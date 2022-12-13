@@ -245,7 +245,7 @@ export default function MyPage({navigation}) {
                     <View style={styles.buttonback}>
                         <Text style={styles.buttontext}
                             onPress={() => {
-                                navigation.navigate("ChagePw")
+                                navigation.navigate("ChangePw")
                             }}
                         >
                             비밀번호 변경
