@@ -12,6 +12,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
 import ListAlrams from '../../Components/ListAlrams';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 
@@ -27,7 +28,7 @@ export default function Food({ navigation }) {
         tempFunction();
 
         return () => { };
-    }, []);
+    });
 
     const getItemList = async () => {
         try {
@@ -41,8 +42,8 @@ export default function Food({ navigation }) {
         }
     };
 
-    // console.log("현재 알람들 : ", storageDataList[0].Time);
-
+    // console.log("현재 알람1 : ", storageDataList[]);
+    // console.log("현재 알람2 : ", storageDataList[1]);
 
 
     return (
@@ -57,13 +58,19 @@ export default function Food({ navigation }) {
                 </TouchableOpacity>
             </View>
 
-            <View>
+            <ScrollView>
+                {storageDataList ? <>
                 {storageDataList.map((e,idx) => (
-                    <ListAlrams key={idx} {...e} />
+                    <ListAlrams key={idx} {...e}/>
                 )
                 )
                 }
-            </View>
+                </>
+                :<View style={{height: "100%", width: "100%", justifyContent: "center",alignItems:"center",marginTop:10}}>
+                    <Text style={{fontWeight:"bold",fontSize:40,color:"gray"}}>알람을 추가해주세요</Text>
+                </View>
+            }
+            </ScrollView>
         </View>
 
 

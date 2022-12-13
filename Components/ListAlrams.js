@@ -33,12 +33,12 @@ export default function ListAlrams({ Days, Mp3, Name, Time, Vibrate }) {
       })
 
     return (
-        <View style={{ height: Dimensions.get('window').height * 0.125, width: Dimensions.get('window').width * 1, backgroundColor: "#E2E2E2", borderRadius: 20, padding: 20, justifyContent: "center" }}>
+        <View style={{ height: Dimensions.get('window').height * 0.125, width: Dimensions.get('window').width * 1, backgroundColor: "#E2E2E2", borderRadius: 20, padding: 20, justifyContent: "center",marginBottom:10 }}>
             <View style={{ height: "100%", width: "100%", alignItems: "center", flexDirection: "row", justifyContent: "space-between", padding: 10 }}>
                 <View style={{ alignItems: "flex-end", flexDirection: "row" }}>
                     {Time < checkTime ? <Text style={{ fontWeight: "bold", fontSize: 17 }}>오전 <Text style={{ fontSize: 30, fontWeight: "normal" }}> {changedTime}</Text></Text>
                         :
-                        <Text style={{ fontWeight: "bold", fontSize: 17 }}>오후 <Text style={{ fontSize: 30, fontWeight: "normal" }}>{changedTime}</Text></Text>
+                        <Text style={{ fontWeight: "bold", fontSize: 17 }}>오후 <Text style={{ fontSize: 30, fontWeight: "normal" }}> {changedTime}</Text></Text>
                     }
                 </View>
                 <View style={{ flexDirection: "row" }}>
