@@ -76,7 +76,7 @@ export default function Play({ navigation }) {
         //아마존 스토레이지에 저장
         await axios({
           method: 'post',
-          url: `http://192.168.2.77:5000/upload`,
+          url: `${IP}/upload`,
           headers: {
             'content-type': 'multipart/form-data',
           },
