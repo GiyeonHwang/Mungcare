@@ -21,7 +21,7 @@ import java.util.Optional;
 @Log4j2
 public class ReviewServiceImpl implements ReviewService{
     private static String GEOCODE_URL="https://dapi.kakao.com/v2/local/geo/coord2address.json?"; //카카오 api
-    private static String GEOCODE_USER_INFO="KakaoAK {rest api key}"; //rest api
+    private static String GEOCODE_USER_INFO="KakaoAK {REST API KEY}"; //rest api
 
     private final ReviewRepository reviewRepository;
 

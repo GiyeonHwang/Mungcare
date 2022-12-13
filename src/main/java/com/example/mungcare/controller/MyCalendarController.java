@@ -21,7 +21,8 @@ public class MyCalendarController {
 
     @PostMapping("/start") //산책 시작 or 놀기 인증
     public Integer calendarStart(MyCalendarDTO calendarDTO) {
-        log.info("satrt...");
+        log.info("start...");
+        System.out.println("-----------------------DTO: "+calendarDTO);
         Integer cNo = calendarService.calendarInput1(calendarDTO);
         System.out.println("cNo-----------"+cNo);
         return cNo;

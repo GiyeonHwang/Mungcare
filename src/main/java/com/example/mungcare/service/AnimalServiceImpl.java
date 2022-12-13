@@ -99,9 +99,9 @@ public class AnimalServiceImpl implements AnimalService{
         //기본키 값을 수정하기 위해 jdbcTemplate 사용
         //jpa는 기본키 값을 수정할 수 없다.
         try {
-            String sql = "update mung.animal set a_name = ?, a_birth = ?, a_neut = ?, a_sex = ?"
+            String sql = "update mung.animal set a_name = ?, a_birth = ?, a_breed = ?, a_neut = ?, a_sex = ?"
                     + " where id= ? and a_name= ?";
-            jdbcTemplate.update(sql, dto.getAName(), dto.getABirth(), dto.isANeut(), dto.getASex(), dto.getId(), name);
+            jdbcTemplate.update(sql, dto.getAName(), dto.getABirth(), dto.getABreed(), dto.isANeut(), dto.getASex(), dto.getId(), name);
             return true;
         } catch(Exception e) {
             log.info(e.getMessage());

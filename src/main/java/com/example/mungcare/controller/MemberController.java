@@ -74,4 +74,22 @@ public class MemberController {
         String result = KaKaoAPI.getAccessToken(token);
         return result;
     }
+
+    @PostMapping("/changePw") //비밀번호 변경
+    public boolean changePW(@RequestParam("id")String id, @RequestParam("pw")String pw) {
+        log.info("changePw...");
+        log.info("-------id: "+id+" -------pw: "+pw);
+        boolean result = memberService.changePW(id, pw);
+
+        return result;
+    }
+
+    @PostMapping("/changeUser") //비밀번호 변경
+    public boolean changeUser(@RequestParam("id")String id, @RequestParam("name")String name) {
+        log.info("changeUser...");
+        log.info("-------id: "+id+" -------name: "+name);
+        boolean result = memberService.changeUser(id, name);
+
+        return result;
+    }
 }
