@@ -11,10 +11,8 @@
 // import FindMeMain from './Pages/Boards/FindMe/FindMeMain';
 // import FreeBoardDetail from './Pages/Boards/FreeBoard/FreeBoardDetail';
 // import FreeBoardMain from './Pages/Boards/FreeBoard/FreeBoardMain';
-// import CalenderDetail from './Pages/Calender/CalenderDetail';
 // import CalenderMain from './Pages/Calender/CalenderMain';
 // import Main from './Pages/Main/Main';
-// import MainMenu from './Pages/Main/MainMenu';
 // import EndWalk from './Pages/Map/EndWalk';
 // import StartWalk from './Pages/Map/StartWalk';
 // import Walk from './Pages/Map/Walk';
@@ -136,12 +134,8 @@ import FindMeDetail from './Pages/Boards/FindMe/FindMeDetail';
 import FindMeMain from './Pages/Boards/FindMe/FindMeMain';
 import FreeBoardDetail from './Pages/Boards/FreeBoard/FreeBoardDetail';
 import FreeBoardMain from './Pages/Boards/FreeBoard/FreeBoardMain';
-import CalenderDetail from './Pages/Calender/CalenderDetail';
 import CalenderMain from './Pages/Calender/CalenderMain';
 import Main from './Pages/Main/Main';
-import MainMenu from './Pages/Main/MainMenu';
-import EndWalk from './Pages/Map/EndWalk';
-import StartWalk from './Pages/Map/StartWalk';
 import Walk from './Pages/Map/Walk';
 import WalkTogether from './Pages/Map/WalkTogether';
 import MyPage from './Pages/MyPage/MyPage';
@@ -156,7 +150,7 @@ import SkinResult from './Pages/Skin/SkinResult';
 import BottomTab from './Components/BottomTab';
 import SplashScreen from './Pages/SignUp/SplashScreen.js';
 import DrawerNavigater from './Components/DrawerNavigater';
-
+import ReissuancePw from './Pages/SignUp/ReissuancePw';
 
 import { Text, View, Button, ScrollView } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -179,6 +173,11 @@ const Auth = () => {
       <Stack.Screen
         name="Join"
         component={Join}
+        options={{headerShown: false,tabBarStyle: {display: 'none'}}}
+      />
+      <Stack.Screen
+        name="ReissuancePw"
+        component={ReissuancePw}
         options={{headerShown: false,tabBarStyle: {display: 'none'}}}
       />
     </Stack.Navigator>

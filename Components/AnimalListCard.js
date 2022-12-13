@@ -3,13 +3,10 @@ import { Image , StyleSheet , View , Text,TouchableOpacity} from "react-native";
 import AnimalModal from "./AnimalModal";
 import React,{useState} from "react";
 
-export default function AnimalListCard({ animalData }){
-
-
+export default function AnimalListCard({ animalData, info, removeAnimal}){
     const [modalVisible,setModalVisible] = useState(false);
 
     return (
-        
         <View> 
             <TouchableOpacity onPress={() => setModalVisible(true)}>
                 { 
@@ -17,6 +14,8 @@ export default function AnimalListCard({ animalData }){
                 modalVisible && 
                 <AnimalModal 
                 animalData={animalData}
+                info={info}
+                removeAnimal={removeAnimal}
                 setModalVisible={setModalVisible}/>
                 }
                 <View style={styles.listbox}>

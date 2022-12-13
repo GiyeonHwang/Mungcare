@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, SafeAreaView, StyleSheet, FlatList, TextInput, Button, Dimensions, Alert, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, SafeAreaView, StyleSheet, FlatList, TextInput, Button, RefreshControl,Dimensions, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -12,9 +12,24 @@ import { useFocusEffect } from '@react-navigation/native';
 import { useIsFocused } from '@react-navigation/native';
 import ServerPort from '../../Components/ServerPort';
 
+
+
+const wait = (timeout) => {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}
+
+
 export default function Main({ navigation }) {
 
 
+//새로고침 함수
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+//여기까지 새로고침
 
   const [frData, setFrData] = React.useState([]);
   const isFocused = useIsFocused(); // isFoucesd Define
@@ -71,7 +86,12 @@ export default function Main({ navigation }) {
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView
+       refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}/>}
+      >
         <View style={{ width: "100%" }}>
           <View style={{ width: "100%", height: Dimensions.get('window').height * 0.4 }}>
             <View style={{ width: "100%", height: "30%", flexDirection: "row", justifyContent: "center", marginBottom: 5 }}>

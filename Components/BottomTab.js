@@ -19,9 +19,13 @@ import FindMeDetail from '../Pages/Boards/FindMe/FindMeDetail';
 import FreeBoardMain from '../Pages/Boards/FreeBoard/FreeBoardMain';
 import FreeBoardDetail from '../Pages/Boards/FreeBoard/FreeBoardDetail';
 import CalenderMain from '../Pages/Calender/CalenderMain';
-import CalenderDetail from '../Pages/Calender/CalenderDetail';
+
 import Walk from '../Pages/Map/Walk';
 import WalkTogether from '../Pages/Map/WalkTogether';
+import ReviewWrite from '../Pages/Map/ReviewWrite';
+import Review from '../Pages/Map/Review';
+import ModifyReview from '../Pages/Map/ModifyReview';
+
 import MyPage from '../Pages/MyPage/MyPage';
 import Food from '../Pages/MyPage/Food';
 import AddAnimal from '../Pages/MyPage/AddAnimal';
@@ -44,6 +48,7 @@ import MyPageModify from '../Pages/MyPage/MyPageModify';
 import FreeView from './FreeView';
 import ModifyBoard from './ModifyBoard';
 import MapInfo from '../Pages/Map/MapInfo';
+
 const Tab = createBottomTabNavigator();
 
 const MainStack = createStackNavigator();
@@ -87,9 +92,6 @@ const LoginStack = createStackNavigator();
 
 
 const MainStackScreen = ({ navigation }) => {
-
-
-
   return (
     <MainStack.Navigator>
       {/* <MainStack.Screen name="Login" component={Login} options={{
@@ -111,7 +113,22 @@ const MainStackScreen = ({ navigation }) => {
         },
         headerTitleAlign:"center",
       }} />
-      <MainStack.Screen name="MainBoard" component={MainBoard} />
+      <MainStack.Screen name="MainBoard" component={MainBoard} 
+       options={{
+        headerTitle:"게시판들!",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }} 
+      />
       <MainStack.Screen name="AffectMain" component={AffectMain} />
       <MainStack.Screen name="DonateMain" component={DonateMain} />
       <MainStack.Screen name="FindMeMain" component={FindMeMain} />
@@ -121,8 +138,12 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="MapInfo" component={MapInfo}/>
       {/*-->  디테일 페이지들도 임포트하고 넣어줘야함 <--*/}
       {/*--> 함께하는 공간 자리<--*/}
-      <MainStack.Screen name="Walk" component={Walk} />
+      <MainStack.Screen name="Walk" component={Walk}/>
       <MainStack.Screen name="WalkTogether" component={WalkTogether}/>
+      <MainStack.Screen name="ReviewWrite" component={ReviewWrite}/>
+      <MainStack.Screen name="Review" component={Review}/>
+      <MainStack.Screen name="ModifyReview" component={ModifyReview}/>
+
       <MainStack.Screen name="Ranking" component={Ranking} />
       <MainStack.Screen name="SkinMain" component={SkinMain} />
       <MainStack.Screen name="MyPage" component={MyPage} />
@@ -137,9 +158,31 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="MyPoint" component={MyPoint}/>
 
       <MainStack.Screen name="Food" component={Food} />
-      <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail}/>
+      <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail}
+      options={{
+        headerTitle:"게시판",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+
+
+       
+      />
       <MainStack.Screen name="FindMeDetail" component={FindMeDetail} />
       <MainStack.Screen name="ModifyBoard" component={ModifyBoard} options={{}}/>
+      <MainStack.Screen name="Write" component={Write}/>
+      <MainStack.Screen name="AddFood" component={AddFood}/>
+      {/* <MainStack.Screen name="ReissuancePw" component={ReissuancePw} /> */}
       {/* <MainStack.Screen name="Login" component={Login}  options={{headerShown: false ,tabBarStyle: {display: 'none'}}}/> */}
       {/* <MainStack.Screen name="MyPoint" component={MyPoint} /> */}
     </MainStack.Navigator>
@@ -167,6 +210,18 @@ const MyPageStackScreen = ({ navigation }) => {
       <MyPageStack.Screen name="MyPage" component={MyPage}
       options={{
         headerLeft: () => <MenuButton/>,
+        headerTitle:"내 정보",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
       }} />
       <MyPageStack.Screen name="MyPageModify" component={MyPageModify} />
       <MyPageStack.Screen name="MyInfo" component={MyInfo}/>
@@ -181,7 +236,24 @@ const WriteStackScreen = ({ navigation }) => {
       <WriteStack.Screen name="Write" component={Write}
         options={{
           headerLeft: () => <MenuButton />,
+          headerTitle:"글 작성하기",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+        tabBarStyle:{
+          display:{undefined}
+        }
         }} />
+
+
     </WriteStack.Navigator>
   );
 }
@@ -218,6 +290,7 @@ const BottomTab = (route) => {
           tabBarIcon: () => (
             <Icon name="create"size={26} />
           ),
+          tabBarStyle:{display:"none"}
         }} />
       
       <Tab.Screen name="마이페이지" component={MyPageStackScreen}

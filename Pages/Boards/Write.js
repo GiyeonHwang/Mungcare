@@ -1,39 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {View, 
-        Text, 
-        SafeAreaView, 
-        StyleSheet, 
-        ScrollView, 
-        TextInput , 
-        Platform , 
-        KeyboardAvoidingView,
-        Alert,
-        ImageStore,
-        height,
-        richTextHandle,TouchableOpacity,
-      Button} from 'react-native';
-import {actions, RichEditor, RichToolbar} from "react-native-pell-rich-editor";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  Platform,
+  KeyboardAvoidingView,
+  Alert,
+  ImageStore,
+  height,
+  richTextHandle,
+  Button, Dimensions, BackHandler
+} from 'react-native';
+import { actions, RichEditor, RichToolbar } from "react-native-pell-rich-editor";
 import SelectDropdown from 'react-native-select-dropdown';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FormData from 'form-data';
+import { CommonActions } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // 세션
 import ServerPort from '../../Components/ServerPort';
 
 //사진 업로드
 import * as ImagePicker from 'expo-image-picker';
 
-// keyboardAvoidingView
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scrollview';
-
-export default function App() {
-
+export default function Write({ navigation }) {
+  const IP = ServerPort();
   //bType
-  const [bType,setbType] = useState('');
-  const [bTitle,setBTitle] = useState('');
-  const [bContent,setBContent] = useState('');
+  const [bType, setbType] = React.useState('자유게시판');
+  const [bTitle, setBTitle] = React.useState('');
+  const [bContent, setBContent] = React.useState('');
+
+  React.useEffect(() => {
+    setBTitle('');
+    setBContent('');
+    richText.current.setContentHTML("");
+  }, [])
+
+  // 세션 아이디 값 받아오기
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('id')
+      if (value !== null) {
+        return value;
+      }
+    } catch (e) {
+      console.log("not session");
+    }
+  }
+
+
   // select 관련임
   const countries = ["자유게시판", "찾아줘게시판", "자랑게시판", "기부게시판"];
-  const IP = ServerPort();
 
   //에디터 관련
   const richText = React.useRef();
@@ -42,36 +63,45 @@ export default function App() {
 
   const write = async () => {
 
-    axios.post(`${IP}/board/write`,null,{
-      params:{
-        bContent : bContent,
-        bTitle : bTitle,
-        bType : bType,
-        id:"user"
+    const id = await getData();
+
+    axios.post(`${IP}/board/write`, null, {
+      params: {
+        bContent: bContent,
+        bTitle: bTitle,
+        bType: bType,
+        id: id
       }
     })
-    .then((res) => {
-        console.log(res.data);
-    })
+      .then((res) => {
+        console.log("수정서버에서 온 데이터:", res.data);
+        if (res) {
+          Alert.alert("작성완료");
+          setBTitle('');
+          setBContent('');
+          richText.current.setContentHTML("");
+          navigation.navigate("Main");
+        }
+      })
   }
 
   const uploadImage = async () => {
 
-    if(!status.granted){ // status로 권한이 있는지 확인
+    if (!status.granted) { // status로 권한이 있는지 확인
       const permission = await requestPermission();
-      if(!permission.granted){
+      if (!permission.granted) {
         return null;
       }
     }
-    
+
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes : ImagePicker.MediaTypeOptions.Images,
-      allowsEditing : false,
-      quality : 1,
-      aspect : [1,1]
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      quality: 1,
+      aspect: [1, 1]
     });
 
-    if(result.canceled){
+    if (result.canceled) {
       return null;
     }
 
@@ -81,28 +111,87 @@ export default function App() {
     const match = /\.(\w+)$/.exec(filename ?? '');
     const type = match ? `image/${match[1]}` : `image`;
     const formData = new FormData();
-    formData.append('multipartFileList' , {uri: localUri, name: filename, type});
+    formData.append('multipartFileList', { uri: localUri, name: filename, type });
 
     console.log(formData);
 
     await axios({
-      method : 'post',
-      url : `${IP}/upload`,
-      headers:{
-        'content-type' : 'multipart/form-data',
+      method: 'post',
+      url: `http://192.168.2.77:5000/upload`,
+      headers: {
+        'content-type': 'multipart/form-data',
       },
-      data : formData
+      data: formData
     })
-    .then((res) => {
+      .then((res) => {
         richText.current.insertImage(res.data);
-    })
+      })
 
-    
- }
-   // Callback after height change
-   function handleHeightChange(height) {
+  }
+
+  // Callback after height change
+  function handleHeightChange(height) {
     // console.log("editor height change:", height);
   }
+
+  const CancleAction = () => {
+
+    setBTitle('');
+    setBContent('');
+    richText.current.setContentHTML("");
+    navigation.navigate("Main")
+  }
+
+
+
+  React.useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Button title="글 작성" color='black' onPress={() =>
+          Alert.alert("잠깐만요!", "작성하실껀가요?", [
+            {
+              text: "취소",
+              onPress: () => null,
+            },
+            {
+              text: "작성", onPress: () => {
+                write();
+              }
+            }
+          ])
+        } />
+      ),
+    });
+  })
+
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const backAction = () => {
+        Alert.alert("잠깐만요!", "글작성을 취소하시겠어요?\n모든 작성내용이 사라집니다!", [
+          {
+            text: "계속 작성하기",
+            onPress: () => null,
+          },
+          {
+            text: "작성 취소하기", onPress: () => { CancleAction() }
+          }
+        ]);
+        return true;
+      };
+
+
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+      );
+
+      return () => backHandler.remove();
+
+    }))
+
+  console.log("현재 제목내용", bTitle);
+  console.log("현재 내용", bContent);
 
   return (
     <View style={styles.container}>

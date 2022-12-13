@@ -21,7 +21,7 @@ const IP = ServerPort();
 export default function ModifyAnimal({ navigation, route }) {
 
     const [aName, setAnimalName] = React.useState(route.params.animalData.aname); //애완동물 이름
-    const [aSex, setAnimalSex] = React.useState(""); //성별
+    const [aSex, setAnimalSex] = React.useState(route.params.animalData.aSex); //성별
     const [aBirth, setAnimalBirth] = React.useState(""); //생일
     const [aBreed, setAnimalBreed] = React.useState(""); //종류
     const [aNeat, setAnimalNeat] = React.useState(""); //중성화 여부
@@ -103,6 +103,7 @@ export default function ModifyAnimal({ navigation, route }) {
 
         axios.post(`${IP}/animal/modify`, null, {
             params: {
+                name: route.params.animalData.aname,
                 aName: aName,
                 id: route.params.animalData.id ,
                 aBirth: aBirth,
@@ -114,6 +115,7 @@ export default function ModifyAnimal({ navigation, route }) {
         .then(res => {
             console.log(res.data);
                 Alert.alert("수정 완료!")
+                route.params.info(route.params.animalData.id)
                 navigation.navigate("AnimalList")
         })
         .catch(function (error) {

@@ -179,7 +179,7 @@ export default function AddAnimal({ navigation, route}) {
 
         await axios({
             method: 'post',
-            url: `${IP}/upload`,
+            url: 'http://192.168.2.77:5000/upload',
             headers: {
                 'content-type': 'multipart/form-data',
             },
@@ -216,7 +216,7 @@ export default function AddAnimal({ navigation, route}) {
                 console.log(res.data);
 
                 Alert.alert("등록 완료!")
-                route.params.animalList(route.params.id)
+                route.params.info(route.params.id)
                 navigation.navigate("AnimalList");
             })
             .catch(function (error) {

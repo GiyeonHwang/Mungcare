@@ -4,12 +4,14 @@ import React from "react";
 import { Text, View, SafeAreaView, StyleSheet, TextInput, Button, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import Postcode from '@actbase/react-daum-postcode';
 import Modal from "react-native-modal";
+import ServerPort from '../../Components/ServerPort';
 
 //navigation 사용할 때 필요
 import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
+const IP = ServerPort();
 
 export default function Join(navigation) {
 
@@ -180,7 +182,7 @@ export default function Join(navigation) {
 
   function register() {
 
-    axios.post("http://192.168.2.94:5000/member/register", null, {
+    axios.post(`${IP}/member/register`, null, {
       params: {
         id: id,
         pw: pw,
@@ -193,7 +195,8 @@ export default function Join(navigation) {
       }
     })
       .then((res) => {
-        Alert.alert("id: " + res.data);
+        Alert.alert("회원가입 완료");
+        navigation.navigate("Login");
       })
   }
 
