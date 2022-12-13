@@ -1,10 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import MapView, { Marker, Circle, Callout } from 'react-native-maps';
-import { View, StyleSheet, Text, Dimensions, Button, Pressable, Image, Alert, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, Dimensions, Button, Pressable, Image, Alert, TouchableOpacity, StatusBar } from 'react-native';
 import * as Location from 'expo-location';
 import BottomSheet from 'reanimated-bottom-sheet';
 import { ScrollView, TextInput } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import ServerPort from '../../Components/ServerPort';
 
 import StarRating from 'react-native-star-rating-widget';
 
@@ -52,9 +54,11 @@ const WalkReview = ({ navigation, route }) => {
     //검색
     const [search, setSearch] = React.useState();
 
+    const IP = ServerPort();
+
     useEffect(() => {
         console.log('all')
-        axios.post("http://192.168.2.94:5000/review/list", null, {
+        axios.post(`${IP}/review/list`, null, {
             params: {
                 // latitude: location.coords.latitude,
                 // longitude: location.coords.longitude,
@@ -93,7 +97,7 @@ const WalkReview = ({ navigation, route }) => {
             
 
             // 제일 처음에 들어왔을 때 내주변 리뷰 
-            axios.post("http://192.168.2.94:5000/review/surrounding", null, {
+            axios.post(`${IP}/review/surrounding`, null, {
                 params: {
                     latitude: location.coords.latitude,
                     longitude: location.coords.longitude,
@@ -128,7 +132,7 @@ const WalkReview = ({ navigation, route }) => {
     }
 
     const request = (latitude, longitude) => {
-        axios.post("http://192.168.2.94:5000/review/surrounding", null, {
+        axios.post(`${IP}/review/surrounding`, null, {
             params: {
                 latitude: latitude,
                 longitude: longitude,
@@ -153,7 +157,7 @@ const WalkReview = ({ navigation, route }) => {
                 {
                     text: "삭제하기",
                     onPress: () => {
-                        axios.post("http://192.168.2.94:5000/review/remove", null, {
+                        axios.post(`${IP}/review/remove`, null, {
                             params: {
                                 vNo: e
                             }
@@ -215,7 +219,7 @@ const WalkReview = ({ navigation, route }) => {
     //검색
     const searchValue = (text) => {
         console.log(text)
-        axios.post("http://192.168.2.94:5000/review/search", null, {
+        axios.post(`${IP}/review/search`, null, {
             params: {
                 search : text
             }

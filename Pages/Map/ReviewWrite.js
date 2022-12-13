@@ -5,6 +5,7 @@ import { View, StyleSheet, Text, Dimensions, Button, Alert, Modal, Pressable, Im
 import * as Location from 'expo-location';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 //npm i react-native-gesture-handler
+import ServerPort from '../../Components/ServerPort';
 
 import StarRating from 'react-native-star-rating-widget';
 //expo install react-native-svg
@@ -43,6 +44,9 @@ const Write = ({ navigation, route }) => {
   const [okReivew, setOkReview] = useState("");
 
   const [id, setId] = React.useState();
+
+  const IP = ServerPort();
+  
   useEffect(() => {
 
     (async () => {
@@ -112,7 +116,7 @@ const Write = ({ navigation, route }) => {
 
     await axios({
         method: 'post',
-        url: 'http://192.168.2.77:5000/upload',
+        url: `${IP}/upload`,
         headers: {
             'content-type': 'multipart/form-data',
         },
@@ -175,7 +179,7 @@ const Write = ({ navigation, route }) => {
         console.log('왕')
 
         // 서버에 값 보내기
-        axios.post("http://192.168.2.94:5000/review/register", null, {
+        axios.post(`${IP}/review/register`, null, {
           params: {
             id: "user4", //async
             vContent:text,

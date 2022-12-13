@@ -119,7 +119,7 @@ export default function Ranking({ navigation }){
               {/* <Text >작성자: </Text> */}
               <Text>
                 {rdata.length !=0
-                      ?rdata[0].id
+                      ?rdata[0].nickname
                       :null
                     }
                     </Text>

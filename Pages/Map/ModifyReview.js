@@ -6,6 +6,8 @@ import * as Location from 'expo-location';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 //npm i react-native-gesture-handler
 
+import ServerPort from '../../Components/ServerPort';
+
 import StarRating from 'react-native-star-rating-widget';
 //expo install react-native-svg
 //npm i react-native-star-rating-widget
@@ -48,6 +50,9 @@ const ModifyReview = ({ navigation, route }) => {
     const [okAddress, setOkAddress] = useState("")
 
     const [id, setId] = React.useState();
+
+    const IP = ServerPort();
+
     useEffect(() => {
         (async () => {
             console.log(route.params.info[6])
@@ -117,7 +122,7 @@ const ModifyReview = ({ navigation, route }) => {
 
         await axios({
             method: 'post',
-            url: 'http://192.168.2.77:5000/upload',
+            url: `${IP}/upload`,
             headers: {
                 'content-type': 'multipart/form-data',
             },
@@ -211,7 +216,7 @@ const ModifyReview = ({ navigation, route }) => {
                 console.log('왕')
 
                 //서버에 값 보내기
-                axios.post("http://192.168.2.94:5000/review/modify", null, {
+                axios.post(`${IP}/review/modify`, null, {
                   params: {
                     vNo: route.params.info[6], //async
                     vContent:text,
