@@ -21,4 +21,5 @@ public class MyCalendarDTO {
     private String cPhoto; //사진
     private String cType; //산책인지 놀기인지 체크하기
     private Integer cWalkTime; //총 산책 시간
+    private String memo; //메모
 }

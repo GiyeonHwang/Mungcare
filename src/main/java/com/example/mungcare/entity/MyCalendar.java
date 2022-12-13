@@ -34,6 +34,9 @@ public class MyCalendar {
     private String cType; //산책인지 놀기인지 체크하기
     private Integer cWalkTime; //총 산책 시간
 
+    @Column(length = 1500)
+    private String memo; //메모
+
     public void changeCEndTime(Time cEndTime) { //끝나는 시간 수정
         this.cEndTime = cEndTime;
     }
@@ -42,5 +45,8 @@ public class MyCalendar {
     }
     public void changeCWalktTime(Integer cWalkTime) {
         this.cWalkTime = cWalkTime;
+    }
+    public void changeMemo(String memo) {
+        this.memo = memo;
     }
 }

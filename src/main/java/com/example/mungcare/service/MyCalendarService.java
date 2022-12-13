@@ -25,6 +25,7 @@ public interface MyCalendarService {
                 .cType(dto.getCType())
                 .cPhoto(dto.getCPhoto())
                 .cWalkTime(dto.getCWalkTime())
+                .memo(dto.getMemo())
                 .id(member)
                 .build();
         return calendar;
@@ -40,6 +41,7 @@ public interface MyCalendarService {
                 .cType(calendar.getCType())
                 .cPhoto(calendar.getCPhoto())
                 .cWalkTime(calendar.getCWalkTime())
+                .memo(calendar.getMemo())
                 .id(member.getId())
                 .build();
         return dto;

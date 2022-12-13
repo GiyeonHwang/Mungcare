@@ -38,6 +38,7 @@ public interface PointService {
                 .playPoint(point.getPlayPoint())
                 .totalPoint(point.getTotalPoint())
                 .animalList(point.getId().getAnimalList())
+                .nickname(member.getNickname())
                 .build();
         return dto;
     }

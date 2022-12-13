@@ -21,4 +21,5 @@ public class PointDTO {
     private Integer playPoint; //놀기 포인트
     private Integer totalPoint; //해당 날짜의 총 포인트
     private List<Animal> animalList; //사용자의 반려동물 정보 목록
+    private String nickname; //회원 닉네임
 }

@@ -17,4 +17,5 @@ public class ReplyDTO {
     private String id; //글 작성자
     private Integer bNo; //게시글 번호
     private LocalDateTime rCreateTime; //만든 시간
+    private String nickname; //글 작성자 닉네임
 }

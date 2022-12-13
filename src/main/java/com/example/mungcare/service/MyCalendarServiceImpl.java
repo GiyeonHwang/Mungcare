@@ -77,6 +77,7 @@ public class MyCalendarServiceImpl implements MyCalendarService{
                         && dto.getId().equals(myCalendar.getId().getId()) && dto.getCDate().equals(myCalendar.getCDate())) {
                     myCalendar.changeCPhoto(dto.getCPhoto());
                     myCalendar.changeCEndTime(dto.getCEndTime());
+                    myCalendar.changeMemo(dto.getMemo());
                     System.out.println("myCalendar: "+myCalendar);
 
 

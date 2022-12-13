@@ -37,6 +37,7 @@ public interface ReplyService {
                 .id(member.getId())
                 .bNo(board.getBNo())
                 .rCreateTime(reply.getRCreateTime())
+                .nickname(member.getNickname())
                 .build();
         return dto;
     }

@@ -60,6 +60,7 @@ public interface BoardService {
                 .bPhoto(board.getBPhoto())
                 .bText(board.getBText())
                 .id(member.getId())
+                .nickname(member.getNickname())
                 .build();
         return dto;
     }
