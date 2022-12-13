@@ -15,6 +15,8 @@ const IP = ServerPort();
 
 export default function Join(navigation) {
 
+  const IP = ServerPort();
+
   //멤버의 정보
   const [id, setId] = React.useState(""); // 아이디
   const [pw, setPw] = React.useState(""); // 비밀번호

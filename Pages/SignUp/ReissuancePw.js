@@ -6,7 +6,7 @@ import ServerPort from '../../Components/ServerPort';
 
 const Stack = createStackNavigator();
 export default function ReissuancePw({navigation}){
-
+    
     const IP = ServerPort();
     const [email,setEmail] = React.useState("") // 아이디
     const [name,setName] = React.useState("") // 비밀번호
