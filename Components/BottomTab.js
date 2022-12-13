@@ -140,6 +140,8 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail}/>
       <MainStack.Screen name="FindMeDetail" component={FindMeDetail} />
       <MainStack.Screen name="ModifyBoard" component={ModifyBoard} options={{}}/>
+      {/* <MainStack.Screen name="ReissuancePw" component={ReissuancePw} /> */}
+      
       {/* <MainStack.Screen name="Login" component={Login}  options={{headerShown: false ,tabBarStyle: {display: 'none'}}}/> */}
     </MainStack.Navigator>
   );

@@ -22,60 +22,7 @@ import Login from "../Pages/SignUp/Login";
 import * as Update from 'expo-updates';
 const Drawer = createDrawerNavigator();
 
-
-// const MyPageStack = createStackNavigator();
-// const MyPageStackScreen = ({ navigation }) => {
-//   return (
-//     <MyPageStack.Navigator>
-//       <MyPageStack.Screen
-//         name="MyPageScreen"
-//         component={MyPage}
-//         options={{
-//           headerLeft: () => <MenuButton/>,
-//         }}
-//       />
-//     </MyPageStack.Navigator>
-//   );
-// };
-
-// const FreeBoardStack = createStackNavigator();
-// const FreeBoardStackScreen = ({ navigation }) => {
-//   return (
-//     <FreeBoardStack.Navigator>
-//       <FreeBoardStack.Screen
-//         name="FreeBoardMain"
-//         component={FreeBoardMain}
-//         options={{
-//           headerLeft: () => <MenuButton/>,
-//         }}
-//       />
-//     </FreeBoardStack.Navigator>
-//   );
-// };
-
-// const Logout=({navigation})=>{
-//   Alert.alert("잠깐만요!", "로그아웃 하실건가요?", [
-//     {
-//       text: "아니요",
-//       onPress: ({navigation}) => null,
-//     },
-//     { text: "예", onPress: ({navigation}) => {
-//       AsyncStorage.removeItem('id');
-//       navigation.navigate('Login')
-//     }}
-//   ]);
-// };
-
-// function Restart(){
-// Update.reloadAsync();
-// }
-
-
-
-
 const CustomDrawer = ({ navigation }) => {
-
- 
 
 
   const goToStack = (stackName) => {
