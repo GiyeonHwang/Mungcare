@@ -87,7 +87,7 @@ public class BoardRepositoryTests {
 
     @Test
     public void testReadWithWriter() {
-        Object result = boardRepository.getBoardWithWriter(3);
+        Object result = boardRepository. getBoardWithWriter(3);
         Object[] arr = (Object[]) result;
         System.out.println("----------------------");
         System.out.println(Arrays.toString(arr));

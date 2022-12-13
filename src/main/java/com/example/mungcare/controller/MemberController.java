@@ -1,8 +1,8 @@
 package com.example.mungcare.controller;
 
 import com.example.mungcare.dto.MemberDTO;
-import com.example.mungcare.entity.Member;
 import com.example.mungcare.service.KaKaoAPI;
+import com.example.mungcare.service.MailService;
 import com.example.mungcare.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MemberController {
 
     private final MemberService memberService;
+
+    private final  MailService mailService;
 
     @PostMapping("/register") //회원가입
     public String memberRegister(MemberDTO memberDTO) {
@@ -76,11 +78,11 @@ public class MemberController {
     }
 
     @PostMapping("/changePw") //비밀번호 변경
-    public boolean changePW(@RequestParam("id")String id, @RequestParam("pw")String pw) {
+    public boolean changePW(@RequestParam("id")String id, @RequestParam("pw")String pw,@RequestParam("name")String name) {
         log.info("changePw...");
-        log.info("-------id: "+id+" -------pw: "+pw);
+        log.info(" id: "+id+"  pw: "+pw + " name : " + name);
+        mailService.sendMail(id,pw,name);
         boolean result = memberService.changePW(id, pw);
-
         return result;
     }
 

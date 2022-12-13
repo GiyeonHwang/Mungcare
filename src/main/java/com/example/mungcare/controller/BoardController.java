@@ -7,10 +7,7 @@ import com.example.mungcare.entity.Board;
 import com.example.mungcare.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @Log4j2
@@ -30,11 +27,7 @@ public class BoardController {
     @PostMapping("/list") //글 목록
     public PageResultDTO<BoardDTO, Board> boardList(PageRequestDTO pageRequestDTO) {
         log.info("list..."+pageRequestDTO);
-//        List<BoardDTO> boardList = boardService.boardList();
-//        for (BoardDTO board1 : boardList) {
-//            System.out.println("======================================"+board1.getBTitle());
-//            System.out.println("======================================"+board1.getBNo());
-//        }
+
         PageResultDTO<BoardDTO, Board> result = boardService.boardList(pageRequestDTO);
         System.out.println("-----------"+result);
         return result;
