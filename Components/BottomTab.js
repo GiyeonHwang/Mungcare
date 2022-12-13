@@ -48,6 +48,7 @@ import MyPageModify from '../Pages/MyPage/MyPageModify';
 import FreeView from './FreeView';
 import ModifyBoard from './ModifyBoard';
 import MapInfo from '../Pages/Map/MapInfo';
+import ChangePw from "../Pages/MyPage/ChangePw";
 
 const Tab = createBottomTabNavigator();
 
@@ -225,6 +226,7 @@ const MyPageStackScreen = ({ navigation }) => {
       }} />
       <MyPageStack.Screen name="MyPageModify" component={MyPageModify} />
       <MyPageStack.Screen name="MyInfo" component={MyInfo}/>
+      <MyPageStack.Screen name="ChangePw" component={ChangePw}/>
     </MyPageStack.Navigator>
   );
 }

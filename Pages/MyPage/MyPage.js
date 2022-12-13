@@ -186,11 +186,6 @@ export default function MyPage({navigation}) {
 
             {/* 정보 더보기 */}
             <View style={styles.box3}>
-                <View style={styles.nextinfo}>
-                    <Text>
-                        정보 더보기
-                    </Text>
-                </View>
                 <View style={styles.buttonbox}>
 
                     <View style={styles.buttonback}>
@@ -244,6 +239,16 @@ export default function MyPage({navigation}) {
                             }}
                         >
                             놀아주기
+                        </Text>
+                    </View>
+
+                    <View style={styles.buttonback}>
+                        <Text style={styles.buttontext}
+                            onPress={() => {
+                                navigation.navigate("ChangePw")
+                            }}
+                        >
+                            비밀번호 변경
                         </Text>
                     </View>
                 </View>
