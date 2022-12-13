@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, StyleSheet, Alert, Image, ScrollView, } from 'react-native';
+import { Text, View, StyleSheet, Alert, Image, ScrollView, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
 
 //navigation사용할 때 필요
@@ -132,6 +132,8 @@ export default function MyPage({ navigation, route }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: Dimensions.get('window').width * 1,
+        height: Dimensions.get('window').height * 0.06,
         // padding: 24,
         // backgroundColor: '#eaeaea',
         backgroundColor: "#EBE3D7"
@@ -172,11 +174,13 @@ const styles = StyleSheet.create({
     },
     info: {
         // backgroundColor: "blue",
-        padding: 9,
+        padding: 5,
         width: 184,
         alignItems: 'center',
+        justifyContent : 'center'
     },
     infotextsize:{
+        marginBottom:"2%",
         fontSize: 15
     },
     box2:{
