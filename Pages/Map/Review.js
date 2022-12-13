@@ -10,6 +10,7 @@ import StarRating from 'react-native-star-rating-widget';
 
 // 더보기 눌렀을 때 수정 삭제 tooltip
 import Tooltip from "react-native-walkthrough-tooltip";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const initialRegion = {
@@ -502,7 +503,7 @@ const WalkReview = ({ navigation, route }) => {
                             <Pressable
                                 style={[styles.listbutton, { backgroundColor: 'white', marginRight:5 }]}
                                 onPress={() => {
-                                    navigation.navigate("WriteReview")
+                                    navigation.navigate('ReviewWrite')
                                 }}>
                                 <View style={styles.listarea}>
                                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>

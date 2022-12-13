@@ -15,17 +15,29 @@ export default function Play({ navigation }) {
     //아마존에 올린 사진 링크
     const [imgUri, setImgUri] = React.useState();
 
+    const IP = ServerPort();
+
+    // 로그인 유지
+    const getId = async () =>{
+        try {
+            const value = await AsyncStorage.getItem('id');
+            if (value !== null) {
+                console.log("id---: ", value);
+                setId(value);
+                console.log("id---------------: ", id);
+            }
+        } catch (e) {
+            console.log("not session... ", e);
+        }
+    }
     const [id, setId] = React.useState();
 
     useEffect(() => {
         (async () => {
             const cameraStatus = await Camera.requestPermissionsAsync();
             setHasCameraPermission(cameraStatus.status === 'granted');
-
-            // // id 가져오기
-            // const value = await AsyncStorage.getItem("id");
-            // setId(value)
-
+            await getId();
+            console.log("----------id: ",id);
         })();
     }, []);
 
@@ -58,12 +70,13 @@ export default function Play({ navigation }) {
 
         //아마존 스토레이지에 저장
         await axios({
-            method: 'post',
-            url: 'http://192.168.2.77:5000/upload',
-            headers: {
-                'content-type': 'multipart/form-data',
-            },
-            data: formData
+
+          method: 'post',
+          url: `${IP}/upload`,
+          headers: {
+            'content-type': 'multipart/form-data',
+          },
+          data: formData
         })
             .then((res) => {
                 console.log(res.data);
@@ -79,14 +92,14 @@ export default function Play({ navigation }) {
         const day = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`
         const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
 
-        // axios.post("http://192.168.2.94:5000/calendar/end", null, {
-        axios.post("http://192.168.2.94:5000/calendar/start", null, {
-            params: {
-                id: "user",
-                cDate: day,
-                cStartTime: time,
-                cPhoto: imgUri
-            }
+        console.log("id...",id);
+        axios.post(`${IP}/calendar/start`, null, {
+          params: {
+            id: id,
+            cDate: day,
+            cType:"play",
+            cPhoto: imgUri
+          }
         })
             .then(function (res) {
                 console.log(res.data);

@@ -5,7 +5,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
-
+import ServerPort from '../../Components/ServerPort';
 const Stack = createStackNavigator();
 
 import axios from "axios";
@@ -26,7 +26,7 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
     const isFocused = useIsFocused();
     const navigatePage = useNavigation();
     const [Token, setToken] = useState(0);
-
+    const IP = ServerPort();
 
 
     const storeData = async (value) => {
@@ -56,7 +56,7 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
         } else if (pw.trim() === "") {
             Alert.alert("비밀번호 입력 확인", "비밀번호가 입력되지 않았습니다.");
         } else {
-            axios.post("http://192.168.2.94:5000/member/login",
+            axios.post(`${IP}/member/login`,
                 null,
                 {
                     params: {
@@ -110,6 +110,18 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
             >
                 <Text style={styles.forgotButton}>회원가입</Text>
             </TouchableOpacity>
+            <View style={{flexDirection:"row"}}>
+                <TouchableOpacity
+                >
+                    <Text style={styles.forgotButton}>아이디 찾기</Text>
+                </TouchableOpacity>
+                <Text>   |   </Text>
+                <TouchableOpacity
+                >
+                    <Text style={styles.forgotButton}>비밀번호 찾기</Text>
+                </TouchableOpacity>
+            </View>
+            
             <TouchableOpacity
                 style={styles.loginBtn}
                 onPress={() => login()}

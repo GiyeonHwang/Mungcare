@@ -42,6 +42,7 @@ export default function MyPage({navigation}) {
             const value = await AsyncStorage.getItem('id');
             if (value !== null) {
                 console.log("id---: ", value);
+                setId(value);
                 return value;
             }
         } catch (e) {
@@ -49,11 +50,13 @@ export default function MyPage({navigation}) {
         }
     }
     
-    const mypageInfo = (id) => {
+    const mypageInfo = async () => {
+        const ID = await getId();
+        console.log("ID : " , ID);
         // 서버에 요청
         axios.post(`${IP}/member/info`, null, {
             params : {
-                id: id //sessionStorage에 있는 id값
+                id: ID //sessionStorage에 있는 id값
             }
         })
         .then(function (res){
@@ -75,11 +78,13 @@ export default function MyPage({navigation}) {
         })
     }
 
-    const boardcount = (id) => {
+    const boardcount = async () => {
+        const ID = await getId();
+        console.log("ID : " , ID);
         // 서버에 요청
         axios.post(`${IP}/board/count`, null, {
             params : {
-                id: id //sessionStorage에 있는 id값
+                id: ID //sessionStorage에 있는 id값
             }
         })
         .then(function (res){
@@ -93,12 +98,9 @@ export default function MyPage({navigation}) {
     }
 
     React.useEffect(() => {
-        (async () => {
-            const id = await getId(); //세션 id값 가져옴
-            mypageInfo(id);
+        mypageInfo();
             console.log("===========================================================================")
-            boardcount(id);
-        })();
+            boardcount();
     }, []);
 
     // AsyncStorage.setItem("check", "cccc", () => {
@@ -163,7 +165,7 @@ export default function MyPage({navigation}) {
 
 
             {/* 포인트 보이기 */}
-            <View style={styles.box2}>
+            {/* <View style={styles.box2}>
                 <View style={styles.mypointbox}>
                     <Image source={coin} style={{width:35, height:35, marginTop:'6%'}}/>
                     <Text style={styles.mypointtext}>{point}</Text> 
@@ -179,7 +181,7 @@ export default function MyPage({navigation}) {
                         />
                     </View>
                 </View>
-            </View>
+            </View> */}
 
 
             {/* 정보 더보기 */}
@@ -214,10 +216,16 @@ export default function MyPage({navigation}) {
                         </Text>
                     </View>
 
-                    <View style={{padding:10, width:'100%', backgroundColor:'red'}}>
-                        <Button title="밥 알람"  onPress={() =>{
+                    <View style={styles.buttonback}>
+                        <Text style={styles.buttontext}
+                            onPress={() =>{
+                                navigation.navigate("Food")
+                            }}>
+                                밥 알람
+                        </Text>
+                        {/* <Button title="밥 알람"  onPress={() =>{
                             navigation.navigate("Food")
-                        }} ></Button>
+                        }} ></Button> */}
                     </View>
 
                     <View style={styles.buttonback}>
@@ -322,12 +330,14 @@ const styles = StyleSheet.create({
         flex:5, 
         width: '100%', 
         height: '70%', 
-        marginTop:"2%"
+        marginTop:"2%",
+        padding:"2%"
         // backgroundColor:'lightgreen'
     },
     nextinfo:{
         marginHorizontal:"2%",
-        marginTop:"6%",
+        marginTop:"5%",
+        // padding:"2%",
         // borderWidth:1,
         width:"38%",
         // borderRadius: 50,
@@ -344,15 +354,16 @@ const styles = StyleSheet.create({
         // backgroundColor: 'red',
     },
     buttontext:{
-        fontSize:20,
+        fontSize:30,
         // marginVertical:"10%",
         borderBottomWidth:1,
+        borderColor:"#b8997c",
         margin:"3%",
-        marginTop:"5%",
+        marginTop:"8%",
         color: '#F7931D',
         fontWeight: "bold",
         fontSize:18,
-        borderColor:"#b8997c",
+        
 
     }
 });

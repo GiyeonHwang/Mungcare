@@ -34,6 +34,7 @@ import DonateMain from './Donate/DonateMain';
 
 
 
+
 export default function MainBoard({ navigation }) {
 
   const [selected, setSelected] = React.useState("");
