@@ -125,7 +125,7 @@ export default function WalkTogether({ navigation, route }) {
         longitudeDelta: 0.005, //확대되는 범위
       })
     })();
-   //connect()
+   connect()
   }, []);
 
   const reqAxios = (id) => {
@@ -177,12 +177,13 @@ export default function WalkTogether({ navigation, route }) {
     console.log('idList', idList)
 
     //공지내용
-    console.log(message)
+    console.log("message====================",message)
 
     const input = time + "에 " + message + "에서 같이 산책할래요?"
 
-
+    console.log("input--------------------",input);
     if (stompClient) { // if문을 왜하는거지? <= 이해가 된다면 알려줘
+      console.log("if======================================")
       var chatMessage = { // JSON 형태로 만들어야하니 변수선언
         senderName: id, // 보내는 사람의 이름은 현재 소켓의 username
         message: input, // 메시지는 userData의 메시지.
@@ -191,7 +192,7 @@ export default function WalkTogether({ navigation, route }) {
         latitude: region.latitude,
         longitude: region.longitude
       };
-      console.log(chatMessage); // 변수를 console.log에 찍는다.
+      console.log("--------------------------chatMessage",chatMessage); // 변수를 console.log에 찍는다.
       stompClient.send("/app/message", {}, JSON.stringify(chatMessage)); // 소켓 서버에 현재 변수를 보내준다.
       setUserData({ ...userData, "message": "" }); // userData의 메시지를 초기화 해준다.
     }
@@ -215,13 +216,15 @@ export default function WalkTogether({ navigation, route }) {
   const onMessageReceived = async (payload) => { // /chatroom/public으로부터 받는 메시지를 처리하는 함수.
     var payloadData = JSON.parse(payload.body); // payloadData가 해당 JSON을 파싱받아 저장된다.
     // console.log("payloadData------------------", payloadData.receiverName);
+
     const list = payloadData.receiverName;
+
     // const id = await AsyncStorage.getItem('id');
     // if(payloadData.senderName!=id){
 
     // }
     for (var i = 0; i < list.length; i++) {
-      if (list[i] === id) {
+      if (list[i] == id) {
                 
         setWho(data)
         setMes(payloadData.message)
@@ -580,6 +583,7 @@ export default function WalkTogether({ navigation, route }) {
                   disabled={message == ""}
                   style={[styles.buttonOpen, {backgroundColor:'#EBE3D7'}]}
                   onPress={() => {
+                    console.log("전송=================================")
                     setInputModal(!inputModal)
                     sendInput()
                     setClick(false)

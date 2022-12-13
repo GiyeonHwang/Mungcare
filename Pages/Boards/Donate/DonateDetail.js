@@ -23,8 +23,8 @@ export default function DonateDetail({ navigation, route }) {
     const [likeCheck, setLikeCheck] = React.useState(false); // 좋아요 여부 체크
 
     const [bno, setBno] = React.useState(route.params.no);
-    const [id, setId] = React.useState("");
-    const [content, setContent] = React.useState("");
+    const [id, setId] = React.useState(""); //게시판 작성자 아이디
+    const [nickname, setNickname] = React.useState(""); //게시판 작성자 닉네임
     const [blike, setBlike] = React.useState("");
     const [btitle, setBtitle] = React.useState("");
     const [btype, setBtype] = React.useState("");
@@ -45,6 +45,7 @@ export default function DonateDetail({ navigation, route }) {
             .then((res) => {
                 console.log(JSON.stringify(res.data, null, "\t"));
                 setId(res.data.id);
+                setNickname(res.data.nickname);
                 setContent(res.data.bcontent);
                 setBlike(res.data.blike);
                 setBtitle(res.data.btitle);
@@ -222,7 +223,7 @@ export default function DonateDetail({ navigation, route }) {
                 <View style={{ width: "100%", height: Dimensions.get('window').height * 0.05, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
 
                     <View style={{ flexDirection: "row", width: "15%", alignItems: "center" }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{id}</Text>
+                        <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{nickname}</Text>
                         <View style={{ height: "100%", borderLeftWidth: 0.5, borderColor: "grey", alignItems: "center", marginLeft: 5, flexDirection: "row" }}>
                             <Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>조회수 </Text>
                             <Text style={{ fontSize: 12, color: "gray" }}>{bviewCount}</Text>
@@ -277,7 +278,7 @@ export default function DonateDetail({ navigation, route }) {
                         return (
                             <Comment
                                 key={index}
-                                nickname={e.id}
+                                nickname={e.nickname}
                                 content={e.rcontent}
                                 rNo={e.rno}
                                 bNo={e.bno}

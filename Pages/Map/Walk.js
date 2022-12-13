@@ -74,6 +74,9 @@ export default function Walk({ navigation }) {
       console.log("value------",value);
       console.log("id------",id);
       
+      const date = new Date();
+      const day = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
+
       //산책 중인지 아닌지 확인
       await axios.post(`${IP}/calendar/check`, null, {
         params: {
@@ -113,8 +116,6 @@ export default function Walk({ navigation }) {
         longitudeDelta: 0.005, // 확대되는 범위
       })
 
-      const date = new Date();
-      const day = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
       console.log('useeffect walk check')
     })();
   }, []);
@@ -243,7 +244,8 @@ export default function Walk({ navigation }) {
         id: id,
         cEndTime: time,
         cDate: day,
-        cPhoto: imgUri
+        cPhoto: imgUri,
+
       }
     })
       .then(function (res) {

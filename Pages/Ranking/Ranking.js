@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from "react";
 import { Text, View , SafeAreaView, StyleSheet, TextInput , Button, Alert, Image, ProgressBarAndroid } from 'react-native';
 import Constants from 'expo-constants';
+import ServerPort from '../../Components/ServerPort';
 
 // import { Text, View, Button } from "react-native";
 
@@ -12,6 +13,7 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
+const IP = ServerPort();
 
 //아이콘 넣을 때 필요
 // import Icon from 'react-native-vector-icons/Ionicons';
@@ -30,7 +32,7 @@ export default function Ranking({ navigation }){
 
     React.useEffect(()=>{
       const setData = async () => {
-        await axios.post("http://192.168.2.94:5000/point/ranking", null, {
+        await axios.post(`${IP}/point/ranking`, null, {
           
       })
           .then(function (res) {
@@ -78,7 +80,7 @@ export default function Ranking({ navigation }){
             <View style={{flexDirection:'row', justifyContent: 'center'}}>
               <Text >작성자: </Text>
               <Text >{rdata.length !=0
-                      ?rdata[1].id
+                      ?rdata[1].nickname
                       :null
                     }</Text>
              
@@ -110,7 +112,7 @@ export default function Ranking({ navigation }){
             <View style={{flexDirection:'row', justifyContent: 'center', bottom:40}}>
               <Text >작성자: </Text>
               <Text >{rdata.length !=0
-                      ?rdata[0].id
+                      ?rdata[0].nickname
                       :null
                     }</Text>
             </View>
@@ -143,7 +145,7 @@ export default function Ranking({ navigation }){
             <View style={{flexDirection:'row', justifyContent: 'center'}}>
               <Text >작성자: </Text>
               <Text >{rdata.length !=0
-                      ?rdata[2].id
+                      ?rdata[2].nickname
                       :null
                     }</Text>
             </View>

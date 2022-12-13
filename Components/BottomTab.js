@@ -19,7 +19,6 @@ import FindMeDetail from '../Pages/Boards/FindMe/FindMeDetail';
 import FreeBoardMain from '../Pages/Boards/FreeBoard/FreeBoardMain';
 import FreeBoardDetail from '../Pages/Boards/FreeBoard/FreeBoardDetail';
 import CalenderMain from '../Pages/Calender/CalenderMain';
-import CalenderDetail from '../Pages/Calender/CalenderDetail';
 
 import Walk from '../Pages/Map/Walk';
 import WalkTogether from '../Pages/Map/WalkTogether';

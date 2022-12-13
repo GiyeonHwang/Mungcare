@@ -14,9 +14,11 @@ import { StyleSheet, Text, View, StatusBar, Image } from 'react-native';
 import { Agenda } from 'react-native-calendars';
 import { Card } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ServerPort from '../../Components/ServerPort';
 import { SaveFormat } from 'expo-image-manipulator';
 
 const CalendarMain = (navigation) => {
+    const IP = ServerPort();
     
  // 캘린더 정보 가져오기
   const [items, setItems] = React.useState({});
@@ -55,7 +57,7 @@ const CalendarMain = (navigation) => {
     await saveid()
        console.log("여기서도 잘 나오나?",id2)
        //캘린더 정보 가져오기
-       axios.post("http://192.168.2.94:5000/calendar/allList", null,{
+       axios.post(`${IP}/calendar/allList`, null,{
             params:{
                 id:id2
             }
