@@ -16,10 +16,10 @@ import javax.persistence.*;
 public class Welfare {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer wNo; //장묘업 정보 번호
+    private Integer no; //장묘업 정보 번호
 
     @Column(length = 100)
-    private String wName; //장묘업 이름
+    private String name; //장묘업 이름
 
     @Column(length = 1500)
     private String address; //장묘업 주소

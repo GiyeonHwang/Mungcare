@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AWSConfig {
 
-    private String iamAccessKey = "";
-    private String iamSecretAccessKey = "";
+    private String iamAccessKey = ""; //액세스 키
+    private String iamSecretAccessKey = ""; // 비밀 키
     private String region = "ap-northeast-2"; // Bucket Region
 
     @Bean

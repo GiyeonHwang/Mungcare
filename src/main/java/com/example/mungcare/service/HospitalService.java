@@ -11,8 +11,8 @@ public interface HospitalService {
 
     default HospitalDTO entityToDTO(Hospital hospital) {
         HospitalDTO dto = HospitalDTO.builder()
-                .hNo(hospital.getHNo())
-                .hName(hospital.getHName())
+                .no(hospital.getNo())
+                .name(hospital.getName())
                 .address(hospital.getAddress())
                 .latitude(hospital.getLatitude())
                 .longitude(hospital.getLongitude())

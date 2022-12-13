@@ -11,8 +11,8 @@ public interface HotelService {
 
     default HotelDTO entityToDTO(Hotel hotel) {
         HotelDTO dto = HotelDTO.builder()
-                .hNo(hotel.getHNo())
-                .hName(hotel.getHName())
+                .no(hotel.getNo())
+                .name(hotel.getName())
                 .address(hotel.getAddress())
                 .latitude(hotel.getLatitude())
                 .longitude(hotel.getLongitude())

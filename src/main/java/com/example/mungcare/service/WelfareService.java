@@ -11,8 +11,8 @@ public interface WelfareService {
 
     default WelfareDTO entityToDTO(Welfare welfare) {
         WelfareDTO dto = WelfareDTO.builder()
-                .wNo(welfare.getWNo())
-                .wName(welfare.getWName())
+                .no(welfare.getNo())
+                .name(welfare.getName())
                 .address(welfare.getAddress())
                 .latitude(welfare.getLatitude())
                 .longitude(welfare.getLongitude())

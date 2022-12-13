@@ -16,10 +16,10 @@ import javax.persistence.*;
 public class Pharmacy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer pNo; //약국 정보 번호
+    private Integer no; //약국 정보 번호
 
     @Column(length = 100)
-    private String pName; //약국 이름
+    private String name; //약국 이름
 
     @Column(length = 1500)
     private String address; //약국 주소

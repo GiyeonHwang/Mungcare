@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class BeautyDTO {
-    private Integer bNo; //미용실 정보 번호
-    private String bName; //미용실 이름
+    private Integer no; //미용실 정보 번호
+    private String name; //미용실 이름
     private String address; //미용실 주소
     private Double latitude; //위도
     private Double longitude; //경도

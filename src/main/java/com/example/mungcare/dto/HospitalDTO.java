@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class HospitalDTO {
-    private Integer hNo; //병원 정보 번호
-    private String hName; //병원 이름
+    private Integer no; //병원 정보 번호
+    private String name; //병원 이름
     private String address; //병원 주소
     private Double latitude; //위도
     private Double longitude; //경도

@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class HotelDTO {
-    private Integer hNo; //위탁관리업 정보 번호
-    private String hName; //위탁관리업 이름
+    private Integer no; //위탁관리업 정보 번호
+    private String name; //위탁관리업 이름
     private String address; //위탁관리업 주소
     private Double latitude; //위도
     private Double longitude; //경도

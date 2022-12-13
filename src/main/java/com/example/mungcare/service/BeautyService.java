@@ -11,8 +11,8 @@ public interface BeautyService {
 
     default BeautyDTO entityToDTO(Beauty beauty) {
         BeautyDTO dto = BeautyDTO.builder()
-                .bNo(beauty.getBNo())
-                .bName(beauty.getBName())
+                .no(beauty.getNo())
+                .name(beauty.getName())
                 .address(beauty.getAddress())
                 .latitude(beauty.getLatitude())
                 .longitude(beauty.getLongitude())

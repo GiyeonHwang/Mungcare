@@ -16,10 +16,10 @@ import javax.persistence.*;
 public class Beauty {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer bNo; //미용실 정보 번호
+    private Integer no; //미용실 정보 번호
 
     @Column(length = 100)
-    private String bName; //미용실 이름
+    private String name; //미용실 이름
 
     @Column(length = 1500)
     private String address; //미용실 주소

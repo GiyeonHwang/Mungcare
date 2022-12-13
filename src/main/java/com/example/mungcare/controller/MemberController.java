@@ -77,7 +77,7 @@ public class MemberController {
         return result;
     }
 
-    @PostMapping("/changePw") //비밀번호 변경
+    @PostMapping("/changePw") //비밀번호 재발급 변경 - 메일 전송
     public boolean changePW(@RequestParam("id")String id, @RequestParam("pw")String pw,@RequestParam("name")String name) {
         log.info("changePw...");
         log.info(" id: "+id+"  pw: "+pw + " name : " + name);
@@ -86,7 +86,15 @@ public class MemberController {
         return result;
     }
 
-    @PostMapping("/changeUser") //비밀번호 변경
+    @PostMapping("myPwChange") //마이페이지에서 비밀번호 변경
+    public boolean myPwChange(@RequestParam("id")String id, @RequestParam("pw")String pw) {
+        log.info("myPwChange...");
+        log.info(" id: "+id+"  pw: "+pw);
+        boolean result = memberService.changePW(id, pw);
+        return result;
+    }
+
+    @PostMapping("/changeUser") //아이디가 있는지 체크
     public boolean changeUser(@RequestParam("id")String id, @RequestParam("name")String name) {
         log.info("changeUser...");
         log.info("-------id: "+id+" -------name: "+name);

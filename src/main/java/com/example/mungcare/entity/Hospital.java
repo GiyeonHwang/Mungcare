@@ -13,10 +13,10 @@ import javax.persistence.*;
 public class Hospital {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer hNo; //병원 정보 번호
+    private Integer no; //병원 정보 번호
 
     @Column(length = 100)
-    private String hName; //병원 이름
+    private String name; //병원 이름
 
     @Column(length = 1500)
     private String address; //병원 주소

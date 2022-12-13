@@ -16,10 +16,10 @@ import javax.persistence.*;
 public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer hNo; //위탁관리업 정보 번호
+    private Integer no; //위탁관리업 정보 번호
 
     @Column(length = 100)
-    private String hName; //위탁관리업 이름
+    private String name; //위탁관리업 이름
 
     @Column(length = 1500)
     private String address; //위탁관리업 주소

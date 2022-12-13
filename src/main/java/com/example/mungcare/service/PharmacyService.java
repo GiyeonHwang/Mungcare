@@ -11,8 +11,8 @@ public interface PharmacyService {
 
     default PharmacyDTO entityToDTO(Pharmacy pharmacy) {
         PharmacyDTO dto = PharmacyDTO.builder()
-                .pNo(pharmacy.getPNo())
-                .pName(pharmacy.getPName())
+                .no(pharmacy.getNo())
+                .name(pharmacy.getName())
                 .address(pharmacy.getAddress())
                 .latitude(pharmacy.getLatitude())
                 .longitude(pharmacy.getLongitude())
