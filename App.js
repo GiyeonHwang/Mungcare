@@ -128,6 +128,7 @@ import React, { useState } from "react"
 //join, Login import
 import Join from './Pages/SignUp/Join';
 import Login from './Pages/SignUp/Login';
+import Kakao from './Pages/SignUp/Kakao';
 import AffectDetail from './Pages/Boards/Affect/AffectDetail';
 import AffectMain from './Pages/Boards/Affect/AffectMain';
 import DonateDetail from './Pages/Boards/Donate/DonateDetail';
@@ -177,6 +178,11 @@ const Auth = () => {
       <Stack.Screen
         name="Join"
         component={Join}
+        options={{headerShown: false,tabBarStyle: {display: 'none'}}}
+      />
+      <Stack.Screen
+        name="Kakao"
+        component={Kakao}
         options={{headerShown: false,tabBarStyle: {display: 'none'}}}
       />
     </Stack.Navigator>
