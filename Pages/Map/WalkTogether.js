@@ -90,6 +90,8 @@ export default function WalkTogether({ navigation, route }) {
   const [socketModal, setSocketModal] = React.useState(false); // 모달창
   const [joinWalk, setJoinWalk] = React.useState([]);
 
+  const [checkInterval, setCheckInterval] = React.useState(false); //interval check하기
+
   //에니메이션으로 이동
   const mapRef = React.useRef(null);
 
@@ -113,7 +115,12 @@ export default function WalkTogether({ navigation, route }) {
 
       await reqAxios(value)
 
-      setInterval(() => reqAxios(value), 15000);
+      var interval = setInterval(() => reqAxios(value), 15000);
+
+      if(checkInterval) {
+        console.log("==============================clearInterval",checkInterval)
+        clearInterval(interval);
+      }
 
       setLatit(location.coords.latitude)
       setLong(location.coords.longitude)
@@ -361,8 +368,8 @@ export default function WalkTogether({ navigation, route }) {
         console.log(res.data);
         if (res.data) {
           Alert.alert("등록 완료!")
-          route.params.setStart(true)
-          navigation.navigate("Walk")
+          setCheckInterval(true)
+          walkEnd()
         } else {
           Alert.alert("다시 시도해주세요")
           setFinalModal(true)
@@ -379,26 +386,14 @@ export default function WalkTogether({ navigation, route }) {
     axios.post(`${IP}/walk/end`, null, {
 
       params: {
-        id: id,
-        cEndTime: time,
-        cDate: day,
-        cPhoto: imgUri
+        id: id
       }
     })
       .then(function (res) {
-        console.log(res.data);
-        if (res.data) {
-          Alert.alert("등록 완료!")
-          route.params.setStart(true)
-          navigation.navigate("Walk")
-        } else {
-          Alert.alert("다시 시도해주세요")
-          setFinalModal(true)
-        }
+        console.log("삭제 완료???>>>>",res.data);
       })
       .catch(function (error) {
         console.log(error)
-        Alert.alert("저장에 실패하였습니다")
       })
   }
 
@@ -819,6 +814,8 @@ export default function WalkTogether({ navigation, route }) {
                     setFinalModal(!finalModal)
                     // 이미지 업로드 및 서버에 전송
                     sendServer()
+                    route.params.setStart(true)
+                    navigation.navigate("Walk") 
                   }}>
                   <Text style={styles.textStyle}>완료</Text>
                 </Pressable>
