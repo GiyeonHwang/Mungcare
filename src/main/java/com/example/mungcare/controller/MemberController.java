@@ -94,11 +94,29 @@ public class MemberController {
         return result;
     }
 
-    @PostMapping("/changeUser") //아이디가 있는지 체크
+    @PostMapping("/changeUser") //비밀번호 - 아이디가 있는지 체크
     public boolean changeUser(@RequestParam("id")String id, @RequestParam("name")String name) {
         log.info("changeUser...");
         log.info("-------id: "+id+" -------name: "+name);
         boolean result = memberService.changeUser(id, name);
+
+        return result;
+    }
+
+    @PostMapping("checkEmail") //아이디가 있는지 체크
+    public boolean checkEmail(@RequestParam("id")String id) {
+        log.info("checkEmail...");
+        log.info("-------id: "+id);
+        boolean result = memberService.checkEmail(id);
+
+        return result;
+    }
+
+    @PostMapping("checkNickname") //아이디가 있는지 체크
+    public boolean checkNickname(@RequestParam("nickname")String nickname) {
+        log.info("checkNickname...");
+        log.info("-------nickname: "+nickname);
+        boolean result = memberService.checkNickname(nickname);
 
         return result;
     }

@@ -1,13 +1,16 @@
 package com.example.mungcare.service;
 
 import com.example.mungcare.dto.MemberDTO;
+import com.example.mungcare.dto.MyCalendarDTO;
 import com.example.mungcare.entity.Member;
+import com.example.mungcare.entity.MyCalendar;
 import com.example.mungcare.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -113,6 +116,34 @@ public class MemberServiceImpl implements MemberService {
             Optional<Member> result = memberRepository.findById(id);
             if (result.isPresent() && name.equals(result.get().getName()))
                 return true;
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean checkEmail(String id) { //아이디(이메일 있는지 체크)
+        try {
+            List<Member> entity = memberRepository.findAll();
+            for(Member member : entity) {
+                if(id.equals(member.getId()))
+                    return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean checkNickname(String nickname) { //닉네임 있는지 체크
+        try {
+            List<Member> entity = memberRepository.findAll();
+            for(Member member : entity) {
+                if(nickname.equals(member.getNickname()))
+                    return true;
+            }
             return false;
         } catch (Exception e) {
             return false;
