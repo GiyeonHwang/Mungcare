@@ -99,12 +99,6 @@ export default function ReissuancePw({navigation}){
                 >
                 <Text style={styles.whiteColor}>비밀번호 재발급</Text>
                 </TouchableOpacity>
-
-                {/* <TouchableOpacity 
-                style={styles.loginBtn}
-                >
-                <Text style={styles.whiteColor}>취소</Text>
-                </TouchableOpacity> */}
             </View>
 
            
