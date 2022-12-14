@@ -49,15 +49,14 @@ export default function Join({navigation, route}) {
   const [errorMessagePhone, setErrorMessagePhone] = React.useState(""); // phone
   const [errorMessageDetail, setErrorMessageDetail] = React.useState("");
 
-  React.useEffect(() => { 
-
+  
+  React.useEffect(() => {
     if (route.params === undefined) {
       console.log('params 없음')
     } else {
       setId(route.params.info[0])
       setNickname(route.params.info[1])
     }
-
   }, [])
 
 
