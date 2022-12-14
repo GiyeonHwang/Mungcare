@@ -495,8 +495,8 @@ const MapInfo = (navigation) => {
                 }}>
                 <View style={styles.listarea}>
                   <View>
-                    <Image style={{ resizeMode: "cover", width: 40, height: 40, }}
-                      source={require('../../assets/images/main/swipelocation.png')}></Image>
+                    {/* <Image style={{ resizeMode: "cover", width: 40, height: 40, }}
+                      source={require('../../assets/images/main/swipelocation.png')}></Image> */}
                   </View>
                   <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ fontSize: 18, color: '#300000', fontWeight: 'bold' }}> 목록보기 </Text>

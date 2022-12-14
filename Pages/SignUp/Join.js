@@ -50,15 +50,15 @@ export default function Join({navigation, route}) {
   const [errorMessageDetail, setErrorMessageDetail] = React.useState("");
 
   React.useEffect(() => { 
-    if (route.params.info[0]!=null){
-      console.log('join',route.params.info[0])
-      console.log('join',route.params.info[1])
+
+    if (route.params === undefined) {
+      console.log('params 없음')
+    } else {
       setId(route.params.info[0])
       setNickname(route.params.info[1])
-
     }
 
-  },{})
+  }, [])
 
 
   const regiButton = () => {

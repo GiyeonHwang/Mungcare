@@ -12,6 +12,7 @@ import StarRating from 'react-native-star-rating-widget';
 
 //이미지 업로드
 import * as ImagePicker from 'expo-image-picker';
+import { set } from 'react-native-reanimated';
 
 
 const initialRegion = {
@@ -43,6 +44,29 @@ const Write = ({ navigation, route }) => {
   const [okReivew, setOkReview] = useState("");
 
   const [id, setId] = React.useState();
+
+  
+
+  useEffect(() => {
+    if (route.params === undefined){
+      console.log('params 없음')
+    }else{
+      setImgUri(route.params.info[2])
+      setRegion({
+        latitude: route.params.info[0],
+        longitude: route.params.info[1],
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.02,
+      })
+      setmapRegion({
+        latitude: route.params.info[0],
+        longitude: route.params.info[1],
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.02,
+      })
+    }
+  }, [])
+
   useEffect(() => {
 
     (async () => {
