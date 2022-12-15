@@ -13,7 +13,6 @@ import StarRating from 'react-native-star-rating-widget';
 // 더보기 눌렀을 때 수정 삭제 tooltip
 import Tooltip from "react-native-walkthrough-tooltip";
 
-
 const initialRegion = {
     latitude: 51.1261218,
     longitude: 3.347519199999965,
@@ -49,7 +48,7 @@ const WalkReview = ({ navigation, route }) => {
     const [tiplist, setTipList] = React.useState();
     const [check, setcheck] = React.useState(false);
 
-    const [showTip, setTip] = React.useState(false);
+
 
     //검색
     const [search, setSearch] = React.useState();
@@ -197,14 +196,14 @@ const WalkReview = ({ navigation, route }) => {
         setmapRegion({ // 현재 위치
             latitude: lat,
             longitude: lon,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005
+            latitudeDelta: 0.007,
+            longitudeDelta: 0.007
         })
         mapRef.current.animateToRegion({ // 해당 위치로 지도 이동
             latitude: lat,
             longitude: lon,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005
+            latitudeDelta: 0.007,
+            longitudeDelta: 0.007
         }, 3 * 1000);
 
         request(lat, lon)
@@ -252,7 +251,7 @@ const WalkReview = ({ navigation, route }) => {
                                             <View style={{ width: '50%', alignItems: 'center', }}>
                                                 <Image style={{ resizeMode: "cover", width: 50, height: 50, borderRadius: 50, }} source={{ uri: "https://img.favpng.com/17/1/20/user-interface-design-computer-icons-default-png-favpng-A0tt8aVzdqP30RjwFGhjNABpm.jpg" }} />
                                             </View>
-                                            <Text style={{ fontSize: 18 }}>{e.id}</Text>
+                                            <Text style={{ fontSize: 18 }}>{e.nickname}</Text>
                                         </View>
                                     </View>
                                     <Pressable
@@ -507,7 +506,7 @@ const WalkReview = ({ navigation, route }) => {
                             <Pressable
                                 style={[styles.listbutton, { backgroundColor: 'white', marginRight:5 }]}
                                 onPress={() => {
-                                    navigation.navigate("Write")
+                                    navigation.navigate("ReviewWrite")
                                 }}>
                                 <View style={styles.listarea}>
                                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>

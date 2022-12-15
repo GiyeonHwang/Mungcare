@@ -83,6 +83,7 @@ export default function ReissuancePw({navigation}){
                         style={styles.textInput}
                         onChangeText={(e) => setEmail(e)}
                         placeholder='이메일 입력'
+                        placeholderTextColor="#003f5c"
                     />
             </View>
             <View style={styles.inputView}>
@@ -90,6 +91,7 @@ export default function ReissuancePw({navigation}){
                      style={styles.textInput}
                     onChangeText={(e) => setName(e)}
                     placeholder='이름 입력'
+                    placeholderTextColor="#003f5c"
                 />
             </View>
             <View style={{flex:1,flexDirection: 'row',}}>
@@ -99,12 +101,6 @@ export default function ReissuancePw({navigation}){
                 >
                 <Text style={styles.whiteColor}>비밀번호 재발급</Text>
                 </TouchableOpacity>
-
-                {/* <TouchableOpacity 
-                style={styles.loginBtn}
-                >
-                <Text style={styles.whiteColor}>취소</Text>
-                </TouchableOpacity> */}
             </View>
 
            
@@ -131,7 +127,7 @@ const styles = StyleSheet.create({
     },
     inputView: {
         // flex:0.13,
-        backgroundColor: "#ffc0cb",
+        backgroundColor: "#FFAF9B",
         borderRadius: 30,
         width: "70%",
         // height: 45,
@@ -154,7 +150,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         marginTop: 40,
-        backgroundColor: "#ff1493",
+        backgroundColor: "#E8B190",
         bottom:"10%",
     },
     whiteColor: {

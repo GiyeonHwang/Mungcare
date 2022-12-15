@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, SafeAreaView, StyleSheet, FlatList, TextInput, Button, RefreshControl,Dimensions, Alert, ScrollView, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { Text, View, SafeAreaView, StyleSheet, FlatList, TextInput, Button, RefreshControl, Dimensions, Alert, ScrollView, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -11,6 +11,7 @@ import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useIsFocused } from '@react-navigation/native';
 import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import ServerPort from '../../Components/ServerPort';
 
 //날씨 api키
@@ -22,14 +23,15 @@ const wait = (timeout) => {
 
 export default function Main({ navigation }) {
 
-//새로고침 함수
+
+  //새로고침 함수
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
-//여기까지 새로고침
+  //여기까지 새로고침
 
   const [frData, setFrData] = React.useState([]);
   const isFocused = useIsFocused(); // isFoucesd Define
@@ -39,6 +41,8 @@ export default function Main({ navigation }) {
   //날씨
   const [weather,setWeather] = React.useState("");
   const [address, setAddress] = React.useState("");
+  const [id,setId] = React.useState("");
+  const [data, setData] = React.useState(); //애완동물 리스트 확인
 
   const selectList = () => {
     axios.post(`${IP}/board/search`, null, {
@@ -51,7 +55,7 @@ export default function Main({ navigation }) {
     })
       .then(function (res) {
         setFrData(res.data.dtoList);
-        console.log("리스폰스데이터:", res.data.dtoList[0].bno);
+       
       })
       .catch(function (error) {
         console.log("게시판 전체 데이터 가져오기 실패: ", error)
@@ -83,8 +87,11 @@ export default function Main({ navigation }) {
       const res = await response.json()
       console.log(res)
       setWeather(res)
+      await info()
     })();
   },[])
+
+  
 
   useFocusEffect(
     React.useCallback(() => {
@@ -108,13 +115,46 @@ export default function Main({ navigation }) {
 
     }, []))
 
+    const info = async () => {
+
+      const ID = await load();
+      // 서버에 요청
+      // 애완동물 목록 불러오기
+      console.log("ID : " , ID);
+      axios.post(`${IP}/animal/list`, null, {
+          params: {
+              id: ID //sessionStorage에 있는 id값
+          }
+      })
+          .then(res => {
+              console.log(res.data);
+              setData(res.data);
+          })
+          .catch(function (error) {
+              console.log("AnimallList DB연동 실패,,,,",error);
+          })
+  }
+
+  const load = async () => {
+    try{
+        const id = await AsyncStorage.getItem('id');
+        console.log(id);
+        setId(id);
+        return id;
+    }
+    catch(e)
+    {
+        console.log("로드 에러" , e);
+    }
+}
+
   return (
     <SafeAreaView>
       <ScrollView
-       refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}/>}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh} />}
       >
         <View style={{ width: Dimensions.get('window').width * 1 }}>
           <View style={{ width: "100%", height: Dimensions.get('window').height * 0.6 , alignItems:'center'}}>
@@ -177,7 +217,9 @@ export default function Main({ navigation }) {
             {/* 산책하기 */}
             <TouchableOpacity 
                 style={styles.walkview}
-                onPress={() => navigation.navigate('Walk')}
+                onPress={() => {
+                  data[0] != null ? navigation.navigate('Walk') : Alert.alert("애완동물을 등록해주세요!")
+                }}
               >
               <View style={{ width: '100%', height: '100%', }}>
                 <Image style={styles.icon} source={require('../../assets/images/main/Walk.png')}></Image>
@@ -221,22 +263,22 @@ export default function Main({ navigation }) {
           </View>
 
           {/* 맵을 2개 돌려서 id가 짝수는 왼쪽 홀수는 오른쪽에 렌더링해주기 */}
-          <View style={{flexDirection:"row",justifyContent:"center"}}>
-          <View style={{ padding: 10, marginTop: 10 }}>
-            {frData.filter((_, i) => i % 2 === 0).map((e) => (
-              <FreeView key={e.bno} {...e} />
-            )
-            )
-            }
-          </View>
-          <View style={{ padding: 10, marginTop: 10}}>
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <View style={{ padding: 10, marginTop: 10 }}>
+              {frData.filter((_, i) => i % 2 === 0).map((e) => (
+                <FreeView key={e.bno} {...e} />
+              )
+              )
+              }
+            </View>
+            <View style={{ padding: 10, marginTop: 10 }}>
 
-            {frData.filter((_, i) => i % 2 !== 0).map((e) => (
-              <FreeView key={e.bno} {...e} />
-            )
-            )
-            }
-          </View>
+              {frData.filter((_, i) => i % 2 !== 0).map((e) => (
+                <FreeView key={e.bno} {...e} />
+              )
+              )
+              }
+            </View>
           </View>
         </View>
       </ScrollView>

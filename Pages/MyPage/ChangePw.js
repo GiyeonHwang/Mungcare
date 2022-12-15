@@ -1,9 +1,12 @@
-import { View , StyleSheet , Text , TextInput , Button } from "react-native";
+import { View , StyleSheet , Text , TextInput , Button, Dimensions, TouchableOpacity } from "react-native";
 import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ServerPort from "../../Components/ServerPort";
 import { Alert } from "react-native";
 import axios from "axios";
+
+// 아이콘 import해줌
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default function ChangePw({navigation}){
 
@@ -92,31 +95,61 @@ export default function ChangePw({navigation}){
 
     return(
         <View style = {styles.container}>
-            <View style = {{borderWidth:1}}>
-                <Text>변경할 비밀번호</Text>
-                <TextInput
-                    onChangeText={(e) => handlePwChange(e)}
-                    placeholder='변경할 비밀번호 입력'
-                />
-                <Text>{errorMessagePw}</Text>
-            </View>
-            <View style = {{borderWidth:1}}>
-                <Text>변경 비밀번호 확인</Text>
-                <TextInput
-                    onChangeText={(e) => handlePwEqChange(e)}
-                    placeholder='변경할 비밀번호 확인'
-                />
-                <Text>{errorMessagePw2}</Text>
+            <View style={styles.warning}>
+                <Icon name="exclamation-triangle" size={70} color="#F7931D" style={{marginTop:"15%",  marginBottom:"5%" , borderWidth:1, borderColor:'#EBE3D7'}} />
+
+                <Text style={{fontWeight: "bold", fontSize:20, marginBottom:"5%"}}>
+                    비밀번호 변경 시 주의사항!
+                </Text>
+                <Text style={{alignItems: "center", justifyContent: "center",}}>
+                    형식에 맞춰서 비밀번호 변경을 해주세요. 
+                </Text>
+                <Text style={styles.hidden}>
+                    ex)영어 한개이상 숫자 한개 이상 특수문자 한개이상 8자리 이상
+                </Text>
             </View>
 
-            <Button 
+            <View style={{bottom:"20%"}}>
+                <View style = {styles.inputView}>
+                    <TextInput
+                        style={styles.textInput}
+                        onChangeText={(e) => handlePwChange(e)}
+                        placeholder='변경할 비밀번호 입력'
+                    />
+                </View>
+                <Text style={styles.hidden}>{errorMessagePw}</Text>
+            
+                <View style = {styles.inputView}>
+                    <TextInput
+                        style={styles.textInput}
+                        onChangeText={(e) => handlePwEqChange(e)}
+                        placeholder='변경할 비밀번호 확인'
+                    />
+                </View>
+                <Text style={styles.hidden}>{errorMessagePw2}</Text>
+               
+
+            </View>
+
+            <View style={{flex:1,flexDirection: 'row',}}>
+                <TouchableOpacity 
+                style={styles.loginBtn}
+                disabled={okChangePw()}
+                onPress={changePw}
+                >
+                <Text style={styles.whiteColor}>비밀번호 변경</Text>
+                </TouchableOpacity>
+            </View>
+            
+
+            {/* <Button 
             disabled={okChangePw()}
             onPress={changePw}
             title='비밀번호 변경'
-            />
-            <Button
+            /> */}
+            {/* <Button
             title='취소'
-            />
+            /> */}
         </View>
     )
 }
@@ -124,8 +157,40 @@ export default function ChangePw({navigation}){
 const styles = StyleSheet.create({
     container :{
         flex: 1,
-        backgroundColor: "RED",
+        width: Dimensions.get('window').width * 1,
+        height: Dimensions.get('window').height * 0.06,
+        backgroundColor:"#EBE3D7",
         alignItems: "center",
         justifyContent: "center",
+    },
+    warning:{
+        alignItems: "center", 
+        justifyContent: "center",
+        marginBottom:"45%"
+    },
+    inputView:{
+        borderBottomWidth:1,
+        width: Dimensions.get('window').width * 0.9,
+        marginBottom:"2%"
+    },
+    loginBtn: {
+        width: "50%",
+        borderRadius: 25,
+        height: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        // marginTop: 40,
+        backgroundColor: "#b8997c",
+        bottom:"20%",
+    },
+    whiteColor: {
+        color: "#ffffff"
+    },
+    hidden:{
+        fontSize:10,
+        marginBottom:'1%', 
+        marginTop:'1%', 
+        color:"gray"
     }
+  
 })

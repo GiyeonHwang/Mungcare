@@ -11,13 +11,11 @@ const Stack = createStackNavigator();
 import axios from "axios";
 import React, { useState } from "react";
 import {
-    StyleSheet,
-    View,
-    TextInput,
-    Text,
-    TouchableOpacity,
-    Alert
-} from "react-native";
+    StyleSheet,View,TextInput, Text, TouchableOpacity, Alert, Keyboard, KeyboardAvoidingView, Dimensions, Image} from "react-native";
+
+
+import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+
 
 
 const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변수 navigation 넣어주기
@@ -83,33 +81,30 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
 
     return (
         <View style={styles.container} >
-            <View style={styles.inputView}>
-                <TextInput
-                    style={styles.textInput}
-                    placeholder="아이디"
-                    placeholderTextColor="#003f5c"
-                    onChangeText={(id) => setId(id)}
-                    value={id}
-                />
-            </View>
-            <View style={styles.inputView}>
-                <TextInput
-                    style={styles.textInput}
-                    textContentType="pw"
-                    placeholder="비밀번호"
-                    placeholderTextColor="#003f5c"
-                    value={pw}
-                    onChangeText={(pw) => setPw(pw)}
-                    secureTextEntry={true}
-                />
-            </View>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} style={styles.touchable}>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="아이디"
+                        placeholderTextColor="#003f5c"
+                        onChangeText={(id) => setId(id)}
+                        value={id}
+                    />
+                </View>
+                <View style={styles.inputView}>
+                    <TextInput
+                        style={styles.textInput}
+                        textContentType="pw"
+                        placeholder="비밀번호"
+                        placeholderTextColor="#003f5c"
+                        value={pw}
+                        onChangeText={(pw) => setPw(pw)}
+                        secureTextEntry={true}
+                    />
+                </View>
+            </TouchableWithoutFeedback>
 
-            {/* TouchableOpacity == Anchor */}
-            {/* <TouchableOpacity
-                onPress={() => navigation.navigate("Join")}
-            >
-                <Text style={styles.forgotButton}>회원가입</Text>
-            </TouchableOpacity> */}
+
             <View style={{flexDirection:"row", marginTop:"2%"}}>
             <TouchableOpacity
                 onPress={() => navigation.navigate("Join")}
@@ -123,13 +118,23 @@ const Login = ({ navigation }) => {       // 화면 이동을 위해 매개변�
                     <Text style={styles.forgotButton}>비밀번호 찾기</Text>
                 </TouchableOpacity>
             </View>
-            
             <TouchableOpacity
                 style={styles.loginBtn}
                 onPress={() => login()}
             >
                 <Text style={styles.whiteColor}>로그인</Text>
             </TouchableOpacity>
+
+            <View style={{width:'60%', borderBottomWidth:2, height:'3%', borderColor:'gray'}}></View>
+
+            <TouchableOpacity
+                style={styles.kakaobt}
+                onPress={() => navigation.navigate("Kakao")}
+            >
+                <Image style={{ resizeMode: "cover", width: '20%', height: '80%', }} source={{ uri: "https://play-lh.googleusercontent.com/Ob9Ys8yKMeyKzZvl3cB9JNSTui1lJwjSKD60IVYnlvU2DsahysGENJE-txiRIW9_72Vd" }}></Image>
+                <Text style={{color:'#3B1C1C', fontWeight:'bold'}}>  카카오톡으로 회원가입</Text>
+            </TouchableOpacity>
+
         </View>
     );
 };
@@ -140,17 +145,21 @@ const styles = StyleSheet.create({
         backgroundColor: "#EBE3D7",
         alignItems: "center",
         justifyContent: "center",
+        width:Dimensions.get('window').width ,
+        height:Dimensions.get('window').height ,
     },
-    image: {
-        marginBottom: 40,
+    touchable:{
+        justifyContent: 'center', 
+        alignItems: 'center',
+        width:Dimensions.get('window').width ,
     },
     inputView: {
-        backgroundColor: "#ffc0cb",
+        backgroundColor: "#FFAF9B",
         borderRadius: 30,
-        width: "70%",
         height: 45,
         marginBottom: 20,
         alignItems: "center",
+        width:'70%'
     },
     textInput: {
         height: 50,
@@ -163,16 +172,25 @@ const styles = StyleSheet.create({
         marginBottom: 30
     },
     loginBtn: {
-        width: "50%",
+        width: "45%",
         borderRadius: 25,
         height: 50,
         alignItems: "center",
         justifyContent: "center",
-        marginTop: 40,
-        backgroundColor: "#ff1493",
+        backgroundColor: "#E8B190",
     },
     whiteColor: {
         color: "#ffffff"
+    },
+    kakaobt:{
+        backgroundColor:'#F9E000', 
+        width:'50%', 
+        marginTop:20, 
+        height:'6%',
+        justifyContent:'center',
+        alignItems:'center',
+        flexDirection:'row',
+        borderRadius:10
     }
 });
 

@@ -1,14 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import MapView, { Marker, Circle, Callout, PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, { Marker, Circle, Callout } from 'react-native-maps';
 import { View, StyleSheet, Text, Dimensions, Button, Alert, Modal, Pressable, Image, TextInput, Keyboard, KeyboardAvoidingView } from 'react-native';
 import * as Location from 'expo-location';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 //npm i react-native-gesture-handler
-import ServerPort from '../../Components/ServerPort';
-
-//로그인 유지
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import StarRating from 'react-native-star-rating-widget';
 //expo install react-native-svg
@@ -16,7 +12,6 @@ import StarRating from 'react-native-star-rating-widget';
 
 //이미지 업로드
 import * as ImagePicker from 'expo-image-picker';
-import { set } from 'react-native-reanimated';
 
 
 const initialRegion = {
@@ -48,32 +43,6 @@ const Write = ({ navigation, route }) => {
   const [okReivew, setOkReview] = useState("");
 
   const [id, setId] = React.useState();
-
-  const IP = ServerPort();
-  
-
-  
-
-  useEffect(() => {
-    if (route.params === undefined){
-      console.log('params 없음')
-    }else{
-      setImgUri(route.params.info[2])
-      setRegion({
-        latitude: route.params.info[0],
-        longitude: route.params.info[1],
-        latitudeDelta: 0.02,
-        longitudeDelta: 0.02,
-      })
-      setmapRegion({
-        latitude: route.params.info[0],
-        longitude: route.params.info[1],
-        latitudeDelta: 0.02,
-        longitudeDelta: 0.02,
-      })
-    }
-  }, [])
-
   useEffect(() => {
 
     (async () => {
@@ -87,7 +56,6 @@ const Write = ({ navigation, route }) => {
 
       // id 가져오기
       const value = await AsyncStorage.getItem("id");
-      console.log("id-------------------",value);
       if (value!=null){
         setId(value)
       }
@@ -144,7 +112,7 @@ const Write = ({ navigation, route }) => {
 
     await axios({
         method: 'post',
-        url: `${IP}/upload`,
+        url: 'http://192.168.2.77:5000/upload',
         headers: {
             'content-type': 'multipart/form-data',
         },
@@ -207,9 +175,9 @@ const Write = ({ navigation, route }) => {
         console.log('왕')
 
         // 서버에 값 보내기
-        axios.post(`${IP}/review/register`, null, {
+        axios.post("http://192.168.2.94:5000/review/register", null, {
           params: {
-            id: id, //async
+            id: "user4", //async
             vContent:text,
             latitude: region.latitude.toFixed(10),
             longitude: region.longitude.toFixed(10),
@@ -220,7 +188,6 @@ const Write = ({ navigation, route }) => {
         })
           .then(function (res) {
             console.log("resgister", res.data);
-            console.log(id);
             if (res.data){
               Alert.alert("등록되었습니다")
               navigation.push('Review')
@@ -244,7 +211,6 @@ const Write = ({ navigation, route }) => {
           style={{ alignSelf: 'stretch', height: '100%' }}
           region={mapRegion}
           ref={mapRef}
-          provider={PROVIDER_GOOGLE}
           onRegionChange={mapRegionChangehandle}
           //사용자 위치에 맞게 마커가 표시된다.
           showsUserLocation={true}

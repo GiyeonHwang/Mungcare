@@ -155,7 +155,8 @@ export default function MyPage({navigation}) {
                             onPress={() =>{
                                 navigation.navigate("MyPoint", {
                                     point: point,
-                                    id: id
+                                    id: id,
+                                    mypageInfo: mypageInfo
                                 })
                             }} 
                         />

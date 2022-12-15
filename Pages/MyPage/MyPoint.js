@@ -48,7 +48,7 @@ export default function AnimalDetail({ navigation, route }) {
         .catch(function (error) {
             console.log(error)
         })
-
+        route.params.mypageInfo();
     }, []);
 
 

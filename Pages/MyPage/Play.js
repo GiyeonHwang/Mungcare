@@ -4,22 +4,17 @@ import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image } from '
 import { Camera } from 'expo-camera';
 import ServerPort from '../../Components/ServerPort';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 export default function Play({ navigation }) {
     const [id, setId] = React.useState(""); // 아이디
-
     const [modalVisible, setModalVisible] = React.useState(true); //산책 전 안내사항
     const [finalModal, setFinalModal] = React.useState(false); // 산책 완료 모달
-
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [camera, setCamera] = useState(null);
     const [image, setImage] = useState(null);
     const [type, setType] = useState(Camera.Constants.Type.back);
-
     //아마존에 올린 사진 링크
     const [imgUri, setImgUri] = React.useState();
     const IP = ServerPort();
-
     // 로그인 유지
     const getId = async () =>{
         try {
@@ -33,8 +28,6 @@ export default function Play({ navigation }) {
             console.log("not session... ", e);
         }
     }
-
-
     useEffect(() => {
         (async () => {
             const cameraStatus = await Camera.requestCameraPermissionsAsync();
@@ -43,7 +36,6 @@ export default function Play({ navigation }) {
             console.log("----------id: ",id);
         })();
     }, []);
-
     const takePicture = async () => {
         if (camera) {
           const data = await camera.takePictureAsync(null)
@@ -56,15 +48,10 @@ export default function Play({ navigation }) {
         }
       }
     
-
     if (hasCameraPermission === false) {
         return <Text>No access to camera</Text>;
     }
-
-
-
     const uploadImage = async (img) => {
-
         const filename = img.split('/').pop();
         const match = /\.(\w+)$/.exec(filename ?? '');
         const type = match ? `image/${match[1]}` : `image`;
@@ -114,11 +101,8 @@ export default function Play({ navigation }) {
             Alert.alert("저장에 실패하였습니다")
           })
       }
-
     return (
         <View style={styles.container}>
-
-
             <View style={{ alignContent: 'center', justifyContent: 'center' }}>
                 {/* 안내사항 모달 */}
                 <Modal
@@ -153,7 +137,6 @@ export default function Play({ navigation }) {
                                     <Text style={{ fontSize: 18 }}>사진이 없다면 데이터베이스에 저장되지 않습니다.. </Text>
                                 </View>
                             </View>
-
                             <View style={{ flexDirection: 'row', padding: 10 }}>
                                 <Pressable
                                     style={[styles.button, styles.buttonClose]}
@@ -166,7 +149,6 @@ export default function Play({ navigation }) {
                         </View>
                     </View>
                 </Modal>
-
                 {/* 사진 찍은 후 확인 모달 */}
                 <Modal
                     animationType="slide"
@@ -176,10 +158,8 @@ export default function Play({ navigation }) {
                         Alert.alert('Modal has been closed.');
                         setFinalModal(!finalModal);
                     }}>
-
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-
                             <View style={{ padding: 10, justifyContent: 'center' }}>
                                 <View style={{ borderBottomWidth: 1, width: '100%', }}>
                                     <Text style={{ fontSize: 30 }}>놀기 완료!</Text>
@@ -201,7 +181,6 @@ export default function Play({ navigation }) {
                                 <Pressable
                                     style={[styles.button, styles.buttonClose]}
                                     onPress={() => {
-
                                         setFinalModal(!finalModal)
                                         // 이미지 업로드 및 서버에 전송
                                         sendServer()
@@ -212,14 +191,7 @@ export default function Play({ navigation }) {
                         </View>
                     </View>
                 </Modal>
-
             </View>
-
-
-
-
-
-
             <View style={styles.centeredView}>
                 <View style={styles.cameraContainer}>
                     <View style={{ padding: 10, backgroundColor: '#F7931D', height: '90%' }}>
@@ -278,7 +250,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-
     },
     cameraContainer: {
         flex: 1,

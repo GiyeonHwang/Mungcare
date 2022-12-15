@@ -147,34 +147,6 @@ export default function DonateDetail({ navigation, route }) {
         }
     }
 
-    // 상세 정보 가져오기
-    const [deData, setDeData] = React.useState();
-
-    // const save = async () => {
-    //     try {
-    //         await AsyncStorage.setItem('key', 'value');
-    //         await AsyncStorage.setItem('info', JSON.stringify(info)); // 객체 형태 저장
-    //     } catch (e) {
-    //         // 오류 예외 처리
-    //     }
-    // }
-
-    // React.useEffect(() => {
-    //     axios.post("http://192.168.2.94:5000/board/detailView", null, {
-    //         params: {
-    //             bNo: "13"//게시글 번호 13번 정보 요청합니다.
-    //         }
-    //     })
-    //         .then(function (res) {
-    //             console.log("나는 res: ", res);
-    //             console.log("호는 res.data: ", res.data);
-    //             setDeData(res.data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log("게시글 상세 가져오기 실패: ", error);
-    //         })
-    // }, []);
-
     //삭제하기
     const DeleteAction = () => {
         axios.post(`${IP}/board/remove`, null, {

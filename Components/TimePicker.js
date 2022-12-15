@@ -226,7 +226,7 @@ const OverlayView = () => {
         <GapView />
         <View style={styles.overlayVisibleViewInner} />
         <GapView>
-          <Text style={{ position: 'absolute', textAlign: 'center' }}>
+          <Text style={{ position: 'absolute', textAlign: 'center',fontSize:30,fontWeight:"bold",color:"gray" }}>
             {':'}
           </Text>
         </GapView>
