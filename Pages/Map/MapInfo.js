@@ -334,20 +334,24 @@ const MapInfo = (navigation) => {
                   data && data.map((e, idx) => {
                     return (
                       <View key={idx} style={{ padding: 5, flexDirection: 'row' }}>
+                        <TouchableOpacity onPress={() => onDetail(e.latitude, e.longitude)}>
                         <View style={{ width: '75%', padding: 10 }}>
                           <Text style={{ fontSize: 20, marginBottom: 7, fontWeight: 'bold' }}>{e.name}</Text>
                           <Text style={{ fontSize: 17 }}>{e.address}</Text>
                         </View>
+                        </TouchableOpacity>
                         <View style={{ width: '25%', alignItems: 'center', justifyContent: 'center' }}>
-
-                          <TouchableOpacity
-                            style={{ alignItems: 'center', backgroundColor: '#FFEC9E', borderRadius: 20, width: '80%', justifyContent: 'center' }}
-                            onPress={() => { Linking.openURL(`tel:${e.tell}`) }}
-                          >
-                            <Image source={tell} style={styles.image} />
-                            <Text style={{ fontSize: 5 }}></Text>
-                          </TouchableOpacity>
-                          <Text style={{ fontSize: 10 }}>{e.tell}</Text>
+                        {
+                            e.tell == "" ? null :
+                              <TouchableOpacity
+                                style={{ alignItems: 'center', backgroundColor: '#FFEC9E', borderRadius: 20, width: '80%', justifyContent: 'center' }}
+                                onPress={() => { Linking.openURL(`tel:${e.tell}`) }}
+                              >
+                                <Image source={tell} style={styles.image} />
+                                <Text style={{ fontSize: 5 }}></Text>
+                              </TouchableOpacity>
+                        }
+                              <Text style={{ fontSize: 10 }}>{e.tell}</Text>
                         </View>
                       </View>
                     )

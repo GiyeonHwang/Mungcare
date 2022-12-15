@@ -137,7 +137,6 @@ import FreeBoardDetail from './Pages/Boards/FreeBoard/FreeBoardDetail';
 import FreeBoardMain from './Pages/Boards/FreeBoard/FreeBoardMain';
 import CalenderMain from './Pages/Calender/CalenderMain';
 import Main from './Pages/Main/Main';
-import MainMenu from './Pages/Main/MainMenu';
 import Walk from './Pages/Map/Walk';
 import WalkTogether from './Pages/Map/WalkTogether';
 import MyPage from './Pages/MyPage/MyPage';

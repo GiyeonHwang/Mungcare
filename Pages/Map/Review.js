@@ -12,8 +12,6 @@ import StarRating from 'react-native-star-rating-widget';
 
 // 더보기 눌렀을 때 수정 삭제 tooltip
 import Tooltip from "react-native-walkthrough-tooltip";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 const initialRegion = {
     latitude: 51.1261218,

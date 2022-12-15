@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React from "react";
-import { Text, View, SafeAreaView, StyleSheet, FlatList, TextInput, Button, RefreshControl, Dimensions, Alert, ScrollView, TouchableOpacity, Image, ActivityIndicator, Image, ActivityIndicator } from 'react-native';
+import { Text, View, SafeAreaView, StyleSheet, FlatList, TextInput, Button, RefreshControl, Dimensions, Alert, ScrollView, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { useEffect } from 'react';
 import { BackHandler } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
