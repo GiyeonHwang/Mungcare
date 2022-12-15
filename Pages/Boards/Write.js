@@ -104,9 +104,9 @@ export default function Write({ navigation }) {
     if (result.canceled) {
       return null;
     }
-
+    //내가 가진 파일의 주소
     const localUri = result.assets[0].uri;
-
+    
     const filename = localUri.split('/').pop();
     const match = /\.(\w+)$/.exec(filename ?? '');
     const type = match ? `image/${match[1]}` : `image`;

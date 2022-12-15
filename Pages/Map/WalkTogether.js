@@ -95,6 +95,11 @@ export default function WalkTogether({ navigation, route }) {
   //에니메이션으로 이동
   const mapRef = React.useRef(null);
 
+  let timer; //interval..............
+  function setCheck1() {
+    setCheckInterval(true)
+  }
+
   // 현재 위치를 가져와야함
   // 로딩되는데 시간이 좀 걸린다ㅏ
   useEffect(() => {
@@ -113,14 +118,7 @@ export default function WalkTogether({ navigation, route }) {
       let location = await Location.getCurrentPositionAsync({});
       console.log(location);
 
-      await reqAxios(value)
-
-      var interval = setInterval(() => reqAxios(value), 15000);
-
-      if(checkInterval) {
-        console.log("==============================clearInterval",checkInterval)
-        clearInterval(interval);
-      }
+      await reqAxios();
 
       setLatit(location.coords.latitude)
       setLong(location.coords.longitude)
@@ -135,9 +133,10 @@ export default function WalkTogether({ navigation, route }) {
    connect()
   }, []);
 
-  const reqAxios = (id) => {
+  const reqAxios = async () => {
     //서버에 같이 산책하기를 누름을 보냄
     console.log("id========================",id);
+    console.log("checkInterval====================", checkInterval)
     axios.post(`${IP}/walk/register`, null, {
       params: {
         id: id,
@@ -167,7 +166,6 @@ export default function WalkTogether({ navigation, route }) {
       .catch(function (error) {
         console.log(error)
       })
-
   }
 
   const sendInput = () => {
@@ -222,8 +220,8 @@ export default function WalkTogether({ navigation, route }) {
   }
   const onMessageReceived = async (payload) => { // /chatroom/public으로부터 받는 메시지를 처리하는 함수.
     var payloadData = JSON.parse(payload.body); // payloadData가 해당 JSON을 파싱받아 저장된다.
-    // console.log("payloadData------------------", payloadData.receiverName);
-
+     console.log("payloadData : ", payloadData.receiverName);
+  //   reqAxios();
     const list = payloadData.receiverName;
 
     // const id = await AsyncStorage.getItem('id');
@@ -349,6 +347,7 @@ export default function WalkTogether({ navigation, route }) {
   }
 
   const sendServer = () => {
+    setCheck1()
     console.log("sendServer")
     console.log('imgUri', imgUri);
     const date = new Date();
@@ -382,6 +381,7 @@ export default function WalkTogether({ navigation, route }) {
   }
 
   const walkEnd = () => {
+    setCheck1()
     console.log("walkEnd")
     axios.post(`${IP}/walk/end`, null, {
 
