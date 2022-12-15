@@ -1,4 +1,4 @@
 export default function ServerPort()
 {
-    return "http://192.168.2.94:5000";
+    return "http://54.180.138.28:5000";
 }

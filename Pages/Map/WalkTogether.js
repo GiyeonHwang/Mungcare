@@ -95,10 +95,15 @@ export default function WalkTogether({ navigation, route }) {
   //에니메이션으로 이동
   const mapRef = React.useRef(null);
 
+  let timer; //interval..............
+  function setCheck1() {
+    setCheckInterval(true)
+  }
+
   // 현재 위치를 가져와야함
   // 로딩되는데 시간이 좀 걸린다ㅏ
   useEffect(() => {
-
+    
     (async () => {
       //위치 수집 허용하는지 물어보기
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -115,12 +120,8 @@ export default function WalkTogether({ navigation, route }) {
 
       await reqAxios(value)
 
-      var interval = setInterval(() => reqAxios(value), 15000);
-
-      if(checkInterval) {
-        console.log("==============================clearInterval",checkInterval)
-        clearInterval(interval);
-      }
+      // startInterval(value)
+      timer = setInterval(() => reqAxios(value), 15000);
 
       setLatit(location.coords.latitude)
       setLong(location.coords.longitude)
@@ -131,13 +132,15 @@ export default function WalkTogether({ navigation, route }) {
         latitudeDelta: 0.005, //확대되는 범위
         longitudeDelta: 0.005, //확대되는 범위
       })
+      console.log("====================useEffect")
     })();
    connect()
-  }, []);
+  }, [check]);
 
   const reqAxios = (id) => {
     //서버에 같이 산책하기를 누름을 보냄
     console.log("id========================",id);
+    console.log("checkInterval====================", checkInterval)
     axios.post(`${IP}/walk/register`, null, {
       params: {
         id: id,
@@ -167,7 +170,10 @@ export default function WalkTogether({ navigation, route }) {
       .catch(function (error) {
         console.log(error)
       })
-
+      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~checkInterval: ",checkInterval)
+        if(checkInterval) {
+          clearInterval(timer)
+        }
   }
 
   const sendInput = () => {
@@ -349,6 +355,7 @@ export default function WalkTogether({ navigation, route }) {
   }
 
   const sendServer = () => {
+    setCheck1()
     console.log("sendServer")
     console.log('imgUri', imgUri);
     const date = new Date();
@@ -382,6 +389,7 @@ export default function WalkTogether({ navigation, route }) {
   }
 
   const walkEnd = () => {
+    setCheck1()
     console.log("walkEnd")
     axios.post(`${IP}/walk/end`, null, {
 
@@ -526,7 +534,7 @@ export default function WalkTogether({ navigation, route }) {
                     style={[styles.buttonOpen, {backgroundColor:'#fe561d'}]}
                     onPress={() => {
                       setDragModal(!dragModal)
-                      setClick(false)
+                      setClick(click => {return false;})
                     }}>
                     <Text style={styles.textStyle}>확인</Text>
                   </Pressable>

@@ -11,7 +11,6 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
-const IP = ServerPort();
 
 export default function Join(navigation) {
 
@@ -122,7 +121,7 @@ export default function Join(navigation) {
     setErrorMessage(
       validateId(changedId) ? "올바른 아이디 형식입니다." : "이메일 형식을 확인해주세요."
     );
-    setOkId(validateId(changedId));
+    setOkId(false);
   };
 
   //비밀번호 핸들러
@@ -161,12 +160,12 @@ export default function Join(navigation) {
     setErrorMessageNickname(
       validateNickname(changedNickname) ? "올바른 닉네임 형식입니다." : "2~20자리 특수문자 제외"
     );
-    setOkNickname(validateNickname(changedNickname));
+    setOkNickname(false);
   }
 
   //전화번호 핸들러
-  const handlePhoneChange = (phone) => {
-    const changedPhone = autoHyphen(phone);
+  const handlePhoneChange = (콜) => {
+    const changedPhone = autoHyphen(콜);
     setPhone(changedPhone);
     setErrorMessagePhone(
       validatePhone(changedPhone) ? "올바른 휴대전화 번호입니다" : "올바른 휴대전화 번호가 아닙니다."
@@ -202,10 +201,55 @@ export default function Join(navigation) {
       })
   }
 
+  function checkEmail(){
+    axios.post(`${IP}/member/checkEmail`,null,{
+      params:{
+        id : id
+      }
+    })
+    .then(res =>{
+      if(res.data == true){
+        Alert.alert("해당 아이디는 사용하실 수 없습니다.")
+      }
+      else{
+        Alert.alert("해당 아이디는 사용 가능합니다.")
+        setOkId(true)
+      }
+    })
+  }
+
+  function checkNickname(){
+    axios.post(`${IP}/member/checkNickname`,null,{
+      params:{
+        nickname : nickname
+      }
+    })
+    .then(res =>{
+      if(res.data == true){
+        Alert.alert("해당 닉네임은 사용하실 수 없습니다.")
+      }
+      else{
+        Alert.alert("해당 닉네임은 사용 가능합니다.")
+        setOkNickname(true)
+      }
+    })
+  }
+
   return (
     <SafeAreaView style={styles.box}>
       <ScrollView>
-        <Text style={styles.text}>아이디</Text>
+          <View style = {styles.overlapContainer}>
+              <Text style={styles.text}>아이디</Text>
+              <TouchableOpacity
+              disabled = {!validateId(id)}
+              style = {styles.overlapButton} 
+              onPress = {() => checkEmail()}
+              >
+                  <Text style = {styles.overlapButtonText}>
+                  중복확인  
+                  </Text>
+              </TouchableOpacity>
+          </View>
         <TextInput
           style={styles.input}
           onChangeText={handleIdChange}
@@ -239,7 +283,18 @@ export default function Join(navigation) {
           placeholder="이름 입력"
         />
         <Text style={styles.text}>{errorMessageName}</Text>
-        <Text style={styles.text}>닉네임</Text>
+        <View style = {styles.overlapContainer}>
+          <Text style={styles.text}>닉네임</Text>
+          <TouchableOpacity
+          disabled = {!validateNickname(nickname)}
+          style = {styles.overlapButton} 
+          onPress = {() => checkNickname()}
+          >
+              <Text style = {styles.overlapButtonText}>
+              중복확인  
+              </Text>
+          </TouchableOpacity>
+        </View>
         <TextInput
           style={styles.input}
           onChangeText={handleNicknameChange}
@@ -340,6 +395,25 @@ const styles = StyleSheet.create({
     marginTop: "5%",
     marginHorizontal: "5%",
     marginBottom: "5%"
-  }
+  },
+  overlapContainer : {
+    flexDirection: 'row' ,
+    justifyContent: 'flex-start' , 
+    height : '5%'
+  },
+  overlapButton: {
+      height : "100%",
+      width : "15%",
+      borderRadius : 15,
+      backgroundColor : "#3AB5A9",
+      alignItems : 'center',
+      justifyContent : 'center',
+      marginLeft : "3%"
+  },
+  overlapButtonText : {
+      color : '#fff',
+      fontWeight : 'bold',
+      textAlign: 'center',
+  },
 
 });

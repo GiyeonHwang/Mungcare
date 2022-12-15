@@ -556,7 +556,8 @@ export default function Walk({ navigation }) {
                     }} onPress={() => navigation.navigate("WalkTogether", {
                       info: [lat, long, data[0].aname],
                       title: "title",
-                      setStart: setStart
+                      setStart: setStart,
+                      id: id
                     })}>
                       <Text>같이 산책하기</Text>
                     </Pressable></>

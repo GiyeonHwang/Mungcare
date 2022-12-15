@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from "react";
 import { Text, View , SafeAreaView, StyleSheet, TextInput , Button, Alert, Image, ProgressBar, ProgressBarAndroid, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
+import ServerPort from '../../Components/ServerPort';
 
 // import { Text, View, Button } from "react-native";
 
@@ -31,13 +32,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Ranking({ navigation }){
+  const IP = ServerPort();
   // ranking정보 가져오기
     const [rdata, setRdata] = React.useState([]);
     const aneut = rdata.length !=0?rdata[0].animalList[0].aneut:null
 
     React.useEffect(()=>{
       const setData = async () => {
-        await axios.post("http://192.168.2.94:5000/point/ranking", null, {
+        await axios.post(`${IP}/point/ranking`, null, {
           
       })
           .then(function (res) {

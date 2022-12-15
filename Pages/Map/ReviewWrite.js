@@ -7,6 +7,9 @@ import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handl
 //npm i react-native-gesture-handler
 import ServerPort from '../../Components/ServerPort';
 
+//로그인 유지
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import StarRating from 'react-native-star-rating-widget';
 //expo install react-native-svg
 //npm i react-native-star-rating-widget
@@ -60,6 +63,7 @@ const Write = ({ navigation, route }) => {
 
       // id 가져오기
       const value = await AsyncStorage.getItem("id");
+      console.log("id-------------------",value);
       if (value!=null){
         setId(value)
       }
@@ -181,7 +185,7 @@ const Write = ({ navigation, route }) => {
         // 서버에 값 보내기
         axios.post(`${IP}/review/register`, null, {
           params: {
-            id: "user4", //async
+            id: id, //async
             vContent:text,
             latitude: region.latitude.toFixed(10),
             longitude: region.longitude.toFixed(10),
@@ -192,6 +196,7 @@ const Write = ({ navigation, route }) => {
         })
           .then(function (res) {
             console.log("resgister", res.data);
+            console.log(id);
             if (res.data){
               Alert.alert("등록되었습니다")
               navigation.push('Review')
