@@ -109,7 +109,7 @@ export default function AddAnimal({ navigation, route}) {
 
     //종류
     const validateBreed = aBreed => {
-        const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|1-15|]{1,20}$/;
+        const regex = /^[가-힣|a-z|A-Z|1-15|]{1,20}$/;
         return regex.test(aBreed);
     }
 

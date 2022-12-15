@@ -1,8 +1,7 @@
 {
   "expo": {
-    "name": "DriveDrive",
-    "slug": "DriveDrive",
-
+    "name": "멍케어",
+    "slug": "mung-care",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/mung.jpg",
@@ -23,12 +22,20 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "foregroundImage": "./assets/images/mung.jpg",
+        "backgroundColor": "#FFFFFF",
+        "versionCode": 1,
+        "permissions": []
+      },
+      "package": "com.giyeonhwang.mungcare"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "7d9ffba5-bddd-4b16-9740-f6ef1f698612"
+      }
     }
   }
 }

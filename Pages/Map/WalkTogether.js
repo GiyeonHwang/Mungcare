@@ -100,6 +100,11 @@ export default function WalkTogether({ navigation, route }) {
     setCheckInterval(true)
   }
 
+  let timer; //interval..............
+  function setCheck1() {
+    setCheckInterval(true)
+  }
+
   // 현재 위치를 가져와야함
   // 로딩되는데 시간이 좀 걸린다ㅏ
   useEffect(() => {
@@ -118,10 +123,7 @@ export default function WalkTogether({ navigation, route }) {
       let location = await Location.getCurrentPositionAsync({});
       console.log(location);
 
-      await reqAxios(value)
-
-      // startInterval(value)
-      timer = setInterval(() => reqAxios(value), 15000);
+      await reqAxios();
 
       setLatit(location.coords.latitude)
       setLong(location.coords.longitude)
@@ -137,7 +139,7 @@ export default function WalkTogether({ navigation, route }) {
    connect()
   }, [check]);
 
-  const reqAxios = (id) => {
+  const reqAxios = async () => {
     //서버에 같이 산책하기를 누름을 보냄
     console.log("id========================",id);
     console.log("checkInterval====================", checkInterval)
@@ -170,10 +172,6 @@ export default function WalkTogether({ navigation, route }) {
       .catch(function (error) {
         console.log(error)
       })
-      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~checkInterval: ",checkInterval)
-        if(checkInterval) {
-          clearInterval(timer)
-        }
   }
 
   const sendInput = () => {
@@ -228,8 +226,8 @@ export default function WalkTogether({ navigation, route }) {
   }
   const onMessageReceived = async (payload) => { // /chatroom/public으로부터 받는 메시지를 처리하는 함수.
     var payloadData = JSON.parse(payload.body); // payloadData가 해당 JSON을 파싱받아 저장된다.
-    // console.log("payloadData------------------", payloadData.receiverName);
-
+     console.log("payloadData : ", payloadData.receiverName);
+  //   reqAxios();
     const list = payloadData.receiverName;
 
     // const id = await AsyncStorage.getItem('id');

@@ -48,7 +48,7 @@ import MyPageModify from '../Pages/MyPage/MyPageModify';
 import FreeView from './FreeView';
 import ModifyBoard from './ModifyBoard';
 import MapInfo from '../Pages/Map/MapInfo';
-import ChangePw from "../Pages/MyPage/ChangePw";
+import ChangePw from '../Pages/MyPage/ChangePw';
 
 const Tab = createBottomTabNavigator();
 
@@ -157,7 +157,6 @@ const MainStackScreen = ({ navigation }) => {
       {/* 놀기 */}
       <MainStack.Screen name="Play" component={Play}/> 
       <MainStack.Screen name="MyPoint" component={MyPoint}/>
-
       <MainStack.Screen name="Food" component={Food} />
       <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail}
       options={{
