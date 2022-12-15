@@ -11,6 +11,7 @@ import { useRoute } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useIsFocused } from '@react-navigation/native';
 import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import ServerPort from '../../Components/ServerPort';
 
 //날씨 api키
@@ -40,6 +41,8 @@ export default function Main({ navigation }) {
   //날씨
   const [weather,setWeather] = React.useState("");
   const [address, setAddress] = React.useState("");
+  const [id,setId] = React.useState("");
+  const [data, setData] = React.useState(); //애완동물 리스트 확인
 
   const selectList = () => {
     axios.post(`${IP}/board/search`, null, {
@@ -84,6 +87,7 @@ export default function Main({ navigation }) {
       const res = await response.json()
       console.log(res)
       setWeather(res)
+      await info()
     })();
   },[])
 
@@ -110,6 +114,39 @@ export default function Main({ navigation }) {
       return () => backHandler.remove();
 
     }, []))
+
+    const info = async () => {
+
+      const ID = await load();
+      // 서버에 요청
+      // 애완동물 목록 불러오기
+      console.log("ID : " , ID);
+      axios.post(`${IP}/animal/list`, null, {
+          params: {
+              id: ID //sessionStorage에 있는 id값
+          }
+      })
+          .then(res => {
+              console.log(res.data);
+              setData(res.data);
+          })
+          .catch(function (error) {
+              console.log("AnimallList DB연동 실패,,,,",error);
+          })
+  }
+
+  const load = async () => {
+    try{
+        const id = await AsyncStorage.getItem('id');
+        console.log(id);
+        setId(id);
+        return id;
+    }
+    catch(e)
+    {
+        console.log("로드 에러" , e);
+    }
+}
 
   return (
     <SafeAreaView>
@@ -180,7 +217,9 @@ export default function Main({ navigation }) {
             {/* 산책하기 */}
             <TouchableOpacity 
                 style={styles.walkview}
-                onPress={() => navigation.navigate('Walk')}
+                onPress={() => {
+                  data[0] != null ? navigation.navigate('Walk') : Alert.alert("애완동물을 등록해주세요!")
+                }}
               >
               <View style={{ width: '100%', height: '100%', }}>
                 <Image style={styles.icon} source={require('../../assets/images/main/Walk.png')}></Image>

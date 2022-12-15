@@ -79,6 +79,7 @@ const CalendarMain = (navigation) => {
                       <Text>시작 시간:  {res.data[j].cstartTime}</Text>
                       <Text>종료 시간: {res.data[j].cendTime}</Text>
                       <Text>총 산책 시간: {res.data[j].cwalkTime}</Text>
+                      <Text>메모: {res.data[j].memo === null ? <Text>-</Text> : res.data[j].memo}</Text>
                       <Text>날짜: {res.data[j].cdate}</Text>
                       <Text>{res.data[j].cphoto === null ? <Text>사진 없음</Text> : <View style={{borderWidth: 1,}}><Image source={{uri : res.data[j].cphoto}} style = {{ width: 200 , height: 300}}/></View>}</Text>
                       
