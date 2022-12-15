@@ -159,6 +159,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { createStackNavigator } from "@react-navigation/stack";
+import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
 
 const Stack = createStackNavigator();
 const LoginStack = createStackNavigator();
@@ -190,8 +192,55 @@ const Auth = () => {
   );
 };
 
+//알람 권한 검사 및 채널 생성
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
+
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      sound: true,
+      lightColor: "#FF231F7C",
+      lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
+      bypassDnd: true,
+    });
+  }
+
+  return token;
+}
+
+
 
 export default function App() {
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: true,
+    }),
+  });
+
+  registerForPushNotificationsAsync();
   return (
     <NavigationContainer>
     <Stack.Navigator initialRouteName="SplashScreen">
