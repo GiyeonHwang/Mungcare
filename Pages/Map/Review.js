@@ -12,6 +12,7 @@ import StarRating from 'react-native-star-rating-widget';
 
 // 더보기 눌렀을 때 수정 삭제 tooltip
 import Tooltip from "react-native-walkthrough-tooltip";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const initialRegion = {
@@ -49,7 +50,7 @@ const WalkReview = ({ navigation, route }) => {
     const [tiplist, setTipList] = React.useState();
     const [check, setcheck] = React.useState(false);
 
-    const [showTip, setTip] = React.useState(false);
+
 
     //검색
     const [search, setSearch] = React.useState();
@@ -197,14 +198,14 @@ const WalkReview = ({ navigation, route }) => {
         setmapRegion({ // 현재 위치
             latitude: lat,
             longitude: lon,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005
+            latitudeDelta: 0.007,
+            longitudeDelta: 0.007
         })
         mapRef.current.animateToRegion({ // 해당 위치로 지도 이동
             latitude: lat,
             longitude: lon,
-            latitudeDelta: 0.005,
-            longitudeDelta: 0.005
+            latitudeDelta: 0.007,
+            longitudeDelta: 0.007
         }, 3 * 1000);
 
         request(lat, lon)

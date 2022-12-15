@@ -1,7 +1,7 @@
 import axios from 'axios';
-import React from "react";
+import React, { useEffect } from "react";
 
-import { Text, View, SafeAreaView, StyleSheet, TextInput, Button, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, SafeAreaView, StyleSheet, TextInput, Button, Alert, TouchableOpacity, ScrollView, Dimensions, Image } from 'react-native';
 import Postcode from '@actbase/react-daum-postcode';
 import Modal from "react-native-modal";
 import ServerPort from '../../Components/ServerPort';
@@ -10,9 +10,10 @@ import ServerPort from '../../Components/ServerPort';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { RotateInUpLeft } from 'react-native-reanimated';
 const Stack = createStackNavigator();
 
-export default function Join(navigation) {
+export default function Join({navigation, route}) {
 
   const IP = ServerPort();
 
@@ -50,6 +51,16 @@ export default function Join(navigation) {
   const [errorMessageNickname, setErrorMessageNickname] = React.useState(""); // nickname 
   const [errorMessagePhone, setErrorMessagePhone] = React.useState(""); // phone
   const [errorMessageDetail, setErrorMessageDetail] = React.useState("");
+
+  
+  React.useEffect(() => {
+    if (route.params === undefined) {
+      console.log('params 없음')
+    } else {
+      setId(route.params.info[0])
+      setNickname(route.params.info[1])
+    }
+  }, [])
 
 
   const regiButton = () => {
@@ -237,6 +248,12 @@ export default function Join(navigation) {
 
   return (
     <SafeAreaView style={styles.box}>
+      <View style={{width:'100%', height:'8%', justifyContent:'center',  alignItems:'center', marginBottom:10, flexDirection:'row',  }}>
+        
+        <Text style={{fontSize:25}}>회원가입</Text>
+        <View></View>
+      </View>
+
       <ScrollView>
           <View style = {styles.overlapContainer}>
               <Text style={styles.text}>아이디</Text>
@@ -377,8 +394,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: "15%",
     // marginHorizontal: 61,
-
-
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
   },
   input: {
     borderRadius: 8,

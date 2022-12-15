@@ -9,7 +9,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { asPickerFormat } from '../../Components/utils';
 import { BUTTON_HEIGHT, VIEW_WIDTH } from '../../Components/values';
 import TimePicker from '../../Components/TimePicker';
-import Alarm from 'react-native-alarm-manager';
 //navigation사용할 때 필요
 import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";

@@ -22,6 +22,7 @@ import CalenderMain from '../Pages/Calender/CalenderMain';
 
 import Walk from '../Pages/Map/Walk';
 import WalkTogether from '../Pages/Map/WalkTogether';
+
 import ReviewWrite from '../Pages/Map/ReviewWrite';
 import Review from '../Pages/Map/Review';
 import ModifyReview from '../Pages/Map/ModifyReview';
@@ -141,6 +142,7 @@ const MainStackScreen = ({ navigation }) => {
       {/*--> 함께하는 공간 자리<--*/}
       <MainStack.Screen name="Walk" component={Walk}/>
       <MainStack.Screen name="WalkTogether" component={WalkTogether}/>
+
       <MainStack.Screen name="ReviewWrite" component={ReviewWrite}/>
       <MainStack.Screen name="Review" component={Review}/>
       <MainStack.Screen name="ModifyReview" component={ModifyReview}/>

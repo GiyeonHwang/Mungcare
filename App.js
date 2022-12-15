@@ -126,6 +126,7 @@ import React, { useState } from "react"
 //join, Login import
 import Join from './Pages/SignUp/Join';
 import Login from './Pages/SignUp/Login';
+import Kakao from './Pages/SignUp/Kakao';
 import AffectDetail from './Pages/Boards/Affect/AffectDetail';
 import AffectMain from './Pages/Boards/Affect/AffectMain';
 import DonateDetail from './Pages/Boards/Donate/DonateDetail';
@@ -136,6 +137,7 @@ import FreeBoardDetail from './Pages/Boards/FreeBoard/FreeBoardDetail';
 import FreeBoardMain from './Pages/Boards/FreeBoard/FreeBoardMain';
 import CalenderMain from './Pages/Calender/CalenderMain';
 import Main from './Pages/Main/Main';
+import MainMenu from './Pages/Main/MainMenu';
 import Walk from './Pages/Map/Walk';
 import WalkTogether from './Pages/Map/WalkTogether';
 import MyPage from './Pages/MyPage/MyPage';
@@ -178,6 +180,11 @@ const Auth = () => {
       <Stack.Screen
         name="ReissuancePw"
         component={ReissuancePw}
+        options={{headerShown: false,tabBarStyle: {display: 'none'}}}
+      />
+      <Stack.Screen
+        name="Kakao"
+        component={Kakao}
         options={{headerShown: false,tabBarStyle: {display: 'none'}}}
       />
     </Stack.Navigator>

@@ -1,12 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import MapView, { Marker, Circle, Callout, AnimatedRegion, Polyline, MarkerAnimated } from 'react-native-maps';
+import MapView, { Marker, Circle, Callout, AnimatedRegion, Polyline, MarkerAnimated,} from 'react-native-maps';
 // npm i react-native-maps
-import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image } from 'react-native';
+import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image,TextInput, Keyboard, KeyboardAvoidingView,  } from 'react-native';
 import * as Location from 'expo-location';
 // npm i expo-location
 import { Camera, Constants } from 'expo-camera';
 //npm install react-native-popup-confirm-toast
+
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 import ServerPort from '../../Components/ServerPort';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -58,6 +60,9 @@ export default function Walk({ navigation }) {
 
   //에니메이션으로 이동
   const mapRef = React.useRef(null);
+
+  //메모
+  const [memo, setMemo] = React.useState(null)
 
   useEffect(() => {
     (async () => {
@@ -207,7 +212,8 @@ export default function Walk({ navigation }) {
 
 
   const uploadImage = async (img) => {
-
+    setFinalModal(true)
+    
     const filename = img.split('/').pop();
     const match = /\.(\w+)$/.exec(filename ?? '');
     const type = match ? `image/${match[1]}` : `image`;
@@ -238,6 +244,7 @@ export default function Walk({ navigation }) {
     const date = new Date();
     const day = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`
     const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+    console.log(memo)
 
     axios.post(`${IP}/calendar/end`, null, {
       params: {
@@ -245,7 +252,7 @@ export default function Walk({ navigation }) {
         cEndTime: time,
         cDate: day,
         cPhoto: imgUri,
-
+        memo:memo
       }
     })
       .then(function (res) {
@@ -258,6 +265,10 @@ export default function Walk({ navigation }) {
       })
   }
 
+
+  const handleMemo = (text) =>{
+    setMemo(text)
+  }
 
   return (
     <View style={styles.container}>
@@ -418,34 +429,39 @@ export default function Walk({ navigation }) {
           }}>
 
           <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-
-              <View style={{ padding: 10, justifyContent: 'center' }}>
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={styles.modalView}>
+              <View style={{justifyContent: 'center' }}>
                 <View style={{ borderBottomWidth: 1, width: '100%', }}>
                   <Text style={{ fontSize: 30 }}>산책 완료!</Text>
                 </View>
               </View>
-              <View style={{ padding: 10 }}>
-                <View style={{ backgroundColor: 'yellow', alignItems: 'center', justifyContent: 'center', height: 350, width: 250 }}>
-                  <Image source={{ uri: image }} style={{ resizeMode: "cover", height: '100%', width: '100%', borderWidth: 2 ,borderColor:'#EBE3D7'}} />
-                </View>
-              </View>
-              <View style={{ padding: 10, alignContent: 'center', justifyContent: 'center' }}>
-                <Text style={{ fontSize: 20 }}></Text>
-                <View style={{ flexDirection: 'row', marginBottom:5 }}>
-                  <View style={{ justifyContent:'center'}}>
-                    <Image style={{ resizeMode: "cover", width: 30, height: 30, }} 
-                    source={{uri:'https://cdn-icons-png.flaticon.com/512/2583/2583179.png'}} />
-                  </View>
-                  <View style={{ justifyContent:'center' ,flexShrink: 1,}}>
-                    <Text style={{fontSize:17}}> 10Point적립 완료!</Text>
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <View style={{ padding: 10 }}>
+                  <View style={{ backgroundColor: 'yellow', alignItems: 'center', justifyContent: 'center',  height: 320, width: 280 }}>
+                    <Image source={{ uri: image }} style={{ resizeMode: "cover", height: '100%', width: '100%', borderWidth: 2, borderColor: '#EBE3D7' }} />
                   </View>
                 </View>
-              </View>
-              <View>
-                <Text style={{ fontSize: 15 }}>*하루에 최대 50Point까지 적립가능합니다</Text>
-              </View>
-              <Text>  </Text>
+                <View style={{ alignContent: 'center', justifyContent: 'center', flexDirection: 'row', marginBottom: 5 }}>
+
+                  <View style={{ justifyContent: 'center' }}>
+                    <Image style={{ resizeMode: "cover", width: 30, height: 30, }}
+                      source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2583/2583179.png' }} />
+                  </View>
+                  <View style={{ justifyContent: 'center', flexShrink: 1, }}>
+                    <Text style={{ fontSize: 17 }}> 10Point적립 완료!</Text>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+              <TextInput
+                style={[styles.textinput, { backgroundColor: 'white', width : '80%', color: 'black' }]}
+                maxLength={50}
+                onChangeText={handleMemo}
+                value={memo}
+                placeholder="메모 내용을 입력해주세요"
+              ></TextInput>
+
+              <Text style={{ fontSize: 15 }}>*하루에 최대 50Point까지 적립가능합니다</Text>
+
               <View style={{ flexDirection: 'row', padding: 10 }}>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
@@ -458,7 +474,7 @@ export default function Walk({ navigation }) {
                   <Text style={styles.textStyle}>확인</Text>
                 </Pressable>
               </View>
-            </View>
+            </KeyboardAvoidingView>
           </View>
         </Modal>
       </View>
@@ -629,6 +645,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 2,
     },
+    width: '80%',
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
@@ -669,5 +686,11 @@ const styles = StyleSheet.create({
     height: 50,
     backgroundColor: "#ff6600",
     borderRadius: 100
-  }
+  },
+  textinput: {
+    padding: 10,
+    borderWidth: 2,
+    borderColor: '#FE7474',
+    borderRadius: 8,
+},
 });
