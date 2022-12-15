@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import MapView, { Marker, Circle, Callout, AnimatedRegion, Polyline, MarkerAnimated } from 'react-native-maps';
+import MapView, { Marker, Circle, Callout, AnimatedRegion, Polyline, MarkerAnimated,PROVIDER_GOOGLE} from 'react-native-maps';
 // npm i react-native-maps
 import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image, Dimensions, TextInput, useRef, Touchable } from 'react-native';
 import * as Location from 'expo-location';
@@ -901,6 +901,7 @@ export default function WalkTogether({ navigation, route }) {
             <MapView
               style={styles.map}
               region={mapRegion}
+              provider={PROVIDER_GOOGLE}
               // initialRegion={mapRegion}
 
               //에니메이션으로 이동

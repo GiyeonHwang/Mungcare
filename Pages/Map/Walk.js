@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import MapView, { Marker, Circle, Callout, AnimatedRegion, Polyline, MarkerAnimated } from 'react-native-maps';
+import MapView, { Marker, Circle, Callout, AnimatedRegion, Polyline, MarkerAnimated,PROVIDER_GOOGLE} from 'react-native-maps';
 // npm i react-native-maps
 import { Text, View, StyleSheet, Button, Alert, Modal, Pressable, Image } from 'react-native';
 import * as Location from 'expo-location';
@@ -475,6 +475,7 @@ export default function Walk({ navigation }) {
               <MapView
                 style={styles.map}
                 region={mapRegion}
+                provider={PROVIDER_GOOGLE}
                 // initialRegion={mapRegion}
                 ref={mapRef}
                 //사용자 위치에 맞게 마커가 표시된다.

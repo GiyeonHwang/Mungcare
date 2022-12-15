@@ -27,7 +27,10 @@
         "versionCode": 1,
         "permissions": []
       },
-      "package": "com.giyeonhwang.mungcare"
+      "package": "com.giyeonhwang.mungcare",
+      "config":{
+        "googleMaps":{"apiKey":""}
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -37,5 +40,6 @@
         "projectId": "7d9ffba5-bddd-4b16-9740-f6ef1f698612"
       }
     }
+    
   }
 }

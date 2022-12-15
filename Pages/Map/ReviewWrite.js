@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import MapView, { Marker, Circle, Callout } from 'react-native-maps';
+import MapView, { Marker, Circle, Callout, PROVIDER_GOOGLE} from 'react-native-maps';
 import { View, StyleSheet, Text, Dimensions, Button, Alert, Modal, Pressable, Image, TextInput, Keyboard, KeyboardAvoidingView } from 'react-native';
 import * as Location from 'expo-location';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -215,6 +215,7 @@ const Write = ({ navigation, route }) => {
           style={{ alignSelf: 'stretch', height: '100%' }}
           region={mapRegion}
           ref={mapRef}
+          provider={PROVIDER_GOOGLE}
           onRegionChange={mapRegionChangehandle}
           //사용자 위치에 맞게 마커가 표시된다.
           showsUserLocation={true}

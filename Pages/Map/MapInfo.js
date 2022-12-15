@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import MapView, { Marker, Circle, Callout } from 'react-native-maps';
+import MapView, { Marker, Circle, Callout , PROVIDER_GOOGLE } from 'react-native-maps';
 import { View, StyleSheet, Text, Dimensions, Button, FlatList, TouchableOpacity, Alert, Linking, Image  } from 'react-native';
 import * as Location from 'expo-location';
 // import { markerdata } from "./markerData.js";
@@ -285,6 +285,7 @@ const MapInfo = (navigation) => {
       ref={mapRef}
         style={{ alignSelf: 'stretch', height: '100%' }}
         region={mapRegion}
+        provider={PROVIDER_GOOGLE}
         // initialRegion={{mapRegion}}
         // initialRegion={{
         //     latitude: 36.7981234,

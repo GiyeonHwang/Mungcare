@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import MapView, { Marker, Circle, Callout } from 'react-native-maps';
+import MapView, { Marker, Circle, Callout , PROVIDER_GOOGLE} from 'react-native-maps';
 import { View, StyleSheet, Text, Dimensions, Button, Pressable, Image, Alert, TouchableOpacity, StatusBar } from 'react-native';
 import * as Location from 'expo-location';
 import BottomSheet from 'reanimated-bottom-sheet';
@@ -400,6 +400,7 @@ const WalkReview = ({ navigation, route }) => {
                             style={styles.map}
                             region={mapRegion}
                             ref={mapRef}
+                            provider = {PROVIDER_GOOGLE}
 
                             onRegionChange={mapRegionChangehandle}
 

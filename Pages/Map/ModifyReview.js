@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import MapView, { Marker, Circle, Callout } from 'react-native-maps';
+import MapView, { Marker, Circle, Callout , PROVIDER_GOOGLE } from 'react-native-maps';
 import { View, StyleSheet, Text, Dimensions, Button, Alert, Modal, Pressable, Image, TextInput, Keyboard, KeyboardAvoidingView } from 'react-native';
 import * as Location from 'expo-location';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -246,6 +246,7 @@ const ModifyReview = ({ navigation, route }) => {
 
             <View style={styles.mapbox}>
                 <MapView
+                    provider = {PROVIDER_GOOGLE}
                     style={{ alignSelf: 'stretch', height: '100%' }}
                     region={mapRegion}
                     ref={mapRef}
