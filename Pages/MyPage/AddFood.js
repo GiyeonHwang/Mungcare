@@ -29,7 +29,7 @@ const Stack = createStackNavigator();
 export default function AddFood({ navigation }) {
 
     //스케쥴 아이디
-    const [id, setId] = React.useState("");
+    const [id, setId] = React.useState();
     //시간
     const [time, setTime] = React.useState(asPickerFormat(new Date()));
     //고른 mp3 파일 이름
@@ -49,15 +49,7 @@ export default function AddFood({ navigation }) {
     const [dayArray,setdayArray] = React.useState([]);
     //시간 스트링변환
     const SelectTime = time.toTimeString()
-    //알람 객체들
-    const AlarmData = {
-        "Id" : id,
-        "Time": SelectTime,
-        // "Mp3": mp3,
-        "Vibrate": vibrate,
-        "Name": name,
-        "Days": dayArray
-    }
+
     //어싱크 스토리지에 담을 배열
     const [storageDataList, setStorageDataList] = useState([]);
 
@@ -71,7 +63,6 @@ export default function AddFood({ navigation }) {
             ),
         });
     })
-    // onPress={() => Write()}
 
     //여기서부터
     React.useEffect(() => {
@@ -102,83 +93,73 @@ export default function AddFood({ navigation }) {
         }
     };
 
-    function schedulePushNotification() {
-        const weekday = dayArray;
-        const hours = time.getHours();
-        const minutes = time.getMinutes();
-
-        //weekday에 배열값을 동적으로 담아서 forEach를 사용해 엘리먼트 값대로 트리거에 넣어준다 v가 forEach를 사용해 나오는 엘리멘트값임
-        weekday.forEach((v)=>{
-        const writeid = Notifications.scheduleNotificationAsync({
-            content: {
-                title: "확인해주세요",
-                body: "밥시간이 되었어요",
-                sound: 'default',
-                vibrate: vibrate,
-            },
-            trigger: {
-                weekday: v,
-                hour: hours,
-                minute: minutes,
-                repeats: true,
-            },
-        });
-        console.log("notif id on scheduling",writeid)
-        return setId(writeid);
-      })
-    }
-
     //저장버튼 누르면 어싱크에 객체담기
     const Write = async () => {
         // console.log("요일설정",AlarmData.Days);
-        if(AlarmData.Days.length === 0){
+        // if(AlarmData.Days.length === 0){
+        //     Alert.alert("요일을 선택해주세요!")
+        // }
+        // else{
+        if(dayArray.length===0){
             Alert.alert("요일을 선택해주세요!")
         }
         else{
-        schedulePushNotification();
         try {
-            //임시로
-            // const weekday = dayArray;
-            // const hours = time.getHours();
-            // const minutes = time.getMinutes();
-            // weekday.forEach((v)=>{
-            // Notifications.scheduleNotificationAsync({
-            //     content: {
-            //         title: "확인해주세요",
-            //         body: "밥시간이 되었어요",
-            //         sound: 'default',
-            //         vibrate: vibrate,
-            //     },
-            //     trigger: {
-            //         weekday: v,
-            //         hour: hours,
-            //         minute: minutes,
-            //         repeats: true,
-            //     },
-            // });
             
-            // })
+           
+            //여부터
+            const idarray = [];
+            const weekday = dayArray;
+            const hours = time.getHours();
+            const minutes = time.getMinutes();
+            let writeid
+           
+          
+            console.log("시작!!!")
+            //weekday에 배열값을 동적으로 담아서 forEach를 사용해 엘리먼트 값대로 트리거에 넣어준다 v가 forEach를 사용해 나오는 엘리멘트값임
+            weekday.forEach(async (v) => {
+                writeid = await Notifications.scheduleNotificationAsync({
+                    content: {
+                        title: "확인해주세요",
+                        body: "밥시간이 되었어요",
+                        sound: 'default',
+                        vibrate: vibrate,
+                    },
+                    trigger: {
+                        weekday: v,
+                        hour: hours,
+                        minute: minutes,
+                        repeats: true,
+                    },
+                }
+            )
+            idarray.push(writeid)
+        });
+
+            setTimeout(async () => {
+                let AlarmData = {
+                    "Id": idarray,
+                    "Time": SelectTime,
+                    // "Mp3": mp3,
+                    "Vibrate": vibrate,
+                    "Name": name,
+                    "Days": dayArray
+                }
+
+                console.log("알데", AlarmData)
+                storageDataList.push(AlarmData)
+                const output = JSON.stringify(storageDataList);
+                await AsyncStorage.setItem('itemList', output);
+                navigation.navigate("Food");
+                console.log("끗!!!")
+
+            }, 250)
         
-            
-            // console.log("notif id on scheduling", Writeid)
-
-
-
-
-            
-            storageDataList.push(AlarmData)
-            const output = JSON.stringify(storageDataList);
-
-            await AsyncStorage.setItem('itemList', output);
-            navigation.navigate("Food");
-
         } catch (err) {
             console.log(err);
         }
     }
     }
-
-
 
     const pickDocument = async () => {
         //오디오 타입만 담기
@@ -282,21 +263,19 @@ export default function AddFood({ navigation }) {
         // console.log("진동설정 :" ,vibrate);
     }
 
-    const deleteNotifications = async()=>{
-        Notifications.dismissAllNotificationsAsync();
-    }
-    
+    // const deleteNotifications = async()=>{
+    //     Notifications.dismissAllNotificationsAsync();
+    // }
 
-    function DeleteStorage(){
-        AsyncStorage.removeItem('itemList')
-        deleteNotifications()
-        Alert.alert("삭제완료");
-        navigation.navigate("Food");
-    }
+    // function DeleteStorage(){
+    //     AsyncStorage.removeItem('itemList')
+    //     deleteNotifications()
+    //     Alert.alert("삭제완료");
+    //     navigation.navigate("Food");
+    // }
 
 
     // {time.toTimeString()} -> 선택시간 문자열로 변환
-    console.log("알람객체:", AlarmData);
     return (
         <View style={{ height: Dimensions.get('window').height * 1, width: Dimensions.get('window').width * 1 }}>
             <View style={{ height: "30%", width: "100%", justifyContent: "center" }}>
@@ -335,7 +314,7 @@ export default function AddFood({ navigation }) {
                     <SwipeButton width={50} height={20} onSwipeFail={checkVibrate} onSwipeSuccess={checkVibrate} railBackgroundColor="#F1E7DD" railFillBackgroundColor="#743727" title='' railFillBorderColor='#743727' railBorderColor='#F1E7DD' thumbIconBackgroundColor='#3B1E1E' thumbIconBorderColor='#3B1E1E' />
                 </View>
 
-                <Button onPress={DeleteStorage} title="알람지우기임시버튼"></Button>
+                {/* <Button onPress={DeleteStorage} title="알람지우기임시버튼"></Button> */}
 
             </View>
         </View>
