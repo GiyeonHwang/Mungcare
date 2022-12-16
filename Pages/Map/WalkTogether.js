@@ -124,7 +124,7 @@ export default function WalkTogether({ navigation, route }) {
       let location = await Location.getCurrentPositionAsync({});
       console.log(location);
 
-      await reqAxios();
+      await reqAxios(value);
 
       setLatit(location.coords.latitude)
       setLong(location.coords.longitude)
@@ -140,7 +140,7 @@ export default function WalkTogether({ navigation, route }) {
    connect()
   }, []);
 
-  const reqAxios = async () => {
+  const reqAxios = async (id) => {
     //서버에 같이 산책하기를 누름을 보냄
     console.log("id========================",id);
     console.log("checkInterval====================", checkInterval)
@@ -209,6 +209,8 @@ export default function WalkTogether({ navigation, route }) {
       stompClient.send("/app/message", {}, JSON.stringify(chatMessage)); // 소켓 서버에 현재 변수를 보내준다.
       setUserData({ ...userData, "message": "" }); // userData의 메시지를 초기화 해준다.
     }
+
+    
   }
 
 
@@ -354,6 +356,10 @@ export default function WalkTogether({ navigation, route }) {
         console.log(res.data);
         setFinalModal(true)
         setImgUri(res.data[0]); // 링크
+      })
+      .catch(function (error) {
+        console.log(error)
+        Alert.alert("이미지 저장 실패하였습니다")
       })
   }
 

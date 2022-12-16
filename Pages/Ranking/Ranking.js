@@ -71,7 +71,7 @@ export default function Ranking({ navigation }){
           <View style={styles.second}></View>
           <View>
                 {
-                  rdata.length !=0
+                  rdata.length >=3
                   ?
                   (
                     rdata[1].animalList[0].aphoto != null
@@ -86,7 +86,7 @@ export default function Ranking({ navigation }){
               </View>
             <View style={{flexDirection:'row', justifyContent: 'center'}}>
               {/* <Text >작성자: </Text> */}
-              <Text >{rdata.length !=0
+              <Text >{rdata.length >=3
                       ?rdata[1].id
                       :null
                     }</Text>
@@ -102,7 +102,7 @@ export default function Ranking({ navigation }){
             <View style={styles.first}>
               <View>
               {
-                rdata.length !=0
+                rdata.length >=3
                 ?
                 (
                   rdata[0].animalList[0].aphoto != null
@@ -120,7 +120,7 @@ export default function Ranking({ navigation }){
             <View style={{flexDirection:'row', justifyContent: 'center', bottom:25, marginTop:"5%"}}>
               {/* <Text >작성자: </Text> */}
               <Text>
-                {rdata.length !=0
+                {rdata.length >=3
                       ?rdata[0].nickname
                       :null
                     }
@@ -136,7 +136,7 @@ export default function Ranking({ navigation }){
         <View style={styles.third}></View>
             <View>
               {
-                rdata.length !=0
+                rdata.length >=3
                 ?
                 (
                   rdata[2].animalList[0].aphoto != null
@@ -154,7 +154,7 @@ export default function Ranking({ navigation }){
           
             <View style={{flexDirection:'row', justifyContent: 'center'}}>
               {/* <Text >작성자: </Text> */}
-              <Text style={{marginTop:"2%"}}>{rdata.length !=0
+              <Text style={{marginTop:"2%"}}>{rdata.length >=3
                       ?rdata[2].id
                       :null
                     }</Text>
@@ -177,7 +177,7 @@ export default function Ranking({ navigation }){
           <View>
             {
               
-                rdata.length !=0
+                rdata.length >=3
               ?
               (
                 rdata[0].animalList[0].aphoto != null
@@ -200,21 +200,21 @@ export default function Ranking({ navigation }){
             <View style={{flexDirection: 'row',}}>
               <Text style={{ fontSize:20,  marginTop:"2%",marginBottom:'5%'}}>
                 {/* 1등 상세 강아지 이름 */}
-                {rdata.length !=0
+                {rdata.length >=3
                   ?rdata[0].animalList[0].aname
                   :null
                 }
               </Text>
               <Text style={{left:55, marginTop:"2%"}}>
-              <Icon2 name="bitcoin-circle" size={20} color="#F7931D" style={{padding:"5%",marginTop:"5%"}}/> : {rdata.length !=0? rdata[0].totalPoint:null}
+              <Icon2 name="bitcoin-circle" size={20} color="#F7931D" style={{padding:"5%",marginTop:"5%"}}/> : {rdata.length >=3? rdata[0].totalPoint:null}
               </Text>
             </View>
             
             <View style={styles.doginfo}>
-              <Text style={styles.doginfotext}><Icon3 name="venus-mars" size={20} color="#F7931D" style={{padding:"5%", }}/> : {rdata.length !=0?rdata[0].animalList[0].asex:null}</Text>
-              <Text style={styles.doginfotext}><Icon4 name="birthday-cake" size={20} color="#F7931D" style={{padding:"5%", }}/>  : {rdata.length !=0?rdata[0].animalList[0].abirth:null}</Text>
+              <Text style={styles.doginfotext}><Icon3 name="venus-mars" size={20} color="#F7931D" style={{padding:"5%", }}/> : {rdata.length >=3?rdata[0].animalList[0].asex:null}</Text>
+              <Text style={styles.doginfotext}><Icon4 name="birthday-cake" size={20} color="#F7931D" style={{padding:"5%", }}/>  : {rdata.length >=3?rdata[0].animalList[0].abirth:null}</Text>
               <Text style={styles.doginfotext}><Icon4 name="clipboard-check" size={20} color="#F7931D" style={{padding:"5%", }}/>  : {aneut === false ? <Text>X</Text> : <Text>O</Text>}</Text>
-              <Text style={styles.doginfotext}><Icon5 name="bell" size={20} color="#F7931D" style={{padding:"5%",}}/>: {rdata.length !=0?rdata[0].animalList[0].abreed:null}</Text>
+              <Text style={styles.doginfotext}><Icon5 name="bell" size={20} color="#F7931D" style={{padding:"5%",}}/>: {rdata.length >=3?rdata[0].animalList[0].abreed:null}</Text>
             </View>
             
           </View>

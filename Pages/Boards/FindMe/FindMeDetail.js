@@ -252,6 +252,7 @@ export default function FindeMeDetail({ navigation, route }) {
                         return (
                             <Comment
                                 key={index}
+                                id={e.id}
                                 nickname={e.nickname}
                                 content={e.rcontent}
                                 rNo={e.rno}

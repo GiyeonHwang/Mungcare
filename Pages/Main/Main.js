@@ -42,7 +42,7 @@ export default function Main({ navigation }) {
   const [weather,setWeather] = React.useState("");
   const [address, setAddress] = React.useState("");
   const [id,setId] = React.useState("");
-  const [data, setData] = React.useState(); //애완동물 리스트 확인
+  const [data, setData] = React.useState([]); //애완동물 리스트 확인
 
   const selectList = () => {
     axios.post(`${IP}/board/search`, null, {
@@ -218,7 +218,7 @@ export default function Main({ navigation }) {
             <TouchableOpacity 
                 style={styles.walkview}
                 onPress={() => {
-                  data[0] != null ? navigation.navigate('Walk') : Alert.alert("애완동물을 등록해주세요!")
+                  data.length != 0 ? navigation.navigate('Walk') : Alert.alert("애완동물을 등록해주세요!")
                 }}
               >
               <View style={{ width: '100%', height: '100%', }}>

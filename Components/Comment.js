@@ -4,7 +4,7 @@ import { Text, View, StyleSheet , Button ,TextInput,Dimensions,TouchableOpacity}
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ServerPort from "./ServerPort";
 
-export default function Comment({ nickname , content , rNo , bNo , reply}) {
+export default function Comment({ id, nickname , content , rNo , bNo , reply}) {
     
     
 
@@ -73,7 +73,7 @@ export default function Comment({ nickname , content , rNo , bNo , reply}) {
             <View style={styles.comment}>
                 {
                     //닉네임 일치 및 모디파이 버튼을 누르지 않으면 
-                    sid == nickname && !okModify 
+                    sid == id && !okModify 
                     ?
                     <View>
                     <View style={{flexDirection:"row",justifyContent:"space-between"}}>
@@ -90,7 +90,7 @@ export default function Comment({ nickname , content , rNo , bNo , reply}) {
                     :
                     (
                     //닉네임 일치 및 모디파이 버튼을 누름
-                    sid == nickname && okModify
+                    sid == id && okModify
                     ?
                     <View style={{width:"100%",flexDirection:"row"}}>
                         <TextInput
