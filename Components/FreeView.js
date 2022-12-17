@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, useWindowDimensions,Dimensions, Button, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import HTML from 'react-native-render-html';
-export default function FreeView({ bno, btitle, bcontent, id,btext ,bphoto,bviewCount }) {
+export default function FreeView({ bno, btitle, bcontent, id,btext ,bphoto,bviewCount, nickname }) {
   // export default function FreeView({ item }) {
   const contentWidth = useWindowDimensions().width;
   // const [cardInfo,setCardInfo] = useState(props.items);
@@ -32,14 +32,14 @@ export default function FreeView({ bno, btitle, bcontent, id,btext ,bphoto,bview
           <View style={styles.contentBox}>
             <View style={styles.title}>
               <Text style={styles.titleText}>{btitle}</Text>
-              <Text style={{ fontSize: 10,fontWeight:"bold" }}> {id}</Text>
+              <Text style={{ fontSize: 10,fontWeight:"bold",maxWidth:"30%" }} numberOfLines={1}> {nickname}</Text>
             </View>
 
             <View style={styles.content}>
             <Text style={{ fontWeight: "bold" }} numberOfLines={3} ellipsizeMode="tail">{btext}</Text>
             </View>
             <View style={styles.bottomContent}>
-              <Text style={{fontWeight:"normal",fontSize:10,color:"gray"}}>조회수 {bviewCount}</Text><Text style={styles.titleText}><Text></Text></Text>
+              <Text style={{fontWeight:"normal",fontSize:10,color:"gray"}}>조회수 {bviewCount}</Text>
             </View>
           </View>
         </View>
@@ -51,14 +51,14 @@ export default function FreeView({ bno, btitle, bcontent, id,btext ,bphoto,bview
           <View style={styles.contentBox2}>
             <View style={styles.title2}>
               <Text style={styles.titleText} numberOfLines={1}>{btitle}</Text>
-              <Text style={{ fontSize: 10,fontWeight:"bold" }}> {id}</Text>
+              <Text style={{ fontSize: 10,fontWeight:"bold",maxWidth:"30%"}} numberOfLines={1}> {nickname}</Text>
             </View>
             <View style={styles.content2}>
            
-              <Text style={{ fontWeight: "bold" }} numberOfLines={3} ellipsizeMode="tail">{btext}</Text>
+              <Text style={{ fontWeight: "bold" }} numberOfLines={2} ellipsizeMode="tail">{btext}</Text>
             </View>
             <View style={styles.bottomContent2}>
-              <Text style={{fontWeight:"normal",fontSize:10,color:"gray"}}>조회수 {bviewCount}</Text><Text style={styles.titleText}><Text></Text></Text>
+              <Text style={{fontWeight:"normal",fontSize:10,color:"gray"}}>조회수 {bviewCount}</Text>
             </View>
           </View>
         </View>
@@ -84,11 +84,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: Dimensions.get('window').width * 0.45,
     maxHeight: Dimensions.get('window').height * 0.2,
-    marginTop: 5,
+    marginTop: 0,
     padding: 5,
     marginLeft: -Dimensions.get('window').width * 0.02,
     marginRight:-Dimensions.get('window').width * 0.02,
-    paddingBottom:0,
+    paddingBottom:15,
     position: "relative",
     
   },
@@ -131,7 +131,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderColor: "black",
     backgroundColor: "#F1E7DD",
-    padding: 10
+    padding: 10,
+    
   },
   title: {
     flexDirection: "row",
@@ -150,9 +151,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#F1E7DD",
   },
   titleText: {
-    maxWidth:"80%",
+    maxWidth:"70%",
     fontWeight: "bold",
-    fontSize: 15
+    fontSize: 15,
   },
   content: {
     width: "100%",
@@ -173,13 +174,14 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "35%",
     backgroundColor: "#F1E7DD",
+  
   },
   bottomContent2: {
     flexDirection: "row",
     justifyContent: 'space-between',
     alignItems: "center",
     width: "100%",
-    height: "20%",
+    height: "15%",
     backgroundColor: "#F1E7DD",
     marginTop:10
   },
