@@ -122,7 +122,7 @@ export default function Play({ navigation }) {
                             </View>
                             <View >
                                 <View style={{padding:5}}>
-                                    <Text style={{ fontSize: 18 }}>애완동물과 놀때 사진을 찍어주세요!</Text>
+                                    <Text style={{ fontSize: 18 }}>반려동물과 놀때 사진을 찍어주세요!</Text>
                                 </View>
                                 <View style={{padding:5}}>
                                     <Text style={{ fontSize: 18 }}>놀기는 회당 5Point입니다</Text>

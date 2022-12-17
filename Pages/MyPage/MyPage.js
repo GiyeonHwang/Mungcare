@@ -208,7 +208,7 @@ export default function MyPage({navigation}) {
                            onPress={() =>{
                             navigation.navigate("AnimalList")
                          }} >
-                            애완동물정보
+                            반려동물정보
                         </Text>
                     </View>
 
