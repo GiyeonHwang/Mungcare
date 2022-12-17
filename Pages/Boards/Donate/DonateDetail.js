@@ -180,7 +180,7 @@ export default function DonateDetail({ navigation, route }) {
 
             <View style={{ width: "100%", borderTopWidth: 1, borderBottomWidth: 1, padding: 10 }}>
                 <View style={{ width: "100%", height: Dimensions.get('window').height * 0.03, flexDirection: "row", justifyContent: 'space-between', marginBottom: 5 }}>
-                    <Text style={{ maxWidth: "50%", fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{btitle}</Text>
+                    <Text style={{ maxWidth:Dimensions.get('window').width * 0.8, fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{btitle}</Text>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Text style={{ color: "red", fontSize: 16, textAlignVertical: "bottom" }}> {blike} </Text>
                         {
@@ -194,8 +194,10 @@ export default function DonateDetail({ navigation, route }) {
                 </View>
                 <View style={{ width: "100%", height: Dimensions.get('window').height * 0.05, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
 
-                    <View style={{ flexDirection: "row", width: "15%", alignItems: "center" }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{nickname}</Text>
+                    <View style={{ flexDirection: "row", maxWidth:Dimensions.get('window').width * 0.8, alignItems: "center" }}>
+                        <View style={{height:Dimensions.get('window').height * 0.03}}>
+                        <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center"}}>{nickname}</Text>
+                        </View>
                         <View style={{ height: "100%", borderLeftWidth: 0.5, borderColor: "grey", alignItems: "center", marginLeft: 5, flexDirection: "row" }}>
                             <Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>조회수 </Text>
                             <Text style={{ fontSize: 12, color: "gray" }}>{bviewCount}</Text>
