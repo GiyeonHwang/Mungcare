@@ -87,7 +87,7 @@ export default function Ranking({ navigation }){
             <View style={{flexDirection:'row', justifyContent: 'center'}}>
               {/* <Text >작성자: </Text> */}
               <Text >{rdata.length >=3
-                      ?rdata[1].id
+                      ?rdata[1].nickname
                       :null
                     }</Text>
              
@@ -155,7 +155,7 @@ export default function Ranking({ navigation }){
             <View style={{flexDirection:'row', justifyContent: 'center'}}>
               {/* <Text >작성자: </Text> */}
               <Text style={{marginTop:"2%"}}>{rdata.length >=3
-                      ?rdata[2].id
+                      ?rdata[2].nickname
                       :null
                     }</Text>
             </View>
