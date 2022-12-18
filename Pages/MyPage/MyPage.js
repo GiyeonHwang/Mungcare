@@ -250,7 +250,7 @@ export default function MyPage({navigation}) {
                                 navigation.navigate("ChangePw")
                             }}
                         >
-                            비밀번호 변경            <View ><Icon name="arrowright" size={20} color="#F7931D"/></View>
+                            비밀번호 변경          <View ><Icon name="arrowright" size={20} color="#F7931D"/></View>
                         </Text>
                     </View>
                 </View>
