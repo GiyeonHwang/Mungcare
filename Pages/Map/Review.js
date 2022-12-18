@@ -456,9 +456,9 @@ const WalkReview = ({ navigation, route }) => {
                             borderRadius={10}
                             renderContent={renderContent}
                         />
-                        <View style={{ padding: 10, flexDirection:'row' }}>
+                        <View style={{ padding: 10, flexDirection:'row',height:"10%" }}>
                             <TextInput
-                                style={[styles.textinput, {backgroundColor : 'white', width:'60%',} ]}
+                                style={[styles.textinput, {backgroundColor : 'white', width:'60%'} ]}
                                 numberOfLines={4}
                                 onChangeText={handleSearchChange}
                                 value={search}
