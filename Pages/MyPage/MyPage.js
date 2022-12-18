@@ -123,7 +123,8 @@ export default function MyPage({navigation}) {
                         <Icon name="user" size={70} color="#F7931D" style={{marginTop:"15%", marginRight:"5%"}} />
                     </View>
                     <View style={styles.infotext}>
-                        <Text style={styles.infotextstyle}>{nickname}</Text>
+                        <Text style={styles
+                            .infotextstyle}>{nickname}</Text>
                     </View>
                 </View>
 
@@ -197,17 +198,16 @@ export default function MyPage({navigation}) {
                                     mypageInfo: mypageInfo
                                 })
                             }}>
-                            상세 정보 페이지
-                        </Text>
-                       
+                            상세 정보 페이지   <Icon name="arrowright" size={20} color="#F7931D"/>
+                        </Text>  
                     </View>
 
                     <View style={styles.buttonback}>
-                        <Text style={styles.buttontext}  
+                        <Text style={styles.buttontextRight}  
                            onPress={() =>{
                             navigation.navigate("AnimalList")
                          }} >
-                            애완동물정보
+                            반려 동물 정보      <Icon name="arrowright" size={20} color="#F7931D"/>
                         </Text>
                     </View>
 
@@ -216,7 +216,7 @@ export default function MyPage({navigation}) {
                             onPress={() =>{
                                 navigation.navigate("Food")
                             }}>
-                                밥 알람
+                                밥 알람                 <Icon name="arrowright" size={20} color="#F7931D"/>
                         </Text>
                         {/* <Button title="밥 알람"  onPress={() =>{
                             navigation.navigate("Food")
@@ -224,11 +224,11 @@ export default function MyPage({navigation}) {
                     </View>
 
                     <View style={styles.buttonback}>
-                        <Text style={styles.buttontext}
+                        <Text style={styles.buttontextRight}
                         onPress={() =>{
                             navigation.navigate("CalenderMain")
                          }}>
-                            캘린더
+                            캘린더                  <Icon name="arrowright" size={20} color="#F7931D"/>
                         </Text>
                     </View>
 
@@ -238,17 +238,17 @@ export default function MyPage({navigation}) {
                                 navigation.navigate("Play")
                             }}
                         >
-                            놀아주기
+                            놀아주기              <Icon name="arrowright" size={20} color="#F7931D"/>
                         </Text>
                     </View>
 
                     <View style={styles.buttonback}>
-                        <Text style={styles.buttontext}
+                        <Text style={styles.buttontextRight}
                             onPress={() => {
                                 navigation.navigate("ChangePw")
                             }}
                         >
-                            비밀번호 변경
+                            비밀번호 변경      <Icon name="arrowright" size={20} color="#F7931D"/>
                         </Text>
                     </View>
                 </View>
@@ -364,13 +364,25 @@ const styles = StyleSheet.create({
         fontSize:30,
         // marginVertical:"10%",
         borderBottomWidth:1,
+        width:"50%",
         borderColor:"#b8997c",
         margin:"3%",
         marginTop:"8%",
         color: '#F7931D',
         fontWeight: "bold",
         fontSize:18,
-        
-
+    },
+    buttontextRight:{
+        fontSize:30,
+        // marginVertical:"10%",
+        borderBottomWidth:1,
+        width:"50%",
+        borderColor:"#b8997c",
+        margin:"3%",
+        marginTop:"8%",
+        marginLeft:"50%",
+        color: '#F7931D',
+        fontWeight: "bold",
+        fontSize:18,
     }
 });
