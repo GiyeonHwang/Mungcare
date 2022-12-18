@@ -14,16 +14,18 @@ const Stack = createStackNavigator();
 
 import * as React from 'react';
 import { WebView } from 'react-native-webview';
-export default class SkinMain extends React.Component{
-  render() {
-    return (
-      <WebView
-        source={{uri: 'https://rhj7513.github.io/AITest/web/'}}
-        style={{margin: 1}}
-      />
-    );
-  }
+export default function SkinMain() {
+  return (
+    <WebView
+      source={{uri: 'https://rhj7513.github.io/AITest/web/'}}
+      style={{margin: 1}}
+    />
+  );
+  
 }
+  
+  
+
 
 // class MyWeb extends Component {
 //   render() {
