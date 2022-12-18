@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
   },
   activityIndicator: {
     alignItems: 'center',
+    justifyContent: 'center',
     height: 80,
   },
 });
