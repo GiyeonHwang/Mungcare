@@ -6,11 +6,14 @@ import { useNavigation } from '@react-navigation/native';
 // 아이콘 import해줌
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
+import Icon3 from 'react-native-vector-icons/Fontisto';
 
 export default function AnimalModal({animalData,setModalVisible, info, removeAnimal})
 {
     const navigation = useNavigation();
     console.log("뭐가 있을까요?",animalData)
+    console.log("중성화여부 테스트:", animalData.aneut)
+    const aneut = animalData.aneut;
 
     return (
         <View style={styles.box1}>
@@ -61,8 +64,16 @@ export default function AnimalModal({animalData,setModalVisible, info, removeAni
                                     </View>
                                     <View style={{ flexDirection: 'row', width: "60%", alignItems: 'center', }}>
                                         <View style={{ flexDirection: 'row', alignItems: 'center', width: "100%", justifyContent:'center', borderBottomRightRadius:20 }}>
-                                            <Checkbox style={styles.checkbox}/>
-                                            <Text style={styles.paragraph}>  중성화 여부</Text>
+                                            {aneut === false?
+                                            <View style={{flexDirection: 'row',}}>
+                                            <Icon3 name="checkbox-passive" size={30} color="#000000" style={{padding:"5%", borderWidth:1, borderColor:'#EBE3D7'}}/>
+                                            <Text style={styles.paragraph}>중성화 여부</Text>
+                                            </View>
+                                            : 
+                                            <View style={{flexDirection: 'row',}}>
+                                            <Icon3 name="checkbox-active" size={30} color="#000000" style={{padding:"5%", borderWidth:1, borderColor:'#EBE3D7'}}/>
+                                            <Text style={styles.paragraph}>중성화 여부</Text>
+                                            </View>}
                                         </View>
                                     </View>
                                 </View>
@@ -155,5 +166,8 @@ const styles = StyleSheet.create({
     },
     textStyle:{
         color:'white'
+    },
+    paragraph:{
+      marginTop:"8%"
     }
 })
