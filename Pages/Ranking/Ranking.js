@@ -107,7 +107,7 @@ export default function Ranking({ navigation }){
                 (
                   rdata[0].animalList[0].aphoto != null
                   ?
-                  <Image source={{uri : rdata[0].animalList[0].aphoto}} style = {{width: 163 , height: 157}}/>
+                  <Image source={{uri : rdata[0].animalList[0].aphoto}} style = {{width: 163 , height: 152}}/>
                   :
                   <Image source={mung} style = {{width: 163 , height: 163}}/>
                 )
@@ -117,7 +117,7 @@ export default function Ranking({ navigation }){
               </View>
             </View>
             
-            <View style={{flexDirection:'row', justifyContent: 'center', bottom:25, marginTop:"5%"}}>
+            <View style={{flexDirection:'row', justifyContent: 'center', bottom:20, marginTop:"5%"}}>
               {/* <Text >작성자: </Text> */}
               <Text>
                 {rdata.length >=3
@@ -198,22 +198,22 @@ export default function Ranking({ navigation }){
         <View style={styles.firstText}>
           <View style={{ top:"5%"}}>
             <View style={{flexDirection: 'row',}}>
-              <Text style={{ fontSize:20,  marginTop:"2%",marginBottom:'5%'}}>
+              <Text style={{ fontSize:20,  marginTop:"12%",marginBottom:'5%'}}>
                 {/* 1등 상세 강아지 이름 */}
                 {rdata.length >=3
                   ?rdata[0].animalList[0].aname
                   :null
                 }
               </Text>
-              <Text style={{left:55, marginTop:"2%"}}>
-              <Icon2 name="bitcoin-circle" size={20} color="#F7931D" style={{padding:"5%",marginTop:"5%"}}/> : {rdata.length >=3? rdata[0].totalPoint:null}
+              <Text style={{left:55, marginTop:"12%"}}>
+              <Icon2 name="bitcoin-circle" size={20} color="#F7931D"/> : {rdata.length >=3? rdata[0].totalPoint:null}
               </Text>
             </View>
             
             <View style={styles.doginfo}>
               <Text style={styles.doginfotext}><Icon3 name="venus-mars" size={20} color="#F7931D" style={{padding:"5%", }}/> : {rdata.length >=3?rdata[0].animalList[0].asex:null}</Text>
               <Text style={styles.doginfotext}><Icon4 name="birthday-cake" size={20} color="#F7931D" style={{padding:"5%", }}/>  : {rdata.length >=3?rdata[0].animalList[0].abirth:null}</Text>
-              <Text style={styles.doginfotext}><Icon4 name="clipboard-check" size={20} color="#F7931D" style={{padding:"5%", }}/>  : {aneut === false ? <Text>X</Text> : <Text>O</Text>}</Text>
+              {/* <Text style={styles.doginfotext}><Icon4 name="clipboard-check" size={20} color="#F7931D" style={{padding:"5%", }}/>  : {aneut === false ? <Text>X</Text> : <Text>O</Text>}</Text> */}
               <Text style={styles.doginfotext}><Icon5 name="bell" size={20} color="#F7931D" style={{padding:"5%",}}/>: {rdata.length >=3?rdata[0].animalList[0].abreed:null}</Text>
             </View>
             
