@@ -210,7 +210,7 @@ export default function Main({ navigation }) {
                 <View style={{ width: '100%', height: '100%', }}>
                   <Image style={styles.icon} source={require('../../assets/images/main/icon4.png')}></Image>
                 </View>
-                <Text>주변뭐뭐머</Text>
+                <Text style={{width:'120%'}}>함께하는 공간</Text>
               </TouchableOpacity>
             </View>
 
