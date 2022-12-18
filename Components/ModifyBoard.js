@@ -94,7 +94,7 @@ export default function ModifyBoard({navigation,route}) {
 
         await axios({
             method: 'post',
-            url: `http://192.168.2.77:5000/upload`,
+            url: `${IP}/upload`,
             headers: {
                 'content-type': 'multipart/form-data',
             },
@@ -114,7 +114,7 @@ export default function ModifyBoard({navigation,route}) {
         console.log("보낼때 파람스로 받은 bno는",route.params.bno);
         console.log("보내기직전에 bno는",bTitle);
         console.log("보내기전에 bType는",bContent);
-        axios.post(`http://192.168.2.94:5000/board/modify`,null,{
+        axios.post(`${IP}/board/modify`,null,{
             
             params:{
               bContent :bContent,

@@ -148,33 +148,6 @@ export default function FindeMeDetail({ navigation, route }) {
         }
     }
 
-    // 상세 정보 가져오기
-    const [deData, setDeData] = React.useState();
-
-    // const save = async () => {
-    //     try {
-    //         await AsyncStorage.setItem('key', 'value');
-    //         await AsyncStorage.setItem('info', JSON.stringify(info)); // 객체 형태 저장
-    //     } catch (e) {
-    //         // 오류 예외 처리
-    //     }
-    // }
-
-    // React.useEffect(() => {
-    //     axios.post("http://192.168.2.94:5000/board/detailView", null, {
-    //         params: {
-    //             bNo: "13"//게시글 번호 13번 정보 요청합니다.
-    //         }
-    //     })
-    //         .then(function (res) {
-    //             console.log("나는 res: ", res);
-    //             console.log("호는 res.data: ", res.data);
-    //             setDeData(res.data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log("게시글 상세 가져오기 실패: ", error);
-    //         })
-    // }, []);
 
     //삭제하기
     const DeleteAction = () => {
@@ -203,118 +176,121 @@ export default function FindeMeDetail({ navigation, route }) {
 
 
     return (
-       
-        <View>
-        <ScrollView>
 
-            <View style={{ width: "100%", borderTopWidth: 1, borderBottomWidth: 1, padding: 10 }}>
-                <View style={{ width: "100%", height: Dimensions.get('window').height * 0.03, flexDirection: "row", justifyContent: 'space-between', marginBottom: 5 }}>
-                    <Text style={{ maxWidth: "50%", fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{btitle}</Text>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <Text style={{ color: "red", fontSize: 16, textAlignVertical: "bottom" }}> {blike} </Text>
-                        {
-                            likeCheck
-                                ?
-                                <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/beanheart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
-                                :
-                                <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/heart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
+        <View>
+            <ScrollView>
+
+                <View style={{ width: "100%", borderTopWidth: 1, borderBottomWidth: 1, padding: 10 }}>
+                    <View style={{ width: "100%", height: Dimensions.get('window').height * 0.03, flexDirection: "row", justifyContent: 'space-between', marginBottom: 5 }}>
+                        <Text style={{ maxWidth: Dimensions.get('window').width * 0.8, fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{btitle}</Text>
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <Text style={{ color: "red", fontSize: 16, textAlignVertical: "bottom" }}> {blike} </Text>
+                            {
+                                likeCheck
+                                    ?
+                                    <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/beanheart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
+                                    :
+                                    <TouchableOpacity onPress={clickLike}><Image source={require('../../../assets/heart.jpeg')} style={{ height: 20, width: 20 }} /></TouchableOpacity>
+                            }
+                        </View>
+                    </View>
+                    <View style={{ width: "100%", height: Dimensions.get('window').height * 0.05, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
+
+                        <View style={{ flexDirection: "row", maxWidth: Dimensions.get('window').width * 0.8, alignItems: "center" }}>
+                            <View style={{ height: Dimensions.get('window').height * 0.03 }}>
+                                <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{nickname}</Text>
+                            </View>
+                            <View style={{ height: "100%", borderLeftWidth: 0.5, borderColor: "grey", alignItems: "center", marginLeft: 5, flexDirection: "row" }}>
+                                <Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>조회수 </Text>
+                                <Text style={{ fontSize: 12, color: "gray" }}>{bviewCount}</Text>
+                            </View>
+                        </View>
+
+
+                        {id === WriterId &&
+                            <View style={{ borderColor: "grey", flexDirection: "row" }}>
+                                <View>
+                                    <TouchableOpacity onPress={() =>
+
+                                        ModifyAction()
+
+                                    }><Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginRight: 5 }}>글 수정</Text></TouchableOpacity>
+                                </View>
+                                <View style={{ height: "50%", borderLeftWidth: 0.5, borderColor: "grey", alignItems: "center", marginLeft: 5, flexDirection: "row" }}>
+                                    <TouchableOpacity onPress={() =>
+                                        Alert.alert("잠깐만요!", "정말로 삭제 하실건가요?", [
+                                            {
+                                                text: "취소",
+                                                onPress: () => null,
+                                            },
+                                            {
+                                                text: "삭제", onPress: () => {
+                                                    DeleteAction();
+                                                }
+                                            }
+                                        ])
+                                    }><Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>글 삭제</Text></TouchableOpacity>
+                                </View>
+                            </View>
                         }
                     </View>
-                </View>
-                <View style={{ width: "100%", height: Dimensions.get('window').height * 0.05, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
-
-                    <View style={{ flexDirection: "row", width: "15%", alignItems: "center" }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{nickname}</Text>
-                        <View style={{ height: "100%", borderLeftWidth: 0.5, borderColor: "grey", alignItems: "center", marginLeft: 5, flexDirection: "row" }}>
-                            <Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>조회수 </Text>
-                            <Text style={{ fontSize: 12, color: "gray" }}>{bviewCount}</Text>
-                        </View>
+                    <View style={{ padding: 8, borderTopWidth: 0.7 }}>
+                        <HTML source={{ html: content }} contentWidth={contentWidth} />
                     </View>
-
-
-                    {id === WriterId &&
-                        <View style={{ borderColor: "grey", flexDirection: "row" }}>
-                            <View>
-                                <TouchableOpacity onPress={() =>
-
-                                    ModifyAction()
-
-                                }><Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginRight: 5 }}>글 수정</Text></TouchableOpacity>
-                            </View>
-                            <View style={{ height: "50%", borderLeftWidth: 0.5, borderColor: "grey", alignItems: "center", marginLeft: 5, flexDirection: "row" }}>
-                                <TouchableOpacity onPress={() =>
-                                    Alert.alert("잠깐만요!", "정말로 삭제 하실건가요?", [
-                                        {
-                                            text: "취소",
-                                            onPress: () => null,
-                                        },
-                                        {
-                                            text: "삭제", onPress: () => {
-                                                DeleteAction();
-                                            }
-                                        }
-                                    ])
-                                }><Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>글 삭제</Text></TouchableOpacity>
-                            </View>
-                        </View>
-                    }
-                </View>
-                <View style={{padding:8,borderTopWidth:0.7}}>
-                    <HTML source={{ html: content }} contentWidth={contentWidth} />
-                </View>
-                <View style={{ width: "100%",height: Dimensions.get('window').height * 0.05, borderTopWidth: 0.7, borderBottomWidth: 0.5, justifyContent: "center", padding: 10 }}>
-                    <Text style={{ textAlignVertical: "center", color: "gray" }}><Text style={{ color: "red" }}>{breply}</Text> 댓글</Text>
-                    {/* {
+                    <View style={{ width: "100%", height: Dimensions.get('window').height * 0.05, borderTopWidth: 0.7, borderBottomWidth: 0.5, justifyContent: "center", padding: 10 }}>
+                        <Text style={{ textAlignVertical: "center", color: "gray" }}><Text style={{ color: "red" }}>{breply}</Text> 댓글</Text>
+                        {/* {
                     likeCheck 
                     ? 
                     <TouchableOpacity onPress={clickLike}><Text>좋아요 취소</Text></TouchableOpacity>  
                     : 
                     <TouchableOpacity onPress={clickLike}><Text>좋아요</Text></TouchableOpacity>                      
                 } */}
-                </View>
-                <View > 
-                {
-                    replyList.map((e, index) => {
+                    </View>
+                    <View >
+                        {
+                            replyList.map((e, index) => {
 
-                        return (
-                            <Comment
-                                key={index}
-                                nickname={e.nickname}
-                                content={e.rcontent}
-                                rNo={e.rno}
-                                bNo={e.bno}
-                                reply={replyClear}
-                            />
-                        )
-                    })
-                }
+                                return (
+                                    <Comment
+                                        key={index}
+                                        id={e.id}
+                                        nickname={e.nickname}
+                                        content={e.rcontent}
+                                        rNo={e.rno}
+                                        bNo={e.bno}
+                                        reply={replyClear}
+                                    />
+                                )
+                            })
+                        }
+                    </View>
+                </View>
+
+            </ScrollView>
+            <View style={{ backgroundColor: "#EBE3D7", maxHeight: Dimensions.get('window').height * 0.1, flexDirection: "row", marginTop: "auto", height: "auto", padding: 8, paddingRight: 3 }}>
+                <View style={{ width: Dimensions.get('window').width * 0.8, justifyContent: "center" }}>
+                    <TextInput
+                        style={{ width: "100%", fontSize: 15 }}
+                        onChangeText={setRContent}
+                        placeholder="댓글쓰기"
+                        value={rContent}
+                        multiline={true}
+                        cursorColor="red"
+
+                    />
+                </View>
+                <View style={{ justifyContent: "center", alignItems: "center", width: Dimensions.get('window').width * 0.2 }}>
+                    <TouchableOpacity
+                        onPress={sendReply}
+                    >
+                        <Image source={require('../../../assets/write.png')} style={{ height: 20, width: 20 }} />
+                    </TouchableOpacity>
                 </View>
             </View>
-           
-        </ScrollView>
-        <View style={{backgroundColor: "#EBE3D7",maxHeight:Dimensions.get('window').height * 0.1 ,flexDirection: "row",marginTop:"auto",height:"auto",padding:8,paddingRight:3}}>
-                    <View style={{ width: Dimensions.get('window').width * 0.8,justifyContent:"center"}}>
-                        <TextInput
-                            style={{width:"100%",fontSize:15}}
-                            onChangeText={setRContent}
-                            placeholder="댓글쓰기"
-                            value={rContent}
-                            multiline={true}
-                            cursorColor="red"
-                            
-                        />
-                    </View>
-                    <View style={{ justifyContent: "center",alignItems:"center",width:Dimensions.get('window').width * 0.2 }}>
-                        <TouchableOpacity
-                            onPress={sendReply}
-                        >
-                            <Image source={require('../../../assets/write.png')} style={{ height: 20, width: 20 }} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                
+
         </View>
-        
+
     )
 }
 

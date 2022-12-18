@@ -2,14 +2,14 @@ import axios from 'axios';
 import React from "react";
 import { Text, View, ScrollView, SafeAreaView, Image, StyleSheet, Dimensions, TouchableOpacity, TextInput, Button, Alert } from 'react-native';
 import FreeView from '../../../Components/FreeView';
-
+import ServerPort from '../../../Components/ServerPort';
 
 export default function DonateMain({ navigation }) {
-
+  const IP = ServerPort();
   const [frData, setFrData] = React.useState([]);
 
   React.useEffect(() => {
-    axios.post("http://192.168.2.94:5000/board/search", null, {
+    axios.post(`${IP}/board/search`, null, {
       params: {
         page: 1,
         size: 10,

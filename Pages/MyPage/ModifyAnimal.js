@@ -83,7 +83,7 @@ export default function ModifyAnimal({ navigation, route }) {
         const changeName = removespace(aName);
         setAnimalName(changeName);
         setErrorMessage(
-            validateName(changeName) ? "올바른 형식입니다" : "애완동물의 이름은 한글과 영어만 가능합니다"
+            validateName(changeName) ? "올바른 형식입니다" : "반려동물의 이름은 한글과 영어만 가능합니다"
         );
         setOkName(validateName(changeName));
     };
@@ -127,7 +127,7 @@ export default function ModifyAnimal({ navigation, route }) {
     return (
         <ScrollView>
         <View style={styles.container}>
-            <Text style={styles.title}> 애완동물 정보 수정</Text>
+            <Text style={styles.title}> 반려동물 정보 수정</Text>
             <View style={styles.title}>
                 <View style={{ padding: 10, }}>
                 <View style={{ borderBottomWidth: 1, flexDirection: 'row', width: '100%' }}>

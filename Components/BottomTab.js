@@ -22,6 +22,7 @@ import CalenderMain from '../Pages/Calender/CalenderMain';
 
 import Walk from '../Pages/Map/Walk';
 import WalkTogether from '../Pages/Map/WalkTogether';
+
 import ReviewWrite from '../Pages/Map/ReviewWrite';
 import Review from '../Pages/Map/Review';
 import ModifyReview from '../Pages/Map/ModifyReview';
@@ -48,7 +49,7 @@ import MyPageModify from '../Pages/MyPage/MyPageModify';
 import FreeView from './FreeView';
 import ModifyBoard from './ModifyBoard';
 import MapInfo from '../Pages/Map/MapInfo';
-import ChangePw from "../Pages/MyPage/ChangePw";
+import ChangePw from '../Pages/MyPage/ChangePw';
 
 const Tab = createBottomTabNavigator();
 
@@ -133,32 +134,272 @@ const MainStackScreen = ({ navigation }) => {
       <MainStack.Screen name="AffectMain" component={AffectMain} />
       <MainStack.Screen name="DonateMain" component={DonateMain} />
       <MainStack.Screen name="FindMeMain" component={FindMeMain} />
-      <MainStack.Screen name="CalenderMain" component={CalenderMain} />
+      <MainStack.Screen name="CalenderMain" component={CalenderMain}
+      options={{
+        headerTitle:"기록들",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
       <MainStack.Screen name="FreeBoardMain" component={FreeBoardMain} />
       {/*MAP 병원 위치*/}
-      <MainStack.Screen name="MapInfo" component={MapInfo}/>
+      <MainStack.Screen name="MapInfo" component={MapInfo}
+      options={{
+        headerTitle:"함께하는공간",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
       {/*-->  디테일 페이지들도 임포트하고 넣어줘야함 <--*/}
       {/*--> 함께하는 공간 자리<--*/}
-      <MainStack.Screen name="Walk" component={Walk}/>
-      <MainStack.Screen name="WalkTogether" component={WalkTogether}/>
-      <MainStack.Screen name="ReviewWrite" component={ReviewWrite}/>
-      <MainStack.Screen name="Review" component={Review}/>
-      <MainStack.Screen name="ModifyReview" component={ModifyReview}/>
+      <MainStack.Screen name="Walk" component={Walk}
+      options={{
+        headerTitle:"산책",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
 
-      <MainStack.Screen name="Ranking" component={Ranking} />
-      <MainStack.Screen name="SkinMain" component={SkinMain} />
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
+      <MainStack.Screen name="WalkTogether" component={WalkTogether}
+      options={{
+        headerTitle:"함께 산책해요",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
+
+      <MainStack.Screen name="ReviewWrite" component={ReviewWrite}
+      options={{
+        headerTitle:"리뷰작성",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
+      <MainStack.Screen name="Review" component={Review}
+      options={{
+        headerTitle:"리뷰",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
+      <MainStack.Screen name="ModifyReview" component={ModifyReview}
+      options={{
+        headerTitle:"리뷰 수정",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
+
+      <MainStack.Screen name="Ranking" component={Ranking}
+      options={{
+        headerTitle:"최고의견주",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
+      <MainStack.Screen name="SkinMain" component={SkinMain}
+      options={{
+        headerTitle:"피부진단",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
       <MainStack.Screen name="MyPage" component={MyPage} />
       {/* 애완동물 리스트 */}
-      <MainStack.Screen name="AnimalList" component={AnimalList}/>
-      {/* 애완동물 추가 */}
-      <MainStack.Screen name="AddAnimal" component={AddAnimal}/>
-      {/* 애완동물 수정 */}
-      <MainStack.Screen name="ModifyAnimal" component={ModifyAnimal}/>
-      {/* 놀기 */}
-      <MainStack.Screen name="Play" component={Play}/> 
-      <MainStack.Screen name="MyPoint" component={MyPoint}/>
+      <MainStack.Screen name="AnimalList" component={AnimalList}
+      options={{
+        headerTitle:"내 가족들",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
 
-      <MainStack.Screen name="Food" component={Food} />
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
+      {/* 애완동물 추가 */}
+      <MainStack.Screen name="AddAnimal" component={AddAnimal}
+      options={{
+        headerTitle:"내 가족 등록",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
+      {/* 애완동물 수정 */}
+      <MainStack.Screen name="ModifyAnimal" component={ModifyAnimal}
+      options={{
+        headerTitle:"등록 정보 수정",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
+      {/* 놀기 */}
+      <MainStack.Screen name="Play" component={Play}
+      options={{
+        headerTitle:"놀아주기",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      /> 
+      <MainStack.Screen name="MyPoint" component={MyPoint}
+      options={{
+        headerTitle:"포인트 현황",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
+      <MainStack.Screen name="Food" component={Food} 
+      options={{
+        headerTitle:"밥 알람",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
       <MainStack.Screen name="FreeBoardDetail" component={FreeBoardDetail}
       options={{
         headerTitle:"게시판",
@@ -180,9 +421,41 @@ const MainStackScreen = ({ navigation }) => {
        
       />
       <MainStack.Screen name="FindMeDetail" component={FindMeDetail} />
-      <MainStack.Screen name="ModifyBoard" component={ModifyBoard} options={{}}/>
+      <MainStack.Screen name="ModifyBoard" component={ModifyBoard} 
+      options={{
+        headerTitle:"글 수정하기",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
       <MainStack.Screen name="Write" component={Write}/>
-      <MainStack.Screen name="AddFood" component={AddFood}/>
+      <MainStack.Screen name="AddFood" component={AddFood}
+      options={{
+        headerTitle:"알람 추가",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
       {/* <MainStack.Screen name="ReissuancePw" component={ReissuancePw} /> */}
       {/* <MainStack.Screen name="Login" component={Login}  options={{headerShown: false ,tabBarStyle: {display: 'none'}}}/> */}
       {/* <MainStack.Screen name="MyPoint" component={MyPoint} /> */}
@@ -224,9 +497,57 @@ const MyPageStackScreen = ({ navigation }) => {
         },
         headerTitleAlign:"center",
       }} />
-      <MyPageStack.Screen name="MyPageModify" component={MyPageModify} />
-      <MyPageStack.Screen name="MyInfo" component={MyInfo}/>
-      <MyPageStack.Screen name="ChangePw" component={ChangePw}/>
+      <MyPageStack.Screen name="MyPageModify" component={MyPageModify}
+      options={{
+        headerTitle:"내정보 수정",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
+      <MyPageStack.Screen name="MyInfo" component={MyInfo}
+      options={{
+        headerTitle:"내정보",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
+      <MyPageStack.Screen name="ChangePw" component={ChangePw}
+      options={{
+        headerTitle:"비밀번호 수정",
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 20,
+
+        },
+        headerStyle: { 
+          backgroundColor: '#F2F2F2',
+          borderBottomWidth:1,
+          borderColor:"black"
+        },
+        headerTitleAlign:"center",
+       }}
+
+      />
     </MyPageStack.Navigator>
   );
 }

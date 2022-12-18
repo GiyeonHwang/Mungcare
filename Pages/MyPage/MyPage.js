@@ -156,7 +156,8 @@ export default function MyPage({navigation}) {
                             onPress={() =>{
                                 navigation.navigate("MyPoint", {
                                     point: point,
-                                    id: id
+                                    id: id,
+                                    mypageInfo: mypageInfo
                                 })
                             }} 
                         />
@@ -198,7 +199,7 @@ export default function MyPage({navigation}) {
                                     mypageInfo: mypageInfo
                                 })
                             }}>
-                            상세 정보 페이지   <Icon name="arrowright" size={20} color="#F7931D"/>
+                            상세 정보 페이지         <View style={{Left:"50%"}}><Icon name="arrowright" size={20} color="#F7931D"/></View>
                         </Text>  
                     </View>
 
@@ -207,7 +208,8 @@ export default function MyPage({navigation}) {
                            onPress={() =>{
                             navigation.navigate("AnimalList")
                          }} >
-                            반려 동물 정보      <Icon name="arrowright" size={20} color="#F7931D"/>
+
+                            반려동물정보              <View style={{Left:"100%"}}><Icon name="arrowright" size={20} color="#F7931D"/></View>
                         </Text>
                     </View>
 
@@ -216,7 +218,7 @@ export default function MyPage({navigation}) {
                             onPress={() =>{
                                 navigation.navigate("Food")
                             }}>
-                                밥 알람                 <Icon name="arrowright" size={20} color="#F7931D"/>
+                                밥 알람                       <View style={{Left:"50%"}}><Icon name="arrowright" size={20} color="#F7931D"/></View>
                         </Text>
                         {/* <Button title="밥 알람"  onPress={() =>{
                             navigation.navigate("Food")
@@ -228,7 +230,7 @@ export default function MyPage({navigation}) {
                         onPress={() =>{
                             navigation.navigate("CalenderMain")
                          }}>
-                            캘린더                  <Icon name="arrowright" size={20} color="#F7931D"/>
+                            캘린더                        <View style={{Left:"100%"}}><Icon name="arrowright" size={20} color="#F7931D"/></View>
                         </Text>
                     </View>
 
@@ -238,7 +240,7 @@ export default function MyPage({navigation}) {
                                 navigation.navigate("Play")
                             }}
                         >
-                            놀아주기              <Icon name="arrowright" size={20} color="#F7931D"/>
+                            놀아주기                    <View style={{Left:"50%"}}><Icon name="arrowright" size={20} color="#F7931D"/></View>
                         </Text>
                     </View>
 
@@ -248,7 +250,7 @@ export default function MyPage({navigation}) {
                                 navigation.navigate("ChangePw")
                             }}
                         >
-                            비밀번호 변경      <Icon name="arrowright" size={20} color="#F7931D"/>
+                            비밀번호 변경            <View ><Icon name="arrowright" size={20} color="#F7931D"/></View>
                         </Text>
                     </View>
                 </View>
@@ -380,7 +382,7 @@ const styles = StyleSheet.create({
         borderColor:"#b8997c",
         margin:"3%",
         marginTop:"8%",
-        marginLeft:"50%",
+        marginLeft:"48%",
         color: '#F7931D',
         fontWeight: "bold",
         fontSize:18,

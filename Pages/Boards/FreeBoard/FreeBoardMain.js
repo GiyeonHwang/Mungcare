@@ -4,7 +4,6 @@ import { Text, View, ScrollView, SafeAreaView, Image, StyleSheet, Dimensions, To
 import FreeView from '../../../Components/FreeView';
 import ServerPort from '../../../Components/ServerPort';
 
-
 export default function FreeBoardMain({ navigation }) {
 
   const [frData, setFrData] = React.useState([]);

@@ -150,34 +150,6 @@ export default function FreeBoardDetail({ navigation, route }) {
         }
     }
 
-    // 상세 정보 가져오기
-    const [deData, setDeData] = React.useState();
-
-    // const save = async () => {
-    //     try {
-    //         await AsyncStorage.setItem('key', 'value');
-    //         await AsyncStorage.setItem('info', JSON.stringify(info)); // 객체 형태 저장
-    //     } catch (e) {
-    //         // 오류 예외 처리
-    //     }
-    // }
-
-    // React.useEffect(() => {
-    //     axios.post("http://192.168.2.94:5000/board/detailView", null, {
-    //         params: {
-    //             bNo: "13"//게시글 번호 13번 정보 요청합니다.
-    //         }
-    //     })
-    //         .then(function (res) {
-    //             console.log("나는 res: ", res);
-    //             console.log("호는 res.data: ", res.data);
-    //             setDeData(res.data);
-    //         })
-    //         .catch(function (error) {
-    //             console.log("게시글 상세 가져오기 실패: ", error);
-    //         })
-    // }, []);
-
     //삭제하기
     const DeleteAction = () => {
         axios.post(`${IP}/board/remove`, null, {
@@ -211,7 +183,7 @@ export default function FreeBoardDetail({ navigation, route }) {
 
             <View style={{ width: "100%", borderTopWidth: 1, borderBottomWidth: 1, padding: 10 }}>
                 <View style={{ width: "100%", height: Dimensions.get('window').height * 0.03, flexDirection: "row", justifyContent: 'space-between', marginBottom: 5 }}>
-                    <Text style={{ maxWidth: "50%", fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{btitle}</Text>
+                    <Text style={{ maxWidth:Dimensions.get('window').width * 0.8, fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{btitle}</Text>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <Text style={{ color: "red", fontSize: 16, textAlignVertical: "bottom" }}> {blike} </Text>
                         {
@@ -229,8 +201,10 @@ export default function FreeBoardDetail({ navigation, route }) {
                 </View>
                 <View style={{ width: "100%", height: Dimensions.get('window').height * 0.05, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }}>
 
-                    <View style={{ flexDirection: "row", width: "15%", alignItems: "center" }}>
-                        <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center" }}>{nickname}</Text>
+                    <View style={{ flexDirection: "row", maxWidth:Dimensions.get('window').width * 0.8, alignItems: "center" }}>
+                        <View style={{height:Dimensions.get('window').height * 0.03}}>
+                        <Text style={{ fontWeight: "bold", fontSize: 18, textAlignVertical: "center"}}>{nickname}</Text>
+                        </View>
                         <View style={{ height: "100%", borderLeftWidth: 0.5, borderColor: "grey", alignItems: "center", marginLeft: 5, flexDirection: "row" }}>
                             <Text style={{ textAlignVertical: "bottom", fontSize: 12, color: "grey", marginLeft: 8 }}>조회수 </Text>
                             <Text style={{ fontSize: 12, color: "gray" }}>{bviewCount}</Text>
@@ -239,7 +213,7 @@ export default function FreeBoardDetail({ navigation, route }) {
 
 
                     {id === WriterId &&
-                        <View style={{ borderColor: "grey", flexDirection: "row" }}>
+                        <View style={{ borderColor: "grey", flexDirection: "row"}}>
                             <View>
                                 <TouchableOpacity onPress={() =>
 
@@ -285,6 +259,7 @@ export default function FreeBoardDetail({ navigation, route }) {
                         return (
                             <Comment
                                 key={index}
+                                id={e.id}
                                 nickname={e.nickname}
                                 content={e.rcontent}
                                 rNo={e.rno}

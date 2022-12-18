@@ -28,13 +28,6 @@ import FindMeMain from './FindMe/FindMeMain';
 import AffectMain from './Affect/AffectMain';
 import DonateMain from './Donate/DonateMain';
 
-
-
-
-
-
-
-
 export default function MainBoard({ navigation }) {
 
   const [selected, setSelected] = React.useState("");
@@ -42,14 +35,6 @@ export default function MainBoard({ navigation }) {
   const boards = ["자유게시판", "찾아줘게시판", "자랑게시판", "기부게시판"]
   const [SwitchBoard,setSwitchBoard] = useState('FreeBoardMain');
 
-  // React.useEffect(() => {
-  //   if(bType == '자유게시판'){
-  //     setSwitchBoard('FreeBoardMain');
-  //   }
-  //   else if(bType == '찾아줘게시판'){
-  //     setSwitchBoard('FindMeMain');
-  //   }
-  // })
   console.log("현재 게시판",SwitchBoard);
 
   return (

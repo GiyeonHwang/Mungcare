@@ -4,6 +4,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from "react";
 import { Text, View , SafeAreaView, StyleSheet, TextInput , Button, Alert, Image, ProgressBar, ProgressBarAndroid, Dimensions } from 'react-native';
 import Constants from 'expo-constants';
+import ServerPort from '../../Components/ServerPort';
 
 // import { Text, View, Button } from "react-native";
 
@@ -31,13 +32,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Ranking({ navigation }){
+  const IP = ServerPort();
   // ranking정보 가져오기
     const [rdata, setRdata] = React.useState([]);
     const aneut = rdata.length !=0?rdata[0].animalList[0].aneut:null
 
     React.useEffect(()=>{
       const setData = async () => {
-        await axios.post("http://192.168.2.94:5000/point/ranking", null, {
+        await axios.post(`${IP}/point/ranking`, null, {
           
       })
           .then(function (res) {
@@ -69,7 +71,7 @@ export default function Ranking({ navigation }){
           <View style={styles.second}></View>
           <View>
                 {
-                  rdata.length !=0
+                  rdata.length >=3
                   ?
                   (
                     rdata[1].animalList[0].aphoto != null
@@ -84,8 +86,8 @@ export default function Ranking({ navigation }){
               </View>
             <View style={{flexDirection:'row', justifyContent: 'center'}}>
               {/* <Text >작성자: </Text> */}
-              <Text >{rdata.length !=0
-                      ?rdata[1].id
+              <Text >{rdata.length >=3
+                      ?rdata[1].nickname
                       :null
                     }</Text>
              
@@ -100,7 +102,7 @@ export default function Ranking({ navigation }){
             <View style={styles.first}>
               <View>
               {
-                rdata.length !=0
+                rdata.length >=3
                 ?
                 (
                   rdata[0].animalList[0].aphoto != null
@@ -118,7 +120,7 @@ export default function Ranking({ navigation }){
             <View style={{flexDirection:'row', justifyContent: 'center', bottom:25, marginTop:"5%"}}>
               {/* <Text >작성자: </Text> */}
               <Text>
-                {rdata.length !=0
+                {rdata.length >=3
                       ?rdata[0].nickname
                       :null
                     }
@@ -134,7 +136,7 @@ export default function Ranking({ navigation }){
         <View style={styles.third}></View>
             <View>
               {
-                rdata.length !=0
+                rdata.length >=3
                 ?
                 (
                   rdata[2].animalList[0].aphoto != null
@@ -152,8 +154,8 @@ export default function Ranking({ navigation }){
           
             <View style={{flexDirection:'row', justifyContent: 'center'}}>
               {/* <Text >작성자: </Text> */}
-              <Text style={{marginTop:"2%"}}>{rdata.length !=0
-                      ?rdata[2].id
+              <Text style={{marginTop:"2%"}}>{rdata.length >=3
+                      ?rdata[2].nickname
                       :null
                     }</Text>
             </View>
@@ -175,7 +177,7 @@ export default function Ranking({ navigation }){
           <View>
             {
               
-                rdata.length !=0
+                rdata.length >=3
               ?
               (
                 rdata[0].animalList[0].aphoto != null
@@ -198,21 +200,21 @@ export default function Ranking({ navigation }){
             <View style={{flexDirection: 'row',}}>
               <Text style={{ fontSize:20,  marginTop:"2%",marginBottom:'5%'}}>
                 {/* 1등 상세 강아지 이름 */}
-                {rdata.length !=0
+                {rdata.length >=3
                   ?rdata[0].animalList[0].aname
                   :null
                 }
               </Text>
               <Text style={{left:55, marginTop:"2%"}}>
-              <Icon2 name="bitcoin-circle" size={20} color="#F7931D" style={{padding:"5%",marginTop:"5%"}}/> : {rdata.length !=0? rdata[0].totalPoint:null}
+              <Icon2 name="bitcoin-circle" size={20} color="#F7931D" style={{padding:"5%",marginTop:"5%"}}/> : {rdata.length >=3? rdata[0].totalPoint:null}
               </Text>
             </View>
             
             <View style={styles.doginfo}>
-              <Text style={styles.doginfotext}><Icon3 name="venus-mars" size={20} color="#F7931D" style={{padding:"5%", }}/> : {rdata.length !=0?rdata[0].animalList[0].asex:null}</Text>
-              <Text style={styles.doginfotext}><Icon4 name="birthday-cake" size={20} color="#F7931D" style={{padding:"5%", }}/>  : {rdata.length !=0?rdata[0].animalList[0].abirth:null}</Text>
+              <Text style={styles.doginfotext}><Icon3 name="venus-mars" size={20} color="#F7931D" style={{padding:"5%", }}/> : {rdata.length >=3?rdata[0].animalList[0].asex:null}</Text>
+              <Text style={styles.doginfotext}><Icon4 name="birthday-cake" size={20} color="#F7931D" style={{padding:"5%", }}/>  : {rdata.length >=3?rdata[0].animalList[0].abirth:null}</Text>
               <Text style={styles.doginfotext}><Icon4 name="clipboard-check" size={20} color="#F7931D" style={{padding:"5%", }}/>  : {aneut === false ? <Text>X</Text> : <Text>O</Text>}</Text>
-              <Text style={styles.doginfotext}><Icon5 name="bell" size={20} color="#F7931D" style={{padding:"5%",}}/>: {rdata.length !=0?rdata[0].animalList[0].abreed:null}</Text>
+              <Text style={styles.doginfotext}><Icon5 name="bell" size={20} color="#F7931D" style={{padding:"5%",}}/>: {rdata.length >=3?rdata[0].animalList[0].abreed:null}</Text>
             </View>
             
           </View>

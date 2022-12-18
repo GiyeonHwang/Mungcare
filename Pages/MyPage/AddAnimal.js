@@ -109,7 +109,7 @@ export default function AddAnimal({ navigation, route}) {
 
     //종류
     const validateBreed = aBreed => {
-        const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|1-15|]{1,20}$/;
+        const regex = /^[가-힣|a-z|A-Z|1-15|]{1,20}$/;
         return regex.test(aBreed);
     }
 
@@ -126,7 +126,7 @@ export default function AddAnimal({ navigation, route}) {
         const changeName = removespace(aName);
         setAnimalName(changeName);
         setErrorMessage(
-             validateName(changeName) ? "올바른 형식입니다" : "애완동물의 이름은 한글과 영어만 가능합니다",
+             validateName(changeName) ? "올바른 형식입니다" : "반려동물의 이름은 한글과 영어만 가능합니다",
         );
         setOkName(validateName(aName));
     };
@@ -259,7 +259,7 @@ export default function AddAnimal({ navigation, route}) {
                 </View>
 
                 <View style = {styles.overlapContainer}>
-                    <Text style={styles.text}>애완동물 이름</Text>
+                    <Text style={styles.text}>반려동물 이름</Text>
                     <TouchableOpacity 
                     disabled = {!okName}
                     style = {styles.overlapButton} 
