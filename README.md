@@ -48,4 +48,56 @@
 |  <img width="128px" src="https://github.com/5ver-clock/5ver-clock/assets/95736504/d6195deb-95ef-4c66-8617-abc2ffe90043" />  |        <img width="128px" src="https://user-images.githubusercontent.com/95736504/278948762-925f6cf6-e3a1-4d1d-a228-0c2d5a0f0ef9.jpg" />       |      <img width="128px" src="https://user-images.githubusercontent.com/95736504/278948764-a2f60603-3f17-4536-89d7-e1095da2bf3a.png" />      |      <img width="128px" src="https://user-images.githubusercontent.com/95736504/278948759-1bb5de22-7084-44cf-a323-62500b0ba41f.jpg" />     |  <img width="128px" src="https://user-images.githubusercontent.com/95736504/278948752-3ab52dbc-adb3-42d8-bb08-74b990107fd0.jpg"/>     |
 |   [@GiyeonHwang](https://github.com/GiyeonHwang)    |    [@pshhhhhhhhhh](https://github.com/pshhhhhhhhhh)  | [@yeonji123](https://github.com/yeonji123)  | [@rhj7513](https://github.com/rhj7513)  | [@JBH-0](https://github.com/JBH-0) |
 | 선문대학교 컴퓨터공학부 3학년 | 선문대학교 컴퓨터공학부 3학년 | 선문대학교 컴퓨터공학부 3학년 | 선문대학교 컴퓨터공학부 3학년 | 선문대학교 컴퓨터공학부 3학년 |
- 
+
+  ## 📚 STACKS
+
+### FrontEnd
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+
+### BackEnd
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+
+### FrameWork
+![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+<img src="https://img.shields.io/badge/spring boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+
+### Library
+![Expo](https://img.shields.io/badge/expo-1C1E24?style=for-the-badge&logo=expo&logoColor=#D04A37)
+![KakaoTalk](https://img.shields.io/badge/kakaotalk-ffcd00.svg?style=for-the-badge&logo=kakaotalk&logoColor=000000)
+
+### Tool
+![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
+![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+
+### DB
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+### 화면
+| 메인 | 게시판 | 글 | 댓글 |
+| :------------: | :------------: |:------------:|:------------:|
+|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/acc6b621-9db7-4cfc-8ce6-92193733fa8d" width="250" height="300"/>|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/8b0d508b-1b6e-48bb-ad40-b0a72fe8995b" width="250" height="300"/>)|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/7cfe1f0d-d7cc-4a93-9e76-dc8f583d8782" width="250" height="300"/>|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/35baef2b-f9c8-488d-898e-546926f1a433" width="250" height="300"/>|
+| 캘린더 | 피부진단 | 피부진단 결과 | MapInfo |
+|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/5645aa6b-f0a3-4360-908f-745c7d6631ad" width="250" height="300"/>|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/881cf5fe-2ee7-498a-8060-1af98cee4b41" width="250" height="300"/>|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/bacec2b4-745c-4a6f-a3e5-2ef1ce2473ca" width="250" height="300"/>|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/fc755384-46d7-4cea-8fa2-a30175b6bf6c" width="250" height="300"/>|
+| MapInfo 마커 | 산책하기 | 함께산책 | 함께산책위치지정 |
+|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/40fdc5d2-4e83-4be8-82f1-ccbe854daf8d" width="250" height="300"/>|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/14c05ae0-5652-44d8-b8bf-0f71aa3a6b5f" width="250" height="300"/>|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/e42a1c71-3b67-449e-8fd8-5db64c7126d5" width="250" height="300"/>|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/1d409e42-f04e-41da-8581-09d7fdfce162" width="250" height="300"/>|
+| 리뷰 | 놀아주기 | 랭킹 | 알람 |
+|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/1e918be1-ff2f-4d29-936c-8d5f4a2efd0f" width="250" height="300"/>|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/6e28f54b-62a6-4eb7-ab73-c05d4bad3fb2" width="250" height="300"/>|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/ce37eb20-b958-4b7e-80b2-d46343b7c4ef" width="250" height="300"/>|<img src="https://github.com/5ver-clock/5ver-clock/assets/95736504/14795b93-6706-467a-b5b0-8b6f1e99af58" width="250" height="300"/>|
+
+### 추가자료
+요구사항 정의서 : [5ver-clock_요구사항정의서.docx](https://github.com/5ver-clock/5ver-clock/files/13201553/5ver-clock_.docx)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
